@@ -382,11 +382,10 @@ TODO -- complete this work and remove this comment before publication
 
 ### Encoder Requirements
 
-The integer form MUST be used unless one of the following applies: (1) the date is too far in the past or future to fit in a 64-bit integer of type 0 or 1, or (2) the date requires sub-second precision.
-In these cases, the floating-point form MUST be used instead.
+The integer form MUST be used unless one of the following applies: (1) Floating-point dates are supported, (2) the date is too far in the past or future to fit in a 64-bit integer of type 0 or 1, or (3) the fractional part of the seconds of a date is non-zero. In this case, the floating-point form MUST be used.
 
 ### Decoder Requirements
-The decoder MUST decode both the integer and floating-point form.
+If the decoder supports floating-point dates, it MUST decode both the integer and floating-point form.
 
 ## Big Numbers, Tags 2 and 3
 
