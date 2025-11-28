@@ -457,48 +457,100 @@ As a result, applications that rely on non-trivial NaNs generally cannot depend 
 Instead, they usually need their own software implementation of IEEE 754 to encode and decode the full bit patterns to reliably process non-trivial NaNs.
 
 
-## Protocol Use and Non-use for Non-Trivial NaNs
+## Use and Non-use for Non-Trivial NaNs
 
-One motivation for transmitting NaNs in CBOR is the technique known as NaN boxing (See {{NaNBoxing}}), used in some language runtimes (e.g., JavaScript engines) to represent multiple data types efficiently within a single 64-bit word.
-Another motivation arises when applications that internally rely on NaNs are split across a protocol boundary.
-For example, the R programming language uses non-trivial NaNs internally.
+While rare and unusual, some existing systems do make internal use of NaN payloads.
 
-By contrast, JSON can encode IEEE 754 floating-point numbers but explicitly disallows NaN in all forms.
-As a result, CBOR protocols that allow NaN cannot be directly mapped to JSON.
+One example is the R programming language, which is designed for statistical computing and therefore operates heavily on numeric data.
+R uses NaN payloads to distinguish various error or missing-data conditions beyond standard computational exceptions such as division by zero.
 
-Protocols often require an out-of-band indicator to signal the absence of a value.
-JSON uses `null` for this purpose, and CBOR protocols can also use `null` instead of NaN.
+Another example is NaNboxing (see {{NaNBoxing}}), a technique used by some language runtimes &mdash; such as certain JavaScript engines &mdash; to efficiently represent multiple data types within a single 64-bit word by storing type tags or pointers in the NaN payload.
+(CBOR can represent such payloads, but NaNboxed pointers are generally not meaningful or portable across machines, and therefore are usually unsuitable for network transmission or file storage.)
+
+CBOR’s NaN-payload support can be leveraged if data from these systems must be transmitted over a network or written to persistent storage.
+
+A designer of a new protocol that makes extensive use of floating-point values might be tempted to use NaN payloads to encode out-of-band information such as error conditions.
+For example, NaN payloads could be used to distinguish situations such as sensor offline, sensor absent, sensor error, or sensor out of calibration.
+While this is technically possible in CBOR, it comes with significant drawbacks:
+
+- Ordinary and deterministic serialization cannot be used for this protocol.
+- Support for NaN payloads is unreliable across programming environments and CBOR libraries.
+- Values cannot be translated directly to JSON, which does not support NaNs of any kind.
 
 
-## Incompatibility with {{-cbor}} {#NaNCompatibility}
+## Clarification of {{-cbor}}
 
-Although {{-cbor}} is not entirely explicit about non-trivial NaNs, it is generally interpreted as supporting non-trivial NaNs in the CBOR generic data model.
-It is also interpreted as requiring that non-trivial NaNs be reduce to their shortest form for preferred serialization &mdash; the opposite of "touch not the NaNs"
+This is a clarifying restatement of how NaNs are to be treated according to {{-cbor}}.
 
-This document diverges from that interpretation:
+NaNs represented in floating-point values of different lengths are considered equivalent in the basic generic data model if:
+
+ - Their sign bits are identical, and
+ - Their significands are identical after both significands are zero-extended on the right to 64 bits
+
+This equivalence is established for the entire CBOR basic generic data model.
+A NaN encoded as half-, single-, or double-precision is equivalent whenever it satisfies the rules above.
+This remains true regardless of how a CBOR library accepts, stores, or presents a NaN in its API.
+At the application layer, the equivalence still holds.
+The only way to avoid this equivalence is by using a tag specifically designed to carry NaNs without these equivalence rules, since tags extend the data model unless otherwise specified.
+
+The equivalence is similar to how the floating-point value 1.0 is treated as the same value regardless of the precision used to encode it.
+Of course, some floating-point values cannot be represented in shorter formats (e.g., 2.0e+50 cannot be encoded in half-precision).
+The same is true for some NaNs.
+
+In preferred serialization, this equivalence MUST be used to shorten encoding length.
+If a NaN can be represented equivalently in a shorter form (e.g., half-precision rather than single-precision), then the shorter representation MUS be used.
+
+This equivalence also applies when floating-point values are used as map keys.
+For example, a map key encoded as half-precision may be equivalent to one encoded as double-precision if they meet the equivalence rules above.
+
+However, this equivalence does not apply to map sorting.
+Sorting operates on the fully encoded and serialized representation, not on the abstract data model.
+
+It is {{Section 2 of -cbor}} that establishes this equivalence by stating that the number of bytes used to encode a floating-point value is not visible in the data model.
+{{Section 4.1 of -cbor}} defines preferred serialization and requires shortest-length encoding of NaNs including instructions on how to do it.
+{{Section 5.6.1 of -cbor}} describes how NaNs are treated as equivalent when used as map keys.
+These three parts of {{-cbor}} are consistent and are the basis of this restatement.
+
+Since {{Section 4.2.1 of -cbor}}, (Core Deterministic Encoding Requirements), explicitly requires preferred serialization, compliant deterministic encodings must use the shortest equivalent representation of NaNs.
+
+Finally, {{Section 4.2.2 of -cbor}} discusses alternative approaches to deterministic encoding.
+It suggests, for example, that all NaNs may be encoded as a half-precision quiet NaN.
+This section is distinct from the Core Deterministic Encoding Requirements and represents an optional alternative for handling NaNs.
+
+
+## Divergence from {{-cbor}} {#NaNCompatibility}
+
+Orindary and deterministic serialization defined in this document diverge from the preferred serialization requirement in {{-cbor}} for shortest-length encoding of NaNs:
 
 - Ordinary serialization: Non-trivial NaNs are not allowed.
-  While ordinary serialization typically aligns with preferred serialization, it does not in the case of non-trivial NaNs.
+  While ordinary serialization largely aligns with preferred serialization, it does not in the case of non-trivial NaNs.
 - Deterministic serialization: Because deterministic serialization inherits from ordinary serialization, it also does not allow non-trivial NaNs.
-  This diverges from {{Section 4.2.1 of -cbor}} in this one specific way.
+  This is the single aspect of deterministic serialization that is different from {{Section 4.2.1 of -cbor}}.
 
 The divergence is justified by the following:
 
-- Non-trivial NaNs were not clearly specified in {{-cbor}}.
-- They are not well-supported across CPUs and programming environments.
+- Encoding and equivalence of non-trivial NaNs was a little unclear {{-cbor}}.
+- IEEE 754 doesn't set requirements for their handling.
+- Non-trivial NaNs are not well-supported across CPUs and programming environments.
 - Implementing preferred serialization for non-trivial NaNs is complex and error-prone; many CBOR implementations don't support it or don't support it correctly.
 - Practical use cases for non-trivial NaNs are extremely rare.
-- Reducing non-trivial NaNs to a half-precision quiet NaN is simple and widely supported (e.g., `isnan()` can be used to detect all NaNs).
+- Reducing non-trivial NaNs to a half-precision quiet NaN is simple and supported by programming environments (e.g., `isnan()` can be used to detect all NaNs).
 - Non-trivial NaNs remain supported by general serialization; the divergence is only for ordinary and deterministic serialization.
 - A new CBOR tag could be defined in the future to explicitly support them if needed.
 
-## Recommendations for Use of Non-Trival NaNs in CBOR
 
-In summary, non-trival NaNs can be used in CBOR, but should primarily be used in systems that already use them and with full awareness that support in programming environments and CBOR libraries will be limited and inconsistent.
+## Recommendations for Use of Non-Trival NaNs
 
-For new protocols, non-trival NaNs, even all NaNs, can be avoided by using other CBOR protocol elements like null.
-CBOR is powerful and flexible so as to allow data structures that can express an error detail or out-of-band value without using non-trival NaNs.
-The advantage of avoiding NaN in CBOR protocols is that they can more easily be JSON protocols and one does not need to worry about programming environment and CPU hardware support.
+While non-trivial NaNs are excluded from ordinary and deterministic serialization, they are theoretically supported by {{-cbor}}.
+General serialization does support them.
+
+New protocol designs can &mdash; and generally should—avoid non &mdash; non-trivial NaNs.
+Support for them is unreliable, and it is straightforward to design CBOR-based protocols that do not depend on them.
+In many cases, the use of NaN can be replaced entirely with null.
+JSON requires use of null as it does not support NaNs at all.
+
+The primary use case for non-trivial NaNs is existing systems that already use them.
+For example, a program that relies on non-trivial NaNs internally may need to serialize its data to run across machines connected by a network.
 
 
 # Examples and Test Vectors
