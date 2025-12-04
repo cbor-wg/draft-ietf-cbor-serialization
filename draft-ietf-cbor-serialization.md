@@ -267,6 +267,12 @@ That is, deterministic encoding imposes no requirements over and above the requi
 
 ## When to use Deterministic Serialization {#WhenDeterministic}
 
+In the basic generic data model, maps are unordered (See {{Section 5.6 of -cbor}}).
+Applications MUST NOT rely on any particular map ordering, even if the data was produced using deterministic serialization.
+A CBOR library is not required to preserve the order of keys when decoding a map, and the underlying programming language may not preserve map order either— for example, the Go programming language provides no ordering guarantees for maps.
+The sole purpose of map sorting in deterministic serialization is to ensure reproducibility of the encoded byte stream, not to provide any semantic ordering of map entries.
+If an application requires a map to be ordered, it is responsible for applying its own sorting.
+
 Most applications do not require deterministic encoding &mdash; even those that employ signing or hashing to authenticate or protect the integrity of data.
 For example, the payload of a COSE_Sign message (See {{-COSE}}) does not need to be encoded deterministically because it is transmitted along with the message.
 The recipient receives the exact same bytes that were signed.
