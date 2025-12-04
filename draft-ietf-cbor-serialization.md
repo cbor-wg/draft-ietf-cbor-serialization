@@ -459,7 +459,9 @@ Instead, they usually need their own software implementation of IEEE 754 to enco
 
 ## Use and Non-use for Non-Trivial NaNs
 
-While rare and unusual, some existing systems do make internal use of NaN payloads.
+Non-trivial NaNs, excluding signaling NaNs, are not produced by standard floating-point operations.
+They are typically created at the application level, where software may take advantage of unused bits in the NaN payload.
+Such uses are rare and unusual, but they do exist.
 
 One example is the R programming language, which is designed for statistical computing and therefore operates heavily on numeric data.
 R uses NaN payloads to distinguish various error or missing-data conditions beyond standard computational exceptions such as division by zero.
