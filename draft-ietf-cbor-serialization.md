@@ -65,6 +65,8 @@ normative:
 informative:
    RFC8392: CWT
 
+   RFC9413:
+
    RFC9052: COSE
 
    RFC7049:
@@ -528,6 +530,30 @@ For new protocols, non-trival NaNs, even all NaNs, can be avoided by using other
 CBOR is powerful and flexible so as to allow data structures that can express an error detail or out-of-band value without using non-trival NaNs.
 The advantage of avoiding NaN in CBOR protocols is that they can more easily be JSON protocols and one does not need to worry about programming environment and CPU hardware support.
 
+
+# Serialization Checking
+
+Serialization checking rejects input which, while well-formed CBOR, does not conform to a particular serialization rule set it is enforcing.
+For example, a decoder checking for deterministic serialization will error out if map keys are not in the required sorted order.
+Likewise, a decoder checking for ordinary serialization will reject any CBOR data item that is not encoded in its shortest form.
+
+This type of checking goes beyond the basic requirement of verifying that input is well-formed CBOR.
+The data rejected by serialization checking is well-formed; it is rejected because it violates additional serialization constraints.
+
+## Serialization Checking Use Cases
+
+Some applications that rely on deterministic serialization may choose serialization checking in order to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.
+
+Some protocol environments may use serialization checking to minimize representational variants as a strategy to improve interoperability.
+Discouraging variants early prevents them from compounding.
+See {{RFC9413}} on maintaining robust protocols.
+
+Serialization checking may enhance security in certain contexts, but such checking is never a substitute for correct and complete CBOR input validation.
+All CBOR decoders &mdash; regardless of their capabilities, modes, or optional features &mdash; must always perform full input validation. This includes rejecting CBOR features the decoder does not support.
+For example, a decoder that does not support indefinite-length items must reject them because they are unsupported, not because it is acting as a checking decoder.
+
+Decoders that fail to perform this essential input validation are fundamentally inadequate and represent a security risk.
+The appropriate remedy is to fix their input validation, not to add the serialization checking described here.
 
 
 # CBOR Byte String Wrapping {#ByteStringWrapping}
