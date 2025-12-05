@@ -412,12 +412,12 @@ This section provides background information on {{IEEE754}} NaN (Not a Number) a
 
 ## Basics
 
-{{IEEE754}} defines the most widely used representation for floating-point numbers, including special values for infinity and NaN.
+{{IEEE754}} defines the most widely used representation for floating-point numbers.
+It includes special values for infinity and NaN.
 NaN was originally designed to represent the result of invalid computations, such as division by zero.
 Although IEEE 754 intended NaN primarily for local computation, NaN values are sometimes transmitted in network protocols, and CBOR supports their representation.
 
-An IEEE 754 NaN includes a payload of up to 52 bits (depending on precision), whose use is not formally defined.
-The original intent was for vendor-specific diagnostic information explaining why a computation failed.
+An IEEE 754 NaN includes a payload of up to 52 bits (depending on precision) whose use is not formally defined.
 NaN values also include an unused sign bit.
 
 IEEE 754 distinguishes between quiet NaNs (qNaNs) and signaling NaNs (sNaNs):
@@ -431,8 +431,8 @@ IEEE 754 distinguishes between quiet NaNs (qNaNs) and signaling NaNs (sNaNs):
 
 In this document:
 
-- A non-trivial NaN refers to any NaN that is not a quiet NaN.
-- Non-trivial NaNs are often used to embed additional protocol information in the NaN payload.
+- A "non-trivial NaN" refers to any NaN that is not a quiet NaN.
+- A non-trivial NaN is used to carry additional, protocol-specific information within floating-point values.
 
 
 ## Implementation Support for Non-Trivial NaNs
@@ -451,7 +451,7 @@ Some key points:
 
   - CPUs use the distinction between signaling and quiet NaNs to determine whether to raise exceptions.
   - A non-trivial NaN matching the CPU’s signaling NaN pattern may either trigger an exception or be converted into a quiet NaN.
-  - Instructions converting between single and double precision often discard or alter NaN payloads.
+  - Instructions converting between single and double precision sometimes discard or alter NaN payloads.
 
 As a result, applications that rely on non-trivial NaNs generally cannot depend on CPU instructions, floating-point libraries, or programming environments.
 Instead, they usually need their own software implementation of IEEE 754 to encode and decode the full bit patterns to reliably process non-trivial NaNs.
@@ -496,20 +496,21 @@ At the application layer, the equivalence still holds.
 The only way to avoid this equivalence is by using a tag specifically designed to carry NaNs without these equivalence rules, since tags extend the data model unless otherwise specified.
 
 The equivalence is similar to how the floating-point value 1.0 is treated as the same value regardless of the precision used to encode it.
-Of course, some floating-point values cannot be represented in shorter formats (e.g., 2.0e+50 cannot be encoded in half-precision).
+Some floating-point values cannot be represented in shorter formats (e.g., 2.0e+50 cannot be encoded in half-precision).
 The same is true for some NaNs.
 
 In preferred serialization, this equivalence MUST be used to shorten encoding length.
 If a NaN can be represented equivalently in a shorter form (e.g., half-precision rather than single-precision), then the shorter representation MUS be used.
 
 This equivalence also applies when floating-point values are used as map keys.
-For example, a map key encoded as half-precision may be equivalent to one encoded as double-precision if they meet the equivalence rules above.
+A map key encoded as half-precision MUST be considered a duplicate of one encoded as double-precision if they meet the equivalence rules above.
 
 However, this equivalence does not apply to map sorting.
 Sorting operates on the fully encoded and serialized representation, not on the abstract data model.
 
 It is {{Section 2 of -cbor}} that establishes this equivalence by stating that the number of bytes used to encode a floating-point value is not visible in the data model.
-{{Section 4.1 of -cbor}} defines preferred serialization and requires shortest-length encoding of NaNs including instructions on how to do it.
+{{Section 4.1 of -cbor}} defines preferred serialization.
+It requires shortest-length encoding of NaNs including instructions on how to do it.
 {{Section 5.6.1 of -cbor}} describes how NaNs are treated as equivalent when used as map keys.
 These three parts of {{-cbor}} are consistent and are the basis of this restatement.
 
@@ -538,7 +539,7 @@ The divergence is justified by the following:
 - Practical use cases for non-trivial NaNs are extremely rare.
 - Reducing non-trivial NaNs to a half-precision quiet NaN is simple and supported by programming environments (e.g., `isnan()` can be used to detect all NaNs).
 - Non-trivial NaNs remain supported by general serialization; the divergence is only for ordinary and deterministic serialization.
-- A new CBOR tag could be defined in the future to explicitly support them if needed.
+- A new CBOR tag can be defined in the future to explicitly support them.
 
 
 ## Recommendations for Use of Non-Trival NaNs
