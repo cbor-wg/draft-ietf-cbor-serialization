@@ -65,6 +65,8 @@ normative:
       IEEE Std: 754-2019
       DOI: 10.1109/IEEESTD.2019.8766229
 
+  IANA.cddl:
+
 informative:
    RFC8392: CWT
 
@@ -336,7 +338,25 @@ The security considerations in {{Section 10 of -cbor}} apply.
 
 # IANA Considerations
 
-TODO -- complete work and remove this comment before publication
+[^to-be-removed]
+
+[^to-be-removed]: RFC Editor: please replace RFCXXXX with the RFC
+    number of this RFC and remove this note.
+
+This document requests IANA to register the contents of
+{{tbl-iana-reqs}} into the registry
+"{{cddl-control-operators (CDDL Control Operators)<IANA.cddl}}" of the
+{{IANA.cddl}} registry group:
+
+<?v3xml2rfc table_borders="light" ?>
+
+| Name      | Reference |
+| .ord      | \[RFCXXXX] |
+| .ordseq   | \[RFCXXXX] |
+| .det      | \[RFCXXXX] |
+| .detseq   | \[RFCXXXX] |
+{: #tbl-iana-reqs title="New control operators to be registered"}
+
 
 
 --- back
