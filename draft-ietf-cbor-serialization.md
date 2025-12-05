@@ -69,6 +69,13 @@ informative:
 
    RFC7049:
 
+   CTAP2:
+     title: Client To Authenticator Protocol v2
+     target: https://fidoalliance.org/specs/fido-v2.0-ps-20190130/fido-client-to-authenticator-protocol-v2.0-ps-20190130.html
+     author:
+     - org: W3C
+     date: false
+
    NaNBoxing:
      title: Crafting Interpreters
      author:
@@ -288,9 +295,29 @@ In such an environment, a CBOR encoder may produce deterministic encoding by def
 But note that determinstic is never a substitue for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, need non-trivial NaNs or other.
 
 
-# CDDL Support
+# CDDL Control Operators {#CDDL-Operators}
 
-TODO -- complete work and remove this comment
+Four new control operators are defined for use in CDDL {{-cddl}}.
+
+| Name    | Purpose                                             |
+| .ord    | Use ordinary serialization for a data item          |
+| .ordseq | Use ordinary serialization for a CBOR sequence      |
+| .det    | Use deterministic serialization for a data item     |
+| .detseq | Use deterministic serialization for a CBOR sequence |
+
+These operators have the same semantics as the .cbor and .cborseq operators (See {{Section 3.8.4 of -cddl}}) with the additional requirement for ordinary or deterministic serialization.
+These specify that what is in the “controller” (the right side of the operator) be serialized as indicated.
+
+For example, a byte string containing embedded CBOR that must be deterministically encoded can be described in CDDL as:
+
+~~~
+leaf = #6.24(bytes .det any)
+~~~
+
+The scope of these operators applies recursively through nested arrays and maps, but does not extend into byte strings or other data items that happen to contain encoded CBOR.
+Every instance of embedded CBOR that requires constrained serialization must specify that constraint explicitly.
+See also {{ByteStringWrapping}}.
+
 
 # Security Considerations
 
@@ -499,6 +526,59 @@ In summary, non-trival NaNs can be used in CBOR, but should primarily be used in
 For new protocols, non-trival NaNs, even all NaNs, can be avoided by using other CBOR protocol elements like null.
 CBOR is powerful and flexible so as to allow data structures that can express an error detail or out-of-band value without using non-trival NaNs.
 The advantage of avoiding NaN in CBOR protocols is that they can more easily be JSON protocols and one does not need to worry about programming environment and CPU hardware support.
+
+
+
+# CBOR Byte String Wrapping {#ByteStringWrapping}
+
+This appendix provides non-normative guidance on byte-string wrapping of CBOR.
+It applies primarily to tag 24 and the CDDL .cbor and .cborseq control operators, but also to the serialization-specifying control operators described in {{CDDL-Operators}}.
+
+## Purpose
+
+Error isolation:
+
+: Wrapping CBOR in a byte string prevents encoding errors in the wrapped data from causing the enclosing CBOR to fail during decoding.
+(CBOR decoding generally halts at the first error and lacks internal length redundancy found in formats like ASN.1/DER.)
+
+CBOR library support for signing and hashing:
+
+: When wrapped CBOR needs to be signed or hashed, its original encoded bytes must be available.
+Most CBOR libraries cannot directly extract the raw bytes of substructures, but byte-string wrapping provides direct access to the exact bytes for signing or hashing.
+
+Protocol embedding:
+
+: Byte-string wrapping is generally useful when messages from one CBOR-based protocol need to be embedded within another CBOR protocol.
+
+Special map keys:
+
+: Some CBOR libraries only support simple, non-aggregate map keys (e.g., integers or strings).
+To use complex data types like arrays and maps as map keys, they can be wrapped in a byte string.
+
+## Wrapping Recommendations
+
+The serialization requirements for the wrapping CBOR may differ from those for the wrapped CBOR.
+CBOR itself imposes no universal rule that they must match; this is determined by the design of the wrapping protocol.
+
+The wrapping protocol should not impose serialization requirements on the wrapped message.
+The two should be treated as independent entities.
+This approach avoids potential conflicts between serialization rules.
+
+For example, assume protocol XYZ wraps protocol ABC.
+If protocol ABC requires Canonical CBOR as specified in {{Section 3.9 of RFC7049}} (e.g., {{CTAP2}} from WebAuthn) while protocol XYZ requires deterministic serialization, {{DeterministicSerialization}}, a conflict would arise.
+
+Most CBOR data to be signed or hashed does not require a specific serialization.
+CBOR, being a modern, fully specified, binary protocol, does not need canonicalization, wrapping, or armoring like other data representation formats such as JSON.
+See the discussion in {{WhenDeterministic}}.
+
+## CBOR Library Implementation Suggestion
+
+A straightforward implementation strategy is to instantiate a second CBOR encoder or decoder for the wrapped message.
+However, this may be suboptimal in memory-constrained environments, as it may require both a duplicate copy of the wrapped data and an additional encoder/decoder instance.
+
+A more efficient approach can be for the CBOR library to treat the wrapped CBOR like a container (similar to arrays or maps).
+Many CBOR implementations already handle arrays and maps as containers without requiring a separate instance.
+Similarly, a byte-string wrapping encoded CBOR can be treated as a container that always contains exactly one item.
 
 
 # Examples and Test Vectors
