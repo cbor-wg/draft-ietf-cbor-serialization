@@ -41,7 +41,10 @@ contributor:
 - name: Carsten Borman
   organization: Universität Bremen TZI
   email: cabo@tzi.org
-
+- name: Anders Rundgren
+  email: anders.rundgren.net@gmail.com
+- name: Vadim Goncharov
+  email: vadimnuclight@gmail.com
 
 normative:
   RFC2119:
