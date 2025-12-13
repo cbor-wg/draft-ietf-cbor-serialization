@@ -279,7 +279,7 @@ This rule is inherited from ordinary serialization ({{OrdinarySerialization}}), 
 
 ## Decoder Requirements {#DeterministicDecoding}
 
-1. Decoders MUST meet the decoder requirements describer in {{OrdinaryDecoding}}.
+1. Decoders MUST meet the decoder requirements described in {{OrdinaryDecoding}}.
 That is, deterministic encoding imposes no requirements over and above the requirements for decoding ordinary serialization.
 
 > Note that a decoder MAY reject out-of-order maps as a consequence of {{SerializationChecking}}.
@@ -612,7 +612,7 @@ The divergence is justified by the following:
 While non-trivial NaNs are excluded from ordinary and deterministic serialization, they are theoretically supported by {{-cbor}}.
 General serialization does support them.
 
-New protocol designs SHOULD avoid non &mdash; non-trivial NaNs.
+New protocol designs SHOULD avoid non-trivial NaNs.
 Support for them is unreliable, and it is straightforward to design CBOR-based protocols that do not depend on them.
 In many cases, the use of NaN can be replaced entirely with null.
 JSON requires use of null as it does not support NaNs at all.
