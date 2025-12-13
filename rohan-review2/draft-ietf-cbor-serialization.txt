@@ -390,7 +390,7 @@ Table of Contents
 
 4.2.  Decoder Requirements
 
-   1.  Decoders MUST meet the decoder requirements describer in
+   1.  Decoders MUST meet the decoder requirements described in
        Section 3.2.  That is, deterministic encoding imposes no
        requirements over and above the requirements for decoding
        ordinary serialization.
@@ -967,11 +967,11 @@ D.6.  Recommendations for Use of Non-Trival NaNs
    serialization, they are theoretically supported by [STD94].  General
    serialization does support them.
 
-   New protocol designs SHOULD avoid non — non-trivial NaNs.  Support
-   for them is unreliable, and it is straightforward to design CBOR-
-   based protocols that do not depend on them.  In many cases, the use
-   of NaN can be replaced entirely with null.  JSON requires use of null
-   as it does not support NaNs at all.
+   New protocol designs SHOULD avoid non-trivial NaNs.  Support for them
+   is unreliable, and it is straightforward to design CBOR-based
+   protocols that do not depend on them.  In many cases, the use of NaN
+   can be replaced entirely with null.  JSON requires use of null as it
+   does not support NaNs at all.
 
    The primary use case for non-trivial NaNs is existing systems that
    already use them.  For example, a program that relies on non-trivial
