@@ -1,0 +1,836 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2025-12-14T01:47:08.792743+00:00",
+  "repo": "cbor-wg/draft-ietf-cbor-serialization",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 4,
+      "id": "I_kwDOQYX63c7ZxzT4",
+      "title": "Remove the reference to NaN-boxing",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/4",
+      "state": "CLOSED",
+      "author": "cyberphone",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "See https://mailarchive.ietf.org/arch/msg/cbor/PQ2HwWBP_VF6Rum3oFx3XuVSz_c/\n\n\"(exporting JavaScript or R runtime data like pointers doesn't actually work, even if performed entirely locally).\"",
+      "createdAt": "2025-11-22T02:45:47Z",
+      "updatedAt": "2025-12-05T22:39:46Z",
+      "closedAt": "2025-12-05T21:30:18Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I read the reference and thought about it the request.\n\nIt took us a long time to figure out actual use cases for NaN payloads. Part of the point of this appendix is to capture the important points from the discussion. The discovery of NaNboxing as a real use case is an important point.\n\nCan you clarify what you mean about R?\n",
+          "createdAt": "2025-11-26T06:26:53Z",
+          "updatedAt": "2025-11-26T06:26:53Z"
+        },
+        {
+          "author": "cyberphone",
+          "authorAssociation": "NONE",
+          "body": "As I wrote in the issue, NaNboxing doesn't make sense in an information exchange format since pointers are locked to the run-time instance.  I have in my proposal left the non-finite number space open to whatever 52 + 1 bt of application-specific information you want.\n\nI believe the language R has been mentioned in this context but I may be wrong.",
+          "createdAt": "2025-11-26T06:40:08Z",
+          "updatedAt": "2025-11-26T06:40:23Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "But NaNboxing is not about pointers. \n\nYes, R is mentioned in the text. What is said there makes sense to me.",
+          "createdAt": "2025-11-26T06:47:06Z",
+          "updatedAt": "2025-11-26T06:47:06Z"
+        },
+        {
+          "author": "cyberphone",
+          "authorAssociation": "NONE",
+          "body": "NaNBoxing is a bit like a `union` in C. From the referenced document:\n\n_If we\u2019ve got 51 bits, we can stuff a 48-bit pointer in there with three bits to spare. Those three bits are just enough to store tiny type tags to distinguish between nil, Booleans, and Obj pointers._\n\nI know nothing about R.",
+          "createdAt": "2025-11-26T06:58:49Z",
+          "updatedAt": "2025-11-26T06:58:49Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "See #7. It doesn't remove NaNboxing, but you were right about the pointers and this PR reflects that.",
+          "createdAt": "2025-11-28T20:31:57Z",
+          "updatedAt": "2025-11-28T20:31:57Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed by #7 ",
+          "createdAt": "2025-12-05T21:30:18Z",
+          "updatedAt": "2025-12-05T21:30:18Z"
+        },
+        {
+          "author": "nuclight",
+          "authorAssociation": "NONE",
+          "body": "> As I wrote in the issue, NaNboxing doesn't make sense in an information exchange format since pointers are locked to the run-time instance. I have in my proposal left the non-finite number space open to whatever 52 + 1 bt of application-specific information you want.\n> \n> I believe the language R has been mentioned in this context but I may be wrong.\n\nThis is not the case when \"pointers\" are to shared memory arena and processes are on the same machine (there are existing libraries to work in such environments, like [thmap](https://github.com/rmind/thmap/)). Moreover, NaN-boxing is not reducible to only-pointers. Wording in -01 in parenteses is OK, though.",
+          "createdAt": "2025-12-05T22:39:46Z",
+          "updatedAt": "2025-12-05T22:39:46Z"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOQYX63c7Zx6lX",
+      "title": "Clarify the relation to RFC 8949 section 5.6.1",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/5",
+      "state": "OPEN",
+      "author": "cyberphone",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "5.6.1 is obviously in conflict with the sorting concept outlined in 4.2.1\n\nFWIW CBOR::Core deprecates 5.6.1 in an indirect way:\n\nSince CBOR encodings according to this specification maintain uniqueness, there are no additional tests needed in order to determine map key equivalence. As an (extreme) example, the floating-point numbers `0.0` and `-0.0`, the integer number `0`, a `NaN`, and an empty map `{}`, could represent the distinct keys `f90000`, `f98000`, `00`, `f97e00`, and `a0` respectively.",
+      "createdAt": "2025-11-22T03:08:57Z",
+      "updatedAt": "2025-11-24T04:21:49Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "cyberphone",
+          "authorAssociation": "NONE",
+          "body": "Compared to the breaking changes RFC 8949 introduced witg respect to RFC 7049 like\n- a new map key sorting scheme (4.2.1) \n- a standardized way of serializing `float`\n\ndeprecating 5.6.1 seems like a minor \"adjustment\".  The 0.0 vs. -0.0 map key case _probably_ have no real-world usage either.",
+          "createdAt": "2025-11-23T06:35:51Z",
+          "updatedAt": "2025-11-23T06:35:51Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "So far, dup detection is out of scope for this document.\n\nTo get it to be in scope and to have 5.6.1 deprecated, you will have to get consensus in the WG on the mailing list.\n",
+          "createdAt": "2025-11-24T04:21:49Z",
+          "updatedAt": "2025-11-24T04:21:49Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "I_kwDOQYX63c7Zx9H6",
+      "title": "Make preferred serialization MUST",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/6",
+      "state": "OPEN",
+      "author": "cyberphone",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Maintaining compatibility with inferior systems makes no sense but adds considerable complexity to specificatos.\n\nThe existing systems will not cease to work.",
+      "createdAt": "2025-11-22T03:14:38Z",
+      "updatedAt": "2025-11-26T06:48:59Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Do you mean Preferred or Ordinary Serialization. This document doesn't really do anything to Preferred.\n\nIf you want some universal proclamation that all use of CBOR MUST use a particularly, serialization, that will have to come from consensus on the mailing list.",
+          "createdAt": "2025-11-26T06:28:59Z",
+          "updatedAt": "2025-11-26T06:28:59Z"
+        },
+        {
+          "author": "cyberphone",
+          "authorAssociation": "NONE",
+          "body": "I just meant that the serialization specification should stick to preferred serialization.",
+          "createdAt": "2025-11-26T06:43:28Z",
+          "updatedAt": "2025-11-26T06:43:28Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "OK. See if you can get consensus for what you want on the mailing list.\n",
+          "createdAt": "2025-11-26T06:48:58Z",
+          "updatedAt": "2025-11-26T06:48:58Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOQYX63c7ch1dB",
+      "title": "Be sure of agreement on the name \"ordinary serialization\"",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/9",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "One alternative is \"simple serialization\"",
+      "createdAt": "2025-12-05T18:00:56Z",
+      "updatedAt": "2025-12-05T22:43:05Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "nuclight",
+          "authorAssociation": "NONE",
+          "body": "Also not very distinctive. Carsten suggested \"disciplined\" https://mailarchive.ietf.org/arch/msg/cbor/gR2H4XdBN9JjSM34QHfWe3hIo0c/",
+          "createdAt": "2025-12-05T22:43:05Z",
+          "updatedAt": "2025-12-05T22:43:05Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOQYX63c7ch1mv",
+      "title": "Fill in the test vector appendix",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/10",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-12-05T18:01:12Z",
+      "updatedAt": "2025-12-05T18:01:12Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOQYX63c7ch2R5",
+      "title": "Create a new General Recommendations section",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/11",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It summarizes what we want CBOR libraries to do and what we want protocol designers to do. It should be a clear and simple statement.",
+      "createdAt": "2025-12-05T18:02:10Z",
+      "updatedAt": "2025-12-05T18:02:10Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 12,
+      "id": "I_kwDOQYX63c7ch2w_",
+      "title": "A new subsection that says when to use general serialization",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/12",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This can pull some of the text out of the \"when to use ordinary serialization\" section.",
+      "createdAt": "2025-12-05T18:02:53Z",
+      "updatedAt": "2025-12-05T18:02:53Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 17,
+      "id": "I_kwDOQYX63c7ddYsS",
+      "title": "2 unjustified SHOULDs",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/17",
+      "state": "OPEN",
+      "author": "rohanmahy",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 3.2 bullet point 5 has 2 normative SHOULDs without any justification.\n\nPlease make these MUSTs or explain under what circumstances you would not:\n \n- ignore leading zeros\n- reject an empty bstr\n\nthey seem really easy to do.",
+      "createdAt": "2025-12-10T14:35:40Z",
+      "updatedAt": "2025-12-11T20:09:33Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The reason they are SHOULD is to not diverge from Section 3.4.3 of RFC 8949. If they are MUST, then I feel I need to add more text that notes this divergence, but maybe that is just me.\n\n3.4.3 is hard to read. It doesn't use the word \"SHOULD\", but that is what I think it intends.\n\nI have made a mistake in draft-cbor-serialization. It's the encode side that is SHOULD and decode MUST to align with 8949.\n\nI think making everything MUST is fine from the implementation and deployment view. None of this is hard to implement. There are no use cases that need leading zero and such. My only hesitance is divergence from 8949. We do diverge on non-trivial NaNs so maybe we should here too. ",
+          "createdAt": "2025-12-11T20:09:33Z",
+          "updatedAt": "2025-12-11T20:09:33Z"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "I_kwDOQYX63c7ddwAk",
+      "title": "Discuss additional topics in Security Considerations",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/18",
+      "state": "OPEN",
+      "author": "rohanmahy",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- using ordinary and deterministic eliminate some avenues for exfiltrating data that is invisible to the attackers\n  - based on indefinite length choices - very powerful\n  - based on specific encoding chosen\n  - based on order of maps\n- using ordinary or deterministic encoding eliminates some categories of resource exhaustion attacks\n- ",
+      "createdAt": "2025-12-10T14:57:41Z",
+      "updatedAt": "2025-12-11T20:20:45Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "1) The critical security considerations would be NEW ones that come into play because of the NEW things this draft defines over and above RFC 8949. I don't think there are any of these because we already have preferred and 4.2.1 in RFC 8949.\n\n2) If we have come to understand new threats that apply to 8949, then they should be errata for 8949, a separate document or if in this document framed as an update to 8949 security considerations. The threats you mention seem to be in this category.\n\n3) I'm a security considerations minimalist (but of course will go with consensus).\n\n4) I'm probably not the person to write these up.",
+          "createdAt": "2025-12-11T20:20:45Z",
+          "updatedAt": "2025-12-11T20:20:45Z"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "I_kwDOQYX63c7dd189",
+      "title": "CDDL Control Operators don't help for non-bstr values",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/19",
+      "state": "OPEN",
+      "author": "rohanmahy",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The example in Section 5:\n\n`leaf = #6.24(bytes .det any)`\n\ndoes not insure that the leading tag 24 is in shortest-form encoding for example.",
+      "createdAt": "2025-12-10T15:02:52Z",
+      "updatedAt": "2025-12-13T17:54:17Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes, I thought about that.  The operators are not supposed to do that. There's also no need to do that.\n\nYou don't even need to use shortest-length encoding for the length of the bstr. \n\nIt's only the content of the bstr that is the target of the operator.",
+          "createdAt": "2025-12-10T20:42:10Z",
+          "updatedAt": "2025-12-10T20:42:10Z"
+        },
+        {
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I don't think I agree that \"There's also no need to do that.\", but perhaps there is no consensus that we need an operator to do that. If you feel that is the case, you can close this issue with a wontfix label.",
+          "createdAt": "2025-12-13T17:54:17Z",
+          "updatedAt": "2025-12-13T17:54:17Z"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "I_kwDOQYX63c7dd33I",
+      "title": "Propose moving normative Appendices into main body of the document",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/20",
+      "state": "OPEN",
+      "author": "rohanmahy",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Appendix B and Appendix C are good candidates",
+      "createdAt": "2025-12-10T15:04:35Z",
+      "updatedAt": "2025-12-10T15:04:35Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 21,
+      "id": "I_kwDOQYX63c7dx4SK",
+      "title": ".det is already taken as a control operator",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/21",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Laurence will wait for resolution on the name \"ordinary\" before making a PR to rename control operators.\n\n",
+      "createdAt": "2025-12-11T20:24:29Z",
+      "updatedAt": "2025-12-11T20:24:29Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 22,
+      "id": "I_kwDOQYX63c7dx49u",
+      "title": "Fill in deterministic encoding of date strings, tag 0",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/22",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-12-11T20:25:32Z",
+      "updatedAt": "2025-12-11T20:25:32Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOQYX63c60cnwV",
+      "title": "Add sections on CDDL and wrapping",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/1",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This adds CDDL operators to specify serialization.\r\n\r\nIt also adds an appendix on byte string wrapping. \r\n\r\nIt is intended to address comments initiated by Ken Takayama on the mailing list on the extent of influence of a serialization requirement.",
+      "createdAt": "2025-11-19T21:26:29Z",
+      "updatedAt": "2025-12-05T20:40:13Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "882647511233d5d79717b131e6d35f284c1cde0a",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "cddl",
+      "headRefOid": "d89674da36ea59b0f315482d0851420d537cf2b2",
+      "closedAt": "2025-12-05T20:40:07Z",
+      "mergedAt": "2025-12-05T20:40:07Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "b43b6596382ff5c44b2a5636d1875b31f7716214"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOQYX63c60rwrz",
+      "title": "Clarify deterministic encoding of tag 1",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/2",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is to address comments made by Wolf on the email list.",
+      "createdAt": "2025-11-20T20:31:50Z",
+      "updatedAt": "2025-12-05T20:40:54Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "882647511233d5d79717b131e6d35f284c1cde0a",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "appendix-C2",
+      "headRefOid": "ee15de4bf9ede7494e398d6cb2d559489d16c991",
+      "closedAt": "2025-12-05T20:40:50Z",
+      "mergedAt": "2025-12-05T20:40:50Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "2514ebbe573b2387e09b8aeef5b34dfdd242ffb9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7QwXJV",
+          "commit": {
+            "abbreviatedOid": "866cfba"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-24T21:43:02Z",
+          "updatedAt": "2025-11-24T21:43:02Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "What does \"(1) Floating-point dates are supported,\" mean?",
+              "createdAt": "2025-11-24T21:43:02Z",
+              "updatedAt": "2025-11-24T21:43:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7QwZhl",
+          "commit": {
+            "abbreviatedOid": "866cfba"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-24T21:46:58Z",
+          "updatedAt": "2025-11-24T21:46:59Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "\"(2) the date is too far in the past or future to fit in a 64-bit integer of type 0 or 1,\" -- that would be the case next on 584554051223-11-09 07:00:16 UTC.\r\nHalf a trillion years out is a little longer than I would be willing to plan for (the sun will swallow the earth 100 times earlier, 5 billion years out).",
+              "createdAt": "2025-11-24T21:46:59Z",
+              "updatedAt": "2025-11-24T21:46:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7RJhL7",
+          "commit": {
+            "abbreviatedOid": "866cfba"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T05:46:30Z",
+          "updatedAt": "2025-11-26T05:46:30Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "3.4.2 does not require floating-point dates to be supported.  Like every other mention of floating-point in this document, it is conditional.\r\n\r\nSeems clear enough to me, but let me know if you think there is better wording.",
+              "createdAt": "2025-11-26T05:46:30Z",
+              "updatedAt": "2025-11-26T05:46:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7RJicy",
+          "commit": {
+            "abbreviatedOid": "866cfba"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T05:47:42Z",
+          "updatedAt": "2025-11-26T05:47:42Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Yes, it's true, but that doesn't change the requirement. We shouldn't omit (2) because of that, right?",
+              "createdAt": "2025-11-26T05:47:42Z",
+              "updatedAt": "2025-11-26T05:47:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7RL3C_",
+          "commit": {
+            "abbreviatedOid": "866cfba"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-26T08:06:16Z",
+          "updatedAt": "2025-11-26T08:06:16Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "I'm not seeing the use case that requires switching to floating point because 64 bits are not enough.",
+              "createdAt": "2025-11-26T08:06:16Z",
+              "updatedAt": "2025-11-26T08:06:17Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOQYX63c605O7U",
+      "title": "Add section on serialization checking (AKA Checking Decoder)",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/3",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-11-21T20:09:17Z",
+      "updatedAt": "2025-12-05T20:43:16Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "2514ebbe573b2387e09b8aeef5b34dfdd242ffb9",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "checking",
+      "headRefOid": "6a49755ec49dfc966c5a191afbdd1780f4ba2c8b",
+      "closedAt": "2025-12-05T20:42:58Z",
+      "mergedAt": "2025-12-05T20:42:58Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "e4009bff552489c2c73af20f34b4b0b643870806"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOQYX63c62Fggd",
+      "title": "Rework Appendix D on NaN payloads",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/7",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Lots of improved language, clarifications and such. Not any real change in concepts it conveys except that it now has a section that is a clarifying restatement of what 8949 says about NaNs.",
+      "createdAt": "2025-11-28T20:30:07Z",
+      "updatedAt": "2025-12-05T20:45:18Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "882647511233d5d79717b131e6d35f284c1cde0a",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "nanbetter",
+      "headRefOid": "dc1c53125e9a0ccec3c54e042a8340a00330b43e",
+      "closedAt": "2025-12-05T20:45:14Z",
+      "mergedAt": "2025-12-05T20:45:14Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "9f6b9eb124685890d63fe79eae48f3328ccad799"
+      },
+      "comments": [
+        {
+          "author": "cyberphone",
+          "authorAssociation": "NONE",
+          "body": "I'm not 100 with what you write about the problems with non-trivial NaNs.  The problem AFAIK, is that there are no non-trivial numbers to receive from most platforms, leaving this number-space to application code.  Applications can use this 52 bits + sign number-space as they like.  With the reverse bits solution preferred serialization does not interfere.\r\n\r\nAccording to Carsten, NaNboxing is as applicable to CBOR as computing square roots:\r\nhttps://mailarchive.ietf.org/arch/msg/cbor/vCwXUg5FQfGvpsfcJ9pynn6O8bg/",
+          "createdAt": "2025-11-28T21:38:16Z",
+          "updatedAt": "2025-11-29T04:36:23Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes, non-trivial NaNs do come from the app space like what R does and what NaNboxing does. This doc is trying to describe that. I will see if I can be a little more clear. This is an issue we can work on here in the GitHub comments.\r\n\r\nMy understanding is that your reverse bits solution is entirely different from what's in this doc and a change from your previous desire to abolish NaNs. That is a larger issue that needs to go to the mailing list for consensus.\r\n\r\n",
+          "createdAt": "2025-11-29T20:58:04Z",
+          "updatedAt": "2025-11-29T20:58:04Z"
+        },
+        {
+          "author": "cyberphone",
+          "authorAssociation": "NONE",
+          "body": "The original problem as stated by Joe was that preferred serialization doesn't preserve the original size of the NaN.  The question is this is a problem (worth fixing) for systems that only generate \"simple\" NaN and Infinity numbers.  Personally, I would not bother.  However, for application-level, non-trivial NaNs, preferred serialization is a showstopper causing people to consider other solutions including new tags.  For CBOR::Core I will stick to the reverse bit solution because it is simple and does the job. ",
+          "createdAt": "2025-11-29T21:14:52Z",
+          "updatedAt": "2025-11-29T21:14:52Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Anders, please take the larger NaN strategy debate to the mailing list.",
+          "createdAt": "2025-11-29T21:49:58Z",
+          "updatedAt": "2025-11-29T21:49:58Z"
+        },
+        {
+          "author": "cyberphone",
+          "authorAssociation": "NONE",
+          "body": "Laurence, I guess the problem here is that many of my suggestions do not really fit a \"pure\" serialization specification.  I don't think true interoperability can be achieved without also touching internal workings of decoders and encoders.  Key duplicates and time objects are difficult topics.  From this perspective, you can proceed with the merge.",
+          "createdAt": "2025-11-30T09:44:31Z",
+          "updatedAt": "2025-11-30T09:44:31Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@cyberphone I've done some rewording to say that non-trivial NaNs come from applications. Your question helped clarify that.",
+          "createdAt": "2025-12-04T20:57:47Z",
+          "updatedAt": "2025-12-04T20:57:47Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDOQYX63c63KKFB",
+      "title": "Sorting is only for determinism, not for apps",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/8",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-12-04T20:08:50Z",
+      "updatedAt": "2025-12-05T20:46:38Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "882647511233d5d79717b131e6d35f284c1cde0a",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "sorting",
+      "headRefOid": "4918c5dc460109e2ceb3a5c6b3b942b33a5499d2",
+      "closedAt": "2025-12-05T20:46:32Z",
+      "mergedAt": "2025-12-05T20:46:32Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "e5e8fa61f380d6a0b1c8157d08cc4cc5019c8d95"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDOQYX63c63Xl4p",
+      "title": "Add contributors",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/13",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-12-05T20:57:16Z",
+      "updatedAt": "2025-12-05T20:58:57Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "e5e8fa61f380d6a0b1c8157d08cc4cc5019c8d95",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "contrib2",
+      "headRefOid": "e9a6ef13a07a55084099d020aca674a16d659134",
+      "closedAt": "2025-12-05T20:58:52Z",
+      "mergedAt": "2025-12-05T20:58:52Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "3d71d40c54e1cac85ea5abc7c9cc7df6f4630034"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDOQYX63c63Xuvl",
+      "title": "Fill in IANA section",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/14",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "(This should have been included with the filling in of the CDDL section)",
+      "createdAt": "2025-12-05T21:16:02Z",
+      "updatedAt": "2025-12-05T21:16:32Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "3d71d40c54e1cac85ea5abc7c9cc7df6f4630034",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "iana",
+      "headRefOid": "7b47903b43a7e7183eac7e69dfd96672815ad857",
+      "closedAt": "2025-12-05T21:16:27Z",
+      "mergedAt": "2025-12-05T21:16:27Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "28378d82c4a1a199dcd7801b54676ba1b94e7594"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDOQYX63c63X1Gh",
+      "title": "Add Ken as contributor",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/15",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-12-05T21:29:45Z",
+      "updatedAt": "2025-12-10T13:10:45Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "28378d82c4a1a199dcd7801b54676ba1b94e7594",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "contrib3",
+      "headRefOid": "7332d6d102e5f2d600666e1c3c217d1d9aa07e6b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7UVxtS",
+          "commit": {
+            "abbreviatedOid": "7332d6d"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-12-10T13:10:45Z",
+          "updatedAt": "2025-12-10T13:10:45Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "PR_kwDOQYX63c63iulj",
+      "title": "Clarify deterministic serialization",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/16",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-12-07T17:37:36Z",
+      "updatedAt": "2025-12-07T18:25:03Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "28378d82c4a1a199dcd7801b54676ba1b94e7594",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "det-dec",
+      "headRefOid": "549c660fd3a0d2472467b293a22264caefec394c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7TkMZW",
+          "commit": {
+            "abbreviatedOid": "549c660"
+          },
+          "author": "nuclight",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "This probably should be clarified a bit when introducing checking decoders - the \"checking decoder\" term is currently defined only implicitly in other section. In present state, it's acceptable (though \"so-so\").",
+          "createdAt": "2025-12-07T18:25:03Z",
+          "updatedAt": "2025-12-07T18:25:03Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "id": "PR_kwDOQYX63c64tWjF",
+      "title": "Rohan's review",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/23",
+      "state": "OPEN",
+      "author": "rohanmahy",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "small rewordings, typos, and NITS\r\n\r\nNote: references are not allowed in the Abstract or Section headings.",
+      "createdAt": "2025-12-13T17:40:41Z",
+      "updatedAt": "2025-12-13T17:48:40Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "8408fe8a6fd1b8023c3d03938561a60fbd4df921",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "rohan-review2",
+      "headRefOid": "5c0b07024545173021fbf84c411dfd286e5303cc",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
