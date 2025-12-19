@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                        13 December 2025
-Expires: 16 June 2026
+Intended status: Standards Track                        19 December 2025
+Expires: 22 June 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 June 2026.
+   This Internet-Draft will expire on 22 June 2026.
 
 Copyright Notice
 
@@ -1105,6 +1105,10 @@ Contributors
 
    Vadim Goncharov
    Email: vadimnuclight@gmail.com
+
+
+   Ken Takayama
+   Email: ken.takayama.ietf@gmail.com
 
 
 Author's Address
