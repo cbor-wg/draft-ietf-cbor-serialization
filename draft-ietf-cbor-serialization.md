@@ -93,6 +93,7 @@ informative:
      date: July, 2021
      target: https://craftinginterpreters.com/optimization.html#nan-boxing
 
+   I-D.mcnally-deterministic-cbor:
 
 
 --- abstract
@@ -422,7 +423,7 @@ Determinism can be achieved by allowing only floating-point, though that doesnâ€
 A better solution requires the fluid level always be encoded using the smallest representation for every particular value.
 For example, a fluid level of 2 is always encoding as an integer, never as a floating-point number.
 2.000001 is always be encoded as a floating-point number so as to not lose precision.
-See the numeric reduction defined by dCBOR.
+See the numeric reduction defined by {{I-D.mcnally-deterministic-cbor}}.
 
 Although this is not strictly a CBOR issue, deterministic CBOR protocol designers should be mindful of variability in Unicode text, as some characters can be encoded in multiple ways.
 
