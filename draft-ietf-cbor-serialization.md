@@ -45,6 +45,8 @@ contributor:
   email: anders.rundgren.net@gmail.com
 - name: Vadim Goncharov
   email: vadimnuclight@gmail.com
+- name: Ken Takayama
+  email: ken.takayama.ietf@gmail.com
 
 normative:
   RFC2119:
