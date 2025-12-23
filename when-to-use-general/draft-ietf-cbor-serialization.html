@@ -1050,7 +1050,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 22 June 2026</td>
+<td class="center">Expires 26 June 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1063,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-12-19" class="published">19 December 2025</time>
+<time datetime="2025-12-23" class="published">23 December 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-06-22">22 June 2026</time></dd>
+<dd class="expires"><time datetime="2026-06-26">26 June 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1120,7 +1120,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 June 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 June 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1361,23 +1361,23 @@ This full set was not explicitly named in <span>[<a href="#STD94" class="cite xr
 The following are representative examples:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-2.1">
-            <p id="section-2.1-2.1.1">Indefinite lengths enable on-the-fly, streaming encoding of strings, arrays, and maps.
+            <p id="section-2.1-2.1.1">Enable on-the-fly, streaming encoding of strings, arrays, and maps with indefinite lengths.
 This is useful when an array, map, or string is many times larger than the available memory on the encoding device.<a href="#section-2.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.2">
-            <p id="section-2.1-2.2.1">Fixed-size integer encoding (e.g., always 64 bits) may be useful when CBOR encoding or decoding is performed directly in hardware.
+            <p id="section-2.1-2.2.1">Directly encode or decode integer values from hardware registers with fixed-size integer encoding.
 CBOR is sufficiently simple that encoders and decoders for some protocols can be implemented solely in hardware without any software.
-Fixed-size integers encoding allows values to be copied directly out of hardware registers.<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
+Fixed-size integer encoding allows values to be copied directly in and out of hardware registers.<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.3">
-            <p id="section-2.1-2.3.1">Fixed-size lengths for strings, arrays, or maps can allow the size updated in place without shifting subsequent bytes.
+            <p id="section-2.1-2.3.1">Enable in place update of the lengths of strings, arrays and maps by using fixed-size encoding of their lengths.
 For example, if the length of a string is always encoded in 32 bits, increasing the length from 2^16 to 2^16+1, requires only overwriting the length field rather than shifting all 2^16 bytes of content.<a href="#section-2.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.4">
             <p id="section-2.1-2.4.1">Transmission of non-trivial NaNs in floating-point values (see <a href="#NaN" class="auto internal xref">Appendix D</a>).<a href="#section-2.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-2.1-3">With the exception of non-trivial NaNs, general serialization can encode the same data types and value ranges as other serializations.
+<p id="section-2.1-3">With only the exception of non-trivial NaNs, general serialization can encode all the same data types and value ranges as other serializations.
 Its purpose is solely to simply or optimize encoding in atypical constrained environments.
 The choice of serialization is orthogonal to the data model.
 See also the section on special serializations in <a href="#SpecialSerializations" class="auto internal xref">Section 5</a>.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
@@ -1639,7 +1639,7 @@ But note that determinstic is never a substitue for general serialization where 
 For example, a use case might require deterministim from a protocol that uses indefinite lengths.
 For another example, a protocol may require only a subset of general serialization features — for instance, fixed-length integer encodings but not indefinite lengths.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">A recommended way to define a special serialization is to describe it as ordinary or deterministic serialization with additional constraints or extensions.
-For example, a protocol might require deterministic streaming of maps and arrays and be defined as follows:<a href="#section-5-2" class="pilcrow">¶</a></p>
+For example, a protocol requiring deterministic streaming of maps and arrays can be defined as follows:<a href="#section-5-2" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-5-3.1">
           <ul class="normal ulEmpty">
