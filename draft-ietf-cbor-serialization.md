@@ -140,19 +140,19 @@ A decoder that supports general serialization is able to decode all of these.
 Ordinary serialization ({{OrdinarySerialization}}) satisfies the vast majority of CBOR use cases; therefore, the need for general serialization is rare and arises only in unusual circumstances.
 The following are representative examples:
 
-* Indefinite lengths enable on-the-fly, streaming encoding of strings, arrays, and maps.
+* Enable on-the-fly, streaming encoding of strings, arrays, and maps with indefinite lengths.
 This is useful when an array, map, or string is many times larger than the available memory on the encoding device.
 
-* Fixed-size integer encoding (e.g., always 64 bits) may be useful when CBOR encoding or decoding is performed directly in hardware.
+* Directly encode or decode integer values from hardware registers with fixed-size integer encoding.
 CBOR is sufficiently simple that encoders and decoders for some protocols can be implemented solely in hardware without any software.
-Fixed-size integers encoding allows values to be copied directly out of hardware registers.
+Fixed-size integer encoding allows values to be copied directly in and out of hardware registers.
 
-* Fixed-size lengths for strings, arrays, or maps can allow the size updated in place without shifting subsequent bytes.
+* Enable in place update of the lengths of strings, arrays and maps by using fixed-size encoding of their lengths.
 For example, if the length of a string is always encoded in 32 bits, increasing the length from 2^16 to 2^16+1, requires only overwriting the length field rather than shifting all 2^16 bytes of content.
 
 * Transmission of non-trivial NaNs in floating-point values (see {{NaN}}).
 
-With the exception of non-trivial NaNs, general serialization can encode the same data types and value ranges as other serializations.
+With only the exception of non-trivial NaNs, general serialization can encode all the same data types and value ranges as other serializations.
 Its purpose is solely to simply or optimize encoding in atypical constrained environments.
 The choice of serialization is orthogonal to the data model.
 See also the section on special serializations in {{SpecialSerializations}}.
@@ -328,7 +328,7 @@ For example, a use case might require deterministim from a protocol that uses in
 For another example, a protocol may require only a subset of general serialization features &mdash; for instance, fixed-length integer encodings but not indefinite lengths.
 
 A recommended way to define a special serialization is to describe it as ordinary or deterministic serialization with additional constraints or extensions.
-For example, a protocol might require deterministic streaming of maps and arrays and be defined as follows:
+For example, a protocol requiring deterministic streaming of maps and arrays can be defined as follows:
 
 >> Deterministic serialization MUST be used, but all maps and arrays MUST be encoded with indefinite lengths, never definite lengths.
 >> Strings are still encoded with definite lengths.
