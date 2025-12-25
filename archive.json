@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-21T01:47:14.294029+00:00",
+  "timestamp": "2025-12-25T01:42:21.923888+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -396,9 +396,17 @@
       "labels": [],
       "body": "There are in my opinion three main reasons for using deterministic encoding (DE):\n- Having  DE as the only _encoding_ mode relives users from having to deal with serialization options.  That is, DE is not only about the needs of applications.  \"Most applications etc.\" may not be valid forever.\n- DE enables applications to hash and sign \"raw\" CBOR, including sending the \"raw\" CBOR data on-the-wire:\nhttps://github.com/cyberphone/D-CBOR/blob/main/README.md#example\nI get the impression that the draft intends to outlaw, alternatively ignore this use case.  Is this correct?\n- DE (unlike the application-level) enables full equivalence:\nhttps://www.ietf.org/archive/id/draft-rundgren-cbor-core-19.html#name-application-vs-encoding-lev\nI use this feature extensively in JUnit tests and for test vector generation.\n\n**Decoder**\nThe sub-section about _decoder_ requirements outlines a specific policy.  The Blockchain Commons' dCBOR implementations as well as my CBOR::Core implementations use another policy (full DE compliance checking).   The CBOR::Core implementations deal with decoder policies in a more useful way than imagined by the serialization draft:\nhttps://www.ietf.org/archive/id/draft-rundgren-cbor-core-19.html#name-backward-compatibility\n\n**COSE**\nThe section about COSE does not explain why the payload does not depend on DE.  Since this topic is causing controversy, it might be useful adding the fact that the payload is wrapped in \"bstr\".\n\n**dCBOR**\nThe only publicly stated rationale for dCBOR (https://www.ietf.org/archive/id/draft-mcnally-deterministic-cbor-15.html), is to relieve developers from having to separate certain instances of integers and floating-point numbers.  Saving bytes is not a part of the plot.\n\n---------------------------------------------------------------------------------\n\nI am (for obvious reasons) not going to bring up these topics on the CBOR mailing list yet another time:\nhttps://mailarchive.ietf.org/arch/msg/cbor/w-Je-JwM1iI2VSLEcs9uCUt43_g/\n\nEven the use of URLs as object identifiers (https://datatracker.ietf.org/doc/draft-rundgren-cotx/) has been dismissed although it is a de-facto standard in the JSON world including in the giant project known as \"Verified Credentials\".\n\nCBOR is about to change: https://www.linkedin.com/posts/michael-kisilenko-ceo_nasa-with-4kb-to-the-moon-my-64gb-one-activity-7406052352618737665-ZVVi/\n\nAnders",
       "createdAt": "2025-12-14T05:01:00Z",
-      "updatedAt": "2025-12-15T12:14:11Z",
+      "updatedAt": "2025-12-23T18:42:07Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Sorry, but you have to bring these up on the list and gain consensus there to have any change in the document. GitHub issues are for specific changes to the document, not another place to have general discussions.",
+          "createdAt": "2025-12-23T18:42:07Z",
+          "updatedAt": "2025-12-23T18:42:07Z"
+        }
+      ]
     },
     {
       "number": 25,
@@ -428,9 +436,17 @@
       "labels": [],
       "body": "As a CBOR implementer, I am supportive of a document that describes how CBOR data items are to be encoded given the various levels like Ordinary, DLO, etc.\n\nHowever, I do not support a document that goes into the design of encoders/decoders because this is (IMO) outside of IETF's \"jurisdiction\".\n\nThe current document also goes into protocol design.  This adds a lot of text making it hard to read.  I also believe that quite a bit of this is rather \"esoteric\".\n\n|That is, if the WG wants to create a \"CBOR Design Guide\" they should of course do that but mixing that with (fairly) straightforward encoding rules, is not _my_ cup of tea.|\n|---|\n\nYou may remove me as contributor.\n\n--------------------------------\n\nRegarding dCBOR, I believe the two **algorithms** (transformations) _could_ have a value as _application-level_ (ALDR) standards, while the specific application of these as described in https://www.ietf.org/archive/id/draft-mcnally-deterministic-cbor-15.html seems less suitable as a standard.  The rationale mentioned in the dCBOR draft has nothing in common with related information in the 01 serialization draft.",
       "createdAt": "2025-12-20T08:53:46Z",
-      "updatedAt": "2025-12-20T08:59:04Z",
+      "updatedAt": "2025-12-23T18:39:07Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think you have contributed to the document and thus should be listed. I don't think listing you as a contribute implies agreement or endorsement.\n\nDo you want to be listed? Please answer yes or no.\n\nAs to the rest of your comments in the text of this issue, please take them to the mailing list for consensus and try to keep issues filed to one topic.",
+          "createdAt": "2025-12-23T18:39:07Z",
+          "updatedAt": "2025-12-23T18:39:07Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -868,7 +884,7 @@
       "labels": [],
       "body": "small rewordings, typos, and NITS\r\n\r\nNote: references are not allowed in the Abstract or Section headings.",
       "createdAt": "2025-12-13T17:40:41Z",
-      "updatedAt": "2025-12-13T17:48:40Z",
+      "updatedAt": "2025-12-23T18:15:47Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "8408fe8a6fd1b8023c3d03938561a60fbd4df921",
@@ -880,7 +896,112 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7XGgol",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Hi Rohan,\r\n\r\nThank you very much for the detailed review. I really appreciate the help getting the wording right.\r\n\r\nNote that some of this text is rearranged in PR #27 -- there will be merge conflicts between this PR and that one. That's OK. We'll fix them when we get to them.",
+          "createdAt": "2025-12-23T17:26:44Z",
+          "updatedAt": "2025-12-23T18:15:47Z",
+          "comments": [
+            {
+              "originalPosition": 51,
+              "body": "Section 9 of RFC 9052 references section 4.2.1 of RFC 8949 which is about deterministic serialization. In principle COSE, absolutely requires determinism for the three structures.\r\n\r\nTypically, there are no maps in these structures. When there are no maps ordinary == deterministic. However there can be maps in the values of parameters. For example the 'crit' header parameter is a map.\r\n\r\nI don't think COSE should be mentioned in the context of ordinary serialization at all.\r\n\r\n",
+              "createdAt": "2025-12-23T17:26:44Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 22,
+              "body": "Accidental change?",
+              "createdAt": "2025-12-23T17:32:18Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 66,
+              "body": "Should be \"byte string\". RFC 8949 doesn't mention \"bstr\"",
+              "createdAt": "2025-12-23T17:33:47Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 75,
+              "body": "I prefer not to go down the path of qualifying use of determinism with \"if it contains maps\".\r\n\r\nNote that this text is moved in PR #27 ",
+              "createdAt": "2025-12-23T17:36:58Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 132,
+              "body": "I don't want to add this. I think checking decoders are not that necessary and I want the normative sections to be as simple as possible.",
+              "createdAt": "2025-12-23T17:41:20Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 141,
+              "body": "This is not true. Bstr encoding is not needed for signing to work.\r\n\r\nBstr encoding is used in COSE because the payload is arbitrary data and because CBOR decoders can't access undecoded chunks of CBOR, not because of determinism.",
+              "createdAt": "2025-12-23T17:43:41Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 154,
+              "body": "You mean for comparing logs, right? You can log any kind of CBOR, so it's not just logging.",
+              "createdAt": "2025-12-23T17:45:26Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 168,
+              "body": "I know little about UML. Seems like it might be the right thing to mention here, but don't want to lead anyone astray. Are you pretty sure about this?",
+              "createdAt": "2025-12-23T17:52:04Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 212,
+              "body": "Spurious change?",
+              "createdAt": "2025-12-23T17:53:30Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 224,
+              "body": "The statement about equivalence in the data model is critical and can't be removed.",
+              "createdAt": "2025-12-23T17:55:10Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 242,
+              "body": "Spurious change?",
+              "createdAt": "2025-12-23T17:55:55Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 270,
+              "body": "I would like to be \"can be avoided\" in the text somehow. ",
+              "createdAt": "2025-12-23T18:01:27Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 261,
+              "body": "How about this:\r\nBecause preferred serialization of non-trivial NaNs is difficult and error-prone to implement, many CBOR libraries either do not support it or implement it incorrectly.",
+              "createdAt": "2025-12-23T18:10:20Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 247,
+              "body": "How about this:\r\n\r\nNon-trivial NaNs are not permitted in either ordinary or deterministic serializations.",
+              "createdAt": "2025-12-23T18:12:45Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            },
+            {
+              "originalPosition": 253,
+              "body": "How about this:\r\nThe treatment of non-trivial NaNs is the sole difference between deterministic serialization and {{Section 4.2.1 of -cbor}}.",
+              "createdAt": "2025-12-23T18:14:06Z",
+              "updatedAt": "2025-12-23T18:15:47Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 26,
@@ -920,13 +1041,13 @@
       "labels": [],
       "body": "- Add new subsection when to use general serialization\r\n- Add new section on special serialization\r\n- Remove text from when-to-use-ordinary serialization, because it is now in when-to-use-general sterilization.\r\nThis is to address #12",
       "createdAt": "2025-12-19T21:07:21Z",
-      "updatedAt": "2025-12-19T21:07:21Z",
+      "updatedAt": "2025-12-23T18:32:27Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "3be6a47b5411a5cb79b1c0870fced8e5adcca71a",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "when-to-use-general",
-      "headRefOid": "df81279a12852e1b901366de3522bf1200adc44d",
+      "headRefOid": "ab83aff7fd07818d64b594dd38afd685854cbb5d",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
