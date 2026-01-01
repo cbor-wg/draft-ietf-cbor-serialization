@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-25T01:42:21.923888+00:00",
+  "timestamp": "2026-01-01T01:53:00.001531+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -436,7 +436,7 @@
       "labels": [],
       "body": "As a CBOR implementer, I am supportive of a document that describes how CBOR data items are to be encoded given the various levels like Ordinary, DLO, etc.\n\nHowever, I do not support a document that goes into the design of encoders/decoders because this is (IMO) outside of IETF's \"jurisdiction\".\n\nThe current document also goes into protocol design.  This adds a lot of text making it hard to read.  I also believe that quite a bit of this is rather \"esoteric\".\n\n|That is, if the WG wants to create a \"CBOR Design Guide\" they should of course do that but mixing that with (fairly) straightforward encoding rules, is not _my_ cup of tea.|\n|---|\n\nYou may remove me as contributor.\n\n--------------------------------\n\nRegarding dCBOR, I believe the two **algorithms** (transformations) _could_ have a value as _application-level_ (ALDR) standards, while the specific application of these as described in https://www.ietf.org/archive/id/draft-mcnally-deterministic-cbor-15.html seems less suitable as a standard.  The rationale mentioned in the dCBOR draft has nothing in common with related information in the 01 serialization draft.",
       "createdAt": "2025-12-20T08:53:46Z",
-      "updatedAt": "2025-12-23T18:39:07Z",
+      "updatedAt": "2025-12-31T15:16:27Z",
       "closedAt": null,
       "comments": [
         {
@@ -445,6 +445,13 @@
           "body": "I think you have contributed to the document and thus should be listed. I don't think listing you as a contribute implies agreement or endorsement.\n\nDo you want to be listed? Please answer yes or no.\n\nAs to the rest of your comments in the text of this issue, please take them to the mailing list for consensus and try to keep issues filed to one topic.",
           "createdAt": "2025-12-23T18:39:07Z",
           "updatedAt": "2025-12-23T18:39:07Z"
+        },
+        {
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@cyberphone as Laurence said, you don't need to agree with everything in the document to have contributed in a meaningful way.\n\n@laurencelundblade it is not necessary to include everyone who has contributed in the Contributors section if they don't wish to be included. It should be up to Anders.",
+          "createdAt": "2025-12-31T15:16:26Z",
+          "updatedAt": "2025-12-31T15:16:26Z"
         }
       ]
     }
@@ -1048,6 +1055,32 @@
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "when-to-use-general",
       "headRefOid": "ab83aff7fd07818d64b594dd38afd685854cbb5d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 29,
+      "id": "PR_kwDOQYX63c67AUqZ",
+      "title": "Add recommendations section",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/29",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-12-30T17:44:45Z",
+      "updatedAt": "2025-12-30T17:44:45Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "3be6a47b5411a5cb79b1c0870fced8e5adcca71a",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "recommendations",
+      "headRefOid": "e73a5864b0d1f4af765b447d4e5529c01dfdf877",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
