@@ -591,9 +591,9 @@ This section is distinct from the Core Deterministic Encoding Requirements and r
 
 Orindary and deterministic serialization defined in this document diverge from the preferred serialization requirement in {{-cbor}} for shortest-length encoding of NaNs in ordinary and deterministic serializations.
 
-In ordinary and deterministic serializations, non-trivial NaNs are not allowed.
+Non-trivial NaNs are not permitted in either ordinary or deterministic serializations.
 
-The treatment of non-trivial NaNs is the only aspect of deterministic serialization that is different from {{Section 4.2.1 of -cbor}}.
+The treatment of non-trivial NaNs is the sole difference between deterministic serialization and {{Section 4.2.1 of -cbor}}.
 
 The divergence is justified by the following:
 
