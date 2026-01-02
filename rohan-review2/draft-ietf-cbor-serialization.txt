@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                        13 December 2025
-Expires: 16 June 2026
+Intended status: Standards Track                          2 January 2026
+Expires: 6 July 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,11 +53,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 June 2026.
+   This Internet-Draft will expire on 6 July 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -928,11 +928,11 @@ D.5.  Divergence from RFC 8949
    shortest-length encoding of NaNs in ordinary and deterministic
    serializations.
 
-   In ordinary and deterministic serializations, non-trivial NaNs are
-   not allowed.
+   Non-trivial NaNs are not permitted in either ordinary or
+   deterministic serializations.
 
-   The treatment of non-trivial NaNs is the only aspect of deterministic
-   serialization that is different from Section 4.2.1 of [STD94].
+   The treatment of non-trivial NaNs is the sole difference between
+   deterministic serialization and Section 4.2.1 of [STD94].
 
    The divergence is justified by the following:
 
