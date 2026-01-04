@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-01T01:53:00.001531+00:00",
+  "timestamp": "2026-01-04T01:53:29.138024+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -891,13 +891,13 @@
       "labels": [],
       "body": "small rewordings, typos, and NITS\r\n\r\nNote: references are not allowed in the Abstract or Section headings.",
       "createdAt": "2025-12-13T17:40:41Z",
-      "updatedAt": "2025-12-23T18:15:47Z",
+      "updatedAt": "2026-01-02T13:13:01Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "8408fe8a6fd1b8023c3d03938561a60fbd4df921",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "rohan-review2",
-      "headRefOid": "5c0b07024545173021fbf84c411dfd286e5303cc",
+      "headRefOid": "cf20d9ce3c3a2d813aa47861f11c512c885a907a",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1005,6 +1005,306 @@
               "body": "How about this:\r\nThe treatment of non-trivial NaNs is the sole difference between deterministic serialization and {{Section 4.2.1 of -cbor}}.",
               "createdAt": "2025-12-23T18:14:06Z",
               "updatedAt": "2025-12-23T18:15:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X873q",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T12:49:56Z",
+          "updatedAt": "2026-01-02T12:49:56Z",
+          "comments": [
+            {
+              "originalPosition": 51,
+              "body": "\"The [serialization] restriction applies to the encoding of the Sig_structure, the Enc_structure, and the MAC_structure.\"\r\n\r\nThere are no maps in these three COSE structures. Each one is an array. The definition references`empty_or_serialized_map`, which is poorly named, as it is a bstr encoded map, not a map. By my read, COSE allows the payload map inside the payload bstr, the protected header parameters (including `crit`) inside the protected bstr, and the unprotected map (which is not included in any COSE signature, encryption, or MAC operation) to use general encoding.\r\n\r\nThe three COSE Internal types however are ordinary serialized (since they contain no maps). The array and bstrs use the shortest length representation and only definite lengths.",
+              "createdAt": "2026-01-02T12:49:56Z",
+              "updatedAt": "2026-01-02T12:49:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X88MM",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T12:50:55Z",
+          "updatedAt": "2026-01-02T12:50:56Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "No, as mentioned, neither the Abstract nor Section headings are allowed to contain references",
+              "createdAt": "2026-01-02T12:50:56Z",
+              "updatedAt": "2026-01-02T12:50:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X88nA",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T12:52:00Z",
+          "updatedAt": "2026-01-02T12:52:00Z",
+          "comments": [
+            {
+              "originalPosition": 66,
+              "body": "it mentions `bstr` in the CDDL, but you're right that \"byte string\" would be clearer.\r\n\r\n```suggestion\r\n   * An empty byte string SHOULD be accepted and treated as the value zero.\r\n```",
+              "createdAt": "2026-01-02T12:52:00Z",
+              "updatedAt": "2026-01-02T12:52:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X893W",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T12:56:04Z",
+          "updatedAt": "2026-01-02T12:56:05Z",
+          "comments": [
+            {
+              "originalPosition": 75,
+              "body": "I think that is just ignoring reality. The example with COSE clearly shows this. It's also the case for most of MIMI Content. Anything else designed with structs (arrays) instead of maps will also have this consideration. I don't think you can say \"because the order of items in a map is allowed to vary\" and not acknowledge that if there are no maps there is no such variation.",
+              "createdAt": "2026-01-02T12:56:04Z",
+              "updatedAt": "2026-01-02T12:56:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X8-Tz",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T12:57:29Z",
+          "updatedAt": "2026-01-02T12:57:29Z",
+          "comments": [
+            {
+              "originalPosition": 132,
+              "body": "It is a Note, and it only contains a MAY. I think it is harmless and it will prevent people from saying \"but the spec didn't say I was allowed to do this\", which happens a LOT.",
+              "createdAt": "2026-01-02T12:57:29Z",
+              "updatedAt": "2026-01-02T12:57:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X8_nB",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:01:38Z",
+          "updatedAt": "2026-01-02T13:01:38Z",
+          "comments": [
+            {
+              "originalPosition": 141,
+              "body": "I think that's a distinction without a difference. It would not work if it weren't a byte string. How about the following?\r\n\r\n```suggestion\r\nFor example, the payload of a COSE_Sign message (See {{-COSE}}) does not need to be encoded deterministically because that payload is a byte string transmitted along with the message.\r\n```",
+              "createdAt": "2026-01-02T13:01:38Z",
+              "updatedAt": "2026-01-02T13:01:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X8_6K",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:02:36Z",
+          "updatedAt": "2026-01-02T13:02:37Z",
+          "comments": [
+            {
+              "originalPosition": 154,
+              "body": "\"and such\" is vague and not helpful. I was trying to provide another example, not constrain the list of things the encoding can be used for.",
+              "createdAt": "2026-01-02T13:02:36Z",
+              "updatedAt": "2026-01-02T13:02:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X8_9x",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:02:48Z",
+          "updatedAt": "2026-01-02T13:02:48Z",
+          "comments": [
+            {
+              "originalPosition": 168,
+              "body": "I'm pretty sure.",
+              "createdAt": "2026-01-02T13:02:48Z",
+              "updatedAt": "2026-01-02T13:02:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X9AHC",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:03:14Z",
+          "updatedAt": "2026-01-02T13:03:14Z",
+          "comments": [
+            {
+              "originalPosition": 212,
+              "body": "No, as mentioned above, references are not allowed in Section headings (nor in the Abstract).",
+              "createdAt": "2026-01-02T13:03:14Z",
+              "updatedAt": "2026-01-02T13:03:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X9A5p",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:05:44Z",
+          "updatedAt": "2026-01-02T13:05:44Z",
+          "comments": [
+            {
+              "originalPosition": 224,
+              "body": "You have a vague, general statement about equivalence, then a specific actionable statement saying that half-, single-, and double- width NaNs are equivalent. Why is the vague statement critical?",
+              "createdAt": "2026-01-02T13:05:44Z",
+              "updatedAt": "2026-01-02T13:05:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X9A_x",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:06:02Z",
+          "updatedAt": "2026-01-02T13:06:02Z",
+          "comments": [
+            {
+              "originalPosition": 242,
+              "body": "No, as mentioned above, references are not allowed in Section headings (nor in the Abstract).",
+              "createdAt": "2026-01-02T13:06:02Z",
+              "updatedAt": "2026-01-02T13:06:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X9BMr",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:06:41Z",
+          "updatedAt": "2026-01-02T13:06:41Z",
+          "comments": [
+            {
+              "originalPosition": 270,
+              "body": "why shouldn't new protocol designs avoid non-trivial NaNs?",
+              "createdAt": "2026-01-02T13:06:41Z",
+              "updatedAt": "2026-01-02T13:06:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X9CB2",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:09:18Z",
+          "updatedAt": "2026-01-02T13:09:18Z",
+          "comments": [
+            {
+              "originalPosition": 261,
+              "body": "I wanted to keep the part about encoding and decoding. Is this better?\r\n\r\n```suggestion\r\n- Because preferred serialization of non-trivial NaNs is difficult and error-prone to implement, many CBOR implementations don't encode and/or decode non-trivial NaN, or don't encode or decode them correctly.\r\n```",
+              "createdAt": "2026-01-02T13:09:18Z",
+              "updatedAt": "2026-01-02T13:09:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X9COL",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:09:53Z",
+          "updatedAt": "2026-01-02T13:09:53Z",
+          "comments": [
+            {
+              "originalPosition": 247,
+              "body": "```suggestion\r\nNon-trivial NaNs are not permitted in either ordinary or deterministic serializations.\r\n```",
+              "createdAt": "2026-01-02T13:09:53Z",
+              "updatedAt": "2026-01-02T13:09:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7X9Ck1",
+          "commit": {
+            "abbreviatedOid": "5c0b070"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-02T13:11:01Z",
+          "updatedAt": "2026-01-02T13:11:01Z",
+          "comments": [
+            {
+              "originalPosition": 253,
+              "body": "```suggestion\r\nThe treatment of non-trivial NaNs is the sole difference between deterministic serialization and {{Section 4.2.1 of -cbor}}.\r\n```",
+              "createdAt": "2026-01-02T13:11:01Z",
+              "updatedAt": "2026-01-02T13:11:01Z"
             }
           ]
         }
