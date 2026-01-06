@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                        19 December 2025
-Expires: 22 June 2026
+Intended status: Standards Track                          6 January 2026
+Expires: 10 July 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,11 +53,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 June 2026.
+   This Internet-Draft will expire on 10 July 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -534,6 +534,13 @@ Table of Contents
               fido-client-to-authenticator-protocol-v2.0-ps-
               20190130.html>.
 
+   [I-D.mcnally-deterministic-cbor]
+              McNally, W., Allen, C., Bormann, C., and L. Lundblade,
+              "dCBOR: Deterministic CBOR", Work in Progress, Internet-
+              Draft, draft-mcnally-deterministic-cbor-16, 20 December
+              2025, <https://datatracker.ietf.org/doc/html/draft-
+              mcnally-deterministic-cbor-16>.
+
    [NaNBoxing]
               Nystrom, R., "Crafting Interpreters", July 2021,
               <https://craftinginterpreters.com/optimization.html#nan-
@@ -665,7 +672,7 @@ Appendix B.  General Protocol Considerations for Determinism
    a fluid level of 2 is always encoding as an integer, never as a
    floating-point number. 2.000001 is always be encoded as a floating-
    point number so as to not lose precision.  See the numeric reduction
-   defined by dCBOR.
+   defined by [I-D.mcnally-deterministic-cbor].
 
    Although this is not strictly a CBOR issue, deterministic CBOR
    protocol designers should be mindful of variability in Unicode text,
