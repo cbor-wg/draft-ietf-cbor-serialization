@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-04T01:53:29.138024+00:00",
+  "timestamp": "2026-01-06T01:44:39.432143+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -891,7 +891,7 @@
       "labels": [],
       "body": "small rewordings, typos, and NITS\r\n\r\nNote: references are not allowed in the Abstract or Section headings.",
       "createdAt": "2025-12-13T17:40:41Z",
-      "updatedAt": "2026-01-02T13:13:01Z",
+      "updatedAt": "2026-01-05T08:59:46Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "8408fe8a6fd1b8023c3d03938561a60fbd4df921",
@@ -1305,6 +1305,26 @@
               "body": "```suggestion\r\nThe treatment of non-trivial NaNs is the sole difference between deterministic serialization and {{Section 4.2.1 of -cbor}}.\r\n```",
               "createdAt": "2026-01-02T13:11:01Z",
               "updatedAt": "2026-01-02T13:11:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7YICqt",
+          "commit": {
+            "abbreviatedOid": "cf20d9c"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-05T08:59:46Z",
+          "updatedAt": "2026-01-05T08:59:46Z",
+          "comments": [
+            {
+              "originalPosition": 224,
+              "body": "Note also proposed line 557 \"CBOR in the basic generic data model\u2026\"",
+              "createdAt": "2026-01-05T08:59:46Z",
+              "updatedAt": "2026-01-05T08:59:46Z"
             }
           ]
         }
