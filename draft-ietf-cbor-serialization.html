@@ -1589,11 +1589,12 @@ Such designs are often chosen to reduce data size, preserve privacy, or meet oth
 <p id="section-4.3-4">The only difference between ordinary and deterministic serialization is map key sorting.
 Sorting can be expensive in very constrained environments.
 This is the only reason these two are not combined into one.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.3-5">Deterministically encoded data is always decodable, even by receivers that do not specifically support deterministic encoding.
-Deterministic encoding can be helpful for debugging and such.
+<p id="section-4.3-5">Deterministic serialization, as defined in this document, can be decoded by any ordinary or general-purpose serialization decoder described here.
+It is also compatible with the preferred serialization decoding described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>.
+Deterministic serialization can be helpful for debugging and such.
 In environments where map sorting is not costly, it is acceptable and beneficial to always use it.
 In such an environment, a CBOR encoder may produce deterministic encoding by default and may even omit support for ordinary encoding entirely.
-But note that determinstic is never a substitue for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, need non-trivial NaNs or other.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
+But note that deterministic is never a substitute for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, need non-trivial NaNs, or other.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
