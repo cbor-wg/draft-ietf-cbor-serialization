@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-06T01:44:39.432143+00:00",
+  "timestamp": "2026-01-08T01:44:38.459568+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -454,6 +454,22 @@
           "updatedAt": "2025-12-31T15:16:26Z"
         }
       ]
+    },
+    {
+      "number": 30,
+      "id": "I_kwDOQYX63c7hp4XN",
+      "title": "Consensus on tag 2 and 3 equivalence",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/30",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Opinions about whether tag 2 and 3 big numbers in the range of major types 0 and 1, must be encoded as major types 0 and 1\n",
+      "createdAt": "2026-01-06T17:05:44Z",
+      "updatedAt": "2026-01-06T17:05:44Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -844,24 +860,26 @@
       "id": "PR_kwDOQYX63c63iulj",
       "title": "Clarify deterministic serialization",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/16",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-12-07T17:37:36Z",
-      "updatedAt": "2025-12-07T18:25:03Z",
+      "updatedAt": "2026-01-06T16:43:21Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "28378d82c4a1a199dcd7801b54676ba1b94e7594",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "det-dec",
       "headRefOid": "549c660fd3a0d2472467b293a22264caefec394c",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-06T16:43:15Z",
+      "mergedAt": "2026-01-06T16:43:15Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "320184721922cea5f269361ed06b17307394632f"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1335,24 +1353,26 @@
       "id": "PR_kwDOQYX63c65wGfJ",
       "title": "Fix reference to dCBOR",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/26",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-12-19T05:29:41Z",
-      "updatedAt": "2025-12-19T05:29:41Z",
+      "updatedAt": "2026-01-06T16:41:52Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "3be6a47b5411a5cb79b1c0870fced8e5adcca71a",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "dcbor-ref",
       "headRefOid": "2209bda68ad37797151720070f250926cf8918e3",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-06T16:41:47Z",
+      "mergedAt": "2026-01-06T16:41:47Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "f38350630a684363b783fed8a57fde11eb75e0ce"
+      },
       "comments": [],
       "reviews": []
     },
