@@ -124,43 +124,52 @@ Ordinary serialization is defined here is largely the same preferred serializati
 ## CBOR Libraries
 
 A CBOR library SHOULD encode and decode ordinary serialization ({{OrdinarySerialization}}.
-For practical purposes, ordinary serialization is the same as preferred serliazation.
-The wide use of ordinary and preferred serialization is the main source of interoperability in the CBOR ecosystem.
+For practical purposes, ordinary serialization is the same as preferred serialization.
+The widespread use of ordinary and preferred serialization is the main source of interoperability in the CBOR ecosystem.
 
 CBOR libraries MAY support deterministic encoding.
 The only difference from ordinary serialization is that maps must be sorted when encoding.
-While this is expensive in some programming environments, it is not in many.
-It is OK for a library to support only deterministic serialization and omit ordinary serialization entirely.
-Deterministic serialization support in libraries has these advantages;
+While this is expensive in some programming environments, it is not in many others.
+It is acceptable for a library to support only deterministic serialization and omit ordinary serialization entirely.
+Deterministic serialization support in libraries has these advantages:
 
 * Not many, but some protocols require it.
-* It can make debugging easier since the maps always appear the same
+* It can make debugging easier since the maps always appear in the same order.
 
-CBOR libraries MAY support some or all of some of general serialization.
-The purpose of this is to support deployment of protocols that need special options in constrained environments.
+CBOR libraries MAY support some or all of general serialization.
+The purpose of this is to support the deployment of protocols that require special options, particularly in constrained environments.
+
 
 ## Protocol Designs
 
 In rare cases, protocols require deterministic serialization in order to function.
-These are some, but not all, uses of hashing, signing or authentication.
+These are some, but not all, uses of hashing, signing, or authentication.
 See {{WhenDeterministic}}.
-For these cases, the protocol definition MUST specificy deterministic serialization for the parts of the protocol that need determinism.
+For these cases, the protocol definition MUST specify deterministic serialization for the parts of the protocol that require determinism.
 
-The hard requirement for determinism aside, protocols SHOULD NOT specify any serialization.
-This makes the protocol flexible such that the implementation can choose the serialization suited for the environment.
-This is how most CBOR protocols have been specified so far.
+When determinism is not a requirement, the protocol definition SHOULD recommend ordinary serialization.
+The following text is an example of what SHOULD be included in a protocol definition:
+
+ >> Implementations of this protocol SHOULD use ordinary serialization for encoding and be able to decode ordinary serialization.
+
+CBOR has multiple serializations so as to accommodate constrained environments.
+Protocol designs can pass on the allowance of multiple serializations by not requiring a particular serialization.
+This has been the CBOR design practice so far.
+
+If a protocol design requires a particular serialization, some flexibility for deployment in constrained environments will be lost.
+If a protocol doesn't recommend ordinary serialization as in the example above, interoperability is less likely.
 
 ## Protocol Implementations
 
 Protocol implementations SHOULD support ordinary serialization for protocols (or parts of protocols) that don't require specific serialization.
-Not supporting it has some risk of interoperability failures.
-Note that ordinary serialization is interoperable with preferred serialization which has been used as a default since the publication of {{-cbor}}.
+Failure to support ordinary serialization increases the risk of interoperability failures.
+Note that ordinary serialization is interoperable with preferred serialization, which has been used as a default since the publication of {{-cbor}}.
 
 Protocol implementations MAY support deterministic serialization.
-It is entirely interoperable with ordinary serialization.
+It is fully interoperable with ordinary serialization.
 
-Protocol implementors and deployers MAY use other serializations allowed by the protocol definition.
-They will typically choose other serializations in constrained environments.
+Protocol implementers and deployers MAY use other serializations allowed by the protocol definition.
+Such serializations are typically chosen for deployment in constrained environments.
 
 
 # General Serialization
