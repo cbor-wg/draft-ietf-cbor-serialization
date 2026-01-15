@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-08T01:44:38.459568+00:00",
+  "timestamp": "2026-01-15T01:44:00.101861+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -1414,13 +1414,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2025-12-30T17:44:45Z",
-      "updatedAt": "2025-12-30T17:44:45Z",
+      "updatedAt": "2026-01-13T18:34:05Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "3be6a47b5411a5cb79b1c0870fced8e5adcca71a",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "recommendations",
-      "headRefOid": "e73a5864b0d1f4af765b447d4e5529c01dfdf877",
+      "headRefOid": "7171e6a6aa4910987820e3146a43bf0811b67b37",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
