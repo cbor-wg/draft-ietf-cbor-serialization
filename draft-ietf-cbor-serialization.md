@@ -203,8 +203,8 @@ This section defines a serialization named "ordinary serialization."
 1. If big numbers (tags 2 and 3) are accepted, the following apply:
 
    * Big numbers described in {{Section 3.4.3 of -cbor}} MUST be accepted.
-   * Leading zeros SHOULD be ignored.
-   * An empty string SHOULD be accepted and treated as the value zero.
+   * Leading zeros MUST be ignored.
+   * An empty string MUST be accepted and treated as the value zero.
 
 
 ## When to use ordinary serialization
@@ -241,6 +241,7 @@ The differences are:
 
 * Definite lengths are a requirement, not a preference.
 * The only NaN allowed is the half-precision quiet NaN.
+* For big numbers, leading zeros must be ignored and the empty string must be accepted as zero.
 
 These differences are not of significance in real-world implementations, so ordinary serialization is already largely supported.
 
