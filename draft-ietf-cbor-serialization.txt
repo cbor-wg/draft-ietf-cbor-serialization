@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                          6 January 2026
-Expires: 10 July 2026
+Intended status: Standards Track                         18 January 2026
+Expires: 22 July 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 July 2026.
+   This Internet-Draft will expire on 22 July 2026.
 
 Copyright Notice
 
@@ -106,13 +106,15 @@ Table of Contents
      D.4.  Clarification of STD94
      D.5.  Divergence from STD94
      D.6.  Recommendations for Use of Non-Trival NaNs
-   Appendix E.  Serialization Checking
-     E.1.  Serialization Checking Use Cases
-   Appendix F.  CBOR Byte String Wrapping
-     F.1.  Purpose
-     F.2.  Wrapping Recommendations
-     F.3.  CBOR Library Implementation Suggestion
-   Appendix G.  Examples and Test Vectors
+   Appendix E.  Big Numbers and the CBOR Data Model
+   Appendix F.  Big Number Implementation Strategies
+   Appendix G.  Serialization Checking
+     G.1.  Serialization Checking Use Cases
+   Appendix H.  CBOR Byte String Wrapping
+     H.1.  Purpose
+     H.2.  Wrapping Recommendations
+     H.3.  CBOR Library Implementation Suggestion
+   Appendix I.  Examples and Test Vectors
    Contributors
    Author's Address
 
@@ -276,6 +278,8 @@ Table of Contents
 
        *  An empty string SHOULD be accepted and treated as the value
           zero.
+
+   See also Appendix E and Appendix F.
 
 3.3.  When to use ordinary serialization
 
@@ -472,7 +476,7 @@ Table of Contents
    arrays and maps, but does not extend into byte strings or other data
    items that happen to contain encoded CBOR.  Every instance of
    embedded CBOR that requires constrained serialization must specify
-   that constraint explicitly.  See also Appendix F.
+   that constraint explicitly.  See also Appendix H.
 
 6.  Security Considerations
 
@@ -974,7 +978,79 @@ D.6.  Recommendations for Use of Non-Trival NaNs
    NaNs internally may need to serialize its data to run across machines
    connected by a network.
 
-Appendix E.  Serialization Checking
+Appendix E.  Big Numbers and the CBOR Data Model
+
+   The primary purpose of this document is to definie ordinary and
+   deterministic serialization, so Section 3 describes CBOR’s unified
+   integer space in terms of serialization.  This is an effective and
+   clear way to describe what implementors must do.  Following the
+   requirements in Section 3 will result in a complete and correct
+   implementation.  However, from a conceptual perspective there is more
+   to describe in regards to the data model.  That is the subject of
+   this appendix.  See Appendix A for background on data models.
+
+   In the basic generic CBOR data model, every tag is a completely
+   separate data type (Section 2 of [STD94]).  Tags are also completely
+   separate from the major types such as integers and strings.  By this,
+   a value like 0 or 1 encoded as major type 0 is clearly distinct from
+   the same value encoded as tag 2.  However, text in Section 3.4.3 of
+   [STD94] overrides this and makes these values equivalent.  This text
+   affects the CBOR data model.  No other serliazation requirement in
+   [STD94] or this document affects the data model.  Only this one.
+
+   Further, it is generally assumed that the text in Section 3.4.3 of
+   [STD94] unifies the integer range of major types 0 and 1 with the
+   integer range of tags 2 and 3.  That is, there is no data model in
+   all of CBOR where these integer spaces are distinct.
+
+   It is not in the scope of this document to update the text of
+   Section 3.4.3 of [STD94] This text is only describing a common
+   assumption of the meaing the text in Section 3.4.3 of [STD94].
+
+Appendix F.  Big Number Implementation Strategies
+
+   Appendix Appendix E describes how CBOR has a single integer number
+   space, that big numbers are not really distinct from major types 0
+   and 1.  This appendix discusses how implementers might handle this.
+
+   Some programming environments have good support for big numbers
+   (e.g., Python, Ruby and Go) and some do not (e.g., C, C++ and Rust).
+   However, even in environments that support big numbers, support for
+   native integer sizes (e.g., 64-bit integers) is much more efficient.
+   It is thus reasonable for a CBOR library to provide a separate API
+   for handling native integers size from the one handling big numbers.
+   When doing this, the big number API must encode the values in the
+   range of major types 0 and 1 as major type 0 and 1, not tag 2 and 3.
+   Similar the decoding facilities handling big numbers must accept
+   major types 0 and 1 even though it returns there values as big
+   numbers.
+
+   Alternately, some CBOR libraries may choose to return tags 2 and 3 in
+   raw byte string form because this is very simple compared.  A full
+   unified big number API incurs a few complications such as having to
+   do big number increment and decrement by one for CBOR’s offset-by-one
+   of negative values.  They also have to do the unification with major
+   types 0 and 1.  Note also that major type 1 can express negative
+   numbers beyond the range of native integers common and also have to
+   be handled.  When a CBOR librariy choses to do this, it should make
+   clear that the application layer must handle this additional
+   processing.  In some cases this will not be a problem if the
+   application is integrating a big number library because it chooses to
+   use big numbers.
+
+   Alternately, some CBOR libraries may have a generic facility for
+   applications to add processing for any tag.  That is also an
+   acceptable way to hande big numbers again with the note that the
+   handler of tags 2 and 3 must perform the unification.
+
+   Some programming environments may have excellent big number support.
+   It is also a very reasonable design decision to not provide a
+   separate APIs for big numbers and native integers.
+
+   Finally note, big numbers are not a widely used feature of CBOR.  It
+   is acceptable for a CBOR library to entirely omit support for them.
+
+Appendix G.  Serialization Checking
 
    Serialization checking rejects input which, while well-formed CBOR,
    does not conform to a particular serialization rule set it is
@@ -989,7 +1065,7 @@ Appendix E.  Serialization Checking
    checking is well-formed; it is rejected because it violates
    additional serialization constraints.
 
-E.1.  Serialization Checking Use Cases
+G.1.  Serialization Checking Use Cases
 
    Some applications that rely on deterministic serialization may choose
    serialization checking in order to ensure that the data they consume
@@ -1015,14 +1091,14 @@ E.1.  Serialization Checking Use Cases
    appropriate remedy is to fix their input validation, not to add the
    serialization checking described here.
 
-Appendix F.  CBOR Byte String Wrapping
+Appendix H.  CBOR Byte String Wrapping
 
    This appendix provides non-normative guidance on byte-string wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
    control operators described in Section 5.
 
-F.1.  Purpose
+H.1.  Purpose
 
    Error isolation:  Wrapping CBOR in a byte string prevents encoding
       errors in the wrapped data from causing the enclosing CBOR to fail
@@ -1045,7 +1121,7 @@ F.1.  Purpose
       data types like arrays and maps as map keys, they can be wrapped
       in a byte string.
 
-F.2.  Wrapping Recommendations
+H.2.  Wrapping Recommendations
 
    The serialization requirements for the wrapping CBOR may differ from
    those for the wrapped CBOR.  CBOR itself imposes no universal rule
@@ -1068,7 +1144,7 @@ F.2.  Wrapping Recommendations
    other data representation formats such as JSON.  See the discussion
    in Section 4.3.
 
-F.3.  CBOR Library Implementation Suggestion
+H.3.  CBOR Library Implementation Suggestion
 
    A straightforward implementation strategy is to instantiate a second
    CBOR encoder or decoder for the wrapped message.  However, this may
@@ -1083,7 +1159,7 @@ F.3.  CBOR Library Implementation Suggestion
    encoded CBOR can be treated as a container that always contains
    exactly one item.
 
-Appendix G.  Examples and Test Vectors
+Appendix I.  Examples and Test Vectors
 
    TODO -- complete work and remove this comment before publication
 
