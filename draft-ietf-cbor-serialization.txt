@@ -73,6 +73,8 @@ Table of Contents
 
    1.  Introduction
    2.  General Serialization
+     2.1.  When To Use General Serialization
+     2.2.  General Serialization is the Default
    3.  Ordinary Serialization
      3.1.  Encoder Requirements
      3.2.  Decoder Requirements
@@ -82,12 +84,13 @@ Table of Contents
      4.1.  Encoder Requirements
      4.2.  Decoder Requirements
      4.3.  When to use Deterministic Serialization
-   5.  CDDL Control Operators
-   6.  Security Considerations
-   7.  IANA Considerations
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   5.  Special Serializations
+   6.  CDDL Control Operators
+   7.  Security Considerations
+   8.  IANA Considerations
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Appendix A.  Information Model, Data Model and Serialization
    Appendix B.  General Protocol Considerations for Determinism
    Appendix C.  Deterministic Encoding for Popular Tags
@@ -164,6 +167,43 @@ Table of Contents
    A decoder that supports general serialization is able to decode all
    of these.
 
+2.1.  When To Use General Serialization
+
+   Ordinary serialization (Section 3) satisfies the vast majority of
+   CBOR use cases; therefore, the need for general serialization is rare
+   and arises only in unusual circumstances.  The following are
+   representative examples:
+
+   *  Enable on-the-fly, streaming encoding of strings, arrays, and maps
+      with indefinite lengths.  This is useful when an array, map, or
+      string is many times larger than the available memory on the
+      encoding device.
+
+   *  Directly encode or decode integer values from hardware registers
+      with fixed-size integer encoding.  CBOR is sufficiently simple
+      that encoders and decoders for some protocols can be implemented
+      solely in hardware without any software.  Fixed-size integer
+      encoding allows values to be copied directly in and out of
+      hardware registers.
+
+   *  Enable in place update of the lengths of strings, arrays and maps
+      by using fixed-size encoding of their lengths.  For example, if
+      the length of a string is always encoded in 32 bits, increasing
+      the length from 2^16 to 2^16+1, requires only overwriting the
+      length field rather than shifting all 2^16 bytes of content.
+
+   *  Transmission of non-trivial NaNs in floating-point values (see
+      Appendix D).
+
+   Except for non-trivial NaNs, the other serializations can encode the
+   same data types and value ranges as general serialization.  Its
+   purpose is solely to simplify or optimize encoding in atypical
+   constrained environments.  The choice of serialization is orthogonal
+   to the data model.  See also the section on special serializations in
+   Section 5.
+
+2.2.  General Serialization is the Default
+
    If a CBOR-based protocol specification does not explicitly specify
    serialization, general serialization is implied.  This means that a
    compliant decoder for such a protocol is required to accept all forms
@@ -180,15 +220,6 @@ Table of Contents
    handle, most notably by never encoding indefinite lengths.  It is
    similar for other CBOR-based protocols like [RFC9052].  See also
    Section 3.
-
-   Note also that there is no shortest-length requirement for floating-
-   point encoding in general serialization.  Thus, IEEE 754 NaNs (See
-   Appendix D) may be encoded with a desired size, regardless of their
-   payload — a principle sometimes stated as “touch not the NaNs.”
-
-   Finally, note also that general serialization is inherently non-
-   deterministic because some CBOR data items can be serialized in
-   multiple ways.
 
 3.  Ordinary Serialization
 
@@ -296,26 +327,10 @@ Table of Contents
    serialization the best choice for most CBOR protocols.  To some
    degree it is a de facto standard for common CBOR protocols.
 
-   However, it is not suitable if determinism is needed because the
-   order of items in a map is allowed to vary.  See Section 4.3.
-
-   It may also not be suitable in some cases where special functionality
-   is needed like the following:
-
-   *  Streaming of of strings, arrays and maps in constrained
-      environments where the length is not known
-
-   *  Non-trival NaNs need to be supported
-
-   *  Hardware environments where integers are encoded/decoded directly
-      from/to hardware registers and shortest-length CBOR arguments
-      would be burdensome
-
-   In those cases, a special/custom serialization can be defined.
-
-   But, for the vast majority of use cases, ordinary serialization
-   provides interoperaibility, small encoded size and low implementation
-   costs.
+   See Section 2.1 for uses cases where ordinary serialization may not
+   be suitable.  But, for the vast majority of use cases, ordinary
+   serialization provides interoperaibility, small encoded size and low
+   implementation costs.
 
 3.4.  Relation To Preferred Serialization
 
@@ -442,7 +457,27 @@ Table of Contents
    indefinite lengths, separate big numbers from integers in the data
    model, need non-trivial NaNs, or other.
 
-5.  CDDL Control Operators
+5.  Special Serializations
+
+   Although discouraged, defining special serializations that differ
+   from those specified here is permitted.  For example, a use case
+   might require deterministim from a protocol that uses indefinite
+   lengths.  For another example, a protocol may require only a subset
+   of general serialization features — for instance, fixed-length
+   integer encodings but not indefinite lengths.
+
+   A recommended way to define a special serialization is to describe it
+   as ordinary or deterministic serialization with additional
+   constraints or extensions.  For example, a protocol requiring
+   deterministic streaming of maps and arrays can be defined as follows:
+
+      Deterministic serialization MUST be used, but all maps and
+         arrays MUST be encoded with indefinite lengths, never definite
+         lengths.  Strings are still encoded with definite lengths.
+         Maps are still to be ordered as required by deterministic
+         serialization.
+
+6.  CDDL Control Operators
 
    Four new control operators are defined for use in CDDL [RFC8610].
 
@@ -477,11 +512,11 @@ Table of Contents
    embedded CBOR that requires constrained serialization must specify
    that constraint explicitly.  See also Appendix F.
 
-6.  Security Considerations
+7.  Security Considerations
 
    The security considerations in Section 10 of [STD94] apply.
 
-7.  IANA Considerations
+8.  IANA Considerations
 
 
    // RFC Editor: please replace RFCXXXX with the RFC number of this RFC
@@ -504,9 +539,9 @@ Table of Contents
                               operators to be
                                  registered
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [IANA.cddl]
               IANA, "Concise Data Definition Language (CDDL)",
@@ -532,7 +567,7 @@ Table of Contents
               DOI 10.17487/RFC8949, December 2020,
               <https://www.rfc-editor.org/rfc/rfc8949>.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [CTAP2]    W3C, "Client To Authenticator Protocol v2",
               <https://fidoalliance.org/specs/fido-v2.0-ps-20190130/
@@ -1023,7 +1058,7 @@ Appendix F.  CBOR Byte String Wrapping
    This appendix provides non-normative guidance on byte-string wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
-   control operators described in Section 5.
+   control operators described in Section 6.
 
 F.1.  Purpose
 
