@@ -153,7 +153,7 @@ For example, if the length of a string is always encoded in 32 bits, increasing 
 * Transmission of non-trivial NaNs in floating-point values (see {{NaN}}).
 
 Except for non-trivial NaNs, the other serializations can encode the same data types and value ranges as general serialization.
-Its purpose is solely to simply or optimize encoding in atypical constrained environments.
+Its purpose is solely to simplify or optimize encoding in atypical constrained environments.
 The choice of serialization is orthogonal to the data model.
 See also the section on special serializations in {{SpecialSerializations}}.
 
