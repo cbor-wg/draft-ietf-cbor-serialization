@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                         18 January 2026
-Expires: 22 July 2026
+Intended status: Standards Track                         22 January 2026
+Expires: 26 July 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 July 2026.
+   This Internet-Draft will expire on 26 July 2026.
 
 Copyright Notice
 
@@ -272,9 +272,9 @@ Table of Contents
        *  Big numbers described in Section 3.4.3 of [STD94] MUST be
           accepted.
 
-       *  Leading zeros SHOULD be ignored.
+       *  Leading zeros MUST be ignored.
 
-       *  An empty string SHOULD be accepted and treated as the value
+       *  An empty string MUST be accepted and treated as the value
           zero.
 
 3.3.  When to use ordinary serialization
@@ -327,6 +327,9 @@ Table of Contents
    *  Definite lengths are a requirement, not a preference.
 
    *  The only NaN allowed is the half-precision quiet NaN.
+
+   *  For big numbers, leading zeros must be ignored and the empty
+      string must be accepted as zero.
 
    These differences are not of significance in real-world
    implementations, so ordinary serialization is already largely
