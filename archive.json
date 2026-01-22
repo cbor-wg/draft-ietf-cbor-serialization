@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-20T01:45:22.507149+00:00",
+  "timestamp": "2026-01-22T01:48:26.777066+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -1396,7 +1396,7 @@
       "labels": [],
       "body": "- Add new subsection when to use general serialization\r\n- Add new section on special serialization\r\n- Remove text from when-to-use-ordinary serialization, because it is now in when-to-use-general sterilization.\r\nThis is to address #12",
       "createdAt": "2025-12-19T21:07:21Z",
-      "updatedAt": "2025-12-23T18:32:27Z",
+      "updatedAt": "2026-01-21T15:45:18Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "3be6a47b5411a5cb79b1c0870fced8e5adcca71a",
@@ -1408,7 +1408,81 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7b0VDp",
+          "commit": {
+            "abbreviatedOid": "ab83aff"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:40:22Z",
+          "updatedAt": "2026-01-21T15:40:22Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "```suggestion\r\nExcept for non-trivial NaNs, the other serializations can encode the same data types and value ranges as general serialization.\r\n```",
+              "createdAt": "2026-01-21T15:40:22Z",
+              "updatedAt": "2026-01-21T15:40:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0Wbi",
+          "commit": {
+            "abbreviatedOid": "ab83aff"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:41:27Z",
+          "updatedAt": "2026-01-21T15:41:27Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "\"Its\" seems ambiguous here.\r\n\r\n```suggestion\r\nIts purpose is solely to simply optimize encoding in atypical constrained environments.\r\n```",
+              "createdAt": "2026-01-21T15:41:27Z",
+              "updatedAt": "2026-01-21T15:41:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0a14",
+          "commit": {
+            "abbreviatedOid": "ab83aff"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:44:57Z",
+          "updatedAt": "2026-01-21T15:44:58Z",
+          "comments": [
+            {
+              "originalPosition": 79,
+              "body": "I'm not sure I agree with the approach of \"this is ordinary *minus* such and such. I think it is easier to include the constraints additively. \r\n\r\nThat said, I don't object to the approach here either. ",
+              "createdAt": "2026-01-21T15:44:58Z",
+              "updatedAt": "2026-01-21T15:44:58Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0bRA",
+          "commit": {
+            "abbreviatedOid": "ab83aff"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-01-21T15:45:18Z",
+          "updatedAt": "2026-01-21T15:45:18Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 29,
@@ -1422,7 +1496,7 @@
       "labels": [],
       "body": "This is to address #11",
       "createdAt": "2025-12-30T17:44:45Z",
-      "updatedAt": "2026-01-18T18:21:35Z",
+      "updatedAt": "2026-01-21T15:35:14Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "3be6a47b5411a5cb79b1c0870fced8e5adcca71a",
@@ -1433,8 +1507,142 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Carsten, I think these issues require discussion and consensus on the mailing list. They're not things to be resolved here. I've pushed a few other issues back to the mailing list in a similar way.",
+          "createdAt": "2026-01-21T00:08:49Z",
+          "updatedAt": "2026-01-21T00:08:49Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7blnse",
+          "commit": {
+            "abbreviatedOid": "7171e6a"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "I left a few comments that point to unclear language.\r\nDepending on how the language is fixed, there might be significant damage to CBOR, plus a lost opportunity to provide DLO as a simple way to reduce implementation effort in a decoder.\r\n",
+          "createdAt": "2026-01-20T20:05:43Z",
+          "updatedAt": "2026-01-20T20:12:11Z",
+          "comments": [
+            {
+              "originalPosition": 35,
+              "body": "This means \"SHOULD be interoperable\".\r\nThat is not good enough.",
+              "createdAt": "2026-01-20T20:05:43Z",
+              "updatedAt": "2026-01-20T20:12:11Z"
+            },
+            {
+              "originalPosition": 51,
+              "body": "What does that mean?\r\nI think it means:\r\nA CBOR decoder can decode CDE, even if it is limited to decoding PS+DLO.\r\nWhy would a decoder be limited to PS?\r\nWhat is the practical advantage?\r\nIf it really needs determinism, it should go for CDE.",
+              "createdAt": "2026-01-20T20:08:42Z",
+              "updatedAt": "2026-01-20T20:12:11Z"
+            },
+            {
+              "originalPosition": 53,
+              "body": "So this means a decoder cannot reject non-PS?  Fine.\r\nWe still don't get the advantage of being able to specify DLO, though.",
+              "createdAt": "2026-01-20T20:10:04Z",
+              "updatedAt": "2026-01-20T20:12:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7bzwRD",
+          "commit": {
+            "abbreviatedOid": "7171e6a"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:14:39Z",
+          "updatedAt": "2026-01-21T15:14:39Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "```suggestion\r\n* Some protocols require it.\r\n```",
+              "createdAt": "2026-01-21T15:14:39Z",
+              "updatedAt": "2026-01-21T15:14:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0F-w",
+          "commit": {
+            "abbreviatedOid": "7171e6a"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:29:23Z",
+          "updatedAt": "2026-01-21T15:29:24Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "```suggestion\r\nProtocol designs can still skip this guidance by not requiring a particular serialization.\r\n```",
+              "createdAt": "2026-01-21T15:29:23Z",
+              "updatedAt": "2026-01-21T15:29:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0G8J",
+          "commit": {
+            "abbreviatedOid": "7171e6a"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:30:03Z",
+          "updatedAt": "2026-01-21T15:30:04Z",
+          "comments": [
+            {
+              "originalPosition": 46,
+              "body": "```suggestion\r\nProtocol implementations SHOULD support ordinary serialization for protocols (or parts of protocols) that don't require another specific serialization.\r\n```",
+              "createdAt": "2026-01-21T15:30:03Z",
+              "updatedAt": "2026-01-21T15:30:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0Nxn",
+          "commit": {
+            "abbreviatedOid": "7171e6a"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:34:59Z",
+          "updatedAt": "2026-01-21T15:34:59Z",
+          "comments": [
+            {
+              "originalPosition": 51,
+              "body": "Maybe something like this?\r\n\r\n```suggestion\r\nProtocol implementations MAY encode and strictly decode using deterministic serialization.\r\nEncoding using deterministic encoding is fully interoperable with an ordinary serialization decoder.\r\n```",
+              "createdAt": "2026-01-21T15:34:59Z",
+              "updatedAt": "2026-01-21T15:35:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0OFJ",
+          "commit": {
+            "abbreviatedOid": "7171e6a"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-01-21T15:35:14Z",
+          "updatedAt": "2026-01-21T15:35:14Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 31,
@@ -1448,7 +1656,7 @@
       "labels": [],
       "body": "leading zeros and empty string handling\r\n\r\nAddress #17",
       "createdAt": "2026-01-18T18:15:41Z",
-      "updatedAt": "2026-01-18T18:16:12Z",
+      "updatedAt": "2026-01-21T15:12:15Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "320184721922cea5f269361ed06b17307394632f",
@@ -1459,8 +1667,30 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "These changes look good to me.",
+          "createdAt": "2026-01-21T15:12:15Z",
+          "updatedAt": "2026-01-21T15:12:15Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7bzrto",
+          "commit": {
+            "abbreviatedOid": "8d9c4a7"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-01-21T15:10:56Z",
+          "updatedAt": "2026-01-21T15:10:56Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 32,
@@ -1474,7 +1704,7 @@
       "labels": [],
       "body": "These explain how big number unification affects the data model and how one might implement big numbers.",
       "createdAt": "2026-01-18T18:52:57Z",
-      "updatedAt": "2026-01-18T18:52:57Z",
+      "updatedAt": "2026-01-21T15:57:00Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "5a617bb871aea97dc6d134f490fca7a527728e7f",
@@ -1486,7 +1716,161 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7b0d68",
+          "commit": {
+            "abbreviatedOid": "3d12333"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:47:22Z",
+          "updatedAt": "2026-01-21T15:47:22Z",
+          "comments": [
+            {
+              "originalPosition": 26,
+              "body": "```suggestion\r\nNo other serialization requirement in {{-cbor}} or this document affects the data model.\r\n```",
+              "createdAt": "2026-01-21T15:47:22Z",
+              "updatedAt": "2026-01-21T15:47:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0e_b",
+          "commit": {
+            "abbreviatedOid": "3d12333"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:48:17Z",
+          "updatedAt": "2026-01-21T15:48:18Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "This is a sentence fragment. Please remove, or attach to the previous sentence.",
+              "createdAt": "2026-01-21T15:48:17Z",
+              "updatedAt": "2026-01-21T15:48:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0fig",
+          "commit": {
+            "abbreviatedOid": "3d12333"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:48:46Z",
+          "updatedAt": "2026-01-21T15:48:47Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "```suggestion\r\nThis text is only describing a common assumption of the meaning of the text in {{Section 3.4.3 of -cbor}}.\r\n```",
+              "createdAt": "2026-01-21T15:48:47Z",
+              "updatedAt": "2026-01-21T15:48:58Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0jOI",
+          "commit": {
+            "abbreviatedOid": "3d12333"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:51:33Z",
+          "updatedAt": "2026-01-21T15:51:34Z",
+          "comments": [
+            {
+              "originalPosition": 43,
+              "body": "did you mean native-sized or just native?\r\n\r\n```suggestion\r\nIt is thus reasonable for a CBOR library to provide a separate API for handling native-sized integers from the one handling big numbers.\r\n```",
+              "createdAt": "2026-01-21T15:51:33Z",
+              "updatedAt": "2026-01-21T15:51:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0mCa",
+          "commit": {
+            "abbreviatedOid": "3d12333"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:53:32Z",
+          "updatedAt": "2026-01-21T15:53:32Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "```suggestion\r\nSimilarly, the decoding facilities handling big numbers must accept major types 0 and 1 even though those facilities present that range of values to the application as big numbers.\r\n```",
+              "createdAt": "2026-01-21T15:53:32Z",
+              "updatedAt": "2026-01-21T15:53:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0nkz",
+          "commit": {
+            "abbreviatedOid": "3d12333"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:54:41Z",
+          "updatedAt": "2026-01-21T15:54:42Z",
+          "comments": [
+            {
+              "originalPosition": 47,
+              "body": "```suggestion\r\nAlternately, some CBOR libraries may choose to return tags 2 and 3 in raw byte string form because this is very simple compared to implementing Big Numbers completely.\r\n```",
+              "createdAt": "2026-01-21T15:54:42Z",
+              "updatedAt": "2026-01-21T15:54:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0pl1",
+          "commit": {
+            "abbreviatedOid": "3d12333"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-21T15:56:20Z",
+          "updatedAt": "2026-01-21T15:56:20Z",
+          "comments": [
+            {
+              "originalPosition": 50,
+              "body": "```suggestion\r\nNote also that major type 1 can express negative numbers well beyond the range of common native integers..\r\n```",
+              "createdAt": "2026-01-21T15:56:20Z",
+              "updatedAt": "2026-01-21T15:56:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7b0qcC",
+          "commit": {
+            "abbreviatedOid": "3d12333"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-01-21T15:57:00Z",
+          "updatedAt": "2026-01-21T15:57:00Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
