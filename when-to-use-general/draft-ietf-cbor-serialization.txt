@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                        23 December 2025
-Expires: 26 June 2026
+Intended status: Standards Track                         22 January 2026
+Expires: 26 July 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,11 +53,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 June 2026.
+   This Internet-Draft will expire on 26 July 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -195,12 +195,12 @@ Table of Contents
    *  Transmission of non-trivial NaNs in floating-point values (see
       Appendix D).
 
-   With only the exception of non-trivial NaNs, general serialization
-   can encode all the same data types and value ranges as other
-   serializations.  Its purpose is solely to simply or optimize encoding
-   in atypical constrained environments.  The choice of serialization is
-   orthogonal to the data model.  See also the section on special
-   serializations in Section 5.
+   Except for non-trivial NaNs, the other serializations can encode the
+   same data types and value ranges as general serialization.  Its
+   purpose is solely to simply or optimize encoding in atypical
+   constrained environments.  The choice of serialization is orthogonal
+   to the data model.  See also the section on special serializations in
+   Section 5.
 
 2.2.  General Serialization is the Default
 
