@@ -748,6 +748,62 @@ A more efficient approach can be for the CBOR library to treat the wrapped CBOR 
 Many CBOR implementations already handle arrays and maps as containers without requiring a separate instance.
 Similarly, a byte-string wrapping encoded CBOR can be treated as a container that always contains exactly one item.
 
+# Serialization for COSE
+
+COSE {{-COSE}} is a framework protocol, not and end-end protocol.
+It has many messages types, allows many algorithms and leaves serialization open for most protocol elements.
+It does hash and signing.
+It is thus a good framework protocol to make an example out of.
+
+This focuses on COSE_Sign1 ({{Section 4.2 of -COSE}}) as the simplest COSE structure that can illustrate.
+All serialization discussion fits into three parts:
+
+- The payload
+- The Sig_structure ({{Section 4.4 of -COSE}}).
+- The encoded message (the header parameters, the array of four that is the COSE_Sign1)
+
+## COSE Payload Serialization ##
+
+The payload may or may not be CBOR, but let’s assume it is, perhaps a CWT or EAT.
+The payload is transmitted from the signer/sender fully in tact all the way to the verifier/receiver.
+Because it is transmitted fully in tact, CBOR is a binary protocol and intermediaries do not do things like wrap long lines or add base 64 encoding or such, it is not special in anyway and COSE imposes no serialization restrictions on it at all.
+That is, it can use any serialization it wants.
+The serialization is selected by the protocol that defines the payload, not by COSE.
+
+This highlights the principle that determinism is often NOT needed for signing and hashing described in {{WhenDeterministic}}.
+
+It is also worth noting that the payload is byte string wrapped.
+This is not for determinism or armoring or canonicalization.
+It is so that the payload can be any data format, including not CBOR.
+It is also so CBOR libraries can return the CBOR-encoded payload for processing by the verification algorithms
+Most CBOR libraries do not provide access to chunks of encoded CBOR in the middle of a message.
+
+This is an example of byte string wrapping described in {{ByteStringWrapping}}.
+
+## COSE Sig_structure ##
+
+The Sig_struct is not conveyed from the sender to the receiver, but rather constructed independently by the sender and reciever.
+This is the input to the signing process so it must be deterministic.
+That is, COSE explicitly requires this to be deterministicall encoded so that both the sender and receiver construct exactly the same encoded CBOR.
+{{Section 9 of -COSE}} gives this requirement.
+The requirement is exactly the same as deterministic serialization described here unless floating-point numbers with NaN payloads appear in a header parameter.
+
+This is an example of when deterministic serialization is needed because signed/data is not transmitted as described in {{WhenDeterministic}}.
+
+
+## The encoded message ##
+This just holds all the elements together, so there is no serialization requirement for it.
+The COSE protocol itself functions perfectly well no matter what serialization is used as long as the decoder can decode what the encoder sends.
+
+It is recommended that ordinary serialization be used for the message for all the same reasons that ordinary serialization is used for anything else — interoperability.
+Deterministic serialization is acceptable too, but is unnecessarily.
+
+It would be unusual, but acceptable to encode the header parameters with indefinite lengths and not use shortest-length arguments. Perhaps the COSE implementation is in hardware and this makes the hardware easier.
+None of this matters for correct functioning or security or successful verification.
+All that matters is that the decoder can decode whatever sperical serialization is used.
+
+This is an example of the recommendations for general CBOR protocols made in this document that are summarized in TODO:Recommendations Reference.
+
 
 # Examples and Test Vectors
 
