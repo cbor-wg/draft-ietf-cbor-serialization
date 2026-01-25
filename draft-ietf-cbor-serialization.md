@@ -748,6 +748,68 @@ A more efficient approach can be for the CBOR library to treat the wrapped CBOR 
 Many CBOR implementations already handle arrays and maps as containers without requiring a separate instance.
 Similarly, a byte-string wrapping encoded CBOR can be treated as a container that always contains exactly one item.
 
+# Serialization for COSE
+
+[^to-be-removed2]
+
+[^to-be-removed2]: This is new in the -02 draft. It aims to be a comprehensive example of some key concepts. There may not be consensus for this appendix.
+
+
+COSE {{-COSE}} is a framework protocol, not and end-end protocol.
+It has many messages types, allows many algorithms and leaves serialization open for most protocol elements.
+It does hashing and signing.
+It is thus a good framework protocol to make an example out of.
+
+This focuses on COSE_Sign1 ({{Section 4.2 of -COSE}}) as the simplest COSE structure that can illustrate several concepts described in this document.
+COSE_Sign1 serialization can be discussed in three parts:
+
+- The payload
+- The Sig_structure ({{Section 4.4 of -COSE}}).
+- The encoded message (the header parameters and the array of four that is the COSE_Sign1)
+
+## COSE Payload Serialization ##
+
+The payload may or may not be CBOR, but let’s assume it is, perhaps a CWT or EAT.
+The payload is transmitted from the signer/sender fully in tact all the way to the verifier/receiver.
+Because it is transmitted fully in tact, CBOR is a binary protocol and intermediaries do not do things like wrap long lines or add base 64 encoding or such, it is not special in anyway and COSE imposes no serialization restrictions on it at all.
+That is, it can use any serialization it wants.
+The serialization is selected by the protocol that defines the payload, not by COSE.
+
+This highlights the principle that determinism is often NOT needed for signing and hashing described in {{WhenDeterministic}}.
+
+It is also worth noting that the payload is byte string wrapped.
+This is not for determinism or armoring or canonicalization.
+It is so that the payload can be any data format, including not CBOR.
+It is also so CBOR libraries can return the CBOR-encoded payload for processing by the verification algorithms
+Most CBOR libraries do not provide access to chunks of encoded CBOR in the middle of a message.
+
+This is an example of byte string wrapping described in {{ByteStringWrapping}}.
+
+## COSE Sig_structure ##
+
+The Sig_struct is not conveyed from the sender to the receiver, but rather constructed independently by the sender and reciever.
+This is the input to the signing process so it must be deterministic.
+That is, COSE explicitly requires this to be deterministicall encoded so that both the sender and receiver construct exactly the same encoded CBOR.
+{{Section 9 of -COSE}} gives this requirement.
+The COSE requirement is the same as deterministic serialization {{DeterministicSerialization}} (unless floating-point numbers with NaN payloads appear in a header parameter).
+
+This is an example of the need for deterministic serialization for signed data that is not transmitted in its signed form. See {{WhenDeterministic}}.
+
+## The Encoded Message ##
+
+A COSE_Sign1 structure is an array of four elements containing, in order, two header parameter chunks, the payload, and the signature.
+The two header parameter chunks are maps that hold the various header parameters.
+COSE places no serialization requirements on these elements.
+The COSE protocol functions correctly regardless of the specific CBOR serialization used,as long as the decoder can decode what the encoder sends.
+
+In this respect, the serialization of this portion of a COSE message is no different from that of any other CBOR-based protocol.
+Indefinite-length items MAY be used, and fixed-length (i.e., non–shortest-length) CBOR encodings are permitted.
+The only requirement is that the encoded data be decodable by the receiver.
+
+That said, for most use cases and for practical interoperability reasons, ordinary serialization is a good choice for this part of the COSE_Sign1 structure.
+
+This serves as an example of the general recommendations for CBOR-based protocols described in this document and summarized in TODO:Recommendations Reference.
+
 
 # Examples and Test Vectors
 
