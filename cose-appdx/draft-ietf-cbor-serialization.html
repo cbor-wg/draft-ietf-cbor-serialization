@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 28 July 2026</td>
+<td class="center">Expires 29 July 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-01-24" class="published">24 January 2026</time>
+<time datetime="2026-01-25" class="published">25 January 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-07-28">28 July 2026</time></dd>
+<dd class="expires"><time datetime="2026-07-29">29 July 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1121,7 +1121,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 28 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 29 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1307,7 +1307,7 @@ Together, these three form a complete set of serializations that cover the major
                 <p id="section-toc.1-1.17.2.2.1"><a href="#appendix-I.2" class="auto internal xref">I.2</a>.  <a href="#name-cose-sig_structure" class="internal xref">COSE Sig_structure</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17.2.3">
-                <p id="section-toc.1-1.17.2.3.1"><a href="#appendix-I.3" class="auto internal xref">I.3</a>.  <a href="#name-the-encoded-message" class="internal xref">The encoded message</a></p>
+                <p id="section-toc.1-1.17.2.3.1"><a href="#appendix-I.3" class="auto internal xref">I.3</a>.  <a href="#name-the-encoded-message" class="internal xref">The Encoded Message</a></p>
 </li>
             </ul>
 </li>
@@ -2343,21 +2343,22 @@ Similarly, a byte-string wrapping encoded CBOR can be treated as a container tha
       <h2 id="name-serialization-for-cose">
 <a href="#appendix-I" class="section-number selfRef">Appendix I. </a><a href="#name-serialization-for-cose" class="section-name selfRef">Serialization for COSE</a>
       </h2>
-<p id="appendix-I-1">COSE <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> is a framework protocol, not and end-end protocol.
+<p id="appendix-I-1"><span class="cref" id="to-be-removed2">This is new in the -02 draft. It aims to be a comprehensive example of some key concepts. There may not be consensus for this appendix.</span><a href="#appendix-I-1" class="pilcrow">¶</a></p>
+<p id="appendix-I-2">COSE <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> is a framework protocol, not and end-end protocol.
 It has many messages types, allows many algorithms and leaves serialization open for most protocol elements.
-It does hash and signing.
-It is thus a good framework protocol to make an example out of.<a href="#appendix-I-1" class="pilcrow">¶</a></p>
-<p id="appendix-I-2">This focuses on COSE_Sign1 (<span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.2" class="relref">Section 4.2</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>) as the simplest COSE structure that can illustrate.
-All serialization discussion fits into three parts:<a href="#appendix-I-2" class="pilcrow">¶</a></p>
+It does hashing and signing.
+It is thus a good framework protocol to make an example out of.<a href="#appendix-I-2" class="pilcrow">¶</a></p>
+<p id="appendix-I-3">This focuses on COSE_Sign1 (<span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.2" class="relref">Section 4.2</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>) as the simplest COSE structure that can illustrate several concepts described in this document.
+COSE_Sign1 serialization can be discussed in three parts:<a href="#appendix-I-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-I-3.1">
-          <p id="appendix-I-3.1.1">The payload<a href="#appendix-I-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-I-4.1">
+          <p id="appendix-I-4.1.1">The payload<a href="#appendix-I-4.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-I-3.2">
-          <p id="appendix-I-3.2.1">The Sig_structure (<span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>).<a href="#appendix-I-3.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-I-4.2">
+          <p id="appendix-I-4.2.1">The Sig_structure (<span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>).<a href="#appendix-I-4.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-I-3.3">
-          <p id="appendix-I-3.3.1">The encoded message (the header parameters, the array of four that is the COSE_Sign1)<a href="#appendix-I-3.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-I-4.3">
+          <p id="appendix-I-4.3.1">The encoded message (the header parameters and the array of four that is the COSE_Sign1)<a href="#appendix-I-4.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <div id="cose-payload-serialization">
@@ -2388,23 +2389,24 @@ Most CBOR libraries do not provide access to chunks of encoded CBOR in the middl
 This is the input to the signing process so it must be deterministic.
 That is, COSE explicitly requires this to be deterministicall encoded so that both the sender and receiver construct exactly the same encoded CBOR.
 <span><a href="https://rfc-editor.org/rfc/rfc9052#section-9" class="relref">Section 9</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> gives this requirement.
-The requirement is exactly the same as deterministic serialization described here unless floating-point numbers with NaN payloads appear in a header parameter.<a href="#appendix-I.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-I.2-2">This is an example of when deterministic serialization is needed because signed/data is not transmitted as described in <a href="#WhenDeterministic" class="auto internal xref">Section 4.3</a>.<a href="#appendix-I.2-2" class="pilcrow">¶</a></p>
+The COSE requirement is the same as deterministic serialization <a href="#DeterministicSerialization" class="auto internal xref">Section 4</a> (unless floating-point numbers with NaN payloads appear in a header parameter).<a href="#appendix-I.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-2">This is an example of the need for deterministic serialization for signed data that is not transmitted in its signed form. See <a href="#WhenDeterministic" class="auto internal xref">Section 4.3</a>.<a href="#appendix-I.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="the-encoded-message">
 <section id="appendix-I.3">
         <h3 id="name-the-encoded-message">
-<a href="#appendix-I.3" class="section-number selfRef">I.3. </a><a href="#name-the-encoded-message" class="section-name selfRef">The encoded message</a>
+<a href="#appendix-I.3" class="section-number selfRef">I.3. </a><a href="#name-the-encoded-message" class="section-name selfRef">The Encoded Message</a>
         </h3>
-<p id="appendix-I.3-1">This just holds all the elements together, so there is no serialization requirement for it.
-The COSE protocol itself functions perfectly well no matter what serialization is used as long as the decoder can decode what the encoder sends.<a href="#appendix-I.3-1" class="pilcrow">¶</a></p>
-<p id="appendix-I.3-2">It is recommended that ordinary serialization be used for the message for all the same reasons that ordinary serialization is used for anything else — interoperability.
-Deterministic serialization is acceptable too, but is unnecessarily.<a href="#appendix-I.3-2" class="pilcrow">¶</a></p>
-<p id="appendix-I.3-3">It would be unusual, but acceptable to encode the header parameters with indefinite lengths and not use shortest-length arguments. Perhaps the COSE implementation is in hardware and this makes the hardware easier.
-None of this matters for correct functioning or security or successful verification.
-All that matters is that the decoder can decode whatever sperical serialization is used.<a href="#appendix-I.3-3" class="pilcrow">¶</a></p>
-<p id="appendix-I.3-4">This is an example of the recommendations for general CBOR protocols made in this document that are summarized in TODO:Recommendations Reference.<a href="#appendix-I.3-4" class="pilcrow">¶</a></p>
+<p id="appendix-I.3-1">A COSE_Sign1 structure is an array of four elements containing, in order, two header parameter chunks, the payload, and the signature.
+The two header parameter chunks are maps that hold the various header parameters.
+COSE places no serialization requirements on these elements.
+The COSE protocol functions correctly regardless of the specific CBOR serialization used,as long as the decoder can decode what the encoder sends.<a href="#appendix-I.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-I.3-2">In this respect, the serialization of this portion of a COSE message is no different from that of any other CBOR-based protocol.
+Indefinite-length items MAY be used, and fixed-length (i.e., non–shortest-length) CBOR encodings are permitted.
+The only requirement is that the encoded data be decodable by the receiver.<a href="#appendix-I.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-I.3-3">That said, for most use cases and for practical interoperability reasons, ordinary serialization is a good choice for this part of the COSE_Sign1 structure.<a href="#appendix-I.3-3" class="pilcrow">¶</a></p>
+<p id="appendix-I.3-4">This serves as an example of the general recommendations for CBOR-based protocols described in this document and summarized in TODO:Recommendations Reference.<a href="#appendix-I.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
