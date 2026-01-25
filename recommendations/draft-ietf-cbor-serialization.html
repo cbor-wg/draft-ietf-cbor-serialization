@@ -27,7 +27,7 @@ Together, these three form a complete set of serializations that cover the major
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.32.5
-    wcwidth 0.2.14
+    wcwidth 0.3.0
 -->
 <link href="draft-ietf-cbor-serialization.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -568,6 +568,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -638,7 +639,7 @@ a.pilcrow {
   }
 }
 @media not print {
-  :hover > a.pilcrow {
+  :hover > a.pilcrow, a.pilcrow:focus {
     opacity: 1;
   }
   a.pilcrow[href]:hover {
@@ -1050,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 17 July 2026</td>
+<td class="center">Expires 29 July 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-01-13" class="published">13 January 2026</time>
+<time datetime="2026-01-25" class="published">25 January 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-07-17">17 July 2026</time></dd>
+<dd class="expires"><time datetime="2026-07-29">29 July 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1120,7 +1121,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 17 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 29 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1156,13 +1157,16 @@ Together, these three form a complete set of serializations that cover the major
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-recommendations-summary" class="internal xref">Recommendations Summary</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-cbor-libraries" class="internal xref">CBOR Libraries</a></p>
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-framework-protocols" class="internal xref">Framework protocols</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-protocol-designs" class="internal xref">Protocol Designs</a></p>
+                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-end-end-protocol-specificat" class="internal xref">End-end Protocol Specifications</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
-                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-protocol-implementations" class="internal xref">Protocol Implementations</a></p>
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-cbor-libraries" class="internal xref">CBOR Libraries</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-libraries-for-cbor-based-fr" class="internal xref">Libraries for CBOR-based framework protocols</a></p>
 </li>
             </ul>
 </li>
@@ -1337,70 +1341,87 @@ Ordinary serialization is defined here is largely the same preferred serializati
       <h2 id="name-recommendations-summary">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-recommendations-summary" class="section-name selfRef">Recommendations Summary</a>
       </h2>
-<div id="cbor-libraries">
+<p id="section-2-1">This section is new in draft -02 and may change a lot as consensus is reached.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="framework-protocols">
 <section id="section-2.1">
-        <h3 id="name-cbor-libraries">
-<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-cbor-libraries" class="section-name selfRef">CBOR Libraries</a>
+        <h3 id="name-framework-protocols">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-framework-protocols" class="section-name selfRef">Framework protocols</a>
         </h3>
-<p id="section-2.1-1">A CBOR library SHOULD encode and decode ordinary serialization (<a href="#OrdinarySerialization" class="auto internal xref">Section 4</a>.
-For practical purposes, ordinary serialization is the same as preferred serialization.
-The widespread use of ordinary and preferred serialization is the main source of interoperability in the CBOR ecosystem.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2">CBOR libraries MAY support deterministic encoding.
-The only difference from ordinary serialization is that maps must be sorted when encoding.
-While this is expensive in some programming environments, it is not in many others.
-It is acceptable for a library to support only deterministic serialization and omit ordinary serialization entirely.
-Deterministic serialization support in libraries has these advantages:<a href="#section-2.1-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.1-3.1">
-            <p id="section-2.1-3.1.1">Not many, but some protocols require it.<a href="#section-2.1-3.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-2.1-3.2">
-            <p id="section-2.1-3.2.1">It can make debugging easier since the maps always appear in the same order.<a href="#section-2.1-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-2.1-4">CBOR libraries MAY support some or all of general serialization.
-The purpose of this is to support the deployment of protocols that require special options, particularly in constrained environments.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1-1">Framework protocols are protocols that offer a wide range of options or alternatives, where interoperability depends on the sender and receiver selecting compatible choices.
+Such protocols often define a profiling mechanism or recommend that each use specify a profile that constrains the available options.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">Frameworks are sometimes informally referred to as toolboxes or building-block protocols, reflecting their intent to provide reusable mechanisms rather than a single, universally interoperable specification.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-3">For example, COSE permits the use of a large number of cryptographic algorithms and supports multiple message types (e.g., signed, encrypted, and MACed).
+A typical implementation selects only a subset of these capabilities, and interoperability requires agreement on that subset.
+CBOR itself is also a framework protocol.
+CBOR does not mandate support for any particular data types, tags, or serializations, leaving the selection of what is implemented to the protocol layers above it.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-4">It is RECOMMENDED that CBOR-based framework protocols not require any particular serialization.
+This allows an end-to-end protocol to choose the serialization most appropriate to its use.
+For example, CWT makes no statement about the serialization used.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1-5">An important exception to this recommendation occurs when deterministic serialization is required for correct operation.
+Deterministic serialization is typically needed for data that is hashed or signed but not directly conveyed, and instead reconstructed independently by the sender and receiver.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.1-6">For example, COSE imposes no general serialization requirements, except that deterministic serialization is required for the data protected by the protected header.
+Any serialization may be used for the remainder of a COSE message, including the payload.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="protocol-designs">
+<div id="end-end-protocol-specifications">
 <section id="section-2.2">
-        <h3 id="name-protocol-designs">
-<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-protocol-designs" class="section-name selfRef">Protocol Designs</a>
+        <h3 id="name-end-end-protocol-specificat">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-end-end-protocol-specificat" class="section-name selfRef">End-end Protocol Specifications</a>
         </h3>
-<p id="section-2.2-1">In rare cases, protocols require deterministic serialization in order to function.
-These are some, but not all, uses of hashing, signing, or authentication.
-See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.
-For these cases, the protocol definition MUST specify deterministic serialization for the parts of the protocol that require determinism.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2-2">When determinism is not a requirement, the protocol definition SHOULD recommend ordinary serialization.
-The following text is an example of what SHOULD be included in a protocol definition:<a href="#section-2.2-2" class="pilcrow">¶</a></p>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-2.2-3.1">
-            <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-2.2-3.1.1.1">
-                <p id="section-2.2-3.1.1.1.1">Implementations of this protocol SHOULD use ordinary serialization for encoding and be able to decode ordinary serialization.<a href="#section-2.2-3.1.1.1.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</li>
-        </ul>
-<p id="section-2.2-4">CBOR has multiple serializations so as to accommodate constrained environments.
-Protocol designs can pass on the allowance of multiple serializations by not requiring a particular serialization.
-This has been the CBOR design practice so far.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
-<p id="section-2.2-5">If a protocol design requires a particular serialization, some flexibility for deployment in constrained environments will be lost.
-If a protocol doesn't recommend ordinary serialization as in the example above, interoperability is less likely.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
+<p id="section-2.2-1">End-end protocols are specified such that interoperation is assured when implemented in accordance with their specification.
+If there are variants and options for the protocol, there is usually a negotiation between sender and receiver to select which will be used.
+TLS, HTTP and FIDO are examples of these.
+Often there are interoperability compliance programs, bake-off events and such for these protocols.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">It is RECOMMENDED that end-end protocols state a requirement for ordinary serialization to ensure serialization interoperability unless they require different.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2-3">This recommendation does not override any requirement for deterministic serialization where required.
+It is also perfectly fine for to specify specialized serialization if desired for constrained environments or such.
+Such should be specified to gaurantee interoperability.
+For example, if the sender is allowed to send indefinte-lengths to encode very long arrays, the specification should require the decoder support them.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">If CBOR-based end-end protocols don't specify anything about serialization there is a possibility or interoperability problems.
+For example, the sender might use indefinite-length encoding and the receiver might not be able to decode it.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-5">This document RECOMMENDS such protocols require use of ordinary serialization as the means to address this.
+There will be expections to this when determinism is needed or when specialized serialization is needed for constrained environments, but ordinary serialization will suit for the majority of use cases.
+In the exceptional cases, the specification should of course be such that interoperability is gauranteed.
+For example, if the sender is allowed to send indefinte-lengths to encode very long arrays, the specification should require the decoder support them.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="protocol-implementations">
+<div id="cbor-libraries">
 <section id="section-2.3">
-        <h3 id="name-protocol-implementations">
-<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-protocol-implementations" class="section-name selfRef">Protocol Implementations</a>
+        <h3 id="name-cbor-libraries">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-cbor-libraries" class="section-name selfRef">CBOR Libraries</a>
         </h3>
-<p id="section-2.3-1">Protocol implementations SHOULD support ordinary serialization for protocols (or parts of protocols) that don't require specific serialization.
-Failure to support ordinary serialization increases the risk of interoperability failures.
-Note that ordinary serialization is interoperable with preferred serialization, which has been used as a default since the publication of <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.3-2">Protocol implementations MAY support deterministic serialization.
-It is fully interoperable with ordinary serialization.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
-<p id="section-2.3-3">Protocol implementers and deployers MAY use other serializations allowed by the protocol definition.
-Such serializations are typically chosen for deployment in constrained environments.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.3-1">It is RECOMMENDED that CBOR libraies support ordinary serialization.
+This is accomplished by always conforming to <a href="#OrdinaryDecoding" class="auto internal xref">Section 4.2</a> for decoding and making <a href="#OrdinaryEncoding" class="auto internal xref">Section 4.1</a> the default or main API for encoding.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.3-2">This recommendation is made for libraries because many protocols will use ordinary serialization.
+This recommendation is also made because for practical purposes ordinary serialization is the same as preferred serialization.
+Most libraries that support preferred serialization will need to make almost no changes.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.3-3">It is also RECOMMENDED that CBOR library support deterministic serialization because some protocols (e.g., COSE) require it.
+The only additional requirement over ordinary serialization for deterministic serialization is that encoded maps be sorted.
+This requirement is easy to meet in some environments (e.g., Python, Go, Ruby) and harder in others (C, C++, Rust).
+This recommendation is strong for the environments where it is easy to implement.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.3-4">It is also fine for a library to implement only deterministic serialization rather than ordinary serialization.
+The decoding requirements for deterministic are the same as for ordinary.
+Deterministic serialization support in libraries has these advantages:<a href="#section-2.3-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.3-5.1">
+            <p id="section-2.3-5.1.1">Not many, but some protocols require it.<a href="#section-2.3-5.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.3-5.2">
+            <p id="section-2.3-5.2.1">It can make debugging easier since the maps always appear in the same order.<a href="#section-2.3-5.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-2.3-6">CBOR libraries may support some or all of general serialization.
+The purpose of this is to support the deployment of protocols that require special options, particularly in constrained environments.<a href="#section-2.3-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="libraries-for-cbor-based-framework-protocols">
+<section id="section-2.4">
+        <h3 id="name-libraries-for-cbor-based-fr">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-libraries-for-cbor-based-fr" class="section-name selfRef">Libraries for CBOR-based framework protocols</a>
+        </h3>
+<p id="section-2.4-1">Libraries for framework protocols like COSE and CWT also have a choice about what serializations they support.
+In some cases the APIs may vary depending on serialization options (e.g., indefinite-length encoding may have a different API than definite-length encoding).<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-2">It is also RECOMMENDED that these libraries support ordinary serialization.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
