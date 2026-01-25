@@ -568,6 +568,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -638,7 +639,7 @@ a.pilcrow {
   }
 }
 @media not print {
-  :hover > a.pilcrow {
+  :hover > a.pilcrow, a.pilcrow:focus {
     opacity: 1;
   }
   a.pilcrow[href]:hover {
@@ -1050,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 26 July 2026</td>
+<td class="center">Expires 29 July 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-01-22" class="published">22 January 2026</time>
+<time datetime="2026-01-25" class="published">25 January 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-07-26">26 July 2026</time></dd>
+<dd class="expires"><time datetime="2026-07-29">29 July 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1120,7 +1121,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 26 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 29 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1302,13 +1303,27 @@ Together, these three form a complete set of serializations that cover the major
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#appendix-G" class="auto internal xref">Appendix G</a>.  <a href="#name-examples-and-test-vectors" class="internal xref">Examples and Test Vectors</a></p>
+            <p id="section-toc.1-1.16.1"><a href="#appendix-G" class="auto internal xref">Appendix G</a>.  <a href="#name-serialization-for-cose" class="internal xref">Serialization for COSE</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16.2.1">
+                <p id="section-toc.1-1.16.2.1.1"><a href="#appendix-G.1" class="auto internal xref">G.1</a>.  <a href="#name-cose-payload-serialization" class="internal xref">COSE Payload Serialization</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16.2.2">
+                <p id="section-toc.1-1.16.2.2.1"><a href="#appendix-G.2" class="auto internal xref">G.2</a>.  <a href="#name-cose-sig_structure" class="internal xref">COSE Sig_structure</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16.2.3">
+                <p id="section-toc.1-1.16.2.3.1"><a href="#appendix-G.3" class="auto internal xref">G.3</a>.  <a href="#name-the-encoded-message" class="internal xref">The Encoded Message</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1"><a href="#appendix-H" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+            <p id="section-toc.1-1.17.1"><a href="#appendix-H" class="auto internal xref">Appendix H</a>.  <a href="#name-examples-and-test-vectors" class="internal xref">Examples and Test Vectors</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18">
-            <p id="section-toc.1-1.18.1"><a href="#appendix-I" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.18.1"><a href="#appendix-I" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19">
+            <p id="section-toc.1-1.19.1"><a href="#appendix-J" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -2324,16 +2339,89 @@ Similarly, a byte-string wrapping encoded CBOR can be treated as a container tha
 </div>
 </section>
 </div>
-<div id="examples-and-test-vectors">
+<div id="serialization-for-cose">
 <section id="appendix-G">
-      <h2 id="name-examples-and-test-vectors">
-<a href="#appendix-G" class="section-number selfRef">Appendix G. </a><a href="#name-examples-and-test-vectors" class="section-name selfRef">Examples and Test Vectors</a>
+      <h2 id="name-serialization-for-cose">
+<a href="#appendix-G" class="section-number selfRef">Appendix G. </a><a href="#name-serialization-for-cose" class="section-name selfRef">Serialization for COSE</a>
       </h2>
-<p id="appendix-G-1">TODO -- complete work and remove this comment before publication<a href="#appendix-G-1" class="pilcrow">¶</a></p>
+<p id="appendix-G-1"><span class="cref" id="to-be-removed2">This is new in the -02 draft. It aims to be a comprehensive example of some key concepts. There may not be consensus for this appendix.</span><a href="#appendix-G-1" class="pilcrow">¶</a></p>
+<p id="appendix-G-2">COSE <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> is a framework protocol, not and end-end protocol.
+It has many messages types, allows many algorithms and leaves serialization open for most protocol elements.
+It does hashing and signing.
+It is thus a good framework protocol to make an example out of.<a href="#appendix-G-2" class="pilcrow">¶</a></p>
+<p id="appendix-G-3">This focuses on COSE_Sign1 (<span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.2" class="relref">Section 4.2</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>) as the simplest COSE structure that can illustrate several concepts described in this document.
+COSE_Sign1 serialization can be discussed in three parts:<a href="#appendix-G-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-G-4.1">
+          <p id="appendix-G-4.1.1">The payload<a href="#appendix-G-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-4.2">
+          <p id="appendix-G-4.2.1">The Sig_structure (<span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>).<a href="#appendix-G-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-G-4.3">
+          <p id="appendix-G-4.3.1">The encoded message (the header parameters and the array of four that is the COSE_Sign1)<a href="#appendix-G-4.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<div id="cose-payload-serialization">
+<section id="appendix-G.1">
+        <h3 id="name-cose-payload-serialization">
+<a href="#appendix-G.1" class="section-number selfRef">G.1. </a><a href="#name-cose-payload-serialization" class="section-name selfRef">COSE Payload Serialization</a>
+        </h3>
+<p id="appendix-G.1-1">The payload may or may not be CBOR, but let’s assume it is, perhaps a CWT or EAT.
+The payload is transmitted from the signer/sender fully in tact all the way to the verifier/receiver.
+Because it is transmitted fully in tact, CBOR is a binary protocol and intermediaries do not do things like wrap long lines or add base 64 encoding or such, it is not special in anyway and COSE imposes no serialization restrictions on it at all.
+That is, it can use any serialization it wants.
+The serialization is selected by the protocol that defines the payload, not by COSE.<a href="#appendix-G.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-2">This highlights the principle that determinism is often NOT needed for signing and hashing described in <a href="#WhenDeterministic" class="auto internal xref">Section 4.3</a>.<a href="#appendix-G.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-3">It is also worth noting that the payload is byte string wrapped.
+This is not for determinism or armoring or canonicalization.
+It is so that the payload can be any data format, including not CBOR.
+It is also so CBOR libraries can return the CBOR-encoded payload for processing by the verification algorithms
+Most CBOR libraries do not provide access to chunks of encoded CBOR in the middle of a message.<a href="#appendix-G.1-3" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-4">This is an example of byte string wrapping described in <a href="#ByteStringWrapping" class="auto internal xref">Appendix F</a>.<a href="#appendix-G.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="cose-sigstructure">
+<section id="appendix-G.2">
+        <h3 id="name-cose-sig_structure">
+<a href="#appendix-G.2" class="section-number selfRef">G.2. </a><a href="#name-cose-sig_structure" class="section-name selfRef">COSE Sig_structure</a>
+        </h3>
+<p id="appendix-G.2-1">The Sig_struct is not conveyed from the sender to the receiver, but rather constructed independently by the sender and reciever.
+This is the input to the signing process so it must be deterministic.
+That is, COSE explicitly requires this to be deterministicall encoded so that both the sender and receiver construct exactly the same encoded CBOR.
+<span><a href="https://rfc-editor.org/rfc/rfc9052#section-9" class="relref">Section 9</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> gives this requirement.
+The COSE requirement is the same as deterministic serialization <a href="#DeterministicSerialization" class="auto internal xref">Section 4</a> (unless floating-point numbers with NaN payloads appear in a header parameter).<a href="#appendix-G.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-G.2-2">This is an example of the need for deterministic serialization for signed data that is not transmitted in its signed form. See <a href="#WhenDeterministic" class="auto internal xref">Section 4.3</a>.<a href="#appendix-G.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="the-encoded-message">
+<section id="appendix-G.3">
+        <h3 id="name-the-encoded-message">
+<a href="#appendix-G.3" class="section-number selfRef">G.3. </a><a href="#name-the-encoded-message" class="section-name selfRef">The Encoded Message</a>
+        </h3>
+<p id="appendix-G.3-1">A COSE_Sign1 structure is an array of four elements containing, in order, two header parameter chunks, the payload, and the signature.
+The two header parameter chunks are maps that hold the various header parameters.
+COSE places no serialization requirements on these elements.
+The COSE protocol functions correctly regardless of the specific CBOR serialization used,as long as the decoder can decode what the encoder sends.<a href="#appendix-G.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-G.3-2">In this respect, the serialization of this portion of a COSE message is no different from that of any other CBOR-based protocol.
+Indefinite-length items MAY be used, and fixed-length (i.e., non–shortest-length) CBOR encodings are permitted.
+The only requirement is that the encoded data be decodable by the receiver.<a href="#appendix-G.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-G.3-3">That said, for most use cases and for practical interoperability reasons, ordinary serialization is a good choice for this part of the COSE_Sign1 structure.<a href="#appendix-G.3-3" class="pilcrow">¶</a></p>
+<p id="appendix-G.3-4">This serves as an example of the general recommendations for CBOR-based protocols described in this document and summarized in TODO:Recommendations Reference.<a href="#appendix-G.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="examples-and-test-vectors">
+<section id="appendix-H">
+      <h2 id="name-examples-and-test-vectors">
+<a href="#appendix-H" class="section-number selfRef">Appendix H. </a><a href="#name-examples-and-test-vectors" class="section-name selfRef">Examples and Test Vectors</a>
+      </h2>
+<p id="appendix-H-1">TODO -- complete work and remove this comment before publication<a href="#appendix-H-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="contributors">
-<section id="appendix-H">
+<section id="appendix-I">
       <h2 id="name-contributors">
 <a href="#name-contributors" class="section-name selfRef">Contributors</a>
       </h2>
@@ -2392,7 +2480,7 @@ Similarly, a byte-string wrapping encoded CBOR can be treated as a container tha
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-I">
+<section id="appendix-J">
       <h2 id="name-authors-address">
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>
