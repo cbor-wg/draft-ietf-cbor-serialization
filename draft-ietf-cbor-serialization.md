@@ -121,55 +121,86 @@ Ordinary serialization is defined here is largely the same preferred serializati
 
 # Recommendations Summary
 
+This section is new in draft -02 and may change a lot as consensus is reached.
+
+## Framework protocols
+
+Framework protocols are protocols that offer a wide range of options or alternatives, where interoperability depends on the sender and receiver selecting compatible choices.
+Such protocols often define a profiling mechanism or recommend that each use specify a profile that constrains the available options.
+
+Frameworks are sometimes informally referred to as toolboxes or building-block protocols, reflecting their intent to provide reusable mechanisms rather than a single, universally interoperable specification.
+
+For example, COSE permits the use of a large number of cryptographic algorithms and supports multiple message types (e.g., signed, encrypted, and MACed).
+A typical implementation selects only a subset of these capabilities, and interoperability requires agreement on that subset.
+CBOR itself is also a framework protocol.
+CBOR does not mandate support for any particular data types, tags, or serializations, leaving the selection of what is implemented to the protocol layers above it.
+
+It is RECOMMENDED that CBOR-based framework protocols not require any particular serialization.
+This allows an end-to-end protocol to choose the serialization most appropriate to its use.
+For example, CWT makes no statement about the serialization used.
+
+An important exception to this recommendation occurs when deterministic serialization is required for correct operation.
+Deterministic serialization is typically needed for data that is hashed or signed but not directly conveyed, and instead reconstructed independently by the sender and receiver.
+
+For example, COSE imposes no general serialization requirements, except that deterministic serialization is required for the data protected by the protected header.
+Any serialization may be used for the remainder of a COSE message, including the payload.
+
+
+## End-end Protocol Specifications
+
+End-end protocols are specified such that interoperation is assured when implemented in accordance with their specification.
+If there are variants and options for the protocol, there is usually a negotiation between sender and receiver to select which will be used.
+TLS, HTTP and FIDO are examples of these.
+Often there are interoperability compliance programs, bake-off events and such for these protocols.
+
+It is RECOMMENDED that end-end protocols state a requirement for ordinary serialization to ensure serialization interoperability unless they require different.
+
+This recommendation does not override any requirement for deterministic serialization where required.
+It is also perfectly fine for to specify specialized serialization if desired for constrained environments or such.
+Such should be specified to gaurantee interoperability.
+For example, if the sender is allowed to send indefinte-lengths to encode very long arrays, the specification should require the decoder support them.
+
+
+If CBOR-based end-end protocols don't specify anything about serialization there is a possibility or interoperability problems.
+For example, the sender might use indefinite-length encoding and the receiver might not be able to decode it.
+
+This document RECOMMENDS such protocols require use of ordinary serialization as the means to address this.
+There will be expections to this when determinism is needed or when specialized serialization is needed for constrained environments, but ordinary serialization will suit for the majority of use cases.
+In the exceptional cases, the specification should of course be such that interoperability is gauranteed.
+For example, if the sender is allowed to send indefinte-lengths to encode very long arrays, the specification should require the decoder support them.
+
 ## CBOR Libraries
 
-A CBOR library SHOULD encode and decode ordinary serialization ({{OrdinarySerialization}}.
-For practical purposes, ordinary serialization is the same as preferred serialization.
-The widespread use of ordinary and preferred serialization is the main source of interoperability in the CBOR ecosystem.
+It is RECOMMENDED that CBOR libraies support ordinary serialization.
+This is accomplished by always conforming to {{OrdinaryDecoding}} for decoding and making {{OrdinaryEncoding}} the default or main API for encoding.
 
-CBOR libraries MAY support deterministic encoding.
-The only difference from ordinary serialization is that maps must be sorted when encoding.
-While this is expensive in some programming environments, it is not in many others.
-It is acceptable for a library to support only deterministic serialization and omit ordinary serialization entirely.
+This recommendation is made for libraries because many protocols will use ordinary serialization.
+This recommendation is also made because for practical purposes ordinary serialization is the same as preferred serialization.
+Most libraries that support preferred serialization will need to make almost no changes.
+
+It is also RECOMMENDED that CBOR library support deterministic serialization because some protocols (e.g., COSE) require it.
+The only additional requirement over ordinary serialization for deterministic serialization is that encoded maps be sorted.
+This requirement is easy to meet in some environments (e.g., Python, Go, Ruby) and harder in others (C, C++, Rust).
+This recommendation is strong for the environments where it is easy to implement.
+
+It is also fine for a library to implement only deterministic serialization rather than ordinary serialization.
+The decoding requirements for deterministic are the same as for ordinary.
 Deterministic serialization support in libraries has these advantages:
 
 * Not many, but some protocols require it.
 * It can make debugging easier since the maps always appear in the same order.
 
-CBOR libraries MAY support some or all of general serialization.
+CBOR libraries may support some or all of general serialization.
 The purpose of this is to support the deployment of protocols that require special options, particularly in constrained environments.
 
 
-## Protocol Designs
+## Libraries for CBOR-based framework protocols
 
-In rare cases, protocols require deterministic serialization in order to function.
-These are some, but not all, uses of hashing, signing, or authentication.
-See {{WhenDeterministic}}.
-For these cases, the protocol definition MUST specify deterministic serialization for the parts of the protocol that require determinism.
+Libraries for framework protocols like COSE and CWT also have a choice about what serializations they support.
+In some cases the APIs may vary depending on serialization options (e.g., indefinite-length encoding may have a different API than definite-length encoding).
 
-When determinism is not a requirement, the protocol definition SHOULD recommend ordinary serialization.
-The following text is an example of what SHOULD be included in a protocol definition:
+It is also RECOMMENDED that these libraries support ordinary serialization.
 
- >> Implementations of this protocol SHOULD use ordinary serialization for encoding and be able to decode ordinary serialization.
-
-CBOR has multiple serializations so as to accommodate constrained environments.
-Protocol designs can pass on the allowance of multiple serializations by not requiring a particular serialization.
-This has been the CBOR design practice so far.
-
-If a protocol design requires a particular serialization, some flexibility for deployment in constrained environments will be lost.
-If a protocol doesn't recommend ordinary serialization as in the example above, interoperability is less likely.
-
-## Protocol Implementations
-
-Protocol implementations SHOULD support ordinary serialization for protocols (or parts of protocols) that don't require specific serialization.
-Failure to support ordinary serialization increases the risk of interoperability failures.
-Note that ordinary serialization is interoperable with preferred serialization, which has been used as a default since the publication of {{-cbor}}.
-
-Protocol implementations MAY support deterministic serialization.
-It is fully interoperable with ordinary serialization.
-
-Protocol implementers and deployers MAY use other serializations allowed by the protocol definition.
-Such serializations are typically chosen for deployment in constrained environments.
 
 
 # General Serialization
