@@ -45,6 +45,8 @@ contributor:
   email: anders.rundgren.net@gmail.com
 - name: Vadim Goncharov
   email: vadimnuclight@gmail.com
+- name: Ken Takayama
+  email: ken.takayama.ietf@gmail.com
 
 normative:
   RFC2119:
@@ -91,6 +93,7 @@ informative:
      date: July, 2021
      target: https://craftinginterpreters.com/optimization.html#nan-boxing
 
+   I-D.mcnally-deterministic-cbor:
 
 
 --- abstract
@@ -217,6 +220,32 @@ General serialization consists of all of these:
 
 A decoder that supports general serialization is able to decode all of these.
 
+## When To Use General Serialization {#WhenGeneral}
+
+Ordinary serialization ({{OrdinarySerialization}}) satisfies the vast majority of CBOR use cases; therefore, the need for general serialization is rare and arises only in unusual circumstances.
+The following are representative examples:
+
+* Enable on-the-fly, streaming encoding of strings, arrays, and maps with indefinite lengths.
+This is useful when an array, map, or string is many times larger than the available memory on the encoding device.
+
+* Directly encode or decode integer values from hardware registers with fixed-size integer encoding.
+CBOR is sufficiently simple that encoders and decoders for some protocols can be implemented solely in hardware without any software.
+Fixed-size integer encoding allows values to be copied directly in and out of hardware registers.
+
+* Enable in place update of the lengths of strings, arrays and maps by using fixed-size encoding of their lengths.
+For example, if the length of a string is always encoded in 32 bits, increasing the length from 2^16 to 2^16+1, requires only overwriting the length field rather than shifting all 2^16 bytes of content.
+
+* Transmission of non-trivial NaNs in floating-point values (see {{NaN}}).
+
+Except for non-trivial NaNs, the other serializations can encode the same data types and value ranges as general serialization.
+Its purpose is solely to simplify or optimize encoding in atypical constrained environments.
+The choice of serialization is orthogonal to the data model.
+See also the section on special serializations in {{SpecialSerializations}}.
+
+
+
+## General Serialization is the Default
+
 If a CBOR-based protocol specification does not explicitly specify serialization, general serialization is implied.
 This means that a compliant decoder for such a protocol is required to accept all forms allowed by general serialization including both definite and indefinite lengths.
 For example, CBOR Web Token, {{-CWT}} does not specify serialization; therefore, a full and proper CWT decoder must be able to handle variable-length CBOR argments plus indefinite-length strings, arrays and maps.
@@ -225,11 +254,6 @@ In practice, however, it is widely recognized that some CWT decoders cannot proc
 As a result, CWT encoders typically limit themselves to the subset of serializations that decoders can reliably handle, most notably by never encoding indefinite lengths.
 It is similar for other CBOR-based protocols like {{-COSE}}.
 See also {{OrdinarySerialization}}.
-
-Note also that there is no shortest-length requirement for floating-point encoding in general serialization.
-Thus, IEEE 754 NaNs (See {{NaN}}) may be encoded with a desired size, regardless of their payload &mdash; a principle sometimes stated as “touch not the NaNs.”
-
-Finally, note also that general serialization is inherently non-deterministic because some CBOR data items can be serialized in multiple ways.
 
 
 # Ordinary Serialization {#OrdinarySerialization}
@@ -284,8 +308,8 @@ This section defines a serialization named "ordinary serialization."
 1. If big numbers (tags 2 and 3) are accepted, the following apply:
 
    * Big numbers described in {{Section 3.4.3 of -cbor}} MUST be accepted.
-   * Leading zeros SHOULD be ignored.
-   * An empty string SHOULD be accepted and treated as the value zero.
+   * Leading zeros MUST be ignored.
+   * An empty string MUST be accepted and treated as the value zero.
 
 
 ## When to use ordinary serialization
@@ -300,17 +324,7 @@ Implementations typically find encoding and decoding in this form to be straight
 The easy implementation and broad usefulness makes ordinary serialization the best choice for most CBOR protocols.
 To some degree it is a de facto standard for common CBOR protocols.
 
-However, it is not suitable if determinism is needed because the order of items in a map is allowed to vary.
-See {{WhenDeterministic}}.
-
-It may also not be suitable in some cases where special functionality is needed like the following:
-
-* Streaming of of strings, arrays and maps in constrained environments where the length is not known
-* Non-trival NaNs need to be supported
-* Hardware environments where integers are encoded/decoded directly from/to hardware registers and shortest-length CBOR arguments would be burdensome
-
-In those cases, a special/custom serialization can be defined.
-
+See {{WhenGeneral}} for uses cases where ordinary serialization may not be suitable.
 But, for the vast majority of use cases, ordinary serialization provides interoperaibility, small encoded size and low implementation costs.
 
 
@@ -322,6 +336,7 @@ The differences are:
 
 * Definite lengths are a requirement, not a preference.
 * The only NaN allowed is the half-precision quiet NaN.
+* For big numbers, leading zeros must be ignored and the empty string must be accepted as zero.
 
 These differences are not of significance in real-world implementations, so ordinary serialization is already largely supported.
 
@@ -385,11 +400,27 @@ The only difference between ordinary and deterministic serialization is map key 
 Sorting can be expensive in very constrained environments.
 This is the only reason these two are not combined into one.
 
-Deterministically encoded data is always decodable, even by receivers that do not specifically support deterministic encoding.
-Deterministic encoding can be helpful for debugging and such.
+Deterministic serialization, as defined in this document, can be decoded by any ordinary or general-purpose serialization decoder described here.
+It is also compatible with the preferred serialization decoding described in {{-cbor}}.
+Deterministic serialization can be helpful for debugging and such.
 In environments where map sorting is not costly, it is acceptable and beneficial to always use it.
 In such an environment, a CBOR encoder may produce deterministic encoding by default and may even omit support for ordinary encoding entirely.
-But note that determinstic is never a substitue for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, need non-trivial NaNs or other.
+But note that deterministic is never a substitute for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, need non-trivial NaNs, or other.
+
+
+# Special Serializations {#SpecialSerializations}
+
+Although discouraged, defining special serializations that differ from those specified here is permitted.
+For example, a use case might require deterministim from a protocol that uses indefinite lengths.
+For another example, a protocol may require only a subset of general serialization features &mdash; for instance, fixed-length integer encodings but not indefinite lengths.
+
+A recommended way to define a special serialization is to describe it as ordinary or deterministic serialization with additional constraints or extensions.
+For example, a protocol requiring deterministic streaming of maps and arrays can be defined as follows:
+
+>> Deterministic serialization MUST be used, but all maps and arrays MUST be encoded with indefinite lengths, never definite lengths.
+>> Strings are still encoded with definite lengths.
+>> Maps are still to be ordered as required by deterministic serialization.
+
 
 
 # CDDL Control Operators {#CDDL-Operators}
@@ -504,7 +535,7 @@ Determinism can be achieved by allowing only floating-point, though that doesn�
 A better solution requires the fluid level always be encoded using the smallest representation for every particular value.
 For example, a fluid level of 2 is always encoding as an integer, never as a floating-point number.
 2.000001 is always be encoded as a floating-point number so as to not lose precision.
-See the numeric reduction defined by dCBOR.
+See the numeric reduction defined by {{I-D.mcnally-deterministic-cbor}}.
 
 Although this is not strictly a CBOR issue, deterministic CBOR protocol designers should be mindful of variability in Unicode text, as some characters can be encoded in multiple ways.
 
@@ -774,6 +805,69 @@ However, this may be suboptimal in memory-constrained environments, as it may re
 A more efficient approach can be for the CBOR library to treat the wrapped CBOR like a container (similar to arrays or maps).
 Many CBOR implementations already handle arrays and maps as containers without requiring a separate instance.
 Similarly, a byte-string wrapping encoded CBOR can be treated as a container that always contains exactly one item.
+
+# Serialization for COSE
+
+[^to-be-removed2]
+
+[^to-be-removed2]: This is new in the -02 draft. It aims to be a comprehensive example of some key concepts. There may not be consensus for this appendix.
+
+
+COSE {{-COSE}} is a framework protocol, not and end-end protocol.
+It has many messages types, allows many algorithms and leaves serialization open for most protocol elements.
+It does hashing and signing.
+It is thus a good framework protocol to make an example out of.
+
+This focuses on COSE_Sign1 ({{Section 4.2 of -COSE}}) as the simplest COSE structure that can illustrate several concepts described in this document.
+COSE_Sign1 serialization can be discussed in three parts:
+
+- The payload
+- The Sig_structure ({{Section 4.4 of -COSE}}).
+- The encoded message (the header parameters and the array of four that is the COSE_Sign1)
+
+## COSE Payload Serialization ##
+
+The payload may or may not be CBOR, but let’s assume it is, perhaps a CWT or EAT.
+The payload is transmitted from the signer/sender fully in tact all the way to the verifier/receiver.
+Because it is transmitted fully in tact, CBOR is a binary protocol and intermediaries do not do things like wrap long lines or add base 64 encoding or such, it is not special in anyway and COSE imposes no serialization restrictions on it at all.
+That is, it can use any serialization it wants.
+The serialization is selected by the protocol that defines the payload, not by COSE.
+
+This highlights the principle that determinism is often NOT needed for signing and hashing described in {{WhenDeterministic}}.
+
+It is also worth noting that the payload is byte string wrapped.
+This is not for determinism or armoring or canonicalization.
+It is so that the payload can be any data format, including not CBOR.
+It is also so CBOR libraries can return the CBOR-encoded payload for processing by the verification algorithms
+Most CBOR libraries do not provide access to chunks of encoded CBOR in the middle of a message.
+
+This is an example of byte string wrapping described in {{ByteStringWrapping}}.
+
+## COSE Sig_structure ##
+
+The Sig_struct is not conveyed from the sender to the receiver, but rather constructed independently by the sender and reciever.
+This is the input to the signing process so it must be deterministic.
+That is, COSE explicitly requires this to be deterministicall encoded so that both the sender and receiver construct exactly the same encoded CBOR.
+{{Section 9 of -COSE}} gives this requirement.
+The COSE requirement is the same as deterministic serialization {{DeterministicSerialization}} (unless floating-point numbers with NaN payloads appear in a header parameter).
+
+This is an example of the need for deterministic serialization for signed data that is not transmitted in its signed form. See {{WhenDeterministic}}.
+
+
+## The Encoded Message ##
+
+A COSE_Sign1 structure is an array of four elements containing, in order, two header parameter chunks, the payload, and the signature.
+The two header parameter chunks are maps that hold the various header parameters.
+COSE places no serialization requirements on these elements.
+The COSE protocol functions correctly regardless of the specific CBOR serialization used,as long as the decoder can decode what the encoder sends.
+
+In this respect, the serialization of this portion of a COSE message is no different from that of any other CBOR-based protocol.
+Indefinite-length items MAY be used, and fixed-length (i.e., non–shortest-length) CBOR encodings are permitted.
+The only requirement is that the encoded data be decodable by the receiver.
+
+That said, for most use cases and for practical interoperability reasons, ordinary serialization is a good choice for this part of the COSE_Sign1 structure.
+
+This serves as an example of the general recommendations for CBOR-based protocols described in this document and summarized in TODO:Recommendations Reference.
 
 
 # Examples and Test Vectors
