@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-22T01:48:26.777066+00:00",
+  "timestamp": "2026-01-25T01:55:01.434768+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -246,31 +246,39 @@
       "id": "I_kwDOQYX63c7ch2w_",
       "title": "A new subsection that says when to use general serialization",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/12",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This can pull some of the text out of the \"when to use ordinary serialization\" section.",
       "createdAt": "2025-12-05T18:02:53Z",
-      "updatedAt": "2025-12-05T18:02:53Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-01-22T21:12:01Z",
+      "closedAt": "2026-01-22T21:12:01Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fixed by #27 ",
+          "createdAt": "2026-01-22T21:12:01Z",
+          "updatedAt": "2026-01-22T21:12:01Z"
+        }
+      ]
     },
     {
       "number": 17,
       "id": "I_kwDOQYX63c7ddYsS",
       "title": "2 unjustified SHOULDs",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/17",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rohanmahy",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Section 3.2 bullet point 5 has 2 normative SHOULDs without any justification.\n\nPlease make these MUSTs or explain under what circumstances you would not:\n \n- ignore leading zeros\n- reject an empty bstr\n\nthey seem really easy to do.",
       "createdAt": "2025-12-10T14:35:40Z",
-      "updatedAt": "2025-12-11T20:09:33Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-22T07:03:54Z",
+      "closedAt": "2026-01-22T07:03:54Z",
       "comments": [
         {
           "author": "laurencelundblade",
@@ -310,15 +318,17 @@
       "id": "I_kwDOQYX63c7dd189",
       "title": "CDDL Control Operators don't help for non-bstr values",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/19",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rohanmahy",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "wontfix"
+      ],
       "body": "The example in Section 5:\n\n`leaf = #6.24(bytes .det any)`\n\ndoes not insure that the leading tag 24 is in shortest-form encoding for example.",
       "createdAt": "2025-12-10T15:02:52Z",
-      "updatedAt": "2025-12-13T17:54:17Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-22T21:13:26Z",
+      "closedAt": "2026-01-22T21:13:25Z",
       "comments": [
         {
           "author": "laurencelundblade",
@@ -333,6 +343,13 @@
           "body": "I don't think I agree that \"There's also no need to do that.\", but perhaps there is no consensus that we need an operator to do that. If you feel that is the case, you can close this issue with a wontfix label.",
           "createdAt": "2025-12-13T17:54:17Z",
           "updatedAt": "2025-12-13T17:54:17Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Won't fix this.",
+          "createdAt": "2026-01-22T21:13:25Z",
+          "updatedAt": "2026-01-22T21:13:25Z"
         }
       ]
     },
@@ -1389,24 +1406,26 @@
       "id": "PR_kwDOQYX63c655X6H",
       "title": "Add when-to-use-general section",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/27",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- Add new subsection when to use general serialization\r\n- Add new section on special serialization\r\n- Remove text from when-to-use-ordinary serialization, because it is now in when-to-use-general sterilization.\r\nThis is to address #12",
       "createdAt": "2025-12-19T21:07:21Z",
-      "updatedAt": "2026-01-21T15:45:18Z",
+      "updatedAt": "2026-01-22T21:10:44Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "3be6a47b5411a5cb79b1c0870fced8e5adcca71a",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "when-to-use-general",
-      "headRefOid": "ab83aff7fd07818d64b594dd38afd685854cbb5d",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "81184857d05ae9d06129c3c352649e80a09ae6b3",
+      "closedAt": "2026-01-22T21:10:40Z",
+      "mergedAt": "2026-01-22T21:10:40Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "aadb50f82da285f2edf152a48beb236ff10c407f"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1649,24 +1668,26 @@
       "id": "PR_kwDOQYX63c694ApI",
       "title": "Make some SHOULDS for big numbers into MUSTS",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/31",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "leading zeros and empty string handling\r\n\r\nAddress #17",
       "createdAt": "2026-01-18T18:15:41Z",
-      "updatedAt": "2026-01-21T15:12:15Z",
+      "updatedAt": "2026-01-22T07:03:42Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "320184721922cea5f269361ed06b17307394632f",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "bn-must",
       "headRefOid": "8d9c4a7a69f889f4875127db47e8f87b5b14fe13",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-22T07:03:35Z",
+      "mergedAt": "2026-01-22T07:03:35Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "fb882ec632021030dc37e55aa5cc7c92e40b85a9"
+      },
       "comments": [
         {
           "author": "rohanmahy",
@@ -1871,6 +1892,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 33,
+      "id": "PR_kwDOQYX63c6_Ky65",
+      "title": "Add appendix giving cose as an example",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/33",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-01-24T20:02:24Z",
+      "updatedAt": "2026-01-24T20:02:24Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "aadb50f82da285f2edf152a48beb236ff10c407f",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "cose-appdx",
+      "headRefOid": "c90ac3899a360a197425ae71accee51be03f55a3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
