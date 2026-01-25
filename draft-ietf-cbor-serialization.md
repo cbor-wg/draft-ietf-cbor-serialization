@@ -750,17 +750,22 @@ Similarly, a byte-string wrapping encoded CBOR can be treated as a container tha
 
 # Serialization for COSE
 
+[^to-be-removed2]
+
+[^to-be-removed2]: This is new in the -02 draft. It aims to be a comprehensive example of some key concepts. There may not be consensus for this appendix.
+
+
 COSE {{-COSE}} is a framework protocol, not and end-end protocol.
 It has many messages types, allows many algorithms and leaves serialization open for most protocol elements.
-It does hash and signing.
+It does hashing and signing.
 It is thus a good framework protocol to make an example out of.
 
-This focuses on COSE_Sign1 ({{Section 4.2 of -COSE}}) as the simplest COSE structure that can illustrate.
-All serialization discussion fits into three parts:
+This focuses on COSE_Sign1 ({{Section 4.2 of -COSE}}) as the simplest COSE structure that can illustrate several concepts described in this document.
+COSE_Sign1 serialization can be discussed in three parts:
 
 - The payload
 - The Sig_structure ({{Section 4.4 of -COSE}}).
-- The encoded message (the header parameters, the array of four that is the COSE_Sign1)
+- The encoded message (the header parameters and the array of four that is the COSE_Sign1)
 
 ## COSE Payload Serialization ##
 
@@ -786,23 +791,25 @@ The Sig_struct is not conveyed from the sender to the receiver, but rather const
 This is the input to the signing process so it must be deterministic.
 That is, COSE explicitly requires this to be deterministicall encoded so that both the sender and receiver construct exactly the same encoded CBOR.
 {{Section 9 of -COSE}} gives this requirement.
-The requirement is exactly the same as deterministic serialization described here unless floating-point numbers with NaN payloads appear in a header parameter.
+The COSE requirement is the same as deterministic serialization {{DeterministicSerialization}} (unless floating-point numbers with NaN payloads appear in a header parameter).
 
-This is an example of when deterministic serialization is needed because signed/data is not transmitted as described in {{WhenDeterministic}}.
+This is an example of the need for deterministic serialization for signed data that is not transmitted in its signed form. See {{WhenDeterministic}}.
 
 
-## The encoded message ##
-This just holds all the elements together, so there is no serialization requirement for it.
-The COSE protocol itself functions perfectly well no matter what serialization is used as long as the decoder can decode what the encoder sends.
+## The Encoded Message ##
 
-It is recommended that ordinary serialization be used for the message for all the same reasons that ordinary serialization is used for anything else — interoperability.
-Deterministic serialization is acceptable too, but is unnecessarily.
+A COSE_Sign1 structure is an array of four elements containing, in order, two header parameter chunks, the payload, and the signature.
+The two header parameter chunks are maps that hold the various header parameters.
+COSE places no serialization requirements on these elements.
+The COSE protocol functions correctly regardless of the specific CBOR serialization used,as long as the decoder can decode what the encoder sends.
 
-It would be unusual, but acceptable to encode the header parameters with indefinite lengths and not use shortest-length arguments. Perhaps the COSE implementation is in hardware and this makes the hardware easier.
-None of this matters for correct functioning or security or successful verification.
-All that matters is that the decoder can decode whatever sperical serialization is used.
+In this respect, the serialization of this portion of a COSE message is no different from that of any other CBOR-based protocol.
+Indefinite-length items MAY be used, and fixed-length (i.e., non–shortest-length) CBOR encodings are permitted.
+The only requirement is that the encoded data be decodable by the receiver.
 
-This is an example of the recommendations for general CBOR protocols made in this document that are summarized in TODO:Recommendations Reference.
+That said, for most use cases and for practical interoperability reasons, ordinary serialization is a good choice for this part of the COSE_Sign1 structure.
+
+This serves as an example of the general recommendations for CBOR-based protocols described in this document and summarized in TODO:Recommendations Reference.
 
 
 # Examples and Test Vectors
