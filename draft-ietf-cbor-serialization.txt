@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                         25 January 2026
-Expires: 29 July 2026
+Intended status: Standards Track                         26 January 2026
+Expires: 30 July 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 July 2026.
+   This Internet-Draft will expire on 30 July 2026.
 
 Copyright Notice
 
@@ -72,25 +72,30 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-   2.  General Serialization
-     2.1.  When To Use General Serialization
-     2.2.  General Serialization is the Default
-   3.  Ordinary Serialization
-     3.1.  Encoder Requirements
-     3.2.  Decoder Requirements
-     3.3.  When to use ordinary serialization
-     3.4.  Relation To Preferred Serialization
-   4.  Deterministic Serialization
+   2.  Recommendations Summary
+     2.1.  Framework protocols
+     2.2.  End-to-end Protocol Specifications
+     2.3.  CBOR Libraries
+     2.4.  Libraries for CBOR-based framework protocols
+   3.  General Serialization
+     3.1.  When To Use General Serialization
+     3.2.  General Serialization is the Default
+   4.  Ordinary Serialization
      4.1.  Encoder Requirements
      4.2.  Decoder Requirements
-     4.3.  When to use Deterministic Serialization
-   5.  Special Serializations
-   6.  CDDL Control Operators
-   7.  Security Considerations
-   8.  IANA Considerations
-   9.  References
-     9.1.  Normative References
-     9.2.  Informative References
+     4.3.  When to use ordinary serialization
+     4.4.  Relation To Preferred Serialization
+   5.  Deterministic Serialization
+     5.1.  Encoder Requirements
+     5.2.  Decoder Requirements
+     5.3.  When to use Deterministic Serialization
+   6.  Special Serializations
+   7.  CDDL Control Operators
+   8.  Security Considerations
+   9.  IANA Considerations
+   10. References
+     10.1.  Normative References
+     10.2.  Informative References
    Appendix A.  Information Model, Data Model and Serialization
    Appendix B.  General Protocol Considerations for Determinism
    Appendix C.  Deterministic Encoding for Popular Tags
@@ -147,7 +152,128 @@ Table of Contents
    serialization without indefinite-lengths, so it is largely
    interchangeable with what is commonly implemented.
 
-2.  General Serialization
+2.  Recommendations Summary
+
+   This section is new in draft -02 and may change a lot as consensus is
+   reached.
+
+2.1.  Framework protocols
+
+   Framework protocols are those that offer a wide range of options or
+   alternatives, where interoperability depends on the sender and
+   receiver making compatible choices.  Such protocols sometimes
+   recommend the use of profiles to define interoperability requirements
+   for specific applications.  They may also be referred to as toolbox
+   or building-block protocols, reflecting their purpose of providing
+   reusable mechanisms.  CBOR, CWT, COSE, and EAT are examples of
+   framework protocols.
+
+   It is RECOMMENDED that CBOR-based framework protocols not impose
+   serialization requirements.  This allows individual applications or
+   profiles to select the serialization approach most appropriate to
+   their needs.
+
+   An important exception to this recommendation applies when
+   deterministic serialization is required for correct operation.
+   Deterministic serialization is typically necessary when data is
+   hashed or signed but not directly transmitted, and instead is
+   reconstructed independently by the sender and the receiver.
+
+   See Appendix G for a COSE-based detailed example.
+
+2.2.  End-to-end Protocol Specifications
+
+   End-to-end protocols are specified such that interoperability is
+   assured when they are implemented in accordance with the
+   specification.  If the protocol includes options, these are typically
+   selected through real-time negotiation between the communicating
+   parties.  Such protocols often have formal interoperability
+   compliance programs or organize interoperability testing events (for
+   example, bake-offs).  TLS, HTTP, and FIDO are examples of end-to-end
+   protocols.
+
+   It is RECOMMENDED that CBOR-based end-to-end protocols require
+   ordinary serialization, unless they have a specific need for a
+   different serialization.
+
+   One such specific need is deterministic serialization for data that
+   is hashed or signed.  This requirement is often already stated
+   explicitly in protocol specifications, and the recommendation to use
+   ordinary serialization does not override it.  If deterministic
+   serialization is required only for a subset of the protocol (e.g.,
+   COSE), the recommendation to use ordinary serialization still applies
+   to the remainder of the protocol.
+
+   Other specific serialization requirements typically arise to simplify
+   implementation or to operate in highly constrained environments.  For
+   example, the use of indefinite-length encodings enables streaming of
+   arrays that are too large to fit entirely in memory.  See Section 6
+   for a discussion of such special serializations.
+
+   This recommendation is to ensure serialization interoperability: data
+   encoded by the sender must always be decodable by the receiver.
+   Without an explicit serialization requirement, independent
+   implementations may make incompatible choices.  For most use cases,
+   requiring ordinary serialization is the simplest way to avoid this
+   risk.  If a specialized serialization is used, it must still ensure
+   full interoperability.
+
+   If no serialization requirement is stated, general serialization is
+   implied (Section 3).  In that case, the encoder can use any
+   serialization and the receiver is expected to decode it.
+
+   Finally, requiring deterministic serialization for an entire protocol
+   will also ensure interoperability.  This approach is not the primary
+   recommendation, however, because the required map sorting can be
+   prohibitively expensive in some environments.
+
+   Again, see Appendix G for a COSE-based detailed example.
+
+2.3.  CBOR Libraries
+
+   It is RECOMMENDED that CBOR libraries support ordinary serialization.
+   This can be achieved by conforming to the decoding requirements in
+   Section 4.2 and by making the encoding behavior defined in
+   Section 4.1 the default or primary encoding API.
+
+   Ordinary serialization is recommended because it is suitable for the
+   majority of CBOR-based protocols.  In practice, ordinary
+   serialization is equivalent to preferred serialization for most use
+   cases.
+
+   It is also RECOMMENDED that CBOR libraries support deterministic
+   serialization, as some protocols (for example, COSE) require it.
+   Relative to ordinary serialization, the only additional requirement
+   for deterministic serialization is that encoded maps be sorted.  This
+   recommendation is particularly strong for environments in which map
+   sorting is easy to implement (for example, Python, Go, and Ruby).
+
+   A CBOR library may choose to implement only deterministic
+   serialization and make it the default.  Deterministic serialization
+   is a superset of ordinary serialization; therefore, if deterministic
+   serialization is fully supported, explicit support for ordinary
+   serialization may be omitted.
+
+   A CBOR library MAY also choose to support some or all aspects of
+   general serialization as described in Section 3.  Doing so enables
+   the library to be used for implementing specialized serializations,
+   as described in Section 6.
+
+2.4.  Libraries for CBOR-based framework protocols
+
+   It is RECOMMENDED that libraries implementing framework protocols
+   support ordinary serialization.  For example, a CWT or COSE library
+   should support ordinary serialization.
+
+   If a framework protocol requires deterministic serialization (for
+   example, COSE), the library must also support deterministic
+   serialization.
+
+   If appropriate for the library’s deployment environment and design
+   goals, a library may choose to support only deterministic
+   serialization for the entire protocol.
+
+3.  General Serialization
 
    This section assigns the name "general serialization" to the full set
    of serialization options standardized in Section 3 of [STD94].  This
@@ -171,9 +297,9 @@ Table of Contents
    A decoder that supports general serialization is able to decode all
    of these.
 
-2.1.  When To Use General Serialization
+3.1.  When To Use General Serialization
 
-   Ordinary serialization (Section 3) satisfies the vast majority of
+   Ordinary serialization (Section 4) satisfies the vast majority of
    CBOR use cases; therefore, the need for general serialization is rare
    and arises only in unusual circumstances.  The following are
    representative examples:
@@ -204,9 +330,9 @@ Table of Contents
    purpose is solely to simplify or optimize encoding in atypical
    constrained environments.  The choice of serialization is orthogonal
    to the data model.  See also the section on special serializations in
-   Section 5.
+   Section 6.
 
-2.2.  General Serialization is the Default
+3.2.  General Serialization is the Default
 
    If a CBOR-based protocol specification does not explicitly specify
    serialization, general serialization is implied.  This means that a
@@ -223,13 +349,13 @@ Table of Contents
    themselves to the subset of serializations that decoders can reliably
    handle, most notably by never encoding indefinite lengths.  It is
    similar for other CBOR-based protocols like [RFC9052].  See also
-   Section 3.
+   Section 4.
 
-3.  Ordinary Serialization
+4.  Ordinary Serialization
 
    This section defines a serialization named "ordinary serialization."
 
-3.1.  Encoder Requirements
+4.1.  Encoder Requirements
 
    1.  The shortest-form of the CBOR argument must be used for all major
        types.  The shortest-form encoding for any argument that is not a
@@ -281,7 +407,7 @@ Table of Contents
        *  If a value can be encoded using major type 0 or 1, then it
           MUST be encoded with major type 0 or 1, never as a big number.
 
-3.2.  Decoder Requirements
+4.2.  Decoder Requirements
 
    1.  Decoders MUST accept shortest-form encoded arguments.
 
@@ -312,7 +438,7 @@ Table of Contents
        *  An empty string MUST be accepted and treated as the value
           zero.
 
-3.3.  When to use ordinary serialization
+4.3.  When to use ordinary serialization
 
    The purpose of ordinary serialization is to provide interoperability
    without requiring support for indefinite-length decoding.  If an
@@ -331,12 +457,12 @@ Table of Contents
    serialization the best choice for most CBOR protocols.  To some
    degree it is a de facto standard for common CBOR protocols.
 
-   See Section 2.1 for uses cases where ordinary serialization may not
+   See Section 3.1 for uses cases where ordinary serialization may not
    be suitable.  But, for the vast majority of use cases, ordinary
    serialization provides interoperaibility, small encoded size and low
    implementation costs.
 
-3.4.  Relation To Preferred Serialization
+4.4.  Relation To Preferred Serialization
 
    Ordinary serialization is defined to be the long-term replacement for
    preferred serialization.
@@ -379,25 +505,25 @@ Table of Contents
    Thus ordinary serialization is largely interchangable with preferred
    serialization in the real world.
 
-4.  Deterministic Serialization
+5.  Deterministic Serialization
 
    This section defines a serialization named "deterministic
    serialization"
 
    Deterministic serialization is the same as described in Section 4.2.1
    of [STD94] except for the encoding of floating-point NaNs.  See
-   Section 3 and Appendix D for details on and rationale for NaN
+   Section 4 and Appendix D for details on and rationale for NaN
    encoding.
 
    Note that in deterministic serialization, any big number that can be
    represented as an integer must be encoded as an integer.  This rule
-   is inherited from ordinary serialization (Section 3), just as
+   is inherited from ordinary serialization (Section 4), just as
    Section 4.2.1 of [STD94] inherits this requirement from preferred
    serialization.
 
-4.1.  Encoder Requirements
+5.1.  Encoder Requirements
 
-   1.  All of ordinary serialization defined in Section 3.1 MUST be
+   1.  All of ordinary serialization defined in Section 4.1 MUST be
        used.
 
    2.  If a map is encoded, the items in it MUST be sorted in the
@@ -406,13 +532,13 @@ Table of Contents
        Section 4.2.1 of [STD94] and not the same as Section 3.9 of
        [RFC7049].
 
-4.2.  Decoder Requirements
+5.2.  Decoder Requirements
 
-   1.  Decoders MUST meet the decoder requirements for Section 3.2.
+   1.  Decoders MUST meet the decoder requirements for Section 4.2.
        That is, deterministic encoding imposes no requirements over and
        above the requirements for decoding ordinary serialization.
 
-4.3.  When to use Deterministic Serialization
+5.3.  When to use Deterministic Serialization
 
    In the basic generic data model, maps are unordered (See Section 5.6
    of [STD94]).  Applications MUST NOT rely on any particular map
@@ -461,7 +587,7 @@ Table of Contents
    indefinite lengths, separate big numbers from integers in the data
    model, need non-trivial NaNs, or other.
 
-5.  Special Serializations
+6.  Special Serializations
 
    Although discouraged, defining special serializations that differ
    from those specified here is permitted.  For example, a use case
@@ -481,7 +607,7 @@ Table of Contents
          Maps are still to be ordered as required by deterministic
          serialization.
 
-6.  CDDL Control Operators
+7.  CDDL Control Operators
 
    Four new control operators are defined for use in CDDL [RFC8610].
 
@@ -516,11 +642,11 @@ Table of Contents
    embedded CBOR that requires constrained serialization must specify
    that constraint explicitly.  See also Appendix F.
 
-7.  Security Considerations
+8.  Security Considerations
 
    The security considerations in Section 10 of [STD94] apply.
 
-8.  IANA Considerations
+9.  IANA Considerations
 
 
    // RFC Editor: please replace RFCXXXX with the RFC number of this RFC
@@ -543,9 +669,9 @@ Table of Contents
                               operators to be
                                  registered
 
-9.  References
+10.  References
 
-9.1.  Normative References
+10.1.  Normative References
 
    [IANA.cddl]
               IANA, "Concise Data Definition Language (CDDL)",
@@ -571,7 +697,7 @@ Table of Contents
               DOI 10.17487/RFC8949, December 2020,
               <https://www.rfc-editor.org/rfc/rfc8949>.
 
-9.2.  Informative References
+10.2.  Informative References
 
    [CTAP2]    W3C, "Client To Authenticator Protocol v2",
               <https://fidoalliance.org/specs/fido-v2.0-ps-20190130/
@@ -670,12 +796,12 @@ Appendix B.  General Protocol Considerations for Determinism
 
    // RFC Editor: Please remove above sentence before publication
 
-   In addition to Section 4 and Appendix C, there are considerations in
+   In addition to Section 5 and Appendix C, there are considerations in
    the design of any deterministic protocol.
 
    For a protocol to be deterministic, both the encoding (serialization)
    and data model (application) layer must be deterministic.  While
-   deterministic serialization, Section 4, ensures determinism at the
+   deterministic serialization, Section 5, ensures determinism at the
    encoding layer, requirements at the application layer may also be
    necessary.
 
@@ -756,7 +882,7 @@ C.2.2.  Decoder Requirements
 
 C.3.  Big Numbers, Tags 2 and 3
 
-   See Section 3.
+   See Section 4.
 
 C.4.  Big Floats and Decimal Fractions, Tags 4 and 5
 
@@ -1062,7 +1188,7 @@ Appendix F.  CBOR Byte String Wrapping
    This appendix provides non-normative guidance on byte-string wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
-   control operators described in Section 6.
+   control operators described in Section 7.
 
 F.1.  Purpose
 
@@ -1102,13 +1228,13 @@ F.2.  Wrapping Recommendations
    For example, assume protocol XYZ wraps protocol ABC.  If protocol ABC
    requires Canonical CBOR as specified in Section 3.9 of [RFC7049]
    (e.g., [CTAP2] from WebAuthn) while protocol XYZ requires
-   deterministic serialization, Section 4, a conflict would arise.
+   deterministic serialization, Section 5, a conflict would arise.
 
    Most CBOR data to be signed or hashed does not require a specific
    serialization.  CBOR, being a modern, fully specified, binary
    protocol, does not need canonicalization, wrapping, or armoring like
    other data representation formats such as JSON.  See the discussion
-   in Section 4.3.
+   in Section 5.3.
 
 F.3.  CBOR Library Implementation Suggestion
 
@@ -1162,7 +1288,7 @@ G.1.  COSE Payload Serialization
    protocol that defines the payload, not by COSE.
 
    This highlights the principle that determinism is often NOT needed
-   for signing and hashing described in Section 4.3.
+   for signing and hashing described in Section 5.3.
 
    It is also worth noting that the payload is byte string wrapped.
    This is not for determinism or armoring or canonicalization.  It is
@@ -1181,13 +1307,13 @@ G.2.  COSE Sig_structure
    is, COSE explicitly requires this to be deterministicall encoded so
    that both the sender and receiver construct exactly the same encoded
    CBOR.  Section 9 of [RFC9052] gives this requirement.  The COSE
-   requirement is the same as deterministic serialization Section 4
+   requirement is the same as deterministic serialization Section 5
    (unless floating-point numbers with NaN payloads appear in a header
    parameter).
 
    This is an example of the need for deterministic serialization for
    signed data that is not transmitted in its signed form.  See
-   Section 4.3.
+   Section 5.3.
 
 G.3.  The Encoded Message
 
