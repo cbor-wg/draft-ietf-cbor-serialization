@@ -307,6 +307,8 @@ This section defines a serialization named "ordinary serialization."
    * Leading zeros MUST be ignored.
    * An empty string MUST be accepted and treated as the value zero.
 
+See also {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further background on big numbers.
+
 
 ## When to use ordinary serialization
 
@@ -724,6 +726,57 @@ JSON requires use of null as it does not support NaNs at all.
 
 The primary use case for non-trivial NaNs is existing systems that already use them.
 For example, a program that relies on non-trivial NaNs internally may need to serialize its data to run across machines connected by a network.
+
+
+# Big Numbers and the CBOR Data Model {#BigNumbersDataModel}
+
+The primary purpose of this document is to define ordinary and deterministic serialization.
+Accordingly, {{OrdinarySerialization}} describes CBOR’s unified integer space in terms of serialization behavior.
+This is an effective and clear way to describe what implementors must do.
+An implementation that follows the requirements in {{OrdinarySerialization}} will be complete and correct with respect to serialization.
+
+From a conceptual perspective, however, additional discussion is warranted regarding the CBOR data model itself.
+That discussion is provided in this appendix.
+(Please review {{models}} for background on the difference between serialization and the data model).
+
+In the basic, generic CBOR data model, each tag represents a distinct data type ({{Section 2 of -cbor}}).
+Tags are also distinct from the major types, such as integers and strings.
+By this, a value such as 0 or 1 encoded as major type 0 is clearly distinct from the same numeric value encoded as tag 2.
+
+However, the text in {{Section 3.4.3 of -cbor}} overrides this distinction by defining these numeric values to be equivalent.
+This text therefore has a direct effect on the CBOR data model.
+No other serialization requirement in {{-cbor}} or in this document alters the data model; this equivalence is the sole exception.
+
+It is generally understood that {{Section 3.4.3 of -cbor}} unifies the integer ranges of major types 0 and 1 with the integer ranges of tags 2 and 3.
+Under this interpretation, there is no CBOR data model in which these integer spaces are distinct.
+
+This document does not attempt to update or reinterpret the text of {{Section 3.4.3 of -cbor}}.
+Rather, it records the commonly accepted interpretation of that text and its implications for the CBOR data model.
+
+
+# Big Number Implementation Strategies {#BigNumberStrategies}
+
+{{BigNumbersDataModel}} describes how CBOR defines a single integer number space, in which big numbers are not distinct from values encoded using major types 0 and 1.
+This appendix discusses approaches for implementers to support that model.
+
+Some programming environments provide strong native support for big numbers (e.g., Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
+Even in environments that support big numbers, operations on native-sized integers (e.g., 64-bit integers) are typically much more efficient.
+It is therefore reasonable for a CBOR library to expose separate APIs for native-sized integers and for big numbers.
+
+When a CBOR library provides a comprehensive big number API, values that fall within the range of major types 0 and 1 must be encoded using those major types rather than tags 2 or 3.
+Similarly, decoding facilities that return big numbers must accept values encoded using major types 0 and 1, even though the returned representation is a big number.
+
+Alternatively, some CBOR libraries may choose to return tags 2 and 3 as raw byte strings, as this approach is simpler than implementing full big number support.
+A unified big number API introduces additional complexity, such as handling CBOR’s offset-by-one encoding of negative values and unifying tags 2 and 3 with major types 0 and 1.
+It is also worth noting that major type 1 can represent negative integers beyond the range of typical native integer types.
+When a library adopts this approach, it should clearly document that the application layer is responsible for performing any required unification or numeric processing.
+In most cases these steps will not be too difficult if the application makes use of a big number library.
+
+Another acceptable approach is for a CBOR library to provide a generic mechanism that allows applications to register handlers for specific tags.
+In this case, handlers for tags 2 and 3 MUST perform the required unification with major types 0 and 1.
+
+Finally, note that big numbers are not a widely used feature of CBOR.
+Some CBOR libraries may entirely omit support for tags 2 and 3.
 
 
 # Serialization Checking
