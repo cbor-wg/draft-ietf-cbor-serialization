@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                         26 January 2026
-Expires: 30 July 2026
+Intended status: Standards Track                         27 January 2026
+Expires: 31 July 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 July 2026.
+   This Internet-Draft will expire on 31 July 2026.
 
 Copyright Notice
 
@@ -114,17 +114,19 @@ Table of Contents
      D.4.  Clarification of STD94
      D.5.  Divergence from STD94
      D.6.  Recommendations for Use of Non-Trival NaNs
-   Appendix E.  Serialization Checking
-     E.1.  Serialization Checking Use Cases
-   Appendix F.  CBOR Byte String Wrapping
-     F.1.  Purpose
-     F.2.  Wrapping Recommendations
-     F.3.  CBOR Library Implementation Suggestion
-   Appendix G.  Serialization for COSE
-     G.1.  COSE Payload Serialization
-     G.2.  COSE Sig_structure
-     G.3.  The Encoded Message
-   Appendix H.  Examples and Test Vectors
+   Appendix E.  Big Numbers and the CBOR Data Model
+   Appendix F.  Big Number Implementation Strategies
+   Appendix G.  Serialization Checking
+     G.1.  Serialization Checking Use Cases
+   Appendix H.  CBOR Byte String Wrapping
+     H.1.  Purpose
+     H.2.  Wrapping Recommendations
+     H.3.  CBOR Library Implementation Suggestion
+   Appendix I.  Serialization for COSE
+     I.1.  COSE Payload Serialization
+     I.2.  COSE Sig_structure
+     I.3.  The Encoded Message
+   Appendix J.  Examples and Test Vectors
    Contributors
    Author's Address
 
@@ -179,7 +181,7 @@ Table of Contents
    hashed or signed but not directly transmitted, and instead is
    reconstructed independently by the sender and the receiver.
 
-   See Appendix G for a COSE-based detailed example.
+   See Appendix I for a COSE-based detailed example.
 
 2.2.  End-to-end Protocol Specifications
 
@@ -227,7 +229,7 @@ Table of Contents
    recommendation, however, because the required map sorting can be
    prohibitively expensive in some environments.
 
-   Again, see Appendix G for a COSE-based detailed example.
+   Again, see Appendix I for a COSE-based detailed example.
 
 2.3.  CBOR Libraries
 
@@ -438,6 +440,9 @@ Table of Contents
        *  An empty string MUST be accepted and treated as the value
           zero.
 
+   See also Appendix E and Appendix F for further background on big
+   numbers.
+
 4.3.  When to use ordinary serialization
 
    The purpose of ordinary serialization is to provide interoperability
@@ -640,7 +645,7 @@ Table of Contents
    arrays and maps, but does not extend into byte strings or other data
    items that happen to contain encoded CBOR.  Every instance of
    embedded CBOR that requires constrained serialization must specify
-   that constraint explicitly.  See also Appendix F.
+   that constraint explicitly.  See also Appendix H.
 
 8.  Security Considerations
 
@@ -1142,7 +1147,95 @@ D.6.  Recommendations for Use of Non-Trival NaNs
    NaNs internally may need to serialize its data to run across machines
    connected by a network.
 
-Appendix E.  Serialization Checking
+Appendix E.  Big Numbers and the CBOR Data Model
+
+
+   // Note that the CBOR Working Group agreed in January of 2026 to
+   // accept the big number / integer equivalence described here, but
+   // not allow any tags in the future to affect the data model.  This
+   // is noted here for now, but probably out of scope for this document
+   // on serialization and needs to go somehere else, like an update to
+   // IANA CBOR tag experts.
+
+   The primary purpose of this document is to define ordinary and
+   deterministic serialization.  Accordingly, Section 4 describes CBOR’s
+   unified integer space in terms of serialization behavior.  This is an
+   effective and clear way to describe what implementors must do.  An
+   implementation that follows the requirements in Section 4 will be
+   complete and correct with respect to serialization.
+
+   From a conceptual perspective, however, additional discussion is
+   warranted regarding the CBOR data model itself.  That discussion is
+   provided in this appendix.  (Please review Appendix A for background
+   on the difference between serialization and the data model).
+
+   In the basic, generic CBOR data model, each tag represents a distinct
+   data type (Section 2 of [STD94]).  Tags are also distinct from the
+   major types, such as numbers and strings.  By this, an integer value
+   such as 0 or 1 encoded as major type 0 is clearly distinct in the
+   data model from the same integer value encoded as tag 2.
+
+   However, the text in Section 3.4.3 of [STD94] overrides this by
+   defining these encodings to be equivalent rather than distinct.  This
+   text therefore modifies the CBOR data model.  No other serialization
+   requirement in [STD94] or in this document alters the data model;
+   this equivalence is the sole exception.  This is unusual because the
+   data model is otherwise orthogonal to serialization.
+
+   Further, Section 3.4.3 of [STD94] along with text in Section 2 of
+   [STD94] are interpreted such that there is never a CBOR data model
+   where there is a distinction between these integer representations.
+   That is, the equivalence applies regardless of the serialization even
+   though much of the relevant text appears in proximity to discussions
+   of serialization.
+
+   This document does not attempt to update or revise the text of
+   Section 3.4.3 of [STD94].  Rather, it records the commonly accepted
+   interpretation of that text and its implications for the CBOR data
+   model.
+
+Appendix F.  Big Number Implementation Strategies
+
+   Appendix E describes how CBOR defines a single integer number space,
+   in which big numbers are not distinct from values encoded using major
+   types 0 and 1.  This appendix discusses approaches for implementers
+   to support that model.
+
+   Some programming environments provide strong native support for big
+   numbers (e.g., Python, Ruby, and Go), while others do not (e.g., C,
+   C++, and Rust).  Even in environments that support big numbers,
+   operations on native-sized integers (e.g., 64-bit integers) are
+   typically much more efficient.  It is therefore reasonable for a CBOR
+   library to expose separate APIs for native-sized integers and for big
+   numbers.
+
+   When a CBOR library provides a big number API, values that fall
+   within the range of major types 0 and 1 must be encoded using those
+   major types rather than tags 2 or 3.  Similarly, decoding facilities
+   that return big numbers must accept values encoded using major types
+   0 and 1, even though the returned representation is a big number.
+
+   Alternatively, some CBOR libraries may choose to return tags 2 and 3
+   as raw byte strings, as this approach is simpler than implementing
+   full big number support.  When a library adopts this approach, it
+   should clearly document that the application layer is responsible for
+   performing the integer unification.  The application is also
+   responsible for handling CBOR’s offset-by-one encoding of negative
+   values and the extended negative integer range permitted by major
+   type 1.
+
+   In most cases, these additional processing steps are straightforward
+   when the application already uses a big number library.
+
+   Another acceptable approach is for a CBOR library to provide a
+   generic mechanism that allows applications to register handlers for
+   specific tags.  In this case, handlers for tags 2 and 3 MUST perform
+   the required unification with major types 0 and 1.
+
+   Finally, note that big numbers are not a widely used feature of CBOR.
+   Some CBOR libraries may entirely omit support for tags 2 and 3.
+
+Appendix G.  Serialization Checking
 
    Serialization checking rejects input which, while well-formed CBOR,
    does not conform to a particular serialization rule set it is
@@ -1157,7 +1250,7 @@ Appendix E.  Serialization Checking
    checking is well-formed; it is rejected because it violates
    additional serialization constraints.
 
-E.1.  Serialization Checking Use Cases
+G.1.  Serialization Checking Use Cases
 
    Some applications that rely on deterministic serialization may choose
    serialization checking in order to ensure that the data they consume
@@ -1183,14 +1276,14 @@ E.1.  Serialization Checking Use Cases
    appropriate remedy is to fix their input validation, not to add the
    serialization checking described here.
 
-Appendix F.  CBOR Byte String Wrapping
+Appendix H.  CBOR Byte String Wrapping
 
    This appendix provides non-normative guidance on byte-string wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
    control operators described in Section 7.
 
-F.1.  Purpose
+H.1.  Purpose
 
    Error isolation:  Wrapping CBOR in a byte string prevents encoding
       errors in the wrapped data from causing the enclosing CBOR to fail
@@ -1213,7 +1306,7 @@ F.1.  Purpose
       data types like arrays and maps as map keys, they can be wrapped
       in a byte string.
 
-F.2.  Wrapping Recommendations
+H.2.  Wrapping Recommendations
 
    The serialization requirements for the wrapping CBOR may differ from
    those for the wrapped CBOR.  CBOR itself imposes no universal rule
@@ -1236,7 +1329,7 @@ F.2.  Wrapping Recommendations
    other data representation formats such as JSON.  See the discussion
    in Section 5.3.
 
-F.3.  CBOR Library Implementation Suggestion
+H.3.  CBOR Library Implementation Suggestion
 
    A straightforward implementation strategy is to instantiate a second
    CBOR encoder or decoder for the wrapped message.  However, this may
@@ -1251,7 +1344,7 @@ F.3.  CBOR Library Implementation Suggestion
    encoded CBOR can be treated as a container that always contains
    exactly one item.
 
-Appendix G.  Serialization for COSE
+Appendix I.  Serialization for COSE
 
 
    // This is new in the -02 draft.  It aims to be a comprehensive
@@ -1275,7 +1368,7 @@ Appendix G.  Serialization for COSE
    *  The encoded message (the header parameters and the array of four
       that is the COSE_Sign1)
 
-G.1.  COSE Payload Serialization
+I.1.  COSE Payload Serialization
 
    The payload may or may not be CBOR, but let’s assume it is, perhaps a
    CWT or EAT.  The payload is transmitted from the signer/sender fully
@@ -1297,9 +1390,9 @@ G.1.  COSE Payload Serialization
    processing by the verification algorithms Most CBOR libraries do not
    provide access to chunks of encoded CBOR in the middle of a message.
 
-   This is an example of byte string wrapping described in Appendix F.
+   This is an example of byte string wrapping described in Appendix H.
 
-G.2.  COSE Sig_structure
+I.2.  COSE Sig_structure
 
    The Sig_struct is not conveyed from the sender to the receiver, but
    rather constructed independently by the sender and reciever.  This is
@@ -1315,7 +1408,7 @@ G.2.  COSE Sig_structure
    signed data that is not transmitted in its signed form.  See
    Section 5.3.
 
-G.3.  The Encoded Message
+I.3.  The Encoded Message
 
    A COSE_Sign1 structure is an array of four elements containing, in
    order, two header parameter chunks, the payload, and the signature.
@@ -1339,7 +1432,7 @@ G.3.  The Encoded Message
    based protocols described in this document and summarized in
    TODO:Recommendations Reference.
 
-Appendix H.  Examples and Test Vectors
+Appendix J.  Examples and Test Vectors
 
    TODO -- complete work and remove this comment before publication
 
