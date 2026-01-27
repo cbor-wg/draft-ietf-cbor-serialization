@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-25T01:55:01.434768+00:00",
+  "timestamp": "2026-01-27T01:51:25.396852+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -121,15 +121,15 @@
       "id": "I_kwDOQYX63c7Zx6lX",
       "title": "Clarify the relation to RFC 8949 section 5.6.1",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/5",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "cyberphone",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "5.6.1 is obviously in conflict with the sorting concept outlined in 4.2.1\n\nFWIW CBOR::Core deprecates 5.6.1 in an indirect way:\n\nSince CBOR encodings according to this specification maintain uniqueness, there are no additional tests needed in order to determine map key equivalence. As an (extreme) example, the floating-point numbers `0.0` and `-0.0`, the integer number `0`, a `NaN`, and an empty map `{}`, could represent the distinct keys `f90000`, `f98000`, `00`, `f97e00`, and `a0` respectively.",
       "createdAt": "2025-11-22T03:08:57Z",
-      "updatedAt": "2025-11-24T04:21:49Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-25T21:01:06Z",
+      "closedAt": "2026-01-25T21:01:06Z",
       "comments": [
         {
           "author": "cyberphone",
@@ -144,6 +144,13 @@
           "body": "So far, dup detection is out of scope for this document.\n\nTo get it to be in scope and to have 5.6.1 deprecated, you will have to get consensus in the WG on the mailing list.\n",
           "createdAt": "2025-11-24T04:21:49Z",
           "updatedAt": "2025-11-24T04:21:49Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing because there has been no response on this for a month.",
+          "createdAt": "2026-01-25T21:01:06Z",
+          "updatedAt": "2026-01-25T21:01:06Z"
         }
       ]
     },
@@ -152,15 +159,15 @@
       "id": "I_kwDOQYX63c7Zx9H6",
       "title": "Make preferred serialization MUST",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/6",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "cyberphone",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Maintaining compatibility with inferior systems makes no sense but adds considerable complexity to specificatos.\n\nThe existing systems will not cease to work.",
       "createdAt": "2025-11-22T03:14:38Z",
-      "updatedAt": "2025-11-26T06:48:59Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-25T21:01:16Z",
+      "closedAt": "2026-01-25T21:01:16Z",
       "comments": [
         {
           "author": "laurencelundblade",
@@ -182,6 +189,13 @@
           "body": "OK. See if you can get consensus for what you want on the mailing list.\n",
           "createdAt": "2025-11-26T06:48:58Z",
           "updatedAt": "2025-11-26T06:48:58Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing because there has been no response on this for a month.",
+          "createdAt": "2026-01-25T21:01:16Z",
+          "updatedAt": "2026-01-25T21:01:16Z"
         }
       ]
     },
@@ -230,16 +244,24 @@
       "id": "I_kwDOQYX63c7ch2R5",
       "title": "Create a new General Recommendations section",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/11",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "It summarizes what we want CBOR libraries to do and what we want protocol designers to do. It should be a clear and simple statement.",
       "createdAt": "2025-12-05T18:02:10Z",
-      "updatedAt": "2025-12-05T18:02:10Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-01-26T19:40:56Z",
+      "closedAt": "2026-01-26T19:40:56Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed by #29",
+          "createdAt": "2026-01-26T19:40:56Z",
+          "updatedAt": "2026-01-26T19:40:56Z"
+        }
+      ]
     },
     {
       "number": 12,
@@ -406,15 +428,15 @@
       "id": "I_kwDOQYX63c7eIevQ",
       "title": "Deterministic Serialization section - Many unresolved issues",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/24",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "cyberphone",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "There are in my opinion three main reasons for using deterministic encoding (DE):\n- Having  DE as the only _encoding_ mode relives users from having to deal with serialization options.  That is, DE is not only about the needs of applications.  \"Most applications etc.\" may not be valid forever.\n- DE enables applications to hash and sign \"raw\" CBOR, including sending the \"raw\" CBOR data on-the-wire:\nhttps://github.com/cyberphone/D-CBOR/blob/main/README.md#example\nI get the impression that the draft intends to outlaw, alternatively ignore this use case.  Is this correct?\n- DE (unlike the application-level) enables full equivalence:\nhttps://www.ietf.org/archive/id/draft-rundgren-cbor-core-19.html#name-application-vs-encoding-lev\nI use this feature extensively in JUnit tests and for test vector generation.\n\n**Decoder**\nThe sub-section about _decoder_ requirements outlines a specific policy.  The Blockchain Commons' dCBOR implementations as well as my CBOR::Core implementations use another policy (full DE compliance checking).   The CBOR::Core implementations deal with decoder policies in a more useful way than imagined by the serialization draft:\nhttps://www.ietf.org/archive/id/draft-rundgren-cbor-core-19.html#name-backward-compatibility\n\n**COSE**\nThe section about COSE does not explain why the payload does not depend on DE.  Since this topic is causing controversy, it might be useful adding the fact that the payload is wrapped in \"bstr\".\n\n**dCBOR**\nThe only publicly stated rationale for dCBOR (https://www.ietf.org/archive/id/draft-mcnally-deterministic-cbor-15.html), is to relieve developers from having to separate certain instances of integers and floating-point numbers.  Saving bytes is not a part of the plot.\n\n---------------------------------------------------------------------------------\n\nI am (for obvious reasons) not going to bring up these topics on the CBOR mailing list yet another time:\nhttps://mailarchive.ietf.org/arch/msg/cbor/w-Je-JwM1iI2VSLEcs9uCUt43_g/\n\nEven the use of URLs as object identifiers (https://datatracker.ietf.org/doc/draft-rundgren-cotx/) has been dismissed although it is a de-facto standard in the JSON world including in the giant project known as \"Verified Credentials\".\n\nCBOR is about to change: https://www.linkedin.com/posts/michael-kisilenko-ceo_nasa-with-4kb-to-the-moon-my-64gb-one-activity-7406052352618737665-ZVVi/\n\nAnders",
       "createdAt": "2025-12-14T05:01:00Z",
-      "updatedAt": "2025-12-23T18:42:07Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-25T21:01:34Z",
+      "closedAt": "2026-01-25T21:01:34Z",
       "comments": [
         {
           "author": "laurencelundblade",
@@ -422,6 +444,13 @@
           "body": "Sorry, but you have to bring these up on the list and gain consensus there to have any change in the document. GitHub issues are for specific changes to the document, not another place to have general discussions.",
           "createdAt": "2025-12-23T18:42:07Z",
           "updatedAt": "2025-12-23T18:42:07Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing because there has been no response on this for a month.",
+          "createdAt": "2026-01-25T21:01:34Z",
+          "updatedAt": "2026-01-25T21:01:34Z"
         }
       ]
     },
@@ -430,31 +459,39 @@
       "id": "I_kwDOQYX63c7e1TyG",
       "title": "tag 1 encoding",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/25",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "cyberphone",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "https://www.ietf.org/archive/id/draft-ietf-cbor-serialization-01.html#name-epoch-date-tag-1\n\nAPI centric implementations like CBOR::Core may use other _encoding_ strategies:\nhttps://cyberphone.github.io/CBOR.js/doc/#utility.cbor.createepochtime\n\n- Restricted Epoch range nullifies the magnitude selection criterion\n- Precision limited by the platform\n- Explicit choice (policy) to use float\n\nAlthough I have not (yet) implemented it, one could imagine float support as a _decoder_ option as well.\n",
       "createdAt": "2025-12-17T11:33:39Z",
-      "updatedAt": "2025-12-17T11:33:39Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-01-25T21:02:49Z",
+      "closedAt": "2026-01-25T21:02:49Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing because this doesn't really line up with consensus and needs to resolved on the list first.",
+          "createdAt": "2026-01-25T21:02:49Z",
+          "updatedAt": "2026-01-25T21:02:49Z"
+        }
+      ]
     },
     {
       "number": 28,
       "id": "I_kwDOQYX63c7fgYNh",
       "title": "My \"Contributor\" status",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/28",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "cyberphone",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "As a CBOR implementer, I am supportive of a document that describes how CBOR data items are to be encoded given the various levels like Ordinary, DLO, etc.\n\nHowever, I do not support a document that goes into the design of encoders/decoders because this is (IMO) outside of IETF's \"jurisdiction\".\n\nThe current document also goes into protocol design.  This adds a lot of text making it hard to read.  I also believe that quite a bit of this is rather \"esoteric\".\n\n|That is, if the WG wants to create a \"CBOR Design Guide\" they should of course do that but mixing that with (fairly) straightforward encoding rules, is not _my_ cup of tea.|\n|---|\n\nYou may remove me as contributor.\n\n--------------------------------\n\nRegarding dCBOR, I believe the two **algorithms** (transformations) _could_ have a value as _application-level_ (ALDR) standards, while the specific application of these as described in https://www.ietf.org/archive/id/draft-mcnally-deterministic-cbor-15.html seems less suitable as a standard.  The rationale mentioned in the dCBOR draft has nothing in common with related information in the 01 serialization draft.",
       "createdAt": "2025-12-20T08:53:46Z",
-      "updatedAt": "2025-12-31T15:16:27Z",
-      "closedAt": null,
+      "updatedAt": "2026-01-25T21:00:48Z",
+      "closedAt": "2026-01-25T21:00:48Z",
       "comments": [
         {
           "author": "laurencelundblade",
@@ -469,6 +506,13 @@
           "body": "@cyberphone as Laurence said, you don't need to agree with everything in the document to have contributed in a meaningful way.\n\n@laurencelundblade it is not necessary to include everyone who has contributed in the Contributors section if they don't wish to be included. It should be up to Anders.",
           "createdAt": "2025-12-31T15:16:26Z",
           "updatedAt": "2025-12-31T15:16:26Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing because there has been no response on this for a month.",
+          "createdAt": "2026-01-25T21:00:48Z",
+          "updatedAt": "2026-01-25T21:00:48Z"
         }
       ]
     },
@@ -1508,24 +1552,26 @@
       "id": "PR_kwDOQYX63c67AUqZ",
       "title": "Add recommendations section",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/29",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This is to address #11",
       "createdAt": "2025-12-30T17:44:45Z",
-      "updatedAt": "2026-01-21T15:35:14Z",
+      "updatedAt": "2026-01-26T19:40:33Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
-      "baseRefOid": "3be6a47b5411a5cb79b1c0870fced8e5adcca71a",
+      "baseRefOid": "f432028c80b6c3ec66a1626a3961c3a1e6599d51",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "recommendations",
-      "headRefOid": "7171e6a6aa4910987820e3146a43bf0811b67b37",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "d517c9d81b09d3e84f12a8f90a3c0756ccd9df90",
+      "closedAt": "2026-01-26T19:40:33Z",
+      "mergedAt": "2026-01-26T19:40:32Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "84158bb489964ca8ddfce9740825d9b2172aeefe"
+      },
       "comments": [
         {
           "author": "laurencelundblade",
@@ -1718,24 +1764,26 @@
       "id": "PR_kwDOQYX63c694L1Z",
       "title": "Add appendicies on big numbers",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/32",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "These explain how big number unification affects the data model and how one might implement big numbers.",
       "createdAt": "2026-01-18T18:52:57Z",
-      "updatedAt": "2026-01-21T15:57:00Z",
+      "updatedAt": "2026-01-25T20:58:56Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "5a617bb871aea97dc6d134f490fca7a527728e7f",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "bn-appx",
       "headRefOid": "3d12333406bf12b27c86fbf0d7c6f6c8103655e9",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-25T20:58:56Z",
+      "mergedAt": "2026-01-25T20:58:56Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "3d12333406bf12b27c86fbf0d7c6f6c8103655e9"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1898,25 +1946,61 @@
       "id": "PR_kwDOQYX63c6_Ky65",
       "title": "Add appendix giving cose as an example",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/33",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2026-01-24T20:02:24Z",
-      "updatedAt": "2026-01-24T20:02:24Z",
+      "updatedAt": "2026-01-25T20:59:00Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "aadb50f82da285f2edf152a48beb236ff10c407f",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "cose-appdx",
-      "headRefOid": "c90ac3899a360a197425ae71accee51be03f55a3",
-      "closedAt": null,
+      "headRefOid": "812e8350eeb6ee29cef6f54239f375a45f0bbce7",
+      "closedAt": "2026-01-25T20:58:55Z",
+      "mergedAt": "2026-01-25T20:58:55Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "f432028c80b6c3ec66a1626a3961c3a1e6599d51"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 34,
+      "id": "PR_kwDOQYX63c6_QovC",
+      "title": "New appendix making a comprehensive example of COSE_Sign1",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/34",
+      "state": "CLOSED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-01-25T20:53:31Z",
+      "updatedAt": "2026-01-25T20:59:48Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "aadb50f82da285f2edf152a48beb236ff10c407f",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "cose-appdx2",
+      "headRefOid": "aeed37a101464d4b12fdbdf4aa40c109d4e78b2f",
+      "closedAt": "2026-01-25T20:59:48Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Removing because this was a GitHub mistake",
+          "createdAt": "2026-01-25T20:59:48Z",
+          "updatedAt": "2026-01-25T20:59:48Z"
+        }
+      ],
       "reviews": []
     }
   ]
