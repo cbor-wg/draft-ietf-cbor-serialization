@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-27T01:51:25.396852+00:00",
+  "timestamp": "2026-01-29T02:00:46.697195+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -1559,7 +1559,7 @@
       "labels": [],
       "body": "This is to address #11",
       "createdAt": "2025-12-30T17:44:45Z",
-      "updatedAt": "2026-01-26T19:40:33Z",
+      "updatedAt": "2026-01-27T04:18:31Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "f432028c80b6c3ec66a1626a3961c3a1e6599d51",
@@ -1953,7 +1953,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-01-24T20:02:24Z",
-      "updatedAt": "2026-01-25T20:59:00Z",
+      "updatedAt": "2026-01-27T04:14:36Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "aadb50f82da285f2edf152a48beb236ff10c407f",
@@ -2001,6 +2001,34 @@
           "updatedAt": "2026-01-25T20:59:48Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 35,
+      "id": "PR_kwDOQYX63c6_hFb5",
+      "title": "Big number appendicies (again)",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/35",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This adds two appendices discussing the unified integer space and how to implement it.\r\n\r\n(I fumbled the previous PR for this; this is a second try).",
+      "createdAt": "2026-01-27T05:33:09Z",
+      "updatedAt": "2026-01-27T18:56:33Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "84158bb489964ca8ddfce9740825d9b2172aeefe",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "bn-appx2",
+      "headRefOid": "80152c4d2b94d11644f82373e14a4bb21e7c4efe",
+      "closedAt": "2026-01-27T18:56:20Z",
+      "mergedAt": "2026-01-27T18:56:20Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "5167e8a5b8dc110d2a56cad8746715d846191645"
+      },
+      "comments": [],
       "reviews": []
     }
   ]
