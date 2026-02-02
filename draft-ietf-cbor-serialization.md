@@ -378,11 +378,7 @@ That is, deterministic encoding imposes no requirements over and above the requi
 
 ## When to use Deterministic Serialization {#WhenDeterministic}
 
-In the basic generic data model, maps are unordered (See {{Section 5.6 of -cbor}}).
-Applications MUST NOT rely on any particular map ordering, even if the data was produced using deterministic serialization.
-A CBOR library is not required to preserve the order of keys when decoding a map, and the underlying programming language may not preserve map order either— for example, the Go programming language provides no ordering guarantees for maps.
-The sole purpose of map sorting in deterministic serialization is to ensure reproducibility of the encoded byte stream, not to provide any semantic ordering of map entries.
-If an application requires a map to be ordered, it is responsible for applying its own sorting.
+### Not Commonly Needed for Hashing and Signing
 
 Most applications do not require deterministic encoding &mdash; even those that employ signing or hashing to authenticate or protect the integrity of data.
 For example, the payload of a COSE_Sign message (See {{-COSE}}) does not need to be encoded deterministically because it is transmitted along with the message.
@@ -394,16 +390,29 @@ To guarantee this, the encoding must eliminate all variability and ambiguity.
 The Sig_structure, defined in {{Section 4.4 of -COSE}}, is an example of this requirement.
 Such designs are often chosen to reduce data size, preserve privacy, or meet other design constraints.
 
-The only difference between ordinary and deterministic serialization is map key sorting.
-Sorting can be expensive in very constrained environments.
-This is the only reason these two are not combined into one.
+See the more detailed, COSE-based example in {{COSESerialization}}.
 
-Deterministic serialization, as defined in this document, can be decoded by any ordinary or general-purpose serialization decoder described here.
-It is also compatible with the preferred serialization decoding described in {{-cbor}}.
-Deterministic serialization can be helpful for debugging and such.
-In environments where map sorting is not costly, it is acceptable and beneficial to always use it.
-In such an environment, a CBOR encoder may produce deterministic encoding by default and may even omit support for ordinary encoding entirely.
+### Decoding Deterministic Serialization and Relation to Ordinary Serialization
+
+The only difference between ordinary and deterministic serialization is that in deterministic serialization, maps are required to be sorted by their keys.
+Ordinary serialization exists as a separate mode solely because map sorting can be too expensive in some constrained environments.
+
+Map decoding must never depend on the sort order of a map, even when maps are required to be sorted.
+As a result, deterministic serialization ({{DeterministicSerialization}}) can always be decoded by a decoder that supports ordinary serialization ({{OrdinarySerialization}}).
+Because of this property, deterministic serialization can always be used in place of ordinary serialization.
+In environments where map sorting is not costly, it is both acceptable and beneficial to always use deterministic serialization.
+In such environments, a CBOR encoder may produce deterministic encoding by default and may even omit support for ordinary encoding entirely.
+
 But note that deterministic is never a substitute for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, need non-trivial NaNs, or other.
+
+
+### No Map Ordering Semantics
+
+In the basic generic data model, maps are unordered (See {{Section 5.6 of -cbor}}).
+Applications MUST NOT rely on any particular map ordering, even if deterministic serialization was used.
+A CBOR library is not required to preserve the order of keys when decoding a map, and the underlying programming language may not preserve map order either &mdash; for example, the Go programming language provides no ordering guarantees for maps.
+The sole purpose of map sorting in deterministic serialization is to ensure reproducibility of the encoded byte stream, not to provide any semantic ordering of map entries.
+If an application requires a map to be ordered, it is responsible for applying its own sorting.
 
 
 # Special Serializations {#SpecialSerializations}
