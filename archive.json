@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-03T02:07:21.524307+00:00",
+  "timestamp": "2026-02-05T02:03:44.974330+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -553,6 +553,22 @@
       "body": "Add subsection for end-to-end protocols\n\nThere's other text that I believe needs clarification\n",
       "createdAt": "2026-02-02T19:22:03Z",
       "updatedAt": "2026-02-02T19:22:03Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 38,
+      "id": "I_kwDOQYX63c7oUL8T",
+      "title": "Don't worry about sections vs. appendicies",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/38",
+      "state": "OPEN",
+      "author": "paulehoffman",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "... for now. Get all the desired text in, make it as normative or waffly as desired, and then before WG Last Call, a reorg can happen.\n\nThis is also true for text that the WG might want to remember but not put in the document, such as \"tags other than 2/3 don't change the data model\". Put the text in, mark it as \"maybe put this somewhere else\", and let the WG Chairs and ADs figure it out before WG Last Call.",
+      "createdAt": "2026-02-04T17:25:06Z",
+      "updatedAt": "2026-02-04T17:25:06Z",
       "closedAt": null,
       "comments": []
     }
