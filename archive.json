@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-05T02:03:44.974330+00:00",
+  "timestamp": "2026-02-08T02:32:36.854893+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -561,16 +561,31 @@
       "id": "I_kwDOQYX63c7oUL8T",
       "title": "Don't worry about sections vs. appendicies",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/38",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "paulehoffman",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "... for now. Get all the desired text in, make it as normative or waffly as desired, and then before WG Last Call, a reorg can happen.\n\nThis is also true for text that the WG might want to remember but not put in the document, such as \"tags other than 2/3 don't change the data model\". Put the text in, mark it as \"maybe put this somewhere else\", and let the WG Chairs and ADs figure it out before WG Last Call.",
       "createdAt": "2026-02-04T17:25:06Z",
-      "updatedAt": "2026-02-04T17:25:06Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-02-05T20:35:21Z",
+      "closedAt": "2026-02-05T20:35:21Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "As the document author, I want a large say in the structure of the document. I also want WG consensus on the structure of the document.\n\nThe primary purpose of this document is to create clarity and the structure of the document is critical in that.\n\nSo, I'd like to close this issue and replace it with one that is \"decide on general strategy of appendices vs sections\".",
+          "createdAt": "2026-02-05T18:51:40Z",
+          "updatedAt": "2026-02-05T18:51:40Z"
+        },
+        {
+          "author": "paulehoffman",
+          "authorAssociation": "NONE",
+          "body": "Sure. In fact, we don't need a new issue now that you are thinking about the topic.",
+          "createdAt": "2026-02-05T20:35:21Z",
+          "updatedAt": "2026-02-05T20:35:21Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -2082,6 +2097,32 @@
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "when-det-2",
       "headRefOid": "042bf8b5074d679a4e4b76914a391e9c539ab74f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 39,
+      "id": "PR_kwDOQYX63c7BzUMa",
+      "title": "Add new tag data model rule",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/39",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "See #30",
+      "createdAt": "2026-02-05T18:43:07Z",
+      "updatedAt": "2026-02-05T18:43:07Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "5167e8a5b8dc110d2a56cad8746715d846191645",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "tag-data-model",
+      "headRefOid": "38a2200a62f42916094bfb2ffc8840868e1a201b",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
