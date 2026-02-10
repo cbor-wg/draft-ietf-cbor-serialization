@@ -128,16 +128,19 @@ This section is new in draft -02 and may change a lot as consensus is reached.
 
 ## Framework protocols {#FrameworkProtocols}
 
-Framework protocols are those that offer a wide range of options or alternatives, where interoperability depends on the sender and receiver making compatible choices.
-Such protocols sometimes recommend the use of profiles to define interoperability requirements for specific applications.
-They may also be referred to as toolbox or building-block protocols, reflecting their purpose of providing reusable mechanisms.
+Framework protocols are those that offer a set of options and alternatives, with interoperability depending on the sender and receiver making compatible choices.
+These protocols sometimes make use of profiles to define interoperability requirements for specific uses.
+Framework protocols are sometimes described as toolbox or building-block protocols, reflecting their role as collections of reusable mechanisms rather than complete, end-to-end solutions.
 CBOR, CWT, COSE, and EAT are examples of framework protocols.
 
-It is RECOMMENDED that CBOR-based framework protocols not impose serialization requirements.
-This allows individual applications or profiles to select the serialization approach most appropriate to their needs.
+It is RECOMMENDED that CBOR-based framework protocols avoid imposing serialization requirements, enabling uses and profiles to choose serialization approaches appropriate to their environments and constraints.
 
-An important exception to this recommendation applies when deterministic serialization is required for correct operation.
-Deterministic serialization is typically necessary when data is hashed or signed but not directly transmitted, and instead is reconstructed independently by the sender and the receiver.
+This recommendation has one critical exception: deterministic serialization MUST be specified when required for correct operation.
+This occurs when the protocol design uses independent construction of hashed or signed data by involved parties, rather than on transmitting the serialized data directly.
+The exception is often only for the subset of the protocol where hashing or signing is used.
+
+CBOR-based framework protocols MAY impose serialization requirements in other cases as well.
+For example, if a protocol is not expected to be deployed in constrained environments where map sorting is expensive, it may mandate deterministic serialization for all implementations in order to eliminate serialization variability.
 
 See {{COSESerialization}} for a COSE-based detailed example.
 
@@ -145,21 +148,19 @@ See {{COSESerialization}} for a COSE-based detailed example.
 ## End-to-end Protocol Specifications {#EndToEndProtocols}
 
 End-to-end protocols are specified such that interoperability is assured when they are implemented in accordance with the specification.
-If the protocol includes options, these are typically selected through real-time negotiation between the communicating parties.
+When a protocol includes optional features, these are typically selected through real-time negotiation between communicating parties.
 Such protocols often have formal interoperability compliance programs or organize interoperability testing events (for example, bake-offs).
 TLS, HTTP, and FIDO are examples of end-to-end protocols.
 
 It is RECOMMENDED that CBOR-based end-to-end protocols require ordinary serialization, unless they have a specific need for a different serialization.
 
-One such specific need is deterministic serialization for data that is hashed or signed.
-This requirement is often already stated explicitly in protocol specifications, and the recommendation to use ordinary serialization does not override it.
-If deterministic serialization is required only for a subset of the protocol (e.g., COSE), the recommendation to use ordinary serialization still applies to the remainder of the protocol.
+As described above, one specific need is deterministic serialization for the subset of the protocol that involves hashing or signing.
 
-Other specific serialization requirements typically arise to simplify implementation or to operate in highly constrained environments.
-For example, the use of indefinite-length encodings enables streaming of arrays that are too large to fit entirely in memory.
+Other specific needs are typically to simplify implementation or operate in highly constrained environments.
+For example, the use of indefinite-length encodings enables streaming of arrays that are too large to fit in memory.
 See {{SpecialSerializations}} for a discussion of such special serializations.
 
-This recommendation is to ensure serialization interoperability: data encoded by the sender must always be decodable by the receiver.
+This primary purpose in make this recommendation is to ensure serialization interoperability: data encoded by the sender must always be decodable by the receiver.
 Without an explicit serialization requirement, independent implementations may make incompatible choices.
 For most use cases, requiring ordinary serialization is the simplest way to avoid this risk.
 If a specialized serialization is used, it must still ensure full interoperability.
@@ -179,7 +180,7 @@ It is RECOMMENDED that CBOR libraries support ordinary serialization.
 This can be achieved by conforming to the decoding requirements in {{OrdinaryDecoding}} and by making the encoding behavior defined in {{OrdinaryEncoding}} the default or primary encoding API.
 
 Ordinary serialization is recommended because it is suitable for the majority of CBOR-based protocols.
-In practice, ordinary serialization is equivalent to preferred serialization for most use cases.
+In practice, ordinary serialization is equivalent to preferred serialization {{Section 4.1 of -cbor}} for most use cases.
 
 It is also RECOMMENDED that CBOR libraries support deterministic serialization, as some protocols (for example, COSE) require it.
 Relative to ordinary serialization, the only additional requirement for deterministic serialization is that encoded maps be sorted.
@@ -188,18 +189,26 @@ This recommendation is particularly strong for environments in which map sorting
 A CBOR library may choose to implement only deterministic serialization and make it the default.
 Deterministic serialization is a superset of ordinary serialization; therefore, if deterministic serialization is fully supported, explicit support for ordinary serialization may be omitted.
 
-A CBOR library MAY also choose to support some or all aspects of general serialization as described in {{GeneralSerialization}}.
-Doing so enables the library to be used for implementing specialized serializations, as described in {{SpecialSerializations}}.
-
+A CBOR library MAY also choose to support some or all aspects of general serialization (see {{GeneralSerialization}}) thereby enabling support for protocols that use specialized serializations (see {{SpecialSerializations}}).
 
 ## Libraries for CBOR-based framework protocols
 
-It is RECOMMENDED that libraries implementing framework protocols support ordinary serialization.
-For example, a CWT or COSE library should support ordinary serialization.
+When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that it implement ordinary serialization.
+For example, it is recommended that a library implementing CWT or COSE implement ordinary serialization.
 
-If a framework protocol requires deterministic serialization (for example, COSE), the library must also support deterministic serialization.
+However, a library MAY choose to support only deterministic serialization if this aligns with its deployment environment and design goals.
 
-If appropriate for the library’s deployment environment and design goals, a library may choose to support only deterministic serialization for the entire protocol.
+When a framework protocol mandaates serialization requirements, libraries must of cource conform.
+For instance, certain parts of COSE mandate deterministic serialization.
+See {{COSESerialization}} for a detailed COSE-based example.
+
+
+## Libraries for end-to-end protocols
+
+End-to-end protocols typically have explicit serialization requirements to ensure interoperability.
+Libraries for end-to-end protocols should fullfill the requirements.
+
+If an end-to-end protocol specification does state serialization requirements, the library is free to choose, but it is RECOMMENDED that they implement ordinary serialization.
 
 
 # General Serialization {#GeneralSerialization}
