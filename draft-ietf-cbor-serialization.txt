@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                         27 January 2026
-Expires: 31 July 2026
+Intended status: Standards Track                        13 February 2026
+Expires: 17 August 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 July 2026.
+   This Internet-Draft will expire on 17 August 2026.
 
 Copyright Notice
 
@@ -89,6 +89,10 @@ Table of Contents
      5.1.  Encoder Requirements
      5.2.  Decoder Requirements
      5.3.  When to use Deterministic Serialization
+       5.3.1.  Not Commonly Needed for Hashing and Signing
+       5.3.2.  Decoding Deterministic Serialization and Relation to
+               Ordinary Serialization
+       5.3.3.  No Map Ordering Semantics
    6.  Special Serializations
    7.  CDDL Control Operators
    8.  Security Considerations
@@ -545,17 +549,7 @@ Table of Contents
 
 5.3.  When to use Deterministic Serialization
 
-   In the basic generic data model, maps are unordered (See Section 5.6
-   of [STD94]).  Applications MUST NOT rely on any particular map
-   ordering, even if the data was produced using deterministic
-   serialization.  A CBOR library is not required to preserve the order
-   of keys when decoding a map, and the underlying programming language
-   may not preserve map order either— for example, the Go programming
-   language provides no ordering guarantees for maps.  The sole purpose
-   of map sorting in deterministic serialization is to ensure
-   reproducibility of the encoded byte stream, not to provide any
-   semantic ordering of map entries.  If an application requires a map
-   to be ordered, it is responsible for applying its own sorting.
+5.3.1.  Not Commonly Needed for Hashing and Signing
 
    Most applications do not require deterministic encoding — even those
    that employ signing or hashing to authenticate or protect the
@@ -574,23 +568,46 @@ Table of Contents
    often chosen to reduce data size, preserve privacy, or meet other
    design constraints.
 
-   The only difference between ordinary and deterministic serialization
-   is map key sorting.  Sorting can be expensive in very constrained
-   environments.  This is the only reason these two are not combined
-   into one.
+   See the more detailed, COSE-based example in Appendix I.
 
-   Deterministic serialization, as defined in this document, can be
-   decoded by any ordinary or general-purpose serialization decoder
-   described here.  It is also compatible with the preferred
-   serialization decoding described in [STD94].  Deterministic
-   serialization can be helpful for debugging and such.  In environments
-   where map sorting is not costly, it is acceptable and beneficial to
-   always use it.  In such an environment, a CBOR encoder may produce
-   deterministic encoding by default and may even omit support for
-   ordinary encoding entirely.  But note that deterministic is never a
-   substitute for general serialization where uses cases may require
-   indefinite lengths, separate big numbers from integers in the data
-   model, need non-trivial NaNs, or other.
+5.3.2.  Decoding Deterministic Serialization and Relation to Ordinary
+        Serialization
+
+   The only difference between ordinary and deterministic serialization
+   is that in deterministic serialization, maps are required to be
+   sorted by their keys.  Ordinary serialization exists as a separate
+   mode solely because map sorting can be too expensive in some
+   constrained environments.
+
+   Map decoding must never depend on the sort order of a map, even when
+   maps are required to be sorted.  As a result, deterministic
+   serialization (Section 5) can always be decoded by a decoder that
+   supports ordinary serialization (Section 4).  Because of this
+   property, deterministic serialization can always be used in place of
+   ordinary serialization.  In environments where map sorting is not
+   costly, it is both acceptable and beneficial to always use
+   deterministic serialization.  In such environments, a CBOR encoder
+   may produce deterministic encoding by default and may even omit
+   support for ordinary encoding entirely.
+
+   But note that deterministic is never a substitute for general
+   serialization where uses cases may require indefinite lengths,
+   separate big numbers from integers in the data model, need non-
+   trivial NaNs, or other.
+
+5.3.3.  No Map Ordering Semantics
+
+   In the basic generic data model, maps are unordered (See Section 5.6
+   of [STD94]).  Applications MUST NOT rely on any particular map
+   ordering, even if deterministic serialization was used.  A CBOR
+   library is not required to preserve the order of keys when decoding a
+   map, and the underlying programming language may not preserve map
+   order either — for example, the Go programming language provides no
+   ordering guarantees for maps.  The sole purpose of map sorting in
+   deterministic serialization is to ensure reproducibility of the
+   encoded byte stream, not to provide any semantic ordering of map
+   entries.  If an application requires a map to be ordered, it is
+   responsible for applying its own sorting.
 
 6.  Special Serializations
 
@@ -712,9 +729,9 @@ Table of Contents
    [I-D.mcnally-deterministic-cbor]
               McNally, W., Allen, C., Bormann, C., and L. Lundblade,
               "dCBOR: Deterministic CBOR", Work in Progress, Internet-
-              Draft, draft-mcnally-deterministic-cbor-16, 20 December
-              2025, <https://datatracker.ietf.org/doc/html/draft-
-              mcnally-deterministic-cbor-16>.
+              Draft, draft-mcnally-deterministic-cbor-17, 11 February
+              2026, <https://datatracker.ietf.org/doc/html/draft-
+              mcnally-deterministic-cbor-17>.
 
    [NaNBoxing]
               Nystrom, R., "Crafting Interpreters", July 2021,

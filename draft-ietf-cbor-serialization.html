@@ -168,7 +168,7 @@ Together, these three form a complete set of serializations that cover the major
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -176,7 +176,8 @@ Together, these three form a complete set of serializations that cover the major
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -1047,11 +1048,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">CBOR Serialization</td>
-<td class="right">January 2026</td>
+<td class="right">February 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 31 July 2026</td>
+<td class="center">Expires 17 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-01-27" class="published">27 January 2026</time>
+<time datetime="2026-02-13" class="published">13 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-07-31">31 July 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-17">17 August 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1121,7 +1122,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 31 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1209,6 +1210,17 @@ Together, these three form a complete set of serializations that cover the major
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
                 <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-when-to-use-deterministic-s" class="internal xref">When to use Deterministic Serialization</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.1">
+                    <p id="section-toc.1-1.5.2.3.2.1.1"><a href="#section-5.3.1" class="auto internal xref">5.3.1</a>.  <a href="#name-not-commonly-needed-for-has" class="internal xref">Not Commonly Needed for Hashing and Signing</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.2">
+                    <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="auto internal xref">5.3.2</a>.  <a href="#name-decoding-deterministic-seri" class="internal xref">Decoding Deterministic Serialization and Relation to Ordinary Serialization</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.3">
+                    <p id="section-toc.1-1.5.2.3.2.3.1"><a href="#section-5.3.3" class="auto internal xref">5.3.3</a>.  <a href="#name-no-map-ordering-semantics" class="internal xref">No Map Ordering Semantics</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1727,28 +1739,49 @@ That is, deterministic encoding imposes no requirements over and above the requi
         <h3 id="name-when-to-use-deterministic-s">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-when-to-use-deterministic-s" class="section-name selfRef">When to use Deterministic Serialization</a>
         </h3>
-<p id="section-5.3-1">In the basic generic data model, maps are unordered (See <span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.6" class="relref">Section 5.6</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>).
-Applications MUST NOT rely on any particular map ordering, even if the data was produced using deterministic serialization.
-A CBOR library is not required to preserve the order of keys when decoding a map, and the underlying programming language may not preserve map order either— for example, the Go programming language provides no ordering guarantees for maps.
-The sole purpose of map sorting in deterministic serialization is to ensure reproducibility of the encoded byte stream, not to provide any semantic ordering of map entries.
-If an application requires a map to be ordered, it is responsible for applying its own sorting.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3-2">Most applications do not require deterministic encoding — even those that employ signing or hashing to authenticate or protect the integrity of data.
+<div id="not-commonly-needed-for-hashing-and-signing">
+<section id="section-5.3.1">
+          <h4 id="name-not-commonly-needed-for-has">
+<a href="#section-5.3.1" class="section-number selfRef">5.3.1. </a><a href="#name-not-commonly-needed-for-has" class="section-name selfRef">Not Commonly Needed for Hashing and Signing</a>
+          </h4>
+<p id="section-5.3.1-1">Most applications do not require deterministic encoding — even those that employ signing or hashing to authenticate or protect the integrity of data.
 For example, the payload of a COSE_Sign message (See <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>) does not need to be encoded deterministically because it is transmitted along with the message.
-The recipient receives the exact same bytes that were signed.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.3-3">Deterministic encoding becomes necessary only when the protected data is not transmitted as the exact bytes that are used for authenticity or integrity verification.
+The recipient receives the exact same bytes that were signed.<a href="#section-5.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.3.1-2">Deterministic encoding becomes necessary only when the protected data is not transmitted as the exact bytes that are used for authenticity or integrity verification.
 In such cases, both the sender and the receiver must independently construct the exact same sequence of bytes.
 To guarantee this, the encoding must eliminate all variability and ambiguity.
 The Sig_structure, defined in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>, is an example of this requirement.
-Such designs are often chosen to reduce data size, preserve privacy, or meet other design constraints.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.3-4">The only difference between ordinary and deterministic serialization is map key sorting.
-Sorting can be expensive in very constrained environments.
-This is the only reason these two are not combined into one.<a href="#section-5.3-4" class="pilcrow">¶</a></p>
-<p id="section-5.3-5">Deterministic serialization, as defined in this document, can be decoded by any ordinary or general-purpose serialization decoder described here.
-It is also compatible with the preferred serialization decoding described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>.
-Deterministic serialization can be helpful for debugging and such.
-In environments where map sorting is not costly, it is acceptable and beneficial to always use it.
-In such an environment, a CBOR encoder may produce deterministic encoding by default and may even omit support for ordinary encoding entirely.
-But note that deterministic is never a substitute for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, need non-trivial NaNs, or other.<a href="#section-5.3-5" class="pilcrow">¶</a></p>
+Such designs are often chosen to reduce data size, preserve privacy, or meet other design constraints.<a href="#section-5.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.3.1-3">See the more detailed, COSE-based example in <a href="#COSESerialization" class="auto internal xref">Appendix I</a>.<a href="#section-5.3.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="decoding-deterministic-serialization-and-relation-to-ordinary-serialization">
+<section id="section-5.3.2">
+          <h4 id="name-decoding-deterministic-seri">
+<a href="#section-5.3.2" class="section-number selfRef">5.3.2. </a><a href="#name-decoding-deterministic-seri" class="section-name selfRef">Decoding Deterministic Serialization and Relation to Ordinary Serialization</a>
+          </h4>
+<p id="section-5.3.2-1">The only difference between ordinary and deterministic serialization is that in deterministic serialization, maps are required to be sorted by their keys.
+Ordinary serialization exists as a separate mode solely because map sorting can be too expensive in some constrained environments.<a href="#section-5.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.3.2-2">Map decoding must never depend on the sort order of a map, even when maps are required to be sorted.
+As a result, deterministic serialization (<a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>) can always be decoded by a decoder that supports ordinary serialization (<a href="#OrdinarySerialization" class="auto internal xref">Section 4</a>).
+Because of this property, deterministic serialization can always be used in place of ordinary serialization.
+In environments where map sorting is not costly, it is both acceptable and beneficial to always use deterministic serialization.
+In such environments, a CBOR encoder may produce deterministic encoding by default and may even omit support for ordinary encoding entirely.<a href="#section-5.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.3.2-3">But note that deterministic is never a substitute for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, need non-trivial NaNs, or other.<a href="#section-5.3.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="no-map-ordering-semantics">
+<section id="section-5.3.3">
+          <h4 id="name-no-map-ordering-semantics">
+<a href="#section-5.3.3" class="section-number selfRef">5.3.3. </a><a href="#name-no-map-ordering-semantics" class="section-name selfRef">No Map Ordering Semantics</a>
+          </h4>
+<p id="section-5.3.3-1">In the basic generic data model, maps are unordered (See <span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.6" class="relref">Section 5.6</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>).
+Applications MUST NOT rely on any particular map ordering, even if deterministic serialization was used.
+A CBOR library is not required to preserve the order of keys when decoding a map, and the underlying programming language may not preserve map order either — for example, the Go programming language provides no ordering guarantees for maps.
+The sole purpose of map sorting in deterministic serialization is to ensure reproducibility of the encoded byte stream, not to provide any semantic ordering of map entries.
+If an application requires a map to be ordered, it is responsible for applying its own sorting.<a href="#section-5.3.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
@@ -1921,7 +1954,7 @@ number of this RFC and remove this note.</span><a href="#section-9-1" class="pil
 <dd class="break"></dd>
 <dt id="I-D.mcnally-deterministic-cbor">[I-D.mcnally-deterministic-cbor]</dt>
         <dd>
-<span class="refAuthor">McNally, W.</span>, <span class="refAuthor">Allen, C.</span>, <span class="refAuthor">Bormann, C.</span>, and <span class="refAuthor">L. Lundblade</span>, <span class="refTitle">"dCBOR: Deterministic CBOR"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-mcnally-deterministic-cbor-16</span>, <time datetime="2025-12-20" class="refDate">20 December 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-mcnally-deterministic-cbor-16">https://datatracker.ietf.org/doc/html/draft-mcnally-deterministic-cbor-16</a>&gt;</span>. </dd>
+<span class="refAuthor">McNally, W.</span>, <span class="refAuthor">Allen, C.</span>, <span class="refAuthor">Bormann, C.</span>, and <span class="refAuthor">L. Lundblade</span>, <span class="refTitle">"dCBOR: Deterministic CBOR"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-mcnally-deterministic-cbor-17</span>, <time datetime="2026-02-11" class="refDate">11 February 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-mcnally-deterministic-cbor-17">https://datatracker.ietf.org/doc/html/draft-mcnally-deterministic-cbor-17</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="NaNBoxing">[NaNBoxing]</dt>
         <dd>
