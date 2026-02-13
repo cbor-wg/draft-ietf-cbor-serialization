@@ -69,6 +69,9 @@ normative:
 
   IANA.cddl:
 
+  IANA.cbor-tags:
+
+
 informative:
    RFC8392: CWT
 
@@ -429,6 +432,19 @@ For example, a protocol requiring deterministic streaming of maps and arrays can
 >> Maps are still to be ordered as required by deterministic serialization.
 
 
+# New Tag Data Model Rule {#TagDataModelRule}
+
+{{Section 2 of -cbor}} states that each new CBOR tag definition introduces a new and distinct data type.
+In contrast, the definitions of Tags 2 and 3 (bignums) in {{Section 3.4.3 of -cbor}} do not introduce a separate data type; instead, they attach directly to the integer type and extend its numeric range.
+As a result, the generic data model’s integer type is modified rather than augmented with a new, independent type (see Appendix E).
+
+This document establishes a new rule that prohibits future tag definitions from having such effects:
+
+All future CBOR tag definitions MUST NOT incorporate, modify, or otherwise affect any data types other than the type defined by the tag itself.
+A set of tags MAY affect each other, provided that all defining authorities for those tags explicitly agree.
+
+Tags 2 and 3 are exempt from this rule, as they were defined prior to the establishment of this requirement.
+
 
 # CDDL Control Operators {#CDDL-Operators}
 
@@ -479,7 +495,7 @@ This document requests IANA to register the contents of
 | .detseq   | \[RFCXXXX] |
 {: #tbl-iana-reqs title="New control operators to be registered"}
 
-
+IANA is requested to add a reference to {{TagDataModelRule}} to the CBOR tag registry {{IANA.cbor-tags}}.
 
 --- back
 
