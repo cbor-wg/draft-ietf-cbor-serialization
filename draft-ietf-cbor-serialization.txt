@@ -94,12 +94,13 @@ Table of Contents
                Ordinary Serialization
        5.3.3.  No Map Ordering Semantics
    6.  Special Serializations
-   7.  CDDL Control Operators
-   8.  Security Considerations
-   9.  IANA Considerations
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
+   7.  New Tag Data Model Rule
+   8.  CDDL Control Operators
+   9.  Security Considerations
+   10. IANA Considerations
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Appendix A.  Information Model, Data Model and Serialization
    Appendix B.  General Protocol Considerations for Determinism
    Appendix C.  Deterministic Encoding for Popular Tags
@@ -629,7 +630,28 @@ Table of Contents
          Maps are still to be ordered as required by deterministic
          serialization.
 
-7.  CDDL Control Operators
+7.  New Tag Data Model Rule
+
+   Section 2 of [STD94] states that each new CBOR tag definition
+   introduces a new and distinct data type.  In contrast, the
+   definitions of Tags 2 and 3 (bignums) in Section 3.4.3 of [STD94] do
+   not introduce a separate data type; instead, they attach directly to
+   the integer type and extend its numeric range.  As a result, the
+   generic data model’s integer type is modified rather than augmented
+   with a new, independent type (see Appendix E).
+
+   This document establishes a new rule that prohibits future tag
+   definitions from having such effects:
+
+   All future CBOR tag definitions MUST NOT incorporate, modify, or
+   otherwise affect any data types other than the type defined by the
+   tag itself.  A set of tags MAY affect each other, provided that all
+   defining authorities for those tags explicitly agree.
+
+   Tags 2 and 3 are exempt from this rule, as they were defined prior to
+   the establishment of this requirement.
+
+8.  CDDL Control Operators
 
    Four new control operators are defined for use in CDDL [RFC8610].
 
@@ -664,11 +686,11 @@ Table of Contents
    embedded CBOR that requires constrained serialization must specify
    that constraint explicitly.  See also Appendix H.
 
-8.  Security Considerations
+9.  Security Considerations
 
    The security considerations in Section 10 of [STD94] apply.
 
-9.  IANA Considerations
+10.  IANA Considerations
 
 
    // RFC Editor: please replace RFCXXXX with the RFC number of this RFC
@@ -691,9 +713,16 @@ Table of Contents
                               operators to be
                                  registered
 
-10.  References
+   IANA is requested to add a reference to Section 7 to the CBOR tag
+   registry [IANA.cbor-tags].
 
-10.1.  Normative References
+11.  References
+
+11.1.  Normative References
+
+   [IANA.cbor-tags]
+              IANA, "Concise Binary Object Representation (CBOR) Tags",
+              <https://www.iana.org/assignments/cbor-tags>.
 
    [IANA.cddl]
               IANA, "Concise Data Definition Language (CDDL)",
@@ -719,7 +748,7 @@ Table of Contents
               DOI 10.17487/RFC8949, December 2020,
               <https://www.rfc-editor.org/rfc/rfc8949>.
 
-10.2.  Informative References
+11.2.  Informative References
 
    [CTAP2]    W3C, "Client To Authenticator Protocol v2",
               <https://fidoalliance.org/specs/fido-v2.0-ps-20190130/
@@ -1298,7 +1327,7 @@ Appendix H.  CBOR Byte String Wrapping
    This appendix provides non-normative guidance on byte-string wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
-   control operators described in Section 7.
+   control operators described in Section 8.
 
 H.1.  Purpose
 
