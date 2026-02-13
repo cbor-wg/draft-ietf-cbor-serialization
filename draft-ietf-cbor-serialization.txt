@@ -164,8 +164,9 @@ Table of Contents
 
 2.  Recommendations Summary
 
-   This section is new in draft -02 and may change a lot as consensus is
-   reached.
+
+   // This section substantially revised in -03 and hopefully close to
+   // its final form
 
 2.1.  Protocol Specifications
 
@@ -642,6 +643,11 @@ Table of Contents
          serialization.
 
 7.  New Tag Data Model Rule
+
+
+   // This section is new in draft-03.  The author thinks it may be out
+   // of place in this document, but there's no other good place for it
+   // yet.
 
    Section 2 of [STD94] states that each new CBOR tag definition
    introduces a new and distinct data type.  In contrast, the
@@ -1206,14 +1212,6 @@ D.6.  Recommendations for Use of Non-Trival NaNs
 
 Appendix E.  Big Numbers and the CBOR Data Model
 
-
-   // Note that the CBOR Working Group agreed in January of 2026 to
-   // accept the big number / integer equivalence described here, but
-   // not allow any tags in the future to affect the data model.  This
-   // is noted here for now, but probably out of scope for this document
-   // on serialization and needs to go somehere else, like an update to
-   // IANA CBOR tag experts.
-
    The primary purpose of this document is to define ordinary and
    deterministic serialization.  Accordingly, Section 4 describes CBOR’s
    unified integer space in terms of serialization behavior.  This is an
@@ -1250,6 +1248,9 @@ Appendix E.  Big Numbers and the CBOR Data Model
    Section 3.4.3 of [STD94].  Rather, it records the commonly accepted
    interpretation of that text and its implications for the CBOR data
    model.
+
+   This document does create a new rule for future tag definitions.  See
+   Section 7.
 
 Appendix F.  Big Number Implementation Strategies
 

@@ -1400,7 +1400,7 @@ Ordinary serialization is defined here is largely the same preferred serializati
       <h2 id="name-recommendations-summary">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-recommendations-summary" class="section-name selfRef">Recommendations Summary</a>
       </h2>
-<p id="section-2-1">This section is new in draft -02 and may change a lot as consensus is reached.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1"><span class="cref" id="to-be-removed5">This section substantially revised in -03 and hopefully close to its final form</span><a href="#section-2-1" class="pilcrow">¶</a></p>
 <div id="protocol-specifications">
 <section id="section-2.1">
         <h3 id="name-protocol-specifications">
@@ -1852,13 +1852,14 @@ Maps are still to be ordered as required by deterministic serialization.<a href=
       <h2 id="name-new-tag-data-model-rule">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-new-tag-data-model-rule" class="section-name selfRef">New Tag Data Model Rule</a>
       </h2>
-<p id="section-7-1"><span><a href="https://rfc-editor.org/rfc/rfc8949#section-2" class="relref">Section 2</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span> states that each new CBOR tag definition introduces a new and distinct data type.
+<p id="section-7-1"><span class="cref" id="to-be-removed4">This section is new in draft-03. The author thinks it may be out of place in this document, but there's no other good place for it yet.</span><a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2"><span><a href="https://rfc-editor.org/rfc/rfc8949#section-2" class="relref">Section 2</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span> states that each new CBOR tag definition introduces a new and distinct data type.
 In contrast, the definitions of Tags 2 and 3 (bignums) in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span> do not introduce a separate data type; instead, they attach directly to the integer type and extend its numeric range.
-As a result, the generic data model’s integer type is modified rather than augmented with a new, independent type (see Appendix E).<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">This document establishes a new rule that prohibits future tag definitions from having such effects:<a href="#section-7-2" class="pilcrow">¶</a></p>
-<p id="section-7-3">All future CBOR tag definitions MUST NOT incorporate, modify, or otherwise affect any data types other than the type defined by the tag itself.
-A set of tags MAY affect each other, provided that all defining authorities for those tags explicitly agree.<a href="#section-7-3" class="pilcrow">¶</a></p>
-<p id="section-7-4">Tags 2 and 3 are exempt from this rule, as they were defined prior to the establishment of this requirement.<a href="#section-7-4" class="pilcrow">¶</a></p>
+As a result, the generic data model’s integer type is modified rather than augmented with a new, independent type (see <a href="#BigNumbersDataModel" class="auto internal xref">Appendix E</a>).<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">This document establishes a new rule that prohibits future tag definitions from having such effects:<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-4">All future CBOR tag definitions MUST NOT incorporate, modify, or otherwise affect any data types other than the type defined by the tag itself.
+A set of tags MAY affect each other, provided that all defining authorities for those tags explicitly agree.<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-5">Tags 2 and 3 are exempt from this rule, as they were defined prior to the establishment of this requirement.<a href="#section-7-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="CDDL-Operators">
@@ -2440,25 +2441,26 @@ For example, a program that relies on non-trivial NaNs internally may need to se
       <h2 id="name-big-numbers-and-the-cbor-da">
 <a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-big-numbers-and-the-cbor-da" class="section-name selfRef">Big Numbers and the CBOR Data Model</a>
       </h2>
-<p id="appendix-E-1"><span class="cref" id="to-be-removed3">Note that the CBOR Working Group agreed in January of 2026 to accept the big number / integer equivalence described here, but not allow any tags in the future to affect the data model. This is noted here for now, but probably out of scope for this document on serialization and needs to go somehere else, like an update to IANA CBOR tag experts.</span><a href="#appendix-E-1" class="pilcrow">¶</a></p>
-<p id="appendix-E-2">The primary purpose of this document is to define ordinary and deterministic serialization.
+<p id="appendix-E-1">The primary purpose of this document is to define ordinary and deterministic serialization.
 Accordingly, <a href="#OrdinarySerialization" class="auto internal xref">Section 4</a> describes CBOR’s unified integer space in terms of serialization behavior.
 This is an effective and clear way to describe what implementors must do.
-An implementation that follows the requirements in <a href="#OrdinarySerialization" class="auto internal xref">Section 4</a> will be complete and correct with respect to serialization.<a href="#appendix-E-2" class="pilcrow">¶</a></p>
-<p id="appendix-E-3">From a conceptual perspective, however, additional discussion is warranted regarding the CBOR data model itself.
+An implementation that follows the requirements in <a href="#OrdinarySerialization" class="auto internal xref">Section 4</a> will be complete and correct with respect to serialization.<a href="#appendix-E-1" class="pilcrow">¶</a></p>
+<p id="appendix-E-2">From a conceptual perspective, however, additional discussion is warranted regarding the CBOR data model itself.
 That discussion is provided in this appendix.
-(Please review <a href="#models" class="auto internal xref">Appendix A</a> for background on the difference between serialization and the data model).<a href="#appendix-E-3" class="pilcrow">¶</a></p>
-<p id="appendix-E-4">In the basic, generic CBOR data model, each tag represents a distinct data type (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-2" class="relref">Section 2</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>).
+(Please review <a href="#models" class="auto internal xref">Appendix A</a> for background on the difference between serialization and the data model).<a href="#appendix-E-2" class="pilcrow">¶</a></p>
+<p id="appendix-E-3">In the basic, generic CBOR data model, each tag represents a distinct data type (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-2" class="relref">Section 2</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>).
 Tags are also distinct from the major types, such as numbers and strings.
-By this, an integer value such as 0 or 1 encoded as major type 0 is clearly distinct in the data model from the same integer value encoded as tag 2.<a href="#appendix-E-4" class="pilcrow">¶</a></p>
-<p id="appendix-E-5">However, the text in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span> overrides this by defining these encodings to be equivalent rather than distinct.
+By this, an integer value such as 0 or 1 encoded as major type 0 is clearly distinct in the data model from the same integer value encoded as tag 2.<a href="#appendix-E-3" class="pilcrow">¶</a></p>
+<p id="appendix-E-4">However, the text in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span> overrides this by defining these encodings to be equivalent rather than distinct.
 This text therefore modifies the CBOR data model.
 No other serialization requirement in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> or in this document alters the data model; this equivalence is the sole exception.
-This is unusual because the data model is otherwise orthogonal to serialization.<a href="#appendix-E-5" class="pilcrow">¶</a></p>
-<p id="appendix-E-6">Further, <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>  along with text in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-2" class="relref">Section 2</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span> are interpreted such that there is never a CBOR data model where there is a distinction between these integer representations.
-That is, the equivalence applies regardless of the serialization even though much of the relevant text appears in proximity to discussions of serialization.<a href="#appendix-E-6" class="pilcrow">¶</a></p>
-<p id="appendix-E-7">This document does not attempt to update or revise the text of <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>.
-Rather, it records the commonly accepted interpretation of that text and its implications for the CBOR data model.<a href="#appendix-E-7" class="pilcrow">¶</a></p>
+This is unusual because the data model is otherwise orthogonal to serialization.<a href="#appendix-E-4" class="pilcrow">¶</a></p>
+<p id="appendix-E-5">Further, <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>  along with text in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-2" class="relref">Section 2</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span> are interpreted such that there is never a CBOR data model where there is a distinction between these integer representations.
+That is, the equivalence applies regardless of the serialization even though much of the relevant text appears in proximity to discussions of serialization.<a href="#appendix-E-5" class="pilcrow">¶</a></p>
+<p id="appendix-E-6">This document does not attempt to update or revise the text of <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>.
+Rather, it records the commonly accepted interpretation of that text and its implications for the CBOR data model.<a href="#appendix-E-6" class="pilcrow">¶</a></p>
+<p id="appendix-E-7">This document does create a new rule for future tag definitions.
+See <a href="#TagDataModelRule" class="auto internal xref">Section 7</a>.<a href="#appendix-E-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="BigNumberStrategies">
