@@ -127,7 +127,9 @@ Ordinary serialization is defined here is largely the same preferred serializati
 
 # Recommendations Summary
 
-This section is new in draft -02 and may change a lot as consensus is reached.
+[^to-be-removed5]
+
+[^to-be-removed5]: This section substantially revised in -03 and hopefully close to its final form
 
 ## Protocol Specifications
 
@@ -442,9 +444,13 @@ For example, a protocol requiring deterministic streaming of maps and arrays can
 
 # New Tag Data Model Rule {#TagDataModelRule}
 
+[^to-be-removed4]
+
+[^to-be-removed4]: This section is new in draft-03. The author thinks it may be out of place in this document, but there's no other good place for it yet.
+
 {{Section 2 of -cbor}} states that each new CBOR tag definition introduces a new and distinct data type.
 In contrast, the definitions of Tags 2 and 3 (bignums) in {{Section 3.4.3 of -cbor}} do not introduce a separate data type; instead, they attach directly to the integer type and extend its numeric range.
-As a result, the generic data model’s integer type is modified rather than augmented with a new, independent type (see Appendix E).
+As a result, the generic data model’s integer type is modified rather than augmented with a new, independent type (see {{BigNumbersDataModel}}).
 
 This document establishes a new rule that prohibits future tag definitions from having such effects:
 
@@ -763,10 +769,6 @@ For example, a program that relies on non-trivial NaNs internally may need to se
 
 # Big Numbers and the CBOR Data Model {#BigNumbersDataModel}
 
-[^to-be-removed3]
-
-[^to-be-removed3]: Note that the CBOR Working Group agreed in January of 2026 to accept the big number / integer equivalence described here, but not allow any tags in the future to affect the data model. This is noted here for now, but probably out of scope for this document on serialization and needs to go somehere else, like an update to IANA CBOR tag experts.
-
 The primary purpose of this document is to define ordinary and deterministic serialization.
 Accordingly, {{OrdinarySerialization}} describes CBOR’s unified integer space in terms of serialization behavior.
 This is an effective and clear way to describe what implementors must do.
@@ -790,6 +792,9 @@ That is, the equivalence applies regardless of the serialization even though muc
 
 This document does not attempt to update or revise the text of {{Section 3.4.3 of -cbor}}.
 Rather, it records the commonly accepted interpretation of that text and its implications for the CBOR data model.
+
+This document does create a new rule for future tag definitions.
+See {{TagDataModelRule}}.
 
 
 # Big Number Implementation Strategies {#BigNumberStrategies}
