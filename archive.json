@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-15T02:12:26.742623+00:00",
+  "timestamp": "2026-02-17T02:05:23.700683+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -521,15 +521,15 @@
       "id": "I_kwDOQYX63c7hp4XN",
       "title": "Consensus on tag 2 and 3 equivalence",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/30",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Opinions about whether tag 2 and 3 big numbers in the range of major types 0 and 1, must be encoded as major types 0 and 1\n",
       "createdAt": "2026-01-06T17:05:44Z",
-      "updatedAt": "2026-01-18T19:01:00Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-16T19:20:02Z",
+      "closedAt": "2026-02-16T19:20:02Z",
       "comments": [
         {
           "author": "laurencelundblade",
@@ -545,16 +545,24 @@
       "id": "I_kwDOQYX63c7ntvwM",
       "title": "Recommendations section improvements",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/37",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Add subsection for end-to-end protocols\n\nThere's other text that I believe needs clarification\n",
       "createdAt": "2026-02-02T19:22:03Z",
-      "updatedAt": "2026-02-02T19:22:03Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-02-16T19:13:48Z",
+      "closedAt": "2026-02-16T19:13:34Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "#40 ",
+          "createdAt": "2026-02-16T19:13:47Z",
+          "updatedAt": "2026-02-16T19:13:47Z"
+        }
+      ]
     },
     {
       "number": 38,
@@ -586,6 +594,22 @@
           "updatedAt": "2026-02-05T20:35:21Z"
         }
       ]
+    },
+    {
+      "number": 42,
+      "id": "I_kwDOQYX63c7rZEfV",
+      "title": "Improve COSE example appendix",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/42",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The COSE example appendix could be worded better and generally improved.  Not a major change.",
+      "createdAt": "2026-02-16T19:22:02Z",
+      "updatedAt": "2026-02-16T19:22:02Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
