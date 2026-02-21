@@ -122,7 +122,7 @@ In this context, serialization refers to the actual on-the-wire byte encoding of
 
 For example, the array [1, 2] can be serialized in more than one way:
 
-| Type              | Description                                      | Bytes          | 
+| Type              | Description                                      | Bytes          |
 |-------------------|--------------------------------------------------|----------------|
 | Definite-length   | The array length (2) is encoded at the beginning | 0x82 0x01 0x02 |
 | Indefinite-length | The array is terminated by the break byte (0xff) | 0x9f  0x01 0x02 0xff |
