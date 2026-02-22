@@ -547,7 +547,7 @@ This is the section that covers what is know as ALDR in some discussions.
 
 [^rfced] Please remove above sentence before publication
 
-In addition to {{DeterministicSerialization}} and {{Tags}}, there are considerations in the design of any deterministic protocol.
+In addition to {{DeterministicSerialization}}, there are considerations in the design of any deterministic protocol.
 
 For a protocol to be deterministic, both the encoding (serialization) and data model (application) layer must be deterministic.
 While deterministic serialization, {{DeterministicSerialization}}, ensures determinism at the encoding layer, requirements at the application layer may also be necessary.
@@ -577,43 +577,6 @@ See the numeric reduction defined by {{I-D.mcnally-deterministic-cbor}}.
 Although this is not strictly a CBOR issue, deterministic CBOR protocol designers should be mindful of variability in Unicode text, as some characters can be encoded in multiple ways.
 
 While this is not an exhaustive list of application-layer considerations for deterministic CBOR protocols, it highlights the nature of variability in the data model layer and some sources of variability in the CBOR data model (i.e., in the application layer).
-
-
-# Deterministic Encoding for Popular Tags {#Tags}
-
-The definitions of the following tags in {{-cddl}} allow variation in the data mode, thus it is useful to define a deterministic encoding for them should a particular deterministic protocol need one.
-The tags defined in {{-cddl}} but not mentioned here have no variability in their data model.
-
-## Date Strings, Tag 0
-
-TODO -- complete this work and remove this comment before publication
-
-## Epoch Date, Tag 1
-
-### Encoder Requirements
-
-If the encoder supports floating-point dates, it MUST use the integer representation unless one of the following applies: (1) the date is outside the range representable by a 64-bit integer of major type 0 or 1, or (2) the date has a non-zero fraction of a second. In either case, the floating-point representation MUST be used.
-
-### Decoder Requirements
-
-If the decoder supports floating-point dates, it MUST be able to decode both the integer and the floating-point representations.
-
-
-## Big Numbers, Tags 2 and 3
-
-See {{OrdinarySerialization}}.
-
-## Big Floats and Decimal Fractions, Tags 4 and 5
-
-### Encoder Requirements
-The mantissa MUST be encoded in the preferred serialization form specified in Section 3.4.3 of RFC 8949.
-
-The mantissa MUST NOT contain trailing zeros.
-For example, the decimal fraction with value 10 must be encoded with a mantissa of 1 and an exponent of 1.
-For big floats, the mantissa must not include any trailing zero bits if encoded as a type 0 or 1 integer, and no trailing zero bytes if encoded as a big number
-
-### Decoder Requirements
-Both the integer and big number forms of the mantissa MUST be decoded.
 
 
 # IEEE 754 NaN {#NaN}
