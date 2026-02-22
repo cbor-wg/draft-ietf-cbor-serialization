@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                        13 February 2026
-Expires: 17 August 2026
+Intended status: Standards Track                        22 February 2026
+Expires: 26 August 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 August 2026.
+   This Internet-Draft will expire on 26 August 2026.
 
 Copyright Notice
 
@@ -106,35 +106,26 @@ Table of Contents
      11.2.  Informative References
    Appendix A.  Information Model, Data Model and Serialization
    Appendix B.  General Protocol Considerations for Determinism
-   Appendix C.  Deterministic Encoding for Popular Tags
-     C.1.  Date Strings, Tag 0
-     C.2.  Epoch Date, Tag 1
-       C.2.1.  Encoder Requirements
-       C.2.2.  Decoder Requirements
-     C.3.  Big Numbers, Tags 2 and 3
-     C.4.  Big Floats and Decimal Fractions, Tags 4 and 5
-       C.4.1.  Encoder Requirements
-       C.4.2.  Decoder Requirements
-   Appendix D.  IEEE 754 NaN
-     D.1.  Basics
-     D.2.  Implementation Support for Non-Trivial NaNs
-     D.3.  Use and Non-use for Non-Trivial NaNs
-     D.4.  Clarification of STD94
-     D.5.  Divergence from STD94
-     D.6.  Recommendations for Use of Non-Trival NaNs
-   Appendix E.  Big Numbers and the CBOR Data Model
-   Appendix F.  Big Number Implementation Strategies
-   Appendix G.  Serialization Checking
-     G.1.  Serialization Checking Use Cases
-   Appendix H.  CBOR Byte String Wrapping
-     H.1.  Purpose
-     H.2.  Wrapping Recommendations
-     H.3.  CBOR Library Implementation Suggestion
-   Appendix I.  Serialization for COSE
-     I.1.  COSE Payload Serialization
-     I.2.  COSE Sig_structure
-     I.3.  The Encoded Message
-   Appendix J.  Examples and Test Vectors
+   Appendix C.  IEEE 754 NaN
+     C.1.  Basics
+     C.2.  Implementation Support for Non-Trivial NaNs
+     C.3.  Use and Non-use for Non-Trivial NaNs
+     C.4.  Clarification of STD94
+     C.5.  Divergence from STD94
+     C.6.  Recommendations for Use of Non-Trival NaNs
+   Appendix D.  Big Numbers and the CBOR Data Model
+   Appendix E.  Big Number Implementation Strategies
+   Appendix F.  Serialization Checking
+     F.1.  Serialization Checking Use Cases
+   Appendix G.  CBOR Byte String Wrapping
+     G.1.  Purpose
+     G.2.  Wrapping Recommendations
+     G.3.  CBOR Library Implementation Suggestion
+   Appendix H.  Serialization for COSE
+     H.1.  COSE Payload Serialization
+     H.2.  COSE Sig_structure
+     H.3.  The Encoded Message
+   Appendix I.  Examples and Test Vectors
    Contributors
    Author's Address
 
@@ -198,7 +189,7 @@ Table of Contents
    serialize data to be hashed or signed, rather than transmitting the
    exact serialized bytes that were hashed or signed.  See Section 5.3.
 
-   See Appendix I for a COSE-based detailed example.
+   See Appendix H for a COSE-based detailed example.
 
 2.1.2.  End-to-End Protocols
 
@@ -279,7 +270,7 @@ Table of Contents
 
    When a framework protocol mandates serialization requirements,
    libraries must of cource conform.  For instance, certain parts of
-   COSE mandate deterministic serialization.  See Appendix I for a
+   COSE mandate deterministic serialization.  See Appendix H for a
    detailed COSE-based example.
 
 2.2.3.  Libraries for End-to-End Protocols
@@ -342,7 +333,7 @@ Table of Contents
       length field rather than shifting all 2^16 bytes of content.
 
    *  Transmission of non-trivial NaNs in floating-point values (see
-      Appendix D).
+      Appendix C).
 
    Except for non-trivial NaNs, the other serializations can encode the
    same data types and value ranges as general serialization.  Its
@@ -457,7 +448,7 @@ Table of Contents
        *  An empty string MUST be accepted and treated as the value
           zero.
 
-   See also Appendix E and Appendix F for further background on big
+   See also Appendix D and Appendix E for further background on big
    numbers.
 
 4.3.  When to use ordinary serialization
@@ -521,7 +512,7 @@ Table of Contents
    Briefly stated, the reason that the divergence on NaNs is not of
    consequence in the real world, is that their non-trivial forms are
    used extremely rarely and support for them in programming
-   environments and CBOR libraries is unreliable.  See Appendix D.5 for
+   environments and CBOR libraries is unreliable.  See Appendix C.5 for
    a detailed discussion.
 
    Thus ordinary serialization is largely interchangable with preferred
@@ -534,7 +525,7 @@ Table of Contents
 
    Deterministic serialization is the same as described in Section 4.2.1
    of [STD94] except for the encoding of floating-point NaNs.  See
-   Section 4 and Appendix D for details on and rationale for NaN
+   Section 4 and Appendix C for details on and rationale for NaN
    encoding.
 
    Note that in deterministic serialization, any big number that can be
@@ -581,7 +572,7 @@ Table of Contents
    often chosen to reduce data size, preserve privacy, or meet other
    design constraints.
 
-   See the more detailed, COSE-based example in Appendix I.
+   See the more detailed, COSE-based example in Appendix H.
 
 5.3.2.  Decoding Deterministic Serialization and Relation to Ordinary
         Serialization
@@ -655,7 +646,7 @@ Table of Contents
    not introduce a separate data type; instead, they attach directly to
    the integer type and extend its numeric range.  As a result, the
    generic data model’s integer type is modified rather than augmented
-   with a new, independent type (see Appendix E).
+   with a new, independent type (see Appendix D).
 
    This document establishes a new rule that prohibits future tag
    definitions from having such effects:
@@ -701,7 +692,7 @@ Table of Contents
    arrays and maps, but does not extend into byte strings or other data
    items that happen to contain encoded CBOR.  Every instance of
    embedded CBOR that requires constrained serialization must specify
-   that constraint explicitly.  See also Appendix H.
+   that constraint explicitly.  See also Appendix G.
 
 9.  Security Considerations
 
@@ -864,8 +855,8 @@ Appendix B.  General Protocol Considerations for Determinism
 
    // RFC Editor: Please remove above sentence before publication
 
-   In addition to Section 5 and Appendix C, there are considerations in
-   the design of any deterministic protocol.
+   In addition to Section 5, there are considerations in the design of
+   any deterministic protocol.
 
    For a protocol to be deterministic, both the encoding (serialization)
    and data model (application) layer must be deterministic.  While
@@ -921,61 +912,12 @@ Appendix B.  General Protocol Considerations for Determinism
    nature of variability in the data model layer and some sources of
    variability in the CBOR data model (i.e., in the application layer).
 
-Appendix C.  Deterministic Encoding for Popular Tags
-
-   The definitions of the following tags in [RFC8610] allow variation in
-   the data mode, thus it is useful to define a deterministic encoding
-   for them should a particular deterministic protocol need one.  The
-   tags defined in [RFC8610] but not mentioned here have no variability
-   in their data model.
-
-C.1.  Date Strings, Tag 0
-
-   TODO -- complete this work and remove this comment before publication
-
-C.2.  Epoch Date, Tag 1
-
-C.2.1.  Encoder Requirements
-
-   If the encoder supports floating-point dates, it MUST use the integer
-   representation unless one of the following applies: (1) the date is
-   outside the range representable by a 64-bit integer of major type 0
-   or 1, or (2) the date has a non-zero fraction of a second.  In either
-   case, the floating-point representation MUST be used.
-
-C.2.2.  Decoder Requirements
-
-   If the decoder supports floating-point dates, it MUST be able to
-   decode both the integer and the floating-point representations.
-
-C.3.  Big Numbers, Tags 2 and 3
-
-   See Section 4.
-
-C.4.  Big Floats and Decimal Fractions, Tags 4 and 5
-
-C.4.1.  Encoder Requirements
-
-   The mantissa MUST be encoded in the preferred serialization form
-   specified in Section 3.4.3 of RFC 8949.
-
-   The mantissa MUST NOT contain trailing zeros.  For example, the
-   decimal fraction with value 10 must be encoded with a mantissa of 1
-   and an exponent of 1.  For big floats, the mantissa must not include
-   any trailing zero bits if encoded as a type 0 or 1 integer, and no
-   trailing zero bytes if encoded as a big number
-
-C.4.2.  Decoder Requirements
-
-   Both the integer and big number forms of the mantissa MUST be
-   decoded.
-
-Appendix D.  IEEE 754 NaN
+Appendix C.  IEEE 754 NaN
 
    This section provides background information on [IEEE754] NaN (Not a
    Number) and its use in CBOR.
 
-D.1.  Basics
+C.1.  Basics
 
    [IEEE754] defines the most widely used representation for floating-
    point numbers.  It includes special values for infinity and NaN.  NaN
@@ -1013,7 +955,7 @@ D.1.  Basics
    *  A non-trivial NaN is used to carry additional, protocol-specific
       information within floating-point values.
 
-D.2.  Implementation Support for Non-Trivial NaNs
+C.2.  Implementation Support for Non-Trivial NaNs
 
    This section discusses the extent of programming language and CPU
    support for NaN payloads.
@@ -1047,7 +989,7 @@ D.2.  Implementation Support for Non-Trivial NaNs
    software implementation of IEEE 754 to encode and decode the full bit
    patterns to reliably process non-trivial NaNs.
 
-D.3.  Use and Non-use for Non-Trivial NaNs
+C.3.  Use and Non-use for Non-Trivial NaNs
 
    Non-trivial NaNs, excluding signaling NaNs, are not produced by
    standard floating-point operations.  They are typically created at
@@ -1090,7 +1032,7 @@ D.3.  Use and Non-use for Non-Trivial NaNs
    *  Values cannot be translated directly to JSON, which does not
       support NaNs of any kind.
 
-D.4.  Clarification of [STD94]
+C.4.  Clarification of [STD94]
 
    This is a clarifying restatement of how NaNs are to be treated
    according to [STD94].
@@ -1152,7 +1094,7 @@ D.4.  Clarification of [STD94]
    from the Core Deterministic Encoding Requirements and represents an
    optional alternative for handling NaNs.
 
-D.5.  Divergence from [STD94]
+C.5.  Divergence from [STD94]
 
    Orindary and deterministic serialization defined in this document
    diverge from the preferred serialization requirement in [STD94] for
@@ -1193,7 +1135,7 @@ D.5.  Divergence from [STD94]
    *  A new CBOR tag can be defined in the future to explicitly support
       them.
 
-D.6.  Recommendations for Use of Non-Trival NaNs
+C.6.  Recommendations for Use of Non-Trival NaNs
 
    While non-trivial NaNs are excluded from ordinary and deterministic
    serialization, they are theoretically supported by [STD94].  General
@@ -1210,7 +1152,7 @@ D.6.  Recommendations for Use of Non-Trival NaNs
    NaNs internally may need to serialize its data to run across machines
    connected by a network.
 
-Appendix E.  Big Numbers and the CBOR Data Model
+Appendix D.  Big Numbers and the CBOR Data Model
 
    The primary purpose of this document is to define ordinary and
    deterministic serialization.  Accordingly, Section 4 describes CBOR’s
@@ -1252,9 +1194,9 @@ Appendix E.  Big Numbers and the CBOR Data Model
    This document does create a new rule for future tag definitions.  See
    Section 7.
 
-Appendix F.  Big Number Implementation Strategies
+Appendix E.  Big Number Implementation Strategies
 
-   Appendix E describes how CBOR defines a single integer number space,
+   Appendix D describes how CBOR defines a single integer number space,
    in which big numbers are not distinct from values encoded using major
    types 0 and 1.  This appendix discusses approaches for implementers
    to support that model.
@@ -1293,7 +1235,7 @@ Appendix F.  Big Number Implementation Strategies
    Finally, note that big numbers are not a widely used feature of CBOR.
    Some CBOR libraries may entirely omit support for tags 2 and 3.
 
-Appendix G.  Serialization Checking
+Appendix F.  Serialization Checking
 
    Serialization checking rejects input which, while well-formed CBOR,
    does not conform to a particular serialization rule set it is
@@ -1308,7 +1250,7 @@ Appendix G.  Serialization Checking
    checking is well-formed; it is rejected because it violates
    additional serialization constraints.
 
-G.1.  Serialization Checking Use Cases
+F.1.  Serialization Checking Use Cases
 
    Some applications that rely on deterministic serialization may choose
    serialization checking in order to ensure that the data they consume
@@ -1334,14 +1276,14 @@ G.1.  Serialization Checking Use Cases
    appropriate remedy is to fix their input validation, not to add the
    serialization checking described here.
 
-Appendix H.  CBOR Byte String Wrapping
+Appendix G.  CBOR Byte String Wrapping
 
    This appendix provides non-normative guidance on byte-string wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
    control operators described in Section 8.
 
-H.1.  Purpose
+G.1.  Purpose
 
    Error isolation:  Wrapping CBOR in a byte string prevents encoding
       errors in the wrapped data from causing the enclosing CBOR to fail
@@ -1364,7 +1306,7 @@ H.1.  Purpose
       data types like arrays and maps as map keys, they can be wrapped
       in a byte string.
 
-H.2.  Wrapping Recommendations
+G.2.  Wrapping Recommendations
 
    The serialization requirements for the wrapping CBOR may differ from
    those for the wrapped CBOR.  CBOR itself imposes no universal rule
@@ -1387,7 +1329,7 @@ H.2.  Wrapping Recommendations
    other data representation formats such as JSON.  See the discussion
    in Section 5.3.
 
-H.3.  CBOR Library Implementation Suggestion
+G.3.  CBOR Library Implementation Suggestion
 
    A straightforward implementation strategy is to instantiate a second
    CBOR encoder or decoder for the wrapped message.  However, this may
@@ -1402,7 +1344,7 @@ H.3.  CBOR Library Implementation Suggestion
    encoded CBOR can be treated as a container that always contains
    exactly one item.
 
-Appendix I.  Serialization for COSE
+Appendix H.  Serialization for COSE
 
 
    // This is new in the -02 draft.  It aims to be a comprehensive
@@ -1426,7 +1368,7 @@ Appendix I.  Serialization for COSE
    *  The encoded message (the header parameters and the array of four
       that is the COSE_Sign1)
 
-I.1.  COSE Payload Serialization
+H.1.  COSE Payload Serialization
 
    The payload may or may not be CBOR, but let’s assume it is, perhaps a
    CWT or EAT.  The payload is transmitted from the signer/sender fully
@@ -1448,9 +1390,9 @@ I.1.  COSE Payload Serialization
    processing by the verification algorithms Most CBOR libraries do not
    provide access to chunks of encoded CBOR in the middle of a message.
 
-   This is an example of byte string wrapping described in Appendix H.
+   This is an example of byte string wrapping described in Appendix G.
 
-I.2.  COSE Sig_structure
+H.2.  COSE Sig_structure
 
    The Sig_struct is not conveyed from the sender to the receiver, but
    rather constructed independently by the sender and reciever.  This is
@@ -1466,7 +1408,7 @@ I.2.  COSE Sig_structure
    signed data that is not transmitted in its signed form.  See
    Section 5.3.
 
-I.3.  The Encoded Message
+H.3.  The Encoded Message
 
    A COSE_Sign1 structure is an array of four elements containing, in
    order, two header parameter chunks, the payload, and the signature.
@@ -1490,7 +1432,7 @@ I.3.  The Encoded Message
    based protocols described in this document and summarized in
    TODO:Recommendations Reference.
 
-Appendix J.  Examples and Test Vectors
+Appendix I.  Examples and Test Vectors
 
    TODO -- complete work and remove this comment before publication
 
