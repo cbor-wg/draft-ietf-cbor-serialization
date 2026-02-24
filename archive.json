@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-22T02:07:56.331349+00:00",
+  "timestamp": "2026-02-24T02:05:25.714917+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -387,9 +387,17 @@
       "labels": [],
       "body": "Appendix B and Appendix C are good candidates",
       "createdAt": "2025-12-10T15:04:35Z",
-      "updatedAt": "2025-12-10T15:04:35Z",
+      "updatedAt": "2026-02-22T19:43:59Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This appears to be resolving with the removal of Appendix C and leaving Appendix B where it is.\n\nWe have some consensus for this, but not closing the issue just yet.",
+          "createdAt": "2026-02-22T19:43:59Z",
+          "updatedAt": "2026-02-22T19:43:59Z"
+        }
+      ]
     },
     {
       "number": 21,
@@ -412,16 +420,24 @@
       "id": "I_kwDOQYX63c7dx49u",
       "title": "Fill in deterministic encoding of date strings, tag 0",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/22",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-12-11T20:25:32Z",
-      "updatedAt": "2025-12-11T20:25:32Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-02-22T19:42:40Z",
+      "closedAt": "2026-02-22T19:42:40Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "No longer relevant because of #43 ",
+          "createdAt": "2026-02-22T19:42:40Z",
+          "updatedAt": "2026-02-22T19:42:40Z"
+        }
+      ]
     },
     {
       "number": 24,
@@ -2219,24 +2235,26 @@
       "id": "PR_kwDOQYX63c7Ew9De",
       "title": "Remove Appendix on determinism for tags",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/43",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2026-02-19T02:47:46Z",
-      "updatedAt": "2026-02-19T02:47:46Z",
+      "updatedAt": "2026-02-22T19:42:15Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "79811918dee26b6c727d5cfbe049e84c2fabe8b1",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "no-appx-c",
       "headRefOid": "3fde6d060610e1483791b13da1c0c68b1f5943cc",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-02-22T19:42:15Z",
+      "mergedAt": "2026-02-22T19:42:15Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "ede9bcbfe70118042387e22f7e0f09593c73bc14"
+      },
       "comments": [],
       "reviews": []
     },
@@ -2259,6 +2277,58 @@
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "new-intro",
       "headRefOid": "ec3eeaf994c02baee25d3b38e7c6aeb0e8bc3f16",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 45,
+      "id": "PR_kwDOQYX63c7FgSEb",
+      "title": "ordinay -> preferred-plus",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/45",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Rename \"ordinary serialization\" to \"preferred-plus serialization\".\r\n\r\nAddresses #9",
+      "createdAt": "2026-02-22T20:11:01Z",
+      "updatedAt": "2026-02-22T20:11:01Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "ede9bcbfe70118042387e22f7e0f09593c73bc14",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "prefp",
+      "headRefOid": "0fa045295259f7ef92562b62143b257b7cb68ecd",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 46,
+      "id": "PR_kwDOQYX63c7FgUQ6",
+      "title": "CDDL operator renamed .det -> .dtrm",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/46",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Address #21. \".det\" is already in use",
+      "createdAt": "2026-02-22T20:18:02Z",
+      "updatedAt": "2026-02-22T20:18:02Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "ede9bcbfe70118042387e22f7e0f09593c73bc14",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "det-op",
+      "headRefOid": "ca73f51e7813deed65ee982ef089d5cbf907d907",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
