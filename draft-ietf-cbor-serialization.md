@@ -814,6 +814,8 @@ The appropriate remedy is to fix their input validation, not to add the serializ
 
 This appendix provides non-normative guidance on byte-string wrapping of CBOR.
 It applies primarily to tag 24 and the CDDL .cbor and .cborseq control operators, but also to the serialization-specifying control operators described in {{CDDL-Operators}}.
+It also applies when prose states the byte-string wrapping requirement such as for the COSE protected headers.
+See {{COSESigStructure}}.
 
 ## Purpose
 
@@ -880,7 +882,7 @@ COSE_Sign1 serialization can be discussed in three parts:
 - The Sig_structure ({{Section 4.4 of -COSE}}).
 - The encoded message (the header parameters and the array of four that is the COSE_Sign1)
 
-## COSE Payload Serialization ##
+## COSE Payload Serialization
 
 The payload may or may not be CBOR, but let’s assume it is, perhaps a CWT or EAT.
 The payload is transmitted from the signer/sender fully in tact all the way to the verifier/receiver.
@@ -898,18 +900,26 @@ Most CBOR libraries do not provide access to chunks of encoded CBOR in the middl
 
 This is an example of byte string wrapping described in {{ByteStringWrapping}}.
 
-## COSE Sig_structure ##
+## COSE Sig_structure {#COSESigStructure}
 
-The Sig_struct is not conveyed from the sender to the receiver, but rather constructed independently by the sender and reciever.
-This is the input to the signing process so it must be deterministic.
-That is, COSE explicitly requires this to be deterministicall encoded so that both the sender and receiver construct exactly the same encoded CBOR.
-{{Section 9 of -COSE}} gives this requirement.
-The COSE requirement is the same as deterministic serialization {{DeterministicSerialization}} (unless floating-point numbers with NaN payloads appear in a header parameter).
+The Sig_structure is not transmitted from the sender to the receiver; instead, it is constructed independently by both parties.
+Because it is the input to the signing process, it must use deterministic serialization.
+COSE therefore explicitly requires deterministic encoding so that both the sender and receiver produce identical encoded CBOR representations.
+This requirement is specified in {{Section 9 of -COSE}}.
 
-This is an example of the need for deterministic serialization for signed data that is not transmitted in its signed form. See {{WhenDeterministic}}.
+In this case, the COSE requirement is effectively equivalent to the deterministic serialization defined in {{DeterministicSerialization}}, since no NaN values are involved.
+It is also equivalent to ordinary serialization as defined in {{OrdinarySerialization}}, because the Sig_structure contains no maps.
+
+The determinism requirement does not apply to the protected headers incorporated into the Sig_structure.
+Deterministic encoding is unnecessary because these headers are transmitted in the exact encoded form in which they are included in the Sig_structure.
+
+Furthermore, determinism requirements do not extend into CBOR inside of byte strings.
+Once CBOR data is wrapped in a byte string, its internal encoding is treated as opaque and is not subject to surrounding serialization constraints.
+
+This illustrates the general need for deterministic serialization when signed data is reconstructed rather than transmitted in the exact form that was signed. See {{WhenDeterministic}}.
 
 
-## The Encoded Message ##
+## The Encoded Message
 
 A COSE_Sign1 structure is an array of four elements containing, in order, two header parameter chunks, the payload, and the signature.
 The two header parameter chunks are maps that hold the various header parameters.
