@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                        22 February 2026
-Expires: 26 August 2026
+Intended status: Standards Track                        27 February 2026
+Expires: 31 August 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 August 2026.
+   This Internet-Draft will expire on 31 August 2026.
 
 Copyright Notice
 
@@ -110,7 +110,7 @@ Table of Contents
      C.1.  Basics
      C.2.  Implementation Support for Non-Trivial NaNs
      C.3.  Use and Non-use for Non-Trivial NaNs
-     C.4.  Clarification of STD94
+     C.4.  Clarification of RFC 8949
      C.5.  Divergence from STD94
      C.6.  Recommendations for Use of Non-Trival NaNs
    Appendix D.  Big Numbers and the CBOR Data Model
@@ -525,7 +525,7 @@ Table of Contents
 
    Deterministic serialization is the same as described in Section 4.2.1
    of [STD94] except for the encoding of floating-point NaNs.  See
-   Section 4 and Appendix C for details on and rationale for NaN
+   Section 4 and Appendix C for details on, and the rationale for NaN
    encoding.
 
    Note that in deterministic serialization, any big number that can be
@@ -543,13 +543,14 @@ Table of Contents
        bytewise lexicographic order of their deterministic encodings of
        the map keys.  (Note that this is the same as the sorting in
        Section 4.2.1 of [STD94] and not the same as Section 3.9 of
-       [RFC7049].
+       [RFC7049] / Section 4.2.3 of [STD94].
 
 5.2.  Decoder Requirements
 
-   1.  Decoders MUST meet the decoder requirements for Section 4.2.
-       That is, deterministic encoding imposes no requirements over and
-       above the requirements for decoding ordinary serialization.
+   1.  Decoders MUST meet the decoder requirements described in
+       Section 4.2.  That is, deterministic encoding imposes no
+       requirements over and above the requirements for decoding
+       ordinary serialization.
 
 5.3.  When to use Deterministic Serialization
 
@@ -594,10 +595,10 @@ Table of Contents
    may produce deterministic encoding by default and may even omit
    support for ordinary encoding entirely.
 
-   But note that deterministic is never a substitute for general
-   serialization where uses cases may require indefinite lengths,
-   separate big numbers from integers in the data model, need non-
-   trivial NaNs, or other.
+   However, note that deterministic serialization is never a substitute
+   for general serialization where uses cases may require indefinite
+   lengths, separate big numbers from integers in the data model, or
+   need non-trivial NaNs.
 
 5.3.3.  No Map Ordering Semantics
 
@@ -792,6 +793,9 @@ Table of Contents
               Protocols", RFC 9413, DOI 10.17487/RFC9413, June 2023,
               <https://www.rfc-editor.org/rfc/rfc9413>.
 
+   [UML]      "OMG Unified Modeling Language (OMG UML) Version 2.5.1",
+              December 2017, <https://www.omg.org/spec/UML/2.5.1/PDF>.
+
 Appendix A.  Information Model, Data Model and Serialization
 
    To understand CBOR serialization and determinism, it's helpful to
@@ -813,9 +817,9 @@ Appendix A.  Information Model, Data Model and Serialization
    |                | of          | representing      | point number   |
    |                | something   | the temperature   |                |
    +----------------+-------------+-------------------+----------------+
-   | Standards      |             | CDDL              | CBOR           |
+   | Standards      | [UML]       | CDDL              | CBOR           |
    +----------------+-------------+-------------------+----------------+
-   | Implementation |             | API Input to      | Encoded CBOR   |
+   | Implementation | n/a         | API Input to      | Encoded CBOR   |
    | Representation |             | CBOR encoder      | in memory or   |
    |                |             | library, output   | for            |
    |                |             | from CBOR         | transmission   |
@@ -966,7 +970,7 @@ C.2.  Implementation Support for Non-Trivial NaNs
 
    *  Programming languages:
 
-      -  The programming languages C, C++, Java, Pyhton and Rust do no
+      -  The programming languages C, C++, Java, Python and Rust do no
          provide APIs to set or extract NaN payloads.
 
       -  IEEE 754 is over thirty years old, enough time for support to
@@ -1032,7 +1036,7 @@ C.3.  Use and Non-use for Non-Trivial NaNs
    *  Values cannot be translated directly to JSON, which does not
       support NaNs of any kind.
 
-C.4.  Clarification of [STD94]
+C.4.  Clarification of RFC 8949
 
    This is a clarifying restatement of how NaNs are to be treated
    according to [STD94].
@@ -1096,18 +1100,13 @@ C.4.  Clarification of [STD94]
 
 C.5.  Divergence from [STD94]
 
-   Orindary and deterministic serialization defined in this document
-   diverge from the preferred serialization requirement in [STD94] for
-   shortest-length encoding of NaNs:
+   Non-trivial NaNs are not permitted in either ordinary or
+   deterministic serializations.  This is in contrast to preferred
+   serialization and Section 4.2.1 of [STD94].
 
-   *  Ordinary serialization: Non-trivial NaNs are not allowed.  While
-      ordinary serialization largely aligns with preferred
-      serialization, it does not in the case of non-trivial NaNs.
-
-   *  Deterministic serialization: Because deterministic serialization
-      inherits from ordinary serialization, it also does not allow non-
-      trivial NaNs.  This is the single aspect of deterministic
-      serialization that is different from Section 4.2.1 of [STD94].
+   Note that the prohibition of non-trivial NaNs is the sole difference
+   between deterministic serialization (Section 5) and Section 4.2.1 of
+   [STD94].
 
    The divergence is justified by the following:
 
@@ -1119,9 +1118,10 @@ C.5.  Divergence from [STD94]
    *  Non-trivial NaNs are not well-supported across CPUs and
       programming environments.
 
-   *  Implementing preferred serialization for non-trivial NaNs is
-      complex and error-prone; many CBOR implementations don't support
-      it or don't support it correctly.
+   *  Because preferred serialization of non-trivial NaNs is difficult
+      and error-prone to implement, many CBOR implementations don't
+      encode and/or decode non-trivial NaNs, or don't encode or decode
+      them correctly.
 
    *  Practical use cases for non-trivial NaNs are extremely rare.
 
@@ -1141,11 +1141,11 @@ C.6.  Recommendations for Use of Non-Trival NaNs
    serialization, they are theoretically supported by [STD94].  General
    serialization does support them.
 
-   New protocol designs can — and generally should—avoid non — non-
-   trivial NaNs.  Support for them is unreliable, and it is
-   straightforward to design CBOR-based protocols that do not depend on
-   them.  In many cases, the use of NaN can be replaced entirely with
-   null.  JSON requires use of null as it does not support NaNs at all.
+   New protocol designs SHOULD avoid non-trivial NaNs.  Support for them
+   is unreliable, and it is straightforward to design CBOR-based
+   protocols that do not depend on them.  In many cases, the use of NaN
+   can be replaced entirely with null.  JSON requires use of null as it
+   does not support NaNs at all.
 
    The primary use case for non-trivial NaNs is existing systems that
    already use them.  For example, a program that relies on non-trivial
