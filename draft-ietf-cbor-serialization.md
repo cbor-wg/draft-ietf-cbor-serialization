@@ -101,7 +101,7 @@ informative:
 
 --- abstract
 
-This document defines two CBOR serializations: "ordinary serialization" and "deterministic serialization."
+This document defines two CBOR serializations: "preferred-plus serialization" and "deterministic serialization."
 It also introduces the term "general serialization" to name the full, variable set of serialization options defined in {{-cbor}}.
 Together, these three form a complete set of serializations that cover the majority of CBOR serialization use cases.
 
@@ -155,7 +155,7 @@ This makes it both feasible and beneficial to define a common serialization suit
 
 Protocol specifications can reference such a serialization rather than restating detailed encoding rules, and library implementations can prioritize support for it.
 
-This document defines that serialization: ordinary serialization.
+This document defines that serialization: preferred-plus serialization.
 
 
 ## Determinism
@@ -182,7 +182,7 @@ This approach provides clarity and simplicity for implementers and the CBOR comm
 The serializations defined herein are formally new, but largely interchangeable with the way the serializations desecribed in {{-cbor}} are implemented.
 
 For example, preferred serialization described in {{-cbor}} is commonly implemented without support for indefinite-lengths.
-Ordinary serialization is defined here is largely the same preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.
+Preferred-plus serialization is defined here is largely the same preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.
 
 
 # Recommendations Summary {#Recommendations}
@@ -221,7 +221,7 @@ TLS, HTTP, and FIDO are examples of end-to-end protocols.
 
 End-to-end protocols MUST define a serialization strategy that ensures the sender and receiver use interoperable serialization.
 
-The strategy most highly RECOMMENDED is to normatively require ordinary serialization.
+The strategy most highly RECOMMENDED is to normatively require preferred-plus serialization.
 If a protocol does not need to be deployed where map sorting is too expensive, requiring deterministic serialization is also RECOMMENDED.
 
 An end-to-end protocol MAY instead define its own specialized serialization (see {{SpecialSerializations}}).
@@ -240,25 +240,25 @@ Defaulting to general serialization is NOT RECOMMENDED, because some serializati
 
 ### CBOR Libraries
 
-It is RECOMMENDED that CBOR libraries support ordinary serialization.
-This can be achieved by conforming to the decoding requirements in {{OrdinaryDecoding}} and by making the encoding behavior defined in {{OrdinaryEncoding}} the default or primary encoding API.
+It is RECOMMENDED that CBOR libraries support preferred-plus serialization.
+This can be achieved by conforming to the decoding requirements in {{PreferredPlusDecoding}} and by making the encoding behavior defined in {{PreferredPlusEncoding}} the default or primary encoding API.
 
-Ordinary serialization is recommended because it is suitable for the majority of CBOR-based protocols.
-In practice, ordinary serialization is equivalent to preferred serialization {{Section 4.1 of -cbor}} for most use cases.
+Preferred-plus serialization is recommended because it is suitable for the majority of CBOR-based protocols.
+In practice, preferred-plus serialization is equivalent to preferred serialization {{Section 4.1 of -cbor}} for most use cases.
 
 It is also RECOMMENDED that CBOR libraries support deterministic serialization, as some protocols (for example, COSE) require it.
-Relative to ordinary serialization, the only additional requirement for deterministic serialization is that encoded maps be sorted.
+Relative to preferred-plus serialization, the only additional requirement for deterministic serialization is that encoded maps be sorted.
 This recommendation is particularly strong for environments in which map sorting is easy to implement (for example, Python, Go, and Ruby).
 
 A CBOR library may choose to implement only deterministic serialization and make it the default.
-Deterministic serialization is a superset of ordinary serialization; therefore, if deterministic serialization is fully supported, explicit support for ordinary serialization may be omitted.
+Deterministic serialization is a superset of preferred-plus serialization; therefore, if deterministic serialization is fully supported, explicit support for preferred-plus serialization may be omitted.
 
 A CBOR library MAY also choose to support some or all aspects of general serialization (see {{GeneralSerialization}}) thereby enabling support for protocols that use specialized serializations (see {{SpecialSerializations}}).
 
 ### Libraries for Framework Protocols
 
-When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that it implement ordinary serialization.
-For example, it is recommended that a library implementing CWT or COSE implement ordinary serialization.
+When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that it implement preferred-plus serialization.
+For example, it is recommended that a library implementing CWT or COSE implement preferred-plus serialization.
 
 However, a library MAY choose to support only deterministic serialization if this aligns with its deployment environment and design goals.
 
@@ -272,7 +272,7 @@ See {{COSESerialization}} for a detailed COSE-based example.
 End-to-end protocols should have explicit serialization requirements to ensure interoperability.
 Libraries for end-to-end protocols should fullfill them.
 
-If an end-to-end protocol specification does not state serialization requirements, the library is free to choose, but it is RECOMMENDED that they implement ordinary serialization.
+If an end-to-end protocol specification does not state serialization requirements, the library is free to choose, but it is RECOMMENDED that they implement preferred-plus serialization.
 
 
 # General Serialization {#GeneralSerialization}
@@ -291,7 +291,7 @@ A decoder that supports general serialization is able to decode all of these.
 
 ## When To Use General Serialization {#WhenGeneral}
 
-Ordinary serialization ({{OrdinarySerialization}}) satisfies the vast majority of CBOR use cases; therefore, the need for general serialization is rare and arises only in unusual circumstances.
+Preferred-plus serialization ({{PreferredPlusSerialization}}) satisfies the vast majority of CBOR use cases; therefore, the need for general serialization is rare and arises only in unusual circumstances.
 The following are representative examples:
 
 * Enable on-the-fly, streaming encoding of strings, arrays, and maps with indefinite lengths.
@@ -322,14 +322,14 @@ For example, CBOR Web Token, {{-CWT}} does not specify serialization; therefore,
 In practice, however, it is widely recognized that some CWT decoders cannot process the full range of general serialization, particularly indefinite lengths.
 As a result, CWT encoders typically limit themselves to the subset of serializations that decoders can reliably handle, most notably by never encoding indefinite lengths.
 It is similar for other CBOR-based protocols like {{-COSE}}.
-See also {{OrdinarySerialization}}.
+See also {{PreferredPlusSerialization}}.
 
 
-# Ordinary Serialization {#OrdinarySerialization}
+# Preferred-Plus Serialization {#PreferredPlusSerialization}
 
-This section defines a serialization named "ordinary serialization."
+This section defines a serialization named "preferred-plus serialization."
 
-## Encoder Requirements {#OrdinaryEncoding}
+## Encoder Requirements {#PreferredPlusEncoding}
 
 1. The shortest-form of the CBOR argument must be used for all major types.
    The shortest-form encoding for any argument that is not a floating  point value is:
@@ -360,7 +360,7 @@ This section defines a serialization named "ordinary serialization."
    * If a value can be encoded using major type 0 or 1, then it MUST be encoded with major type 0 or 1, never as a big number.
 
 
-## Decoder Requirements {#OrdinaryDecoding}
+## Decoder Requirements {#PreferredPlusDecoding}
 
 1. Decoders MUST accept shortest-form encoded arguments.
 
@@ -383,25 +383,25 @@ This section defines a serialization named "ordinary serialization."
 See also {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further background on big numbers.
 
 
-## When to use ordinary serialization
+## When to use preferred-plus serialization
 
-The purpose of ordinary serialization is to provide interoperability without requiring support for indefinite-length decoding.
+The purpose of preferred-plus serialization is to provide interoperability without requiring support for indefinite-length decoding.
 If an encoder never produces indefinite-length items, the decoder can safely treat them as errors.
 Supporting indefinite-length decoding, especially for strings, introduces additional complexity and often necessitates dynamic memory allocation, so omitting it significantly reduces the implementation burden.
 
-Ordinary serialization also provides a size efficiency gain by encoding the CBOR argument in the shortest form.
+Preferred-plus serialization also provides a size efficiency gain by encoding the CBOR argument in the shortest form.
 Implementations typically find encoding and decoding in this form to be straightforward.
 
-The easy implementation and broad usefulness makes ordinary serialization the best choice for most CBOR protocols.
+The easy implementation and broad usefulness makes preferred-plus serialization the best choice for most CBOR protocols.
 To some degree it is a de facto standard for common CBOR protocols.
 
-See {{WhenGeneral}} for uses cases where ordinary serialization may not be suitable.
-But, for the vast majority of use cases, ordinary serialization provides interoperaibility, small encoded size and low implementation costs.
+See {{WhenGeneral}} for uses cases where preferred-plus serialization may not be suitable.
+But, for the vast majority of use cases, preferred-plus serialization provides interoperaibility, small encoded size and low implementation costs.
 
 
 ## Relation To Preferred Serialization {#RelationToPreferred}
 
-Ordinary serialization is defined to be the long-term replacement for preferred serialization.
+Preferred-plus serialization is defined to be the long-term replacement for preferred serialization.
 
 The differences are:
 
@@ -409,7 +409,7 @@ The differences are:
 * The only NaN allowed is the half-precision quiet NaN.
 * For big numbers, leading zeros must be ignored and the empty string must be accepted as zero.
 
-These differences are not of significance in real-world implementations, so ordinary serialization is already largely supported.
+These differences are not of significance in real-world implementations, so preferred-plus serialization is already largely supported.
 
 In {{Section 3 of -cbor}} it states that in preferred serialization the use of definite-length encoding is a "preference", not a requirement.
 Technically that means preferred seriaization decoders must support indefinite legnths, but in reality many do not.
@@ -423,7 +423,7 @@ That preferred serialization decoders are technically required to support indefi
 Briefly stated, the reason that the divergence on NaNs is not of consequence in the real world, is that their non-trivial forms are used extremely rarely and support for them in programming environments and CBOR libraries is unreliable.
 See {{NaNCompatibility}} for a detailed discussion.
 
-Thus ordinary serialization is largely interchangable with preferred serialization in the real world.
+Thus preferred-plus serialization is largely interchangable with preferred serialization in the real world.
 
 
 # Deterministic Serialization {#DeterministicSerialization}
@@ -431,23 +431,23 @@ Thus ordinary serialization is largely interchangable with preferred serializati
 This section defines a serialization named "deterministic serialization"
 
 Deterministic serialization is the same as described in {{Section 4.2.1 of -cbor}} except for the encoding of floating-point NaNs.
-See {{OrdinarySerialization}} and {{NaN}} for details on and rationale for NaN encoding.
+See {{PreferredPlusSerialization}} and {{NaN}} for details on and rationale for NaN encoding.
 
 Note that in deterministic serialization, any big number that can be represented as an integer must be encoded as an integer.
-This rule is inherited from ordinary serialization ({{OrdinarySerialization}}), just as {{Section 4.2.1 of -cbor}} inherits this requirement from preferred serialization.
+This rule is inherited from preferred-plus serialization ({{PreferredPlusSerialization}}), just as {{Section 4.2.1 of -cbor}} inherits this requirement from preferred serialization.
 
 
 ## Encoder Requirements {#DeterministicEncoding}
 
-1. All of ordinary serialization defined in {{OrdinaryEncoding}} MUST be used.
+1. All of preferred-plus serialization defined in {{PreferredPlusEncoding}} MUST be used.
 
 1. If a map is encoded, the items in it MUST be sorted in the bytewise lexicographic order of their deterministic encodings of the map keys.
    (Note that this is the same as the sorting in {{Section 4.2.1 of -cbor}} and not the same as {{Section 3.9 of RFC7049}}.
 
 ## Decoder Requirements {#DeterministicDecoding}
 
-1. Decoders MUST meet the decoder requirements for {{OrdinaryDecoding}}.
-That is, deterministic encoding imposes no requirements over and above the requirements for decoding ordinary serialization.
+1. Decoders MUST meet the decoder requirements for {{PreferredPlusDecoding}}.
+That is, deterministic encoding imposes no requirements over and above the requirements for decoding preferred-plus serialization.
 
 ## When to use Deterministic Serialization {#WhenDeterministic}
 
@@ -465,16 +465,16 @@ Such designs are often chosen to reduce data size, preserve privacy, or meet oth
 
 See the more detailed, COSE-based example in {{COSESerialization}}.
 
-### Decoding Deterministic Serialization and Relation to Ordinary Serialization
+### Decoding Deterministic Serialization and Relation to Preferred-Plus Serialization
 
-The only difference between ordinary and deterministic serialization is that in deterministic serialization, maps are required to be sorted by their keys.
-Ordinary serialization exists as a separate mode solely because map sorting can be too expensive in some constrained environments.
+The only difference between preferred-plus and deterministic serialization is that in deterministic serialization, maps are required to be sorted by their keys.
+Preferred-plus serialization exists as a separate mode solely because map sorting can be too expensive in some constrained environments.
 
 Map decoding must never depend on the sort order of a map, even when maps are required to be sorted.
-As a result, deterministic serialization ({{DeterministicSerialization}}) can always be decoded by a decoder that supports ordinary serialization ({{OrdinarySerialization}}).
-Because of this property, deterministic serialization can always be used in place of ordinary serialization.
+As a result, deterministic serialization ({{DeterministicSerialization}}) can always be decoded by a decoder that supports preferred-plus serialization ({{PreferredPlusSerialization}}).
+Because of this property, deterministic serialization can always be used in place of preferred-plus serialization.
 In environments where map sorting is not costly, it is both acceptable and beneficial to always use deterministic serialization.
-In such environments, a CBOR encoder may produce deterministic encoding by default and may even omit support for ordinary encoding entirely.
+In such environments, a CBOR encoder may produce deterministic encoding by default and may even omit support for preferred-plus encoding entirely.
 
 But note that deterministic is never a substitute for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, need non-trivial NaNs, or other.
 
@@ -494,7 +494,7 @@ Although discouraged, defining special serializations that differ from those spe
 For example, a use case might require deterministim from a protocol that uses indefinite lengths.
 For another example, a protocol may require only a subset of general serialization features &mdash; for instance, fixed-length integer encodings but not indefinite lengths.
 
-A recommended way to define a special serialization is to describe it as ordinary or deterministic serialization with additional constraints or extensions.
+A recommended way to define a special serialization is to describe it as preferred-plus or deterministic serialization with additional constraints or extensions.
 For example, a protocol requiring deterministic streaming of maps and arrays can be defined as follows:
 
 >> Deterministic serialization MUST be used, but all maps and arrays MUST be encoded with indefinite lengths, never definite lengths.
@@ -524,13 +524,13 @@ Tags 2 and 3 are exempt from this rule, as they were defined prior to the establ
 
 Four new control operators are defined for use in CDDL {{-cddl}}.
 
-| Name    | Purpose                                             |
-| .ord    | Use ordinary serialization for a data item          |
-| .ordseq | Use ordinary serialization for a CBOR sequence      |
-| .det    | Use deterministic serialization for a data item     |
-| .detseq | Use deterministic serialization for a CBOR sequence |
+| Name      | Purpose                                              |
+| .prefp    | Use preferred-plus serialization for a data item     |
+| .prefpseq | Use preferred-plus serialization for a CBOR sequence |
+| .det      | Use deterministic serialization for a data item      |
+| .detseq   | Use deterministic serialization for a CBOR sequence  |
 
-These operators have the same semantics as the .cbor and .cborseq operators (See {{Section 3.8.4 of -cddl}}) with the additional requirement for ordinary or deterministic serialization.
+These operators have the same semantics as the .cbor and .cborseq operators (See {{Section 3.8.4 of -cddl}}) with the additional requirement for preferred-plus or deterministic serialization.
 These specify that what is in the “controller” (the right side of the operator) be serialized as indicated.
 
 For example, a byte string containing embedded CBOR that must be deterministically encoded can be described in CDDL as:
@@ -562,11 +562,11 @@ This document requests IANA to register the contents of
 
 <?v3xml2rfc table_borders="light" ?>
 
-| Name      | Reference |
-| .ord      | \[RFCXXXX] |
-| .ordseq   | \[RFCXXXX] |
-| .det      | \[RFCXXXX] |
-| .detseq   | \[RFCXXXX] |
+| Name        | Reference |
+| .prefp      | \[RFCXXXX] |
+| .prefpseq   | \[RFCXXXX] |
+| .det        | \[RFCXXXX] |
+| .detseq     | \[RFCXXXX] |
 {: #tbl-iana-reqs title="New control operators to be registered"}
 
 IANA is requested to add a reference to {{TagDataModelRule}} to the CBOR tag registry {{IANA.cbor-tags}}.
@@ -709,7 +709,7 @@ A designer of a new protocol that makes extensive use of floating-point values m
 For example, NaN payloads could be used to distinguish situations such as sensor offline, sensor absent, sensor error, or sensor out of calibration.
 While this is technically possible in CBOR, it comes with significant drawbacks:
 
-- Ordinary and deterministic serialization cannot be used for this protocol.
+- Preferred-plus and deterministic serialization cannot be used for this protocol.
 - Support for NaN payloads is unreliable across programming environments and CBOR libraries.
 - Values cannot be translated directly to JSON, which does not support NaNs of any kind.
 
@@ -759,9 +759,9 @@ This section is distinct from the Core Deterministic Encoding Requirements and r
 
 Orindary and deterministic serialization defined in this document diverge from the preferred serialization requirement in {{-cbor}} for shortest-length encoding of NaNs:
 
-- Ordinary serialization: Non-trivial NaNs are not allowed.
-  While ordinary serialization largely aligns with preferred serialization, it does not in the case of non-trivial NaNs.
-- Deterministic serialization: Because deterministic serialization inherits from ordinary serialization, it also does not allow non-trivial NaNs.
+- PreferredPluse serialization: Non-trivial NaNs are not allowed.
+  While preferred-plus serialization largely aligns with preferred serialization, it does not in the case of non-trivial NaNs.
+- Deterministic serialization: Because deterministic serialization inherits from preferred-plus serialization, it also does not allow non-trivial NaNs.
   This is the single aspect of deterministic serialization that is different from {{Section 4.2.1 of -cbor}}.
 
 The divergence is justified by the following:
@@ -772,13 +772,13 @@ The divergence is justified by the following:
 - Implementing preferred serialization for non-trivial NaNs is complex and error-prone; many CBOR implementations don't support it or don't support it correctly.
 - Practical use cases for non-trivial NaNs are extremely rare.
 - Reducing non-trivial NaNs to a half-precision quiet NaN is simple and supported by programming environments (e.g., `isnan()` can be used to detect all NaNs).
-- Non-trivial NaNs remain supported by general serialization; the divergence is only for ordinary and deterministic serialization.
+- Non-trivial NaNs remain supported by general serialization; the divergence is only for preferred-plus and deterministic serialization.
 - A new CBOR tag can be defined in the future to explicitly support them.
 
 
 ## Recommendations for Use of Non-Trival NaNs
 
-While non-trivial NaNs are excluded from ordinary and deterministic serialization, they are theoretically supported by {{-cbor}}.
+While non-trivial NaNs are excluded from preferred-plus and deterministic serialization, they are theoretically supported by {{-cbor}}.
 General serialization does support them.
 
 New protocol designs can &mdash; and generally should—avoid non &mdash; non-trivial NaNs.
@@ -792,10 +792,10 @@ For example, a program that relies on non-trivial NaNs internally may need to se
 
 # Big Numbers and the CBOR Data Model {#BigNumbersDataModel}
 
-The primary purpose of this document is to define ordinary and deterministic serialization.
-Accordingly, {{OrdinarySerialization}} describes CBOR’s unified integer space in terms of serialization behavior.
+The primary purpose of this document is to define preferred-plus and deterministic serialization.
+Accordingly, {{PreferredPlusSerialization}} describes CBOR’s unified integer space in terms of serialization behavior.
 This is an effective and clear way to describe what implementors must do.
-An implementation that follows the requirements in {{OrdinarySerialization}} will be complete and correct with respect to serialization.
+An implementation that follows the requirements in {{PreferredPlusSerialization}} will be complete and correct with respect to serialization.
 
 From a conceptual perspective, however, additional discussion is warranted regarding the CBOR data model itself.
 That discussion is provided in this appendix.
@@ -849,7 +849,7 @@ Some CBOR libraries may entirely omit support for tags 2 and 3.
 
 Serialization checking rejects input which, while well-formed CBOR, does not conform to a particular serialization rule set it is enforcing.
 For example, a decoder checking for deterministic serialization will error out if map keys are not in the required sorted order.
-Likewise, a decoder checking for ordinary serialization will reject any CBOR data item that is not encoded in its shortest form.
+Likewise, a decoder checking for preferred-plus serialization will reject any CBOR data item that is not encoded in its shortest form.
 
 This type of checking goes beyond the basic requirement of verifying that input is well-formed CBOR.
 The data rejected by serialization checking is well-formed; it is rejected because it violates additional serialization constraints.
@@ -980,7 +980,7 @@ In this respect, the serialization of this portion of a COSE message is no diffe
 Indefinite-length items MAY be used, and fixed-length (i.e., non–shortest-length) CBOR encodings are permitted.
 The only requirement is that the encoded data be decodable by the receiver.
 
-That said, for most use cases and for practical interoperability reasons, ordinary serialization is a good choice for this part of the COSE_Sign1 structure.
+That said, for most use cases and for practical interoperability reasons, preferred-plus serialization is a good choice for this part of the COSE_Sign1 structure.
 
 This serves as an example of the general recommendations for CBOR-based protocols described in this document and summarized in TODO:Recommendations Reference.
 
