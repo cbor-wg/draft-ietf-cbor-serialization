@@ -31,7 +31,6 @@ author:
 
 contributor:
 - name: Rohan Mahy
-  organization: Rohan Mahy Consulting Services
   email: rohan.ietf@gmail.com
 - name: Joe Hildebrand
   email: hildjj@cursive.net
@@ -102,7 +101,7 @@ informative:
 --- abstract
 
 This document defines two CBOR serializations: "preferred-plus serialization" and "deterministic serialization."
-It also introduces the term "general serialization" to name the full, variable set of serialization options defined in {{-cbor}}.
+It also introduces the term "general serialization" to name the full, variable set of serialization options defined in RFC 8949.
 Together, these three form a complete set of serializations that cover the majority of CBOR serialization use cases.
 
 These serializations are largely compatible with those widely implemented by the CBOR community.
@@ -182,7 +181,8 @@ This approach provides clarity and simplicity for implementers and the CBOR comm
 The serializations defined herein are formally new, but largely interchangeable with the way the serializations desecribed in {{-cbor}} are implemented.
 
 For example, preferred serialization described in {{-cbor}} is commonly implemented without support for indefinite-lengths.
-Preferred-plus serialization is defined here is largely the same preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.
+
+Preferred-plus serialization as defined here is largely the same as preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.
 
 
 # Recommendations Summary {#Recommendations}
@@ -283,7 +283,7 @@ This full set was not explicitly named in {{-cbor}}.
 General serialization consists of all of these:
 
 * Any length CBOR argument (e.g., the integer 0 may be encoded as 0x00, 0x1800 or or 0x190000 and so on).
-* Any length floating point regardless of value (e.g. 0.00 can be 0xf900, 0xfa000000000 and so on).
+* Floating-point values may be encoded using any length (e.g. 0.00 can be 0xf900, 0xfa000000000 and so on).
 * Both definite or indefinite-length strings, arrays and maps are allowed.
 * Big numbers can represent values that are also representable by major types 0 and 1 (e.g., 0 can be encoded as a big number, as 0xc34100).
 
@@ -321,8 +321,7 @@ For example, CBOR Web Token, {{-CWT}} does not specify serialization; therefore,
 
 In practice, however, it is widely recognized that some CWT decoders cannot process the full range of general serialization, particularly indefinite lengths.
 As a result, CWT encoders typically limit themselves to the subset of serializations that decoders can reliably handle, most notably by never encoding indefinite lengths.
-It is similar for other CBOR-based protocols like {{-COSE}}.
-See also {{PreferredPlusSerialization}}.
+This is also true in practice of other protocols implementations like those for {{-COSE}}.
 
 
 # Preferred-Plus Serialization {#PreferredPlusSerialization}
@@ -378,7 +377,7 @@ This section defines a serialization named "preferred-plus serialization."
 
    * Big numbers described in {{Section 3.4.3 of -cbor}} MUST be accepted.
    * Leading zeros MUST be ignored.
-   * An empty string MUST be accepted and treated as the value zero.
+   * An empty byte string MUST be accepted and treated as the value zero.
 
 See also {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further background on big numbers.
 
@@ -396,7 +395,7 @@ The easy implementation and broad usefulness makes preferred-plus serialization 
 To some degree it is a de facto standard for common CBOR protocols.
 
 See {{WhenGeneral}} for uses cases where preferred-plus serialization may not be suitable.
-But, for the vast majority of use cases, preferred-plus serialization provides interoperaibility, small encoded size and low implementation costs.
+Otherwise, for the vast majority of use cases, preferred-plus serialization provides interoperaibility, small encoded size and low implementation costs.
 
 
 ## Relation To Preferred Serialization {#RelationToPreferred}
@@ -411,14 +410,14 @@ The differences are:
 
 These differences are not of significance in real-world implementations, so preferred-plus serialization is already largely supported.
 
-In {{Section 3 of -cbor}} it states that in preferred serialization the use of definite-length encoding is a "preference", not a requirement.
+{{Section 3 of -cbor}} states that in preferred serialization the use of definite-length encoding is a "preference", not a requirement.
 Technically that means preferred seriaization decoders must support indefinite legnths, but in reality many do not.
 Indefinite lengths, particularly for strings, are often not supported because they are more complex to implement than other parts of CBOR.
 Because of this, the implementation of most CBOR protocols use only definite lengths.
 
 Further, much of the CBOR community didn't notice the use of the word "preference" and realize its implications for decoder implementations.
 It was somewhat assumed that preferred serialization didn't allow indefinite lengths.
-That preferred serialization decoders are technically required to support indefinite lengths wasn't noticed until many years after the publication of {{-cbor}}.
+That preferred serialization decoders are technically required to support indefinite lengths wasn't noticed by many implementers until several years after the publication of {{-cbor}}.
 
 Briefly stated, the reason that the divergence on NaNs is not of consequence in the real world, is that their non-trivial forms are used extremely rarely and support for them in programming environments and CBOR libraries is unreliable.
 See {{NaNCompatibility}} for a detailed discussion.
@@ -968,7 +967,7 @@ COSE therefore explicitly requires deterministic encoding so that both the sende
 This requirement is specified in {{Section 9 of -COSE}}.
 
 In this case, the COSE requirement is effectively equivalent to the deterministic serialization defined in {{DeterministicSerialization}}, since no NaN values are involved.
-It is also equivalent to ordinary serialization as defined in {{OrdinarySerialization}}, because the Sig_structure contains no maps.
+It is also equivalent to ordinary serialization as defined in {{PreferredPlusSerialization}}, because the Sig_structure contains no maps.
 
 The determinism requirement does not apply to the protected headers incorporated into the Sig_structure.
 Deterministic encoding is unnecessary because these headers are transmitted in the exact encoded form in which they are included in the Sig_structure.
