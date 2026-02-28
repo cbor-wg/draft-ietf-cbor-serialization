@@ -16,8 +16,8 @@ Abstract
    This document defines two CBOR serializations: "preferred-plus
    serialization" and "deterministic serialization."  It also introduces
    the term "general serialization" to name the full, variable set of
-   serialization options defined in [STD94].  Together, these three form
-   a complete set of serializations that cover the majority of CBOR
+   serialization options defined in RFC 8949.  Together, these three
+   form a complete set of serializations that cover the majority of CBOR
    serialization use cases.
 
    These serializations are largely compatible with those widely
@@ -237,9 +237,10 @@ Table of Contents
    are implemented.
 
    For example, preferred serialization described in [STD94] is commonly
-   implemented without support for indefinite-lengths.  Preferred-plus
-   serialization is defined here is largely the same preferred
-   serialization without indefinite-lengths, so it is largely
+   implemented without support for indefinite-lengths.
+
+   Preferred-plus serialization as defined here is largely the same as
+   preferred serialization without indefinite-lengths, so it is largely
    interchangeable with what is commonly implemented.
 
 2.  Recommendations Summary
@@ -384,8 +385,8 @@ Table of Contents
    *  Any length CBOR argument (e.g., the integer 0 may be encoded as
       0x00, 0x1800 or or 0x190000 and so on).
 
-   *  Any length floating point regardless of value (e.g. 0.00 can be
-      0xf900, 0xfa000000000 and so on).
+   *  Floating-point values may be encoded using any length (e.g. 0.00
+      can be 0xf900, 0xfa000000000 and so on).
 
    *  Both definite or indefinite-length strings, arrays and maps are
       allowed.
@@ -447,9 +448,9 @@ Table of Contents
    cannot process the full range of general serialization, particularly
    indefinite lengths.  As a result, CWT encoders typically limit
    themselves to the subset of serializations that decoders can reliably
-   handle, most notably by never encoding indefinite lengths.  It is
-   similar for other CBOR-based protocols like [RFC9052].  See also
-   Section 4.
+   handle, most notably by never encoding indefinite lengths.  This is
+   also true in practice of other protocols implementations like those
+   for [RFC9052].
 
 4.  Preferred-Plus Serialization
 
@@ -536,7 +537,7 @@ Table of Contents
 
        *  Leading zeros MUST be ignored.
 
-       *  An empty string MUST be accepted and treated as the value
+       *  An empty byte string MUST be accepted and treated as the value
           zero.
 
    See also Appendix D and Appendix E for further background on big
@@ -562,9 +563,9 @@ Table of Contents
    degree it is a de facto standard for common CBOR protocols.
 
    See Section 3.1 for uses cases where preferred-plus serialization may
-   not be suitable.  But, for the vast majority of use cases, preferred-
-   plus serialization provides interoperaibility, small encoded size and
-   low implementation costs.
+   not be suitable.  Otherwise, for the vast majority of use cases,
+   preferred-plus serialization provides interoperaibility, small
+   encoded size and low implementation costs.
 
 4.4.  Relation To Preferred Serialization
 
@@ -584,8 +585,8 @@ Table of Contents
    implementations, so preferred-plus serialization is already largely
    supported.
 
-   In Section 3 of [STD94] it states that in preferred serialization the
-   use of definite-length encoding is a "preference", not a requirement.
+   Section 3 of [STD94] states that in preferred serialization the use
+   of definite-length encoding is a "preference", not a requirement.
    Technically that means preferred seriaization decoders must support
    indefinite legnths, but in reality many do not.  Indefinite lengths,
    particularly for strings, are often not supported because they are
@@ -597,8 +598,8 @@ Table of Contents
    implementations.  It was somewhat assumed that preferred
    serialization didn't allow indefinite lengths.  That preferred
    serialization decoders are technically required to support indefinite
-   lengths wasn't noticed until many years after the publication of
-   [STD94].
+   lengths wasn't noticed by many implementers until several years after
+   the publication of [STD94].
 
    Briefly stated, the reason that the divergence on NaNs is not of
    consequence in the real world, is that their non-trivial forms are
@@ -1373,7 +1374,9 @@ Appendix G.  CBOR Byte String Wrapping
    This appendix provides non-normative guidance on byte-string wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
-   control operators described in Section 8.
+   control operators described in Section 8.  It also applies when prose
+   states the byte-string wrapping requirement such as for the COSE
+   protected headers.  See Appendix H.2.
 
 G.1.  Purpose
 
@@ -1486,19 +1489,32 @@ H.1.  COSE Payload Serialization
 
 H.2.  COSE Sig_structure
 
-   The Sig_struct is not conveyed from the sender to the receiver, but
-   rather constructed independently by the sender and reciever.  This is
-   the input to the signing process so it must be deterministic.  That
-   is, COSE explicitly requires this to be deterministicall encoded so
-   that both the sender and receiver construct exactly the same encoded
-   CBOR.  Section 9 of [RFC9052] gives this requirement.  The COSE
-   requirement is the same as deterministic serialization Section 5
-   (unless floating-point numbers with NaN payloads appear in a header
-   parameter).
+   The Sig_structure is not transmitted from the sender to the receiver;
+   instead, it is constructed independently by both parties.  Because it
+   is the input to the signing process, it must use deterministic
+   serialization.  COSE therefore explicitly requires deterministic
+   encoding so that both the sender and receiver produce identical
+   encoded CBOR representations.  This requirement is specified in
+   Section 9 of [RFC9052].
 
-   This is an example of the need for deterministic serialization for
-   signed data that is not transmitted in its signed form.  See
-   Section 5.3.
+   In this case, the COSE requirement is effectively equivalent to the
+   deterministic serialization defined in Section 5, since no NaN values
+   are involved.  It is also equivalent to ordinary serialization as
+   defined in Section 4, because the Sig_structure contains no maps.
+
+   The determinism requirement does not apply to the protected headers
+   incorporated into the Sig_structure.  Deterministic encoding is
+   unnecessary because these headers are transmitted in the exact
+   encoded form in which they are included in the Sig_structure.
+
+   Furthermore, determinism requirements do not extend into CBOR inside
+   of byte strings.  Once CBOR data is wrapped in a byte string, its
+   internal encoding is treated as opaque and is not subject to
+   surrounding serialization constraints.
+
+   This illustrates the general need for deterministic serialization
+   when signed data is reconstructed rather than transmitted in the
+   exact form that was signed.  See Section 5.3.
 
 H.3.  The Encoded Message
 
@@ -1531,7 +1547,6 @@ Appendix I.  Examples and Test Vectors
 Contributors
 
    Rohan Mahy
-   Rohan Mahy Consulting Services
    Email: rohan.ietf@gmail.com
 
 

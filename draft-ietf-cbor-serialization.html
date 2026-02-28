@@ -8,7 +8,7 @@
 <meta content="Laurence Lundblade" name="author">
 <meta content='
        This document defines two CBOR serializations: "preferred-plus serialization" and "deterministic serialization."
-It also introduces the term "general serialization" to name the full, variable set of serialization options defined in  .
+It also introduces the term "general serialization" to name the full, variable set of serialization options defined in RFC 8949.
 Together, these three form a complete set of serializations that cover the majority of CBOR serialization use cases. 
        These serializations are largely compatible with those widely implemented by the CBOR community. 
     ' name="description">
@@ -1084,7 +1084,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document defines two CBOR serializations: "preferred-plus serialization" and "deterministic serialization."
-It also introduces the term "general serialization" to name the full, variable set of serialization options defined in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>.
+It also introduces the term "general serialization" to name the full, variable set of serialization options defined in RFC 8949.
 Together, these three form a complete set of serializations that cover the majority of CBOR serialization use cases.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">These serializations are largely compatible with those widely implemented by the CBOR community.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 </section>
@@ -1440,8 +1440,8 @@ It is therefore practical to define a single deterministic serialization suitabl
 This approach enables the serialization requirements to be expressed directly in normative <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> language, and to be consolidated in this single comprehensive specification.
 This approach provides clarity and simplicity for implementers and the CBOR community over the long term.<a href="#section-1.3-1" class="pilcrow">¶</a></p>
 <p id="section-1.3-2">The serializations defined herein are formally new, but largely interchangeable with the way the serializations desecribed in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> are implemented.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
-<p id="section-1.3-3">For example, preferred serialization described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> is commonly implemented without support for indefinite-lengths.
-Preferred-plus serialization is defined here is largely the same preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
+<p id="section-1.3-3">For example, preferred serialization described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> is commonly implemented without support for indefinite-lengths.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
+<p id="section-1.3-4">Preferred-plus serialization as defined here is largely the same as preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.<a href="#section-1.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1561,7 +1561,7 @@ This full set was not explicitly named in <span>[<a href="#STD94" class="cite xr
           <p id="section-3-3.1.1">Any length CBOR argument (e.g., the integer 0 may be encoded as 0x00, 0x1800 or or 0x190000 and so on).<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-3.2">
-          <p id="section-3-3.2.1">Any length floating point regardless of value (e.g. 0.00 can be 0xf900, 0xfa000000000 and so on).<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-3-3.2.1">Floating-point values may be encoded using any length (e.g. 0.00 can be 0xf900, 0xfa000000000 and so on).<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-3.3">
           <p id="section-3-3.3.1">Both definite or indefinite-length strings, arrays and maps are allowed.<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
@@ -1612,8 +1612,7 @@ This means that a compliant decoder for such a protocol is required to accept al
 For example, CBOR Web Token, <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> does not specify serialization; therefore, a full and proper CWT decoder must be able to handle variable-length CBOR argments plus indefinite-length strings, arrays and maps.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">In practice, however, it is widely recognized that some CWT decoders cannot process the full range of general serialization, particularly indefinite lengths.
 As a result, CWT encoders typically limit themselves to the subset of serializations that decoders can reliably handle, most notably by never encoding indefinite lengths.
-It is similar for other CBOR-based protocols like <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.
-See also <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+This is also true in practice of other protocols implementations like those for <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1727,7 +1726,7 @@ Subnormal numbers MUST be supported in this shortest-length encoding.<a href="#s
                 <p id="section-4.2-1.5.2.2.1">Leading zeros MUST be ignored.<a href="#section-4.2-1.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.2-1.5.2.3">
-                <p id="section-4.2-1.5.2.3.1">An empty string MUST be accepted and treated as the value zero.<a href="#section-4.2-1.5.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.2-1.5.2.3.1">An empty byte string MUST be accepted and treated as the value zero.<a href="#section-4.2-1.5.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1748,7 +1747,7 @@ Implementations typically find encoding and decoding in this form to be straight
 <p id="section-4.3-3">The easy implementation and broad usefulness makes preferred-plus serialization the best choice for most CBOR protocols.
 To some degree it is a de facto standard for common CBOR protocols.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 <p id="section-4.3-4">See <a href="#WhenGeneral" class="auto internal xref">Section 3.1</a> for uses cases where preferred-plus serialization may not be suitable.
-But, for the vast majority of use cases, preferred-plus serialization provides interoperaibility, small encoded size and low implementation costs.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
+Otherwise, for the vast majority of use cases, preferred-plus serialization provides interoperaibility, small encoded size and low implementation costs.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="RelationToPreferred">
@@ -1770,13 +1769,13 @@ But, for the vast majority of use cases, preferred-plus serialization provides i
 </li>
         </ul>
 <p id="section-4.4-4">These differences are not of significance in real-world implementations, so preferred-plus serialization is already largely supported.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
-<p id="section-4.4-5">In <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3" class="relref">Section 3</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span> it states that in preferred serialization the use of definite-length encoding is a "preference", not a requirement.
+<p id="section-4.4-5"><span><a href="https://rfc-editor.org/rfc/rfc8949#section-3" class="relref">Section 3</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span> states that in preferred serialization the use of definite-length encoding is a "preference", not a requirement.
 Technically that means preferred seriaization decoders must support indefinite legnths, but in reality many do not.
 Indefinite lengths, particularly for strings, are often not supported because they are more complex to implement than other parts of CBOR.
 Because of this, the implementation of most CBOR protocols use only definite lengths.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
 <p id="section-4.4-6">Further, much of the CBOR community didn't notice the use of the word "preference" and realize its implications for decoder implementations.
 It was somewhat assumed that preferred serialization didn't allow indefinite lengths.
-That preferred serialization decoders are technically required to support indefinite lengths wasn't noticed until many years after the publication of <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>.<a href="#section-4.4-6" class="pilcrow">¶</a></p>
+That preferred serialization decoders are technically required to support indefinite lengths wasn't noticed by many implementers until several years after the publication of <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>.<a href="#section-4.4-6" class="pilcrow">¶</a></p>
 <p id="section-4.4-7">Briefly stated, the reason that the divergence on NaNs is not of consequence in the real world, is that their non-trivial forms are used extremely rarely and support for them in programming environments and CBOR libraries is unreliable.
 See <a href="#NaNCompatibility" class="auto internal xref">Appendix C.5</a> for a detailed discussion.<a href="#section-4.4-7" class="pilcrow">¶</a></p>
 <p id="section-4.4-8">Thus preferred-plus serialization is largely interchangable with preferred serialization in the real world.<a href="#section-4.4-8" class="pilcrow">¶</a></p>
@@ -2496,7 +2495,9 @@ The appropriate remedy is to fix their input validation, not to add the serializ
 <a href="#appendix-G" class="section-number selfRef">Appendix G. </a><a href="#name-cbor-byte-string-wrapping" class="section-name selfRef">CBOR Byte String Wrapping</a>
       </h2>
 <p id="appendix-G-1">This appendix provides non-normative guidance on byte-string wrapping of CBOR.
-It applies primarily to tag 24 and the CDDL .cbor and .cborseq control operators, but also to the serialization-specifying control operators described in <a href="#CDDL-Operators" class="auto internal xref">Section 8</a>.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
+It applies primarily to tag 24 and the CDDL .cbor and .cborseq control operators, but also to the serialization-specifying control operators described in <a href="#CDDL-Operators" class="auto internal xref">Section 8</a>.
+It also applies when prose states the byte-string wrapping requirement such as for the COSE protected headers.
+See <a href="#COSESigStructure" class="auto internal xref">Appendix H.2</a>.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
 <div id="purpose">
 <section id="appendix-G.1">
         <h3 id="name-purpose">
@@ -2602,17 +2603,22 @@ Most CBOR libraries do not provide access to chunks of encoded CBOR in the middl
 <p id="appendix-H.1-4">This is an example of byte string wrapping described in <a href="#ByteStringWrapping" class="auto internal xref">Appendix G</a>.<a href="#appendix-H.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="cose-sigstructure">
+<div id="COSESigStructure">
 <section id="appendix-H.2">
         <h3 id="name-cose-sig_structure">
 <a href="#appendix-H.2" class="section-number selfRef">H.2. </a><a href="#name-cose-sig_structure" class="section-name selfRef">COSE Sig_structure</a>
         </h3>
-<p id="appendix-H.2-1">The Sig_struct is not conveyed from the sender to the receiver, but rather constructed independently by the sender and reciever.
-This is the input to the signing process so it must be deterministic.
-That is, COSE explicitly requires this to be deterministicall encoded so that both the sender and receiver construct exactly the same encoded CBOR.
-<span><a href="https://rfc-editor.org/rfc/rfc9052#section-9" class="relref">Section 9</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> gives this requirement.
-The COSE requirement is the same as deterministic serialization <a href="#DeterministicSerialization" class="auto internal xref">Section 5</a> (unless floating-point numbers with NaN payloads appear in a header parameter).<a href="#appendix-H.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-H.2-2">This is an example of the need for deterministic serialization for signed data that is not transmitted in its signed form. See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a href="#appendix-H.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-H.2-1">The Sig_structure is not transmitted from the sender to the receiver; instead, it is constructed independently by both parties.
+Because it is the input to the signing process, it must use deterministic serialization.
+COSE therefore explicitly requires deterministic encoding so that both the sender and receiver produce identical encoded CBOR representations.
+This requirement is specified in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-9" class="relref">Section 9</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.<a href="#appendix-H.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-H.2-2">In this case, the COSE requirement is effectively equivalent to the deterministic serialization defined in <a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>, since no NaN values are involved.
+It is also equivalent to ordinary serialization as defined in <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>, because the Sig_structure contains no maps.<a href="#appendix-H.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-H.2-3">The determinism requirement does not apply to the protected headers incorporated into the Sig_structure.
+Deterministic encoding is unnecessary because these headers are transmitted in the exact encoded form in which they are included in the Sig_structure.<a href="#appendix-H.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-H.2-4">Furthermore, determinism requirements do not extend into CBOR inside of byte strings.
+Once CBOR data is wrapped in a byte string, its internal encoding is treated as opaque and is not subject to surrounding serialization constraints.<a href="#appendix-H.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-H.2-5">This illustrates the general need for deterministic serialization when signed data is reconstructed rather than transmitted in the exact form that was signed. See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a href="#appendix-H.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="the-encoded-message">
@@ -2648,7 +2654,6 @@ The only requirement is that the encoded data be decodable by the receiver.<a hr
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Rohan Mahy</span></div>
-<div dir="auto" class="left"><span class="org">Rohan Mahy Consulting Services</span></div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:rohan.ietf@gmail.com" class="email">rohan.ietf@gmail.com</a>
