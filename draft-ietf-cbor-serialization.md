@@ -395,7 +395,7 @@ The easy implementation and broad usefulness makes preferred-plus serialization 
 To some degree it is a de facto standard for common CBOR protocols.
 
 See {{WhenGeneral}} for uses cases where preferred-plus serialization may not be suitable.
-Otherwise, for the vast majority of use cases, preferred-Plus serialization provides interoperaibility, small encoded size and low implementation costs.
+Otherwise, for the vast majority of use cases, preferred-plus serialization provides interoperaibility, small encoded size and low implementation costs.
 
 
 ## Relation To Preferred Serialization {#RelationToPreferred}
