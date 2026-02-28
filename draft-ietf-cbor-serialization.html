@@ -1937,11 +1937,11 @@ A set of tags MAY affect each other, provided that all defining authorities for 
             <td class="text-left" rowspan="1" colspan="1">Use preferred-plus serialization for a CBOR sequence</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">.det</td>
+            <td class="text-left" rowspan="1" colspan="1">.dtrm</td>
             <td class="text-left" rowspan="1" colspan="1">Use deterministic serialization for a data item</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">.detseq</td>
+            <td class="text-left" rowspan="1" colspan="1">.dtrmseq</td>
             <td class="text-left" rowspan="1" colspan="1">Use deterministic serialization for a CBOR sequence</td>
           </tr>
         </tbody>
@@ -1951,7 +1951,7 @@ These specify that what is in the “controller” (the right side of the operat
 <p id="section-8-4">For example, a byte string containing embedded CBOR that must be deterministically encoded can be described in CDDL as:<a href="#section-8-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8-5">
 <pre>
-leaf = #6.24(bytes .det any)
+leaf = #6.24(bytes .dtrm any)
 </pre><a href="#section-8-5" class="pilcrow">¶</a>
 </div>
 <p id="section-8-6">The scope of these operators applies recursively through nested arrays and maps, but does not extend into byte strings or other data items that happen to contain encoded CBOR.
@@ -2000,11 +2000,11 @@ number of this RFC and remove this note.</span><a href="#section-10-1" class="pi
             <td class="text-left" rowspan="1" colspan="1">[RFCXXXX]</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">.det</td>
+            <td class="text-left" rowspan="1" colspan="1">.dtrm</td>
             <td class="text-left" rowspan="1" colspan="1">[RFCXXXX]</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">.detseq</td>
+            <td class="text-left" rowspan="1" colspan="1">.dtrmseq</td>
             <td class="text-left" rowspan="1" colspan="1">[RFCXXXX]</td>
           </tr>
         </tbody>
