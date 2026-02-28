@@ -564,7 +564,7 @@ Table of Contents
 
    See Section 3.1 for uses cases where preferred-plus serialization may
    not be suitable.  Otherwise, for the vast majority of use cases,
-   preferred-Plus serialization provides interoperaibility, small
+   preferred-plus serialization provides interoperaibility, small
    encoded size and low implementation costs.
 
 4.4.  Relation To Preferred Serialization
