@@ -451,7 +451,7 @@ This rule is inherited from preferred-plus serialization ({{PreferredPlusSeriali
 ## Decoder Requirements {#DeterministicDecoding}
 
 1. Decoders MUST meet the decoder requirements described in {{PreferredPlusDecoding}}.
-That is, deterministic encoding imposes no requirements over and above the requirements for decoding ordinary serialization.
+That is, deterministic encoding imposes no requirements over and above the requirements for decoding preferred-plus serialization.
 
 ## When to use Deterministic Serialization {#WhenDeterministic}
 
@@ -761,7 +761,7 @@ This section is distinct from the Core Deterministic Encoding Requirements and r
 
 ## Divergence from {{-cbor}} {#NaNCompatibility}
 
-Non-trivial NaNs are not permitted in either ordinary or deterministic serializations.
+Non-trivial NaNs are not permitted in either preferred-plus or deterministic serializations.
 This is in contrast to preferred serialization and {{Section 4.2.1 of -cbor}}.
 
 Note that the prohibition of non-trivial NaNs is the sole difference between deterministic serialization ({{DeterministicSerialization}}) and {{Section 4.2.1 of -cbor}}.
@@ -970,7 +970,7 @@ COSE therefore explicitly requires deterministic encoding so that both the sende
 This requirement is specified in {{Section 9 of -COSE}}.
 
 In this case, the COSE requirement is effectively equivalent to the deterministic serialization defined in {{DeterministicSerialization}}, since no NaN values are involved.
-It is also equivalent to ordinary serialization as defined in {{PreferredPlusSerialization}}, because the Sig_structure contains no maps.
+It is also equivalent to preferred-plus serialization as defined in {{PreferredPlusSerialization}}, because the Sig_structure contains no maps.
 
 The determinism requirement does not apply to the protected headers incorporated into the Sig_structure.
 Deterministic encoding is unnecessary because these headers are transmitted in the exact encoded form in which they are included in the Sig_structure.
