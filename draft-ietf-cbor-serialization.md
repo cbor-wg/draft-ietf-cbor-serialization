@@ -524,11 +524,11 @@ Tags 2 and 3 are exempt from this rule, as they were defined prior to the establ
 
 Four new control operators are defined for use in CDDL {{-cddl}}.
 
-| Name      | Purpose                                              |
-| .prefp    | Use preferred-plus serialization for a data item     |
-| .prefpseq | Use preferred-plus serialization for a CBOR sequence |
-| .det      | Use deterministic serialization for a data item      |
-| .detseq   | Use deterministic serialization for a CBOR sequence  |
+| Name       | Purpose                                              |
+| .prefp     | Use preferred-plus serialization for a data item     |
+| .prefpseq  | Use preferred-plus serialization for a CBOR sequence |
+| .dtrm      | Use deterministic serialization for a data item      |
+| .dtrmseq   | Use deterministic serialization for a CBOR sequence  |
 
 These operators have the same semantics as the .cbor and .cborseq operators (See {{Section 3.8.4 of -cddl}}) with the additional requirement for preferred-plus or deterministic serialization.
 These specify that what is in the “controller” (the right side of the operator) be serialized as indicated.
@@ -536,7 +536,7 @@ These specify that what is in the “controller” (the right side of the operat
 For example, a byte string containing embedded CBOR that must be deterministically encoded can be described in CDDL as:
 
 ~~~
-leaf = #6.24(bytes .det any)
+leaf = #6.24(bytes .dtrm any)
 ~~~
 
 The scope of these operators applies recursively through nested arrays and maps, but does not extend into byte strings or other data items that happen to contain encoded CBOR.
@@ -565,8 +565,8 @@ This document requests IANA to register the contents of
 | Name        | Reference |
 | .prefp      | \[RFCXXXX] |
 | .prefpseq   | \[RFCXXXX] |
-| .det        | \[RFCXXXX] |
-| .detseq     | \[RFCXXXX] |
+| .dtrm       | \[RFCXXXX] |
+| .dtrmseq    | \[RFCXXXX] |
 {: #tbl-iana-reqs title="New control operators to be registered"}
 
 IANA is requested to add a reference to {{TagDataModelRule}} to the CBOR tag registry {{IANA.cbor-tags}}.
