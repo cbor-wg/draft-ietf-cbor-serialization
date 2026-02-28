@@ -115,16 +115,12 @@ These serializations are largely compatible with those widely implemented by the
 Background material on serialization and determinism concepts is provided in {{models}}.
 Readers may wish to review this background information first.
 
-
-
 CBOR intentionally allows multiple valid serializations of the same data item.
-In this context, serialization refers to the actual on-the-wire byte encoding of a data item.
-
 For example, the array [1, 2] can be serialized in more than one way:
 
-| Type              | Description                                      | Bytes          |
-|-------------------|--------------------------------------------------|----------------|
-| Definite-length   | The array length (2) is encoded at the beginning | 0x82 0x01 0x02 |
+| Type              | Description                                      | Bytes                |
+|-------------------|--------------------------------------------------|----------------------|
+| Definite-length   | The array length (2) is encoded at the beginning | 0x82 0x01 0x02       |
 | Indefinite-length | The array is terminated by the break byte (0xff) | 0x9f  0x01 0x02 0xff |
 
 
@@ -132,30 +128,31 @@ Similar variation exists for integers, maps, strings, and floating-point numbers
 
 This variability is deliberate.
 CBOR is designed to allow encodings to be selected according to the constraints and requirements of a particular environment.
-The flexibility is therefore a core design feature rather than an accident.
-(CBOR is not unique in this regard; ASN.1 encodings such as BER and DER exhibit comparable design choices.)
+The flexibility is a core design feature.
+(CBOR is not unique in this regard; BER and DER encoding for ASN.1 are a similar design choice.)
 
 For example, indefinite-length serialization is suited for streaming large arrays in constrained environments, where the total length is not known in advance.
-Conversely, definite-length serialization works well when decoding small arrays in constrained environments.
+Conversely, definite-length serialization works well to decode small arrays in constrained environments.
 
 As a result, CBOR libraries and protocol implementations commonly support only the serialization forms required for their intended use cases.
 This behavior is expected and aligns with CBOR’s design goals.
 
 However, this flexibility introduces two challenges: interoperability and determinism.
 
-## Interoperability
 
+## Interoperability
 
 The interoperability challenge arises because partial implementations are both permitted and expected.
 For example, an encoder might transmit an indefinite-length array to a decoder that does not support indefinite-length encodings.
 Both implementations are compliant with {{-cbor}}.
 
 Decoders, in particular, frequently choose not to support all serialization forms.
-This may be due to operation in constrained environments  or because implementing a full general decoder is significantly more work
+This may be due to operation in constrained environments or because implementing a full general decoder is significantly more work
 (particularly in languages like C and Rust, which lack built-in support for dynamic arrays, maps, and strings).
 
 In practice, most CBOR usage occurs outside highly constrained environments.
 This makes it both feasible and beneficial to define a common serialization suitable for general use.
+
 Protocol specifications can reference such a serialization rather than restating detailed encoding rules, and library implementations can prioritize support for it.
 
 This document defines that serialization: ordinary serialization.
@@ -170,12 +167,13 @@ This is a problem in some protocols that hash or sign encoded CBOR.
 Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
 However, as noted earlier, the majority of CBOR usage occurs outside constrained environments.
 It is therefore practical to define a single deterministic serialization suitable for general use.
+
 Protocol specifications and library implementations can reference this serialization instead of defining their own deterministic encoding rules.
 
 This document defines that serialization: deterministic serialization.
 
 
-## Relation {{-cbor}}
+## Relation to RFC 8949
 
 This document defines new serializations rather than attempting to clarify those in {{-cbor}} (that need clarification).
 This approach enables the serialization requirements to be expressed directly in normative {{RFC2119}} language, and to be consolidated in this single comprehensive specification.
