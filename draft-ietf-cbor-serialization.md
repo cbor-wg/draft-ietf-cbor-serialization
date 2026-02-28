@@ -155,7 +155,7 @@ This makes it both feasible and beneficial to define a common serialization suit
 
 Protocol specifications can reference such a serialization rather than restating detailed encoding rules, and library implementations can prioritize support for it.
 
-This document defines that serialization: ordinary serialization.
+This document defines that serialization: preferred-plus serialization.
 
 
 ## Determinism
