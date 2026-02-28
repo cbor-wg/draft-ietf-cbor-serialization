@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 31 August 2026</td>
+<td class="center">Expires 1 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-02-27" class="published">27 February 2026</time>
+<time datetime="2026-02-28" class="published">28 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-08-31">31 August 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-01">1 September 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 31 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1152,7 +1152,18 @@ Together, these three form a complete set of serializations that cover the major
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+            <p id="section-toc.1-1.1.1"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-interoperability" class="internal xref">Interoperability</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
+                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-determinism" class="internal xref">Determinism</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.3">
+                <p id="section-toc.1-1.1.2.3.1" class="keepWithNext"><a href="#section-1.3" class="auto internal xref">1.3</a>.  <a href="#name-relation-to-rfc-8949" class="internal xref">Relation to RFC 8949</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-recommendations-summary" class="internal xref">Recommendations Summary</a></p>
@@ -1161,10 +1172,10 @@ Together, these three form a complete set of serializations that cover the major
                 <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-protocol-specifications" class="internal xref">Protocol Specifications</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1.2.1">
-                    <p id="section-toc.1-1.2.2.1.2.1.1" class="keepWithNext"><a href="#section-2.1.1" class="auto internal xref">2.1.1</a>.  <a href="#name-framework-protocols" class="internal xref">Framework Protocols</a></p>
+                    <p id="section-toc.1-1.2.2.1.2.1.1"><a href="#section-2.1.1" class="auto internal xref">2.1.1</a>.  <a href="#name-framework-protocols" class="internal xref">Framework Protocols</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1.2.2">
-                    <p id="section-toc.1-1.2.2.1.2.2.1" class="keepWithNext"><a href="#section-2.1.2" class="auto internal xref">2.1.2</a>.  <a href="#name-end-to-end-protocols" class="internal xref">End-to-End Protocols</a></p>
+                    <p id="section-toc.1-1.2.2.1.2.2.1"><a href="#section-2.1.2" class="auto internal xref">2.1.2</a>.  <a href="#name-end-to-end-protocols" class="internal xref">End-to-End Protocols</a></p>
 </li>
                 </ul>
 </li>
@@ -1354,15 +1365,88 @@ Together, these three form a complete set of serializations that cover the major
       </h2>
 <p id="section-1-1">Background material on serialization and determinism concepts is provided in <a href="#models" class="auto internal xref">Appendix A</a>.
 Readers may wish to review this background information first.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This document defines new serializations rather than attempting to clarify those in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> (that need clarification).
-This approach enables the serialization requirements to be expressed directly in normative <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> language, and to be consolidated in this single comprehensive specification.
-This approach provides clarity and simplicity for implementers and the CBOR community over the long term.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">The serializations defined herein are formally new, but largely interchangeable with the way the serializations desecribed in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> are implemented.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">For example, preferred serialization described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> is commonly implemented without support for indefinite-lengths.
-Ordinary serialization is defined here is largely the same preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-2">CBOR intentionally allows multiple valid serializations of the same data item.
+For example, the array [1, 2] can be serialized in more than one way:<a href="#section-1-2" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+        <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">Type</th>
+            <th class="text-left" rowspan="1" colspan="1">Description</th>
+            <th class="text-left" rowspan="1" colspan="1">Bytes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Definite-length</td>
+            <td class="text-left" rowspan="1" colspan="1">The array length (2) is encoded at the beginning</td>
+            <td class="text-left" rowspan="1" colspan="1">0x82 0x01 0x02</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Indefinite-length</td>
+            <td class="text-left" rowspan="1" colspan="1">The array is terminated by the break byte (0xff)</td>
+            <td class="text-left" rowspan="1" colspan="1">0x9f  0x01 0x02 0xff</td>
+          </tr>
+        </tbody>
+      </table>
+<p id="section-1-4">Similar variation exists for integers, maps, strings, and floating-point numbers.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">This variability is deliberate.
+CBOR is designed to allow encodings to be selected according to the constraints and requirements of a particular environment.
+The flexibility is a core design feature.
+(CBOR is not unique in this regard; BER and DER encoding for ASN.1 are a similar design choice.)<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">For example, indefinite-length serialization is suited for streaming large arrays in constrained environments, where the total length is not known in advance.
+Conversely, definite-length serialization works well to decode small arrays in constrained environments.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-7">As a result, CBOR libraries and protocol implementations commonly support only the serialization forms required for their intended use cases.
+This behavior is expected and aligns with CBOR’s design goals.<a href="#section-1-7" class="pilcrow">¶</a></p>
+<p id="section-1-8">However, this flexibility introduces two challenges: interoperability and determinism.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<div id="interoperability">
+<section id="section-1.1">
+        <h3 id="name-interoperability">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-interoperability" class="section-name selfRef">Interoperability</a>
+        </h3>
+<p id="section-1.1-1">The interoperability challenge arises because partial implementations are both permitted and expected.
+For example, an encoder might transmit an indefinite-length array to a decoder that does not support indefinite-length encodings.
+Both implementations are compliant with <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">Decoders, in particular, frequently choose not to support all serialization forms.
+This may be due to operation in constrained environments or because implementing a full general decoder is significantly more work
+(particularly in languages like C and Rust, which lack built-in support for dynamic arrays, maps, and strings).<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">In practice, most CBOR usage occurs outside highly constrained environments.
+This makes it both feasible and beneficial to define a common serialization suitable for general use.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">Protocol specifications can reference such a serialization rather than restating detailed encoding rules, and library implementations can prioritize support for it.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.1-5">This document defines that serialization: ordinary serialization.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="recommendations-summary">
+<div id="determinism">
+<section id="section-1.2">
+        <h3 id="name-determinism">
+<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-determinism" class="section-name selfRef">Determinism</a>
+        </h3>
+<p id="section-1.2-1">The determinism challenge arises because there are multiple ways to serialize the same data item.
+The example serialization of the array [1,2] above shows this.
+This is a problem in some protocols that hash or sign encoded CBOR.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+<p id="section-1.2-2">Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
+However, as noted earlier, the majority of CBOR usage occurs outside constrained environments.
+It is therefore practical to define a single deterministic serialization suitable for general use.<a href="#section-1.2-2" class="pilcrow">¶</a></p>
+<p id="section-1.2-3">Protocol specifications and library implementations can reference this serialization instead of defining their own deterministic encoding rules.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
+<p id="section-1.2-4">This document defines that serialization: deterministic serialization.<a href="#section-1.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="relation-to-rfc-8949">
+<section id="section-1.3">
+        <h3 id="name-relation-to-rfc-8949">
+<a href="#section-1.3" class="section-number selfRef">1.3. </a><a href="#name-relation-to-rfc-8949" class="section-name selfRef">Relation to RFC 8949</a>
+        </h3>
+<p id="section-1.3-1">This document defines new serializations rather than attempting to clarify those in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> (that need clarification).
+This approach enables the serialization requirements to be expressed directly in normative <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> language, and to be consolidated in this single comprehensive specification.
+This approach provides clarity and simplicity for implementers and the CBOR community over the long term.<a href="#section-1.3-1" class="pilcrow">¶</a></p>
+<p id="section-1.3-2">The serializations defined herein are formally new, but largely interchangeable with the way the serializations desecribed in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> are implemented.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
+<p id="section-1.3-3">For example, preferred serialization described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> is commonly implemented without support for indefinite-lengths.
+Ordinary serialization is defined here is largely the same preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="Recommendations">
 <section id="section-2">
       <h2 id="name-recommendations-summary">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-recommendations-summary" class="section-name selfRef">Recommendations Summary</a>
@@ -1835,8 +1919,8 @@ A set of tags MAY affect each other, provided that all defining authorities for 
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-cddl-control-operators" class="section-name selfRef">CDDL Control Operators</a>
       </h2>
 <p id="section-8-1">Four new control operators are defined for use in CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-1">
-        <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<table class="center" id="table-2">
+        <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
           <tr>
             <th class="text-left" rowspan="1" colspan="1">Name</th>
@@ -1891,13 +1975,13 @@ See also <a href="#ByteStringWrapping" class="auto internal xref">Appendix G</a>
 <p id="section-10-1"><span class="cref" id="to-be-removed">RFC Editor: please replace RFCXXXX with the RFC
 number of this RFC and remove this note.</span><a href="#section-10-1" class="pilcrow">¶</a></p>
 <p id="section-10-2">This document requests IANA to register the contents of
-<a href="#tbl-iana-reqs" class="auto internal xref">Table 2</a> into the registry
+<a href="#tbl-iana-reqs" class="auto internal xref">Table 3</a> into the registry
 "<a href="https://www.iana.org/assignments/cddl#cddl-control-operators" class="relref">CDDL Control Operators</a>" of the
 <span>[<a href="#IANA.cddl" class="cite xref">IANA.cddl</a>]</span> registry group:<a href="#section-10-2" class="pilcrow">¶</a></p>
 <span id="name-new-control-operators-to-be"></span><div id="tbl-iana-reqs">
-<table class="center" id="table-2">
+<table class="center" id="table-3">
         <caption>
-<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#table-3" class="selfRef">Table 3</a>:
 <a href="#name-new-control-operators-to-be" class="selfRef">New control operators to be registered</a>
         </caption>
 <thead>
@@ -2013,8 +2097,8 @@ number of this RFC and remove this note.</span><a href="#section-10-1" class="pi
       </h2>
 <p id="appendix-A-1">To understand CBOR serialization and determinism, it's helpful to distinguish between the general concepts of an information model, a data model, and serialization.
 These are broad concepts that can be applied to other serialization schemes like JSON and ASN.1<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-3">
-        <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<table class="center" id="table-4">
+        <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
 <thead>
           <tr>
             <th class="text-left" rowspan="1" colspan="1"> </th>
