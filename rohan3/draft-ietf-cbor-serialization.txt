@@ -642,7 +642,7 @@ Table of Contents
    1.  Decoders MUST meet the decoder requirements described in
        Section 4.2.  That is, deterministic encoding imposes no
        requirements over and above the requirements for decoding
-       ordinary serialization.
+       preferred-plus serialization.
 
 5.3.  When to use Deterministic Serialization
 
@@ -1192,7 +1192,7 @@ C.4.  Clarification of RFC 8949
 
 C.5.  Divergence from [STD94]
 
-   Non-trivial NaNs are not permitted in either ordinary or
+   Non-trivial NaNs are not permitted in either preferred-plus or
    deterministic serializations.  This is in contrast to preferred
    serialization and Section 4.2.1 of [STD94].
 
@@ -1499,8 +1499,8 @@ H.2.  COSE Sig_structure
 
    In this case, the COSE requirement is effectively equivalent to the
    deterministic serialization defined in Section 5, since no NaN values
-   are involved.  It is also equivalent to ordinary serialization as
-   defined in Section 4, because the Sig_structure contains no maps.
+   are involved.  It is also equivalent to preferred-plus serialization
+   as defined in Section 4, because the Sig_structure contains no maps.
 
    The determinism requirement does not apply to the protected headers
    incorporated into the Sig_structure.  Deterministic encoding is

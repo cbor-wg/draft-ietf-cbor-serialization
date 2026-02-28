@@ -1817,7 +1817,7 @@ This rule is inherited from preferred-plus serialization (<a href="#PreferredPlu
 <ol start="1" type="1" class="normal type-1" id="section-5.2-1">
 <li id="section-5.2-1.1">
             <p id="section-5.2-1.1.1">Decoders MUST meet the decoder requirements described in <a href="#PreferredPlusDecoding" class="auto internal xref">Section 4.2</a>.
-That is, deterministic encoding imposes no requirements over and above the requirements for decoding ordinary serialization.<a href="#section-5.2-1.1.1" class="pilcrow">¶</a></p>
+That is, deterministic encoding imposes no requirements over and above the requirements for decoding preferred-plus serialization.<a href="#section-5.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
 </section>
@@ -2361,7 +2361,7 @@ This section is distinct from the Core Deterministic Encoding Requirements and r
         <h3 id="name-divergence-from">
 <a href="#appendix-C.5" class="section-number selfRef">C.5. </a><a href="#name-divergence-from" class="section-name selfRef">Divergence from <span class="cite xref">[STD94]</span></a>
         </h3>
-<p id="appendix-C.5-1">Non-trivial NaNs are not permitted in either ordinary or deterministic serializations.
+<p id="appendix-C.5-1">Non-trivial NaNs are not permitted in either preferred-plus or deterministic serializations.
 This is in contrast to preferred serialization and <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>.<a href="#appendix-C.5-1" class="pilcrow">¶</a></p>
 <p id="appendix-C.5-2">Note that the prohibition of non-trivial NaNs is the sole difference between deterministic serialization (<a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>) and <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>.<a href="#appendix-C.5-2" class="pilcrow">¶</a></p>
 <p id="appendix-C.5-3">The divergence is justified by the following:<a href="#appendix-C.5-3" class="pilcrow">¶</a></p>
@@ -2611,7 +2611,7 @@ Because it is the input to the signing process, it must use deterministic serial
 COSE therefore explicitly requires deterministic encoding so that both the sender and receiver produce identical encoded CBOR representations.
 This requirement is specified in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-9" class="relref">Section 9</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.<a href="#appendix-H.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-H.2-2">In this case, the COSE requirement is effectively equivalent to the deterministic serialization defined in <a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>, since no NaN values are involved.
-It is also equivalent to ordinary serialization as defined in <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>, because the Sig_structure contains no maps.<a href="#appendix-H.2-2" class="pilcrow">¶</a></p>
+It is also equivalent to preferred-plus serialization as defined in <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>, because the Sig_structure contains no maps.<a href="#appendix-H.2-2" class="pilcrow">¶</a></p>
 <p id="appendix-H.2-3">The determinism requirement does not apply to the protected headers incorporated into the Sig_structure.
 Deterministic encoding is unnecessary because these headers are transmitted in the exact encoded form in which they are included in the Sig_structure.<a href="#appendix-H.2-3" class="pilcrow">¶</a></p>
 <p id="appendix-H.2-4">Furthermore, determinism requirements do not extend into CBOR inside of byte strings.
