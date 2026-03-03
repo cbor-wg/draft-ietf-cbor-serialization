@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-01T02:21:38.700931+00:00",
+  "timestamp": "2026-03-03T02:07:32.593059+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -204,15 +204,15 @@
       "id": "I_kwDOQYX63c7ch1dB",
       "title": "Be sure of agreement on the name \"ordinary serialization\"",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/9",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "One alternative is \"simple serialization\"",
       "createdAt": "2025-12-05T18:00:56Z",
-      "updatedAt": "2025-12-05T22:43:05Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-01T18:25:31Z",
+      "closedAt": "2026-03-01T18:25:31Z",
       "comments": [
         {
           "author": "nuclight",
@@ -220,6 +220,13 @@
           "body": "Also not very distinctive. Carsten suggested \"disciplined\" https://mailarchive.ietf.org/arch/msg/cbor/gR2H4XdBN9JjSM34QHfWe3hIo0c/",
           "createdAt": "2025-12-05T22:43:05Z",
           "updatedAt": "2025-12-05T22:43:05Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fixed with #45 ",
+          "createdAt": "2026-03-01T18:25:10Z",
+          "updatedAt": "2026-03-01T18:25:10Z"
         }
       ]
     },
@@ -380,15 +387,15 @@
       "id": "I_kwDOQYX63c7dd33I",
       "title": "Propose moving normative Appendices into main body of the document",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/20",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rohanmahy",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Appendix B and Appendix C are good candidates",
       "createdAt": "2025-12-10T15:04:35Z",
-      "updatedAt": "2026-02-22T19:43:59Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-01T18:33:48Z",
+      "closedAt": "2026-03-01T18:33:48Z",
       "comments": [
         {
           "author": "laurencelundblade",
@@ -396,6 +403,13 @@
           "body": "This appears to be resolving with the removal of Appendix C and leaving Appendix B where it is.\n\nWe have some consensus for this, but not closing the issue just yet.",
           "createdAt": "2026-02-22T19:43:59Z",
           "updatedAt": "2026-02-22T19:43:59Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Replaced by #51 and by removing the appendix on deterministic serialization for tags",
+          "createdAt": "2026-03-01T18:33:48Z",
+          "updatedAt": "2026-03-01T18:33:48Z"
         }
       ]
     },
@@ -404,16 +418,24 @@
       "id": "I_kwDOQYX63c7dx4SK",
       "title": ".det is already taken as a control operator",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/21",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Laurence will wait for resolution on the name \"ordinary\" before making a PR to rename control operators.\n\n",
       "createdAt": "2025-12-11T20:24:29Z",
-      "updatedAt": "2025-12-11T20:24:29Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-03-01T18:24:49Z",
+      "closedAt": "2026-03-01T18:24:49Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fixed by #46 ",
+          "createdAt": "2026-03-01T18:24:49Z",
+          "updatedAt": "2026-03-01T18:24:49Z"
+        }
+      ]
     },
     {
       "number": 22,
@@ -623,7 +645,47 @@
       "labels": [],
       "body": "The COSE example appendix could be worded better and generally improved.  Not a major change.",
       "createdAt": "2026-02-16T19:22:02Z",
-      "updatedAt": "2026-02-16T19:22:02Z",
+      "updatedAt": "2026-03-01T18:37:33Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Still a little work needed here even after #47",
+          "createdAt": "2026-03-01T18:37:33Z",
+          "updatedAt": "2026-03-01T18:37:33Z"
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "id": "I_kwDOQYX63c7u5HJw",
+      "title": "Move NaN Appendix somewhere else?",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/50",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It's 5 pages out 34.\n\nWe'd probably need to add a paragraph summarizing it if it was removed.\n\n",
+      "createdAt": "2026-03-01T18:32:05Z",
+      "updatedAt": "2026-03-01T18:32:05Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 51,
+      "id": "I_kwDOQYX63c7u5H18",
+      "title": "Make appendix B part of the main document",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/51",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Rohan suggested this.\n\nThis issue replaces #20 ",
+      "createdAt": "2026-03-01T18:33:09Z",
+      "updatedAt": "2026-03-01T18:33:09Z",
       "closedAt": null,
       "comments": []
     }
@@ -1058,25 +1120,33 @@
       "id": "PR_kwDOQYX63c64tWjF",
       "title": "Rohan's review",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/23",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rohanmahy",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "small rewordings, typos, and NITS\r\n\r\nNote: references are not allowed in the Abstract or Section headings.",
       "createdAt": "2025-12-13T17:40:41Z",
-      "updatedAt": "2026-01-05T08:59:46Z",
+      "updatedAt": "2026-03-01T18:27:03Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "8408fe8a6fd1b8023c3d03938561a60fbd4df921",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "rohan-review2",
       "headRefOid": "cf20d9ce3c3a2d813aa47861f11c512c885a907a",
-      "closedAt": null,
+      "closedAt": "2026-03-01T18:27:03Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed with recent alternate PRs. Just about everything here was used.",
+          "createdAt": "2026-03-01T18:27:03Z",
+          "updatedAt": "2026-03-01T18:27:03Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOQYX63c7XGgol",
