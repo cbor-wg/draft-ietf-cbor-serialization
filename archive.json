@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-03T02:07:32.593059+00:00",
+  "timestamp": "2026-03-05T02:04:26.892808+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -2493,6 +2493,32 @@
       "mergeCommit": {
         "oid": "e9f27bf2c3a75549898c6cbe7bf6042a771699a4"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 52,
+      "id": "PR_kwDOQYX63c7HqoES",
+      "title": "Quick review of abstract and Section 1",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/52",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-03-03T17:15:11Z",
+      "updatedAt": "2026-03-03T17:15:12Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "e9f27bf2c3a75549898c6cbe7bf6042a771699a4",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "section-1",
+      "headRefOid": "8f732f67fa9588bf430c1449cc1704c4bca759c0",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
