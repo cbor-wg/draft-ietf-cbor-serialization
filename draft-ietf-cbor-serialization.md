@@ -997,11 +997,225 @@ That said, for most use cases and for practical interoperability reasons, prefer
 This serves as an example of the general recommendations for CBOR-based protocols described in this document and summarized in TODO:Recommendations Reference.
 
 
-# Examples and Test Vectors
+# Test Data
 
-TODO -- complete work and remove this comment before publication
+PRELIMINARY TEXT!!
+
+The test data here is for testing both encoding and decoding the serializations defined in this document.
+It is not for testing anything other than what is described in this document, not for general CBOR testing.
+
+The test data is a series of data items.
+Each data item is defined using EDN {{Section 8 of -cbor}}.
+Note that for maps there are multiple instances of EDN to describe the same map because map ordering is not significant in the CBOR data model, but for all others there is one EDN instance.
+For each data item, all the allowed encodings of it are given for each of the three serializations defined in this document.
+A textual description is also included.
+
+Putting this test data fully to use as described here requires specific implementation work for each CBOR library.
+In order to provide thorough and complete testing, this can't be run in a simple way.
+There is no way to simplify the test data and procedure and also get comprehensive coverage.
+In particular, the way the input to encode APIs and the output from the decode will vary by decoder library and programming environment.
+In the test data here it is expressed in EDN, but that can't be mechanically translated into API parameters, particularly because the data types expressed in EDN range fom simple integer to complex maps.
+It is likely that some CBOR libraries will not execute the full set of tests offered because of the effort involved.
+
+## Test Process
+
+The test process is outlined as follows:
+
+~~~~
+For each data item:
+  For each serialization:
+    1) Encode test
+    2) Decode test
+    3a) Checking-decoder test
+    3b) Non-checking decoder test
+~~~~
+
+These test are oriented around the expection that CBOR libraries have modes for each of the three serializations described here.
+Some CBOR libraries may only support some of these modes.
+These modes may be selected at run time or compile time.
+It is up to each CBOR library to select and determine how they will fan out against the three serializations.
+
+Some CBOR libraries will implement decode checking and some will not.
+Similarly, this selection may be at run time or compile time.
+Again, what testing is performed for checking and non-checking decoders is up to each CBOR library.
+
+
+### Encode test
+
+The encode test for each data item should run the encode for and see that the output is one of the included encodings.
+It can be any of of the provided encodings.
+
+If a CBOR library has multiple APIs for encoding a data item, it is useful to test all of them.
+
+
+### Decode test
+
+For each encoding provided, the CBOR library decode function is run.
+The same data item described in the EDN must be the output of the decode.
+Decoding of all of the encodings provided must succeed.
+
+
+### Checking Decoder Test
+
+The purpose of this test is to see that the checking decoder correctly errors out.
+The correct result for all of these tests is a non-compliance error.
+
+The three serializations are progressively more constrained.
+The provided encodings for the serializations above it should thus be rejected by a checking decoder.
+For example, a preferred-plus checking decoder must reject indefinite lengths which are allowed in general serialization.
+
+The test proceeds by inputting all encoding provided by the less-restrictive encodings of the data item and seeing a confirming a check failure.
+For example a test of a preferred-plus checking decoder will be performed by inputing all of the general serializations for that data item.
+The encodings allowed for preferred-plus are excluded.
+
+Many CBOR libraries will not provide a checking mode and thus should not use this test.
+
+
+### Non-Checking Decoder Test
+
+Many CBOR libraries will be able to decode forms beyond the particular serialization.
+For example, it is common for a preferred-plus decoder to accept non-shortest length arguments.
+For a non-checking decoder there are no limits to this, particularly because a general serialization decoder can (and must) be able to decode deterministic serialization.
+So, the results of this test are highly dependent on what a particularly library has choosen to support.
+It is beyond the scope of this text to describe the possible successes and failures that is the correct result for all possible libraries.
+When implementing this test each test case must be evaluated against the libraries claimed decode features.
+
+For example, most CBOR libraries in preferred-plus mode will correctly decode a CBOR argument of any length.
+The correct results for all the lengths of the encoding of the integer 0.
+That same library may not support big numbers, so the correct result for the big number encodings of 0 is failure.
 
 
 
+### Test Data Items
 
-[^rfced]: RFC Editor:
+This is the expected EDN form for each data item
+TODO: put each data item into a separate file for use in automated tests
+
+~~~~
+{
+   "description": "The integer 0" ,
+   "edn-representations" : ["0"] ,
+   "general-serializations": [h'00',
+                              h'1800',
+			      h'190000',
+			      h'1a00000000',
+			      h'1b0000000000000000',
+			      h'C2420000',
+			      h'c240'],
+   "preferred-plus-serializations": [h'00'],
+   "deterministic-serialization": [h'00']
+}
+~~~~
+
+
+Description: The integer 0
+EDN: 0
+General serializations: 0x00 0x1800 0x190003 0x1a00000000 0x1b0000000000000000 0xC2420000 0xc240
+Preferred-plus serialization: 0x00
+Deterministic serialization: 0x00
+
+Description: The integer 3
+EDN: 3
+General serializations: 0x03 0x1803 0x190003 0x1a00000003 0x1b0000000000000003 0xC2420003
+Preferred-plus serialization: 0x03
+Deterministic serialization: 0x03
+
+Description: The integer -25
+EDN: -25
+General serializations: 0x3818  0x390018 0x3a00000018 0x3b0000000000000018  0xC3420018
+Preferred-plus serialization: 0x03
+Deterministic serialization: 0x03
+
+Description: The floating-point value 1.5 (which can be reduced to half-precision)
+EDN: 1.5
+General serializations: 0xF93E00  0xFA3FC00000  0xFB3FF8000000000000
+Preferred-plus serialization:  0xF93E00
+Deterministic serialization:  0xF93E00
+
+Description: Positive inifinity
+EDN: Infinity
+General serializations:  0xF97C00  0xFA7F800000   0xFB7FF0000000000000
+Preferred-plus serialization: 0xF97C00
+Deterministic serialization: 0xF97C00
+
+Description: Negative inifinity
+EDN: -Infinity
+General serializations:  0xF9FC00  0xFAFF800000   0xFBFFF0000000000000
+Preferred-plus serialization: 0xF9FC00
+Deterministic serialization: 0xF9FC00
+
+Description: The floating-point quiet NaN
+EDN: NaN
+General serializations:  0xF97E00  0xFA7FC00000   0xFB7FF8000000000000
+Preferred-plus serialization: 0xF97E00
+Deterministic serialization: 0xF97E00
+
+Description: Floating-point NaN with payload 0x1ff
+EDN: — not possible —
+General serializations:   0xF97FFF  0xFA7FFF8000  0xFB7FFFFC0000000000
+Preferred-plus serialization: — not allowed --
+Deterministic serialization: — not allowed —
+
+Description: The integer 2^96 -1, which can only be represented by a big number
+EDN: 79228162514264337593543950335
+General serializations:   0xC24CFFFFFFFFFFFFFFFFFFFFFFFF  0xC24E0000FFFFFFFFFFFFFFFFFFFFFFFF
+Preferred-plus serialization: 0xC24CFFFFFFFFFFFFFFFFFFFFFFFF
+Deterministic serialization:  0xC24CFFFFFFFFFFFFFFFFFFFFFFFF
+
+Description: The byte string of length 3 0x010203
+EDN:  h'010203'
+General serializations: 0x43010203  0x5f4101420203ff
+Preferred-plus serialization:  0x43010203
+Deterministic serialization: 0x43010203
+
+Description: text string “hi there"
+EDN:  “hi there”
+General serializations: 0x686869207468657265   0x7f6868692074686572650xff  0x7f64686920740x64686572650xff
+Preferred-plus serialization:  0x686869207468657265
+Deterministic serialization:  0x686869207468657265
+
+
+Description: the array [1, 2, 3]
+EDN: [1,2,3]
+General serializations: 0x83010203, 0x9f010203ff
+Preferred-plus: 0x83010203
+Deterministic: 0x83010203
+
+Description: map with three items. Note that map order is never significant in th data model in CBOR
+EDN:  { 1:"x", 2:"y", 3:”z"}   {1:"x", 3:”z", 2:”y”}   {2:”y", 3:”z", 1:”x”}   {2:"y", 1:"x", 3:"z"}  {3:"z", 1:"x", 2:"y"}   {3:"z", 2:"y", 1:"x"}
+General serializations: 0xa301617802617903617A  0xA301617803617A026179 0xA302617903617A016178 0xA302617901617803617A  0xA303617A016178026179  0xA303617A026179016178
+Preferred-plus:  0xa301617802617903617A  0xA301617803617A026179 0xA302617903617A016178 0xA302617901617803617A  0xA303617A016178026179  0xA303617A026179016178
+Deterministic: 0xa301617802617903617A
+
+
+~~~~
+{
+   "description": "map with three items. Note that map order is never significant in th data model in CBOR",
+   "edn-representations" : [ "{ 1:\"x\", 2:\"y\", 3:\"z\"}",
+                              "{1:\"x\", 3:\"z\", 2:\"y\"}",
+			      "{2:\"y\", 3:\"z\", 1:\"x\"}",
+			      "{2:\"y\", 1:\"x\", 3:\"z\"}",
+			      "{3:\"z\", 1:\"x\", 2:\"y\"}",
+			      "{3:\"z\", 2:\"y\", 1:\"x\"}"
+			      ],
+   "general-serializations": [
+h'a301617802617903617A',
+h'A301617803617A026179',
+h'A302617903617A016178',
+h'A302617901617803617A',
+h'A303617A016178026179',
+h'A303617A026179016178'
+],
+   "preferred-plus-serializations": [
+h'a301617802617903617A',
+h'A301617803617A026179',
+h'A302617903617A016178',
+h'A302617901617803617A',
+h'A303617A016178026179',
+h'A303617A026179016178'
+  ],
+   "deterministic-serialization": [h'a301617802617903617A']
+}
+~~~~
+
+
