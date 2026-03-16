@@ -185,6 +185,7 @@ Examples are protocols that hash or sign encoded CBOR.
 \[Add a reference to use cases for deterministic encoding.]
 
 Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
+However, as noted earlier, the majority of CBOR usage occurs outside constrained environments.
 It is therefore practical to define a single deterministic serialization suitable for general use.
 
 Protocol specifications and library implementations can reference this serialization instead of defining their own deterministic encoding rules.
