@@ -187,7 +187,9 @@ This document defines that serialization: \[add qualifier] deterministic seriali
 This document independently restates the definition of serialization constraints rather than attempting to clarify those in {{-cbor}} (that need clarification).
 This approach enables the serialization requirements to be expressed directly in normative {{RFC2119}} language, and to be consolidated in this single comprehensive specification.
 This approach provides clarity and simplicity for implementers and the CBOR community over the long term.
-\[Please see draft-bormann-restatement for why the general approach of restatement is a bad idea, and how this can be mitigated.]
+[^restatement]
+
+[^restatement]: Please see draft-bormann-restatement for why the general approach of restatement is a bad idea, and how this can be mitigated.
 
 The serializations defined herein are formally new, but we just hope they are largely interchangeable with the way the serializations described in {{-cbor}} are implemented.
 
