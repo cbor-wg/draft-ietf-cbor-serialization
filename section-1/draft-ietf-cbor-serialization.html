@@ -1445,12 +1445,14 @@ This document defines that serialization: preferred-plus serialization.<a href="
         </h3>
 <p id="section-1.2-1">Some applications benefit from not having variation in serialization, by using exactly one serialization for each data item, i.e., a <em>deterministic</em> serialization.
 Examples are protocols that hash or sign encoded CBOR.
-[Add a reference to use cases for deterministic encoding.]<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+<span class="cref" id="ref-use-cases">Add a reference to use cases for deterministic encoding.</span><a href="#section-1.2-1" class="pilcrow">¶</a></p>
 <p id="section-1.2-2">Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
 However, as noted earlier, the majority of CBOR usage occurs outside constrained environments.
 It is therefore practical to define a single deterministic serialization suitable for general use.<a href="#section-1.2-2" class="pilcrow">¶</a></p>
 <p id="section-1.2-3">Protocol specifications and library implementations can reference this serialization instead of defining their own deterministic encoding rules.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
-<p id="section-1.2-4">This document defines that serialization: [add qualifier] deterministic serialization.<a href="#section-1.2-4" class="pilcrow">¶</a></p>
+<p id="section-1.2-4">This document defines that serialization: <span class="cref" id="add-qualifier">The term deterministic serialization is generic (it
+is used this way in this section!).  We need a qualified term for the
+common deterministic serialization that we recommend for general use.</span> deterministic serialization.<a href="#section-1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="relation-to-rfc-8949">
