@@ -209,9 +209,10 @@ Table of Contents
    constrained environments?  I'm sure many use cases in those can be
    included, too.]
 
-   Protocol specifications can reference such a serialization rather
-   than restating detailed encoding rules, and library implementations
-   can prioritize support for it.
+   Protocol specifications can reference such a serialization
+   constraints, rather than restating them; library implementations
+   could also prioritize support for these referenced serialization
+   constraints.
 
    [Can't fix this sentence, because it is mixing up the actual benefit
    of DLO with creating interoperability problems by enforcing preferred
