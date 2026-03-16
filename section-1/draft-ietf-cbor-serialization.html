@@ -1424,8 +1424,12 @@ This may be due to operation in constrained environments or because implementing
 (particularly in languages like C and Rust, which lack built-in support for dynamic arrays, maps, and strings).
 This forces encoders to apply constraints to which of CBOR's serialization variants they choose; we may (sloppily) call such a set of serialization constraints "a serialization".<a href="#section-1.1-2" class="pilcrow">¶</a></p>
 <p id="section-1.1-3">In practice, most CBOR usage occurs outside highly constrained environments.
-This makes it both feasible and beneficial to define a common serialization suitable for general use.
-[But not for highly constrained environments?  I'm sure many use cases in those can be included, too.]<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+This makes it both feasible and beneficial to define a common
+serialization suitable for general use.
+<span class="cref" id="general-use">But not for highly constrained environments?  Many use
+cases in those can be included, too.  The shape of the exclusion
+of constrained environments this document argues for needs to be
+better understood.</span><a href="#section-1.1-3" class="pilcrow">¶</a></p>
 <p id="section-1.1-4">Protocol specifications can reference such a serialization constraints, rather than restating them; library implementations could also prioritize support for these referenced serialization constraints.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
 <p id="section-1.1-5">[Can't fix this sentence, because it is mixing up the actual benefit of DLO with creating interoperability problems by enforcing preferred serialization.]
 This document defines that serialization: preferred-plus serialization.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
@@ -1453,8 +1457,8 @@ It is therefore practical to define a single deterministic serialization suitabl
 <p id="section-1.3-1">This document independently restates the definition of serialization constraints rather than attempting to clarify those in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> (that need clarification).
 This approach enables the serialization requirements to be expressed directly in normative <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> language, and to be consolidated in this single comprehensive specification.
 This approach provides clarity and simplicity for implementers and the CBOR community over the long term.
-[Please see draft-bormann-restatement for why the general approach of restatement is a bad idea, and how this can be mitigated.]<a href="#section-1.3-1" class="pilcrow">¶</a></p>
-<p id="section-1.3-2">The serializations defined herein are formally new, but we just hope they are largely interchangeable with the way the serializations described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> are implemented.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
+<span class="cref" id="restatement">Please see draft-bormann-restatement for why the general approach of restatement is a bad idea, and how this can be mitigated.</span><a href="#section-1.3-1" class="pilcrow">¶</a></p>
+<p id="section-1.3-2">The serializations defined herein are formally new, but <span class="cref" id="hope">we just hope</span> they are largely interchangeable with the way the serializations described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> are implemented.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
 <p id="section-1.3-3">For example, preferred serialization described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> is commonly implemented, sometimes without support for indefinite-lengths.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
 <p id="section-1.3-4">Preferred-plus serialization as defined here is largely the same as preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.<a href="#section-1.3-4" class="pilcrow">¶</a></p>
 </section>

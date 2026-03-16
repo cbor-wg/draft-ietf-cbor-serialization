@@ -210,9 +210,11 @@ Table of Contents
 
    In practice, most CBOR usage occurs outside highly constrained
    environments.  This makes it both feasible and beneficial to define a
-   common serialization suitable for general use.  [But not for highly
-   constrained environments?  I'm sure many use cases in those can be
-   included, too.]
+   common serialization suitable for general use.
+   // But not for highly constrained environments?  Many use cases in
+   // those can be included, too.  The shape of the exclusion of
+   // constrained environments this document argues for needs to be
+   // better understood.
 
    Protocol specifications can reference such a serialization
    constraints, rather than restating them; library implementations
@@ -252,13 +254,13 @@ Table of Contents
    requirements to be expressed directly in normative [RFC2119]
    language, and to be consolidated in this single comprehensive
    specification.  This approach provides clarity and simplicity for
-   implementers and the CBOR community over the long term.  [Please see
-   draft-bormann-restatement for why the general approach of restatement
-   is a bad idea, and how this can be mitigated.]
+   implementers and the CBOR community over the long term.
+   // Please see draft-bormann-restatement for why the general approach
+   // of restatement is a bad idea, and how this can be mitigated.
 
-   The serializations defined herein are formally new, but we just hope
-   they are largely interchangeable with the way the serializations
-   described in [STD94] are implemented.
+   The serializations defined herein are formally new, but
+   // we just hope they are largely interchangeable with the way the
+   serializations described in [STD94] are implemented.
 
    For example, preferred serialization described in [STD94] is commonly
    implemented, sometimes without support for indefinite-lengths.
