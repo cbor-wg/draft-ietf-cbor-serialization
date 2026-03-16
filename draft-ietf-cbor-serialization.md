@@ -191,7 +191,9 @@ This approach provides clarity and simplicity for implementers and the CBOR comm
 
 [^restatement]: Please see draft-bormann-restatement for why the general approach of restatement is a bad idea, and how this can be mitigated.
 
-The serializations defined herein are formally new, but we just hope they are largely interchangeable with the way the serializations described in {{-cbor}} are implemented.
+The serializations defined herein are formally new, but [^hope] they are largely interchangeable with the way the serializations described in {{-cbor}} are implemented.
+
+[^hope]: we just hope
 
 For example, preferred serialization described in {{-cbor}} is commonly implemented, sometimes without support for indefinite-lengths.
 
