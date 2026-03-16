@@ -12,22 +12,22 @@ It also introduces the term "general serialization" to name the full set of seri
 Together, these three form a complete set of serialization constraints that cover the majority of CBOR serialization use cases. 
        These serialization constraints are largely compatible with those widely implemented by the CBOR community. 
     ' name="description">
-<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="xml2rfc 3.32.0" name="generator">
 <meta content="cbor" name="keyword">
 <meta content="draft-ietf-cbor-serialization-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.31.0
+  xml2rfc 3.32.0
     Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.0.2
-    platformdirs 4.5.1
+    platformdirs 4.9.4
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.32.5
-    wcwidth 0.3.0
+    wcwidth 0.6.0
 -->
 <link href="draft-ietf-cbor-serialization.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1367,7 +1367,7 @@ Together, these three form a complete set of serialization constraints that cove
 Readers may wish to review this background information first.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">CBOR intentionally allows multiple valid serializations of the same data item.
 For example, the array [1, 2] can be serialized in more than one way,
-two of which are shown in <a href="#tab-array-ser" class="auto internal xref">Table 1</a>:<a href="#section-1-2" class="pilcrow">¶</a></p>
+three of which are shown in <a href="#tab-array-ser" class="auto internal xref">Table 1</a>:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <span id="name-1-2-in-definite-length-and-"></span><div id="tab-array-ser">
 <table class="center" id="table-1">
         <caption>
@@ -1376,26 +1376,26 @@ two of which are shown in <a href="#tab-array-ser" class="auto internal xref">Ta
         </caption>
 <thead>
           <tr>
-            <th class="text-left" rowspan="1" colspan="1">Type</th>
+            <th class="text-left" rowspan="1" colspan="1">Constraints</th>
             <th class="text-left" rowspan="1" colspan="1">Description</th>
             <th class="text-left" rowspan="1" colspan="1">Bytes</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">Preferred encoding</td>
-            <td class="text-left" rowspan="1" colspan="1">The array length (2) is encoded and the shortest encoding of the integer is used</td>
+            <td class="text-left" rowspan="1" colspan="1">Preferred serialization, definite-length only</td>
+            <td class="text-left" rowspan="1" colspan="1">The array length (2) and the integer values are encoded in the shortest encoding</td>
             <td class="text-left" rowspan="1" colspan="1">0x82 0x01 0x02</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">Definite-length</td>
+            <td class="text-left" rowspan="1" colspan="1">Definite-length only</td>
             <td class="text-left" rowspan="1" colspan="1">The array length (2) is encoded at the beginning</td>
-            <td class="text-left" rowspan="1" colspan="1">0x82 0x019 0x00 0x01 0x18 0x02</td>
+            <td class="text-left" rowspan="1" colspan="1">0x82 0x19 0x00 0x01 0x18 0x02</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">Indefinite-length</td>
+            <td class="text-left" rowspan="1" colspan="1">Preferred serialization</td>
             <td class="text-left" rowspan="1" colspan="1">The array is terminated by the "break" stop code (0xff)</td>
-            <td class="text-left" rowspan="1" colspan="1">0x9f  0x01 0x02 0xff</td>
+            <td class="text-left" rowspan="1" colspan="1">0x9f 0x01 0x02 0xff</td>
           </tr>
         </tbody>
       </table>

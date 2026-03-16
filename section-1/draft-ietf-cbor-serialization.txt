@@ -140,25 +140,25 @@ Table of Contents
 
    CBOR intentionally allows multiple valid serializations of the same
    data item.  For example, the array [1, 2] can be serialized in more
-   than one way, two of which are shown in Table 1:
+   than one way, three of which are shown in Table 1:
 
-   +===================+=================================+============+
-   | Type              | Description                     | Bytes      |
-   +===================+=================================+============+
-   | Preferred         | The array length (2) is encoded | 0x82 0x01  |
-   | encoding          | and the shortest encoding of    | 0x02       |
-   |                   | the integer is used             |            |
-   +-------------------+---------------------------------+------------+
-   | Definite-length   | The array length (2) is encoded | 0x82 0x019 |
-   |                   | at the beginning                | 0x00 0x01  |
-   |                   |                                 | 0x18 0x02  |
-   +-------------------+---------------------------------+------------+
-   | Indefinite-length | The array is terminated by the  | 0x9f 0x01  |
-   |                   | "break" stop code (0xff)        | 0x02 0xff  |
-   +-------------------+---------------------------------+------------+
+    +======================+==============================+===========+
+    | Constraints          | Description                  | Bytes     |
+    +======================+==============================+===========+
+    | Preferred            | The array length (2) and the | 0x82 0x01 |
+    | serialization,       | integer values are encoded   | 0x02      |
+    | definite-length only | in the shortest encoding     |           |
+    +----------------------+------------------------------+-----------+
+    | Definite-length only | The array length (2) is      | 0x82 0x19 |
+    |                      | encoded at the beginning     | 0x00 0x01 |
+    |                      |                              | 0x18 0x02 |
+    +----------------------+------------------------------+-----------+
+    | Preferred            | The array is terminated by   | 0x9f 0x01 |
+    | serialization        | the "break" stop code (0xff) | 0x02 0xff |
+    +----------------------+------------------------------+-----------+
 
-         Table 1: [1, 2] in definite-length and indefinite-length
-                              serializations
+          Table 1: [1, 2] in definite-length and indefinite-length
+                               serializations
 
    Similar variation exists for all other CBOR data items (except simple
    values).
