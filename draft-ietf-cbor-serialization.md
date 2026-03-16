@@ -161,7 +161,7 @@ In practice, most CBOR usage occurs outside highly constrained environments.
 This makes it both feasible and beneficial to define a common serialization suitable for general use.
 \[But not for highly constrained environments?  I'm sure many use cases in those can be included, too.]
 
-Protocol specifications can reference such a serialization rather than restating detailed encoding rules, and library implementations can prioritize support for it.
+Protocol specifications can reference such a serialization constraints, rather than restating them; library implementations could also prioritize support for these referenced serialization constraints.
 
 \[Can't fix this sentence, because it is mixing up the actual benefit of DLO with creating interoperability problems by enforcing preferred serialization.]
 This document defines that serialization: preferred-plus serialization.
