@@ -182,7 +182,9 @@ This document defines that serialization: preferred-plus serialization.
 
 Some applications benefit from not having variation in serialization, by using exactly one serialization for each data item, i.e., a _deterministic_ serialization.
 Examples are protocols that hash or sign encoded CBOR.
-\[Add a reference to use cases for deterministic encoding.]
+[^ref-use-cases]
+
+[^ref-use-cases]: Add a reference to use cases for deterministic encoding.
 
 Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
 However, as noted earlier, the majority of CBOR usage occurs outside constrained environments.
