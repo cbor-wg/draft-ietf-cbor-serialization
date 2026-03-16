@@ -192,7 +192,11 @@ It is therefore practical to define a single deterministic serialization suitabl
 
 Protocol specifications and library implementations can reference this serialization instead of defining their own deterministic encoding rules.
 
-This document defines that serialization: \[add qualifier] deterministic serialization.
+This document defines that serialization: [^add-qualifier] deterministic serialization.
+
+[^add-qualifier]: The term deterministic serialization is generic (it
+    is used this way in this section!).  We need a qualified term for the
+    common deterministic serialization that we recommend for general use.
 
 
 ## Relation to RFC 8949
