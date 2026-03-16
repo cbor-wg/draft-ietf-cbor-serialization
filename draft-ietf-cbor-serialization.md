@@ -159,8 +159,14 @@ This may be due to operation in constrained environments or because implementing
 This forces encoders to apply constraints to which of CBOR's serialization variants they choose; we may (sloppily) call such a set of serialization constraints "a serialization".
 
 In practice, most CBOR usage occurs outside highly constrained environments.
-This makes it both feasible and beneficial to define a common serialization suitable for general use.
-\[But not for highly constrained environments?  I'm sure many use cases in those can be included, too.]
+This makes it both feasible and beneficial to define a common
+serialization suitable for general use.
+[^general-use]
+
+[^general-use]: But not for highly constrained environments?  Many use
+    cases in those can be included, too.  The shape of the exclusion
+    of constrained environments this document argues for needs to be
+    better understood.
 
 Protocol specifications can reference such a serialization constraints, rather than restating them; library implementations could also prioritize support for these referenced serialization constraints.
 
