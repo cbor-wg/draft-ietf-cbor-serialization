@@ -1383,9 +1383,14 @@ two of which are shown in <a href="#tab-array-ser" class="auto internal xref">Ta
         </thead>
         <tbody>
           <tr>
+            <td class="text-left" rowspan="1" colspan="1">Preferred encoding</td>
+            <td class="text-left" rowspan="1" colspan="1">The array length (2) is encoded and the shortest encoding of the integer is used</td>
+            <td class="text-left" rowspan="1" colspan="1">0x82 0x01 0x02</td>
+          </tr>
+          <tr>
             <td class="text-left" rowspan="1" colspan="1">Definite-length</td>
             <td class="text-left" rowspan="1" colspan="1">The array length (2) is encoded at the beginning</td>
-            <td class="text-left" rowspan="1" colspan="1">0x82 0x01 0x02</td>
+            <td class="text-left" rowspan="1" colspan="1">0x82 0x019 0x00 0x01 0x18 0x02</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Indefinite-length</td>

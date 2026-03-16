@@ -142,15 +142,20 @@ Table of Contents
    data item.  For example, the array [1, 2] can be serialized in more
    than one way, two of which are shown in Table 1:
 
-     +===================+==============================+===========+
-     | Type              | Description                  | Bytes     |
-     +===================+==============================+===========+
-     | Definite-length   | The array length (2) is      | 0x82 0x01 |
-     |                   | encoded at the beginning     | 0x02      |
-     +-------------------+------------------------------+-----------+
-     | Indefinite-length | The array is terminated by   | 0x9f 0x01 |
-     |                   | the "break" stop code (0xff) | 0x02 0xff |
-     +-------------------+------------------------------+-----------+
+   +===================+=================================+============+
+   | Type              | Description                     | Bytes      |
+   +===================+=================================+============+
+   | Preferred         | The array length (2) is encoded | 0x82 0x01  |
+   | encoding          | and the shortest encoding of    | 0x02       |
+   |                   | the integer is used             |            |
+   +-------------------+---------------------------------+------------+
+   | Definite-length   | The array length (2) is encoded | 0x82 0x019 |
+   |                   | at the beginning                | 0x00 0x01  |
+   |                   |                                 | 0x18 0x02  |
+   +-------------------+---------------------------------+------------+
+   | Indefinite-length | The array is terminated by the  | 0x9f 0x01  |
+   |                   | "break" stop code (0xff)        | 0x02 0xff  |
+   +-------------------+---------------------------------+------------+
 
          Table 1: [1, 2] in definite-length and indefinite-length
                               serializations
