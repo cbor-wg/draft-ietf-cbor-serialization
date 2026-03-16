@@ -136,7 +136,7 @@ CBOR is designed to allow encodings to be selected according to the constraints 
 The flexibility is a core design feature.
 (CBOR is not unique in this regard; compare ASN.1's BER encoding rules.)
 
-For example, indefinite-length serialization is suited for streaming large arrays, where the total number of elements to be serialized is not known in advance.
+For example, indefinite-length serialization is suited for streaming large arrays, where the total number of elements to be serialized is not known in advance, which is more likely to be the case in constrained environments.
 Conversely, definite-length serialization works well to decode small arrays.
 
 As a result, CBOR encoders in libraries and protocol implementations commonly support only the serialization forms required for their intended use cases.
