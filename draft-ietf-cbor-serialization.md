@@ -170,9 +170,13 @@ serialization suitable for general use.
 
 Protocol specifications can reference such a serialization constraints, rather than restating them; library implementations could also prioritize support for these referenced serialization constraints.
 
-\[Can't fix this sentence, because it is mixing up the actual benefit of DLO with creating interoperability problems by enforcing preferred serialization.]
+[^ignoring-interoperability]
 This document defines that serialization: preferred-plus serialization.
 
+[^ignoring-interoperability]: Can't fix this sentence, because it is
+    mixing up the actual benefit of DLO that are being discussed here with
+    enforcing/creating a gray zone around preferred serialization, the
+    interoperability problems of which are not discussed.
 
 ## Determinism
 
