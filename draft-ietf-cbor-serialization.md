@@ -125,7 +125,8 @@ two of which are shown in {{tab-array-ser}}:
 
 | Type              | Description                                      | Bytes                |
 |-------------------|--------------------------------------------------|----------------------|
-| Definite-length   | The array length (2) is encoded at the beginning | 0x82 0x01 0x02       |
+| Preferred encoding | The array length (2) is encoded and the shortest encoding of the integer is used | 0x82 0x01 0x02 |
+| Definite-length | The array length (2) is encoded at the beginning | 0x82 0x019 0x00 0x01 0x18 0x02 |
 | Indefinite-length | The array is terminated by the "break" stop code (0xff) | 0x9f  0x01 0x02 0xff |
 {: #tab-array-ser title="[1, 2] in definite-length and indefinite-length serializations"}
 
