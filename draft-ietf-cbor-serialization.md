@@ -121,13 +121,13 @@ Readers may wish to review this background information first.
 
 CBOR intentionally allows multiple valid serializations of the same data item.
 For example, the array [1, 2] can be serialized in more than one way,
-two of which are shown in {{tab-array-ser}}:
+three of which are shown in {{tab-array-ser}}:
 
-| Type              | Description                                      | Bytes                |
-|-------------------|--------------------------------------------------|----------------------|
-| Preferred encoding | The array length (2) is encoded and the shortest encoding of the integer is used | 0x82 0x01 0x02 |
-| Definite-length | The array length (2) is encoded at the beginning | 0x82 0x019 0x00 0x01 0x18 0x02 |
-| Indefinite-length | The array is terminated by the "break" stop code (0xff) | 0x9f  0x01 0x02 0xff |
+| Constraints                               | Description                                                                      | Bytes                         |
+|-----------------------------------------------|----------------------------------------------------------------------------------|-------------------------------|
+| Preferred serialization, definite-length only | The array length (2) and the integer values are encoded in the shortest encoding | 0x82 0x01 0x02                |
+| Definite-length only                          | The array length (2) is encoded at the beginning                                 | 0x82 0x19 0x00 0x01 0x18 0x02 |
+| Preferred serialization                       | The array is terminated by the "break" stop code (0xff)                          | 0x9f 0x01 0x02 0xff           |
 {: #tab-array-ser title="[1, 2] in definite-length and indefinite-length serializations"}
 
 Similar variation exists for all other CBOR data items (except simple values).
