@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                            3 March 2026
-Expires: 4 September 2026
+Intended status: Standards Track                           16 March 2026
+Expires: 17 September 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2026.
+   This Internet-Draft will expire on 17 September 2026.
 
 Copyright Notice
 
@@ -166,7 +166,8 @@ Table of Contents
 
    For example, indefinite-length serialization is suited for streaming
    large arrays, where the total number of elements to be serialized is
-   not known in advance.  Conversely, definite-length serialization
+   not known in advance, which is more likely to be the case in
+   constrained environments.  Conversely, definite-length serialization
    works well to decode small arrays.
 
    As a result, CBOR encoders in libraries and protocol implementations
