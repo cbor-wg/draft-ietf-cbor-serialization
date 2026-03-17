@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-15T02:25:42.342797+00:00",
+  "timestamp": "2026-03-17T02:06:02.118581+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -2508,19 +2508,192 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-03-03T17:15:11Z",
-      "updatedAt": "2026-03-03T17:15:12Z",
+      "updatedAt": "2026-03-16T04:17:54Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "e9f27bf2c3a75549898c6cbe7bf6042a771699a4",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "section-1",
-      "headRefOid": "8f732f67fa9588bf430c1449cc1704c4bca759c0",
+      "headRefOid": "7583d0170fedbab3d600267e3e8dca3ce80f5339",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7rgM3D",
+          "commit": {
+            "abbreviatedOid": "8f732f6"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2026-03-16T01:59:31Z",
+          "updatedAt": "2026-03-16T02:17:53Z",
+          "comments": [
+            {
+              "originalPosition": 35,
+              "body": "```suggestion\n| Preferred encoding | The array length (2) is encoded and the shortest encoding of the integer is used | 0x82 0x01 0x02 |\n| Definite-length | The array length (2) is encoded at the beginning | 0x82 0x019 0x00 0x01 0x18 0x02 |\n```",
+              "createdAt": "2026-03-16T01:59:31Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 53,
+              "body": "```suggestion\nFor example, indefinite-length serialization is suited for streaming large arrays, where the total number of elements to be serialized is not known in advance, which is more likely to be the case in constrained environments.\nConversely, definite-length serialization works well to decode small arrays.\n```",
+              "createdAt": "2026-03-16T02:03:15Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 79,
+              "body": "```suggestion\n```",
+              "createdAt": "2026-03-16T02:05:28Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 83,
+              "body": "```suggestion\n```",
+              "createdAt": "2026-03-16T02:07:49Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 81,
+              "body": "```suggestion\nProtocol specifications can reference such a serialization constraints, rather than restating them; library implementations could also prioritize support for these referenced serialization constraints.\n```",
+              "createdAt": "2026-03-16T02:09:49Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 96,
+              "body": "```suggestion\nMany approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.\nHowever, as noted earlier, the majority of CBOR usage occurs outside constrained environments.\n```",
+              "createdAt": "2026-03-16T02:10:36Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 103,
+              "body": "```suggestion\nThis document defines that serialization: deterministic serialization.\n```",
+              "createdAt": "2026-03-16T02:11:07Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 92,
+              "body": "Many applications benefit from preferred plus for the same reasons. Using \"a deterministic serialization\" does not add anything an further confuses this. I propose we leave the original text.\n\n```suggestion\nThe determinism challenge arises because there are multiple ways to serialize the same data item.\nThe example serialization of the array [1,2] above shows this.\nThis is a problem in some protocols that hash or sign encoded CBOR.\n```",
+              "createdAt": "2026-03-16T02:13:36Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 94,
+              "body": "```suggestion\n```",
+              "createdAt": "2026-03-16T02:13:55Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 96,
+              "body": "The original text was clear and quite useful. ",
+              "createdAt": "2026-03-16T02:14:19Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 112,
+              "body": "Referencing this draft does not help the community, and causes confusion\n\n```suggestion\n```",
+              "createdAt": "2026-03-16T02:15:50Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 115,
+              "body": "The \"we just hope\" is unfounded. We did the work. We tested. We investigated. They work.\n\n```suggestion\nThe serializations defined herein are formally new, but are largely interchangeable with the way the serializations described in {{-cbor}} are implemented.\n```",
+              "createdAt": "2026-03-16T02:17:19Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            },
+            {
+              "originalPosition": 118,
+              "body": "More reflective of the data.\n\n```suggestion\nFor example, preferred serialization described in {{-cbor}} is commonly implemented, often without support for indefinite-lengths.\n```",
+              "createdAt": "2026-03-16T02:17:45Z",
+              "updatedAt": "2026-03-16T02:17:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7rg-e7",
+          "commit": {
+            "abbreviatedOid": "8f732f6"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-16T03:53:08Z",
+          "updatedAt": "2026-03-16T03:53:08Z",
+          "comments": [
+            {
+              "originalPosition": 92,
+              "body": "The benefit from an \"almost, but not always\" deterministic encoding is unclear.\r\nExperience would suggest that this leads to gray zones that both benefit an attacker and create interoperability problems.",
+              "createdAt": "2026-03-16T03:53:08Z",
+              "updatedAt": "2026-03-16T03:53:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7rg_K4",
+          "commit": {
+            "abbreviatedOid": "8f732f6"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-16T03:54:58Z",
+          "updatedAt": "2026-03-16T03:54:58Z",
+          "comments": [
+            {
+              "originalPosition": 112,
+              "body": "Well, we aren't there yet where we might help the community with this draft.\r\nAuthors and reviewers should be aware of the implications of doing this, as work remains.\r\nConverting to editor's note.",
+              "createdAt": "2026-03-16T03:54:58Z",
+              "updatedAt": "2026-03-16T03:56:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7rhBLV",
+          "commit": {
+            "abbreviatedOid": "8f732f6"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-16T03:59:44Z",
+          "updatedAt": "2026-03-16T03:59:44Z",
+          "comments": [
+            {
+              "originalPosition": 115,
+              "body": "There is no strategy here to achieve this, just an aspirational statement.\r\nConverting to editor note.\r\n",
+              "createdAt": "2026-03-16T03:59:44Z",
+              "updatedAt": "2026-03-16T03:59:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7rhB2x",
+          "commit": {
+            "abbreviatedOid": "8f732f6"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-16T04:01:24Z",
+          "updatedAt": "2026-03-16T04:01:24Z",
+          "comments": [
+            {
+              "originalPosition": 118,
+              "body": "Please indicate what the terms \"sometimes\" and \"often\" mean for you.\r\nThe sentence is constructed in a way to imply that these two decisions (implement PS in the encoder, do not support indefinite length in the decoder) are somehow related; they are not.\r\n",
+              "createdAt": "2026-03-16T04:01:24Z",
+              "updatedAt": "2026-03-16T04:19:26Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 53,
