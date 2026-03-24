@@ -12,22 +12,22 @@ It also introduces the term "general serialization" to name the full, variable s
 Together, these three form a complete set of serializations that cover the majority of CBOR serialization use cases. 
        These serializations are largely compatible with those widely implemented by the CBOR community. 
     ' name="description">
-<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="xml2rfc 3.32.0" name="generator">
 <meta content="cbor" name="keyword">
 <meta content="draft-ietf-cbor-serialization-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.31.0
+  xml2rfc 3.32.0
     Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.0.2
-    platformdirs 4.5.1
+    platformdirs 4.9.4
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.32.5
-    wcwidth 0.3.0
+    wcwidth 0.6.0
 -->
 <link href="draft-ietf-cbor-serialization.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 14 September 2026</td>
+<td class="center">Expires 25 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-13" class="published">13 March 2026</time>
+<time datetime="2026-03-24" class="published">24 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-14">14 September 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-25">25 September 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1346,7 +1346,7 @@ Together, these three form a complete set of serializations that cover the major
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20">
-            <p id="section-toc.1-1.20.1"><a href="#appendix-I" class="auto internal xref">Appendix I</a>.  <a href="#name-test-data" class="internal xref">Test Data</a></p>
+            <p id="section-toc.1-1.20.1"><a href="#appendix-I" class="auto internal xref">Appendix I</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.1">
                 <p id="section-toc.1-1.20.2.1.1"><a href="#appendix-I.1" class="auto internal xref">I.1</a>.  <a href="#name-test-process" class="internal xref">Test Process</a></p>
@@ -1364,7 +1364,7 @@ Together, these three form a complete set of serializations that cover the major
                     <p id="section-toc.1-1.20.2.1.2.4.1"><a href="#appendix-I.1.4" class="auto internal xref">I.1.4</a>.  <a href="#name-non-checking-decoder-test" class="internal xref">Non-Checking Decoder Test</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.1.2.5">
-                    <p id="section-toc.1-1.20.2.1.2.5.1"><a href="#appendix-I.1.5" class="auto internal xref">I.1.5</a>.  <a href="#name-test-data-items" class="internal xref">Test Data Items</a></p>
+                    <p id="section-toc.1-1.20.2.1.2.5.1"><a href="#appendix-I.1.5" class="auto internal xref">I.1.5</a>.  <a href="#name-example-data-items" class="internal xref">Example Data Items</a></p>
 </li>
                 </ul>
 </li>
@@ -2659,10 +2659,10 @@ The only requirement is that the encoded data be decodable by the receiver.<a hr
 </div>
 </section>
 </div>
-<div id="test-data">
+<div id="examples">
 <section id="appendix-I">
-      <h2 id="name-test-data">
-<a href="#appendix-I" class="section-number selfRef">Appendix I. </a><a href="#name-test-data" class="section-name selfRef">Test Data</a>
+      <h2 id="name-examples">
+<a href="#appendix-I" class="section-number selfRef">Appendix I. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
       </h2>
 <p id="appendix-I-1">PRELIMINARY TEXT!!<a href="#appendix-I-1" class="pilcrow">¶</a></p>
 <p id="appendix-I-2">The test data here is for testing both encoding and decoding the serializations defined in this document.
@@ -2753,13 +2753,13 @@ The correct results for all the lengths of the encoding of the integer 0.
 That same library may not support big numbers, so the correct result for the big number encodings of 0 is failure.<a href="#appendix-I.1.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="test-data-items">
+<div id="example-data-items">
 <section id="appendix-I.1.5">
-          <h4 id="name-test-data-items">
-<a href="#appendix-I.1.5" class="section-number selfRef">I.1.5. </a><a href="#name-test-data-items" class="section-name selfRef">Test Data Items</a>
+          <h4 id="name-example-data-items">
+<a href="#appendix-I.1.5" class="section-number selfRef">I.1.5. </a><a href="#name-example-data-items" class="section-name selfRef">Example Data Items</a>
           </h4>
-<p id="appendix-I.1.5-1">This is the expected EDN form for each data item
-TODO: put each data item into a separate file for use in automated tests<a href="#appendix-I.1.5-1" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.5-1">The following set of EDN items provide examples for the major data types and important variations.
+They are available as individual files at https://github.com/cbor-wg/draft-ietf-cbor-serialization.<a href="#appendix-I.1.5-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-I.1.5-2">
 <pre>
 {
@@ -2777,101 +2777,192 @@ TODO: put each data item into a separate file for use in automated tests<a href=
 }
 </pre><a href="#appendix-I.1.5-2" class="pilcrow">¶</a>
 </div>
-<p id="appendix-I.1.5-3">Description: The integer 0
-EDN: 0
-General serializations: 0x00 0x1800 0x190003 0x1a00000000 0x1b0000000000000000 0xC2420000 0xc240
-Preferred-plus serialization: 0x00
-Deterministic serialization: 0x00<a href="#appendix-I.1.5-3" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-4">Description: The integer 3
-EDN: 3
-General serializations: 0x03 0x1803 0x190003 0x1a00000003 0x1b0000000000000003 0xC2420003
-Preferred-plus serialization: 0x03
-Deterministic serialization: 0x03<a href="#appendix-I.1.5-4" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-5">Description: The integer -25
-EDN: -25
-General serializations: 0x3818  0x390018 0x3a00000018 0x3b0000000000000018  0xC3420018
-Preferred-plus serialization: 0x03
-Deterministic serialization: 0x03<a href="#appendix-I.1.5-5" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-6">Description: The floating-point value 1.5 (which can be reduced to half-precision)
-EDN: 1.5
-General serializations: 0xF93E00  0xFA3FC00000  0xFB3FF8000000000000
-Preferred-plus serialization:  0xF93E00
-Deterministic serialization:  0xF93E00<a href="#appendix-I.1.5-6" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-7">Description: Positive inifinity
-EDN: Infinity
-General serializations:  0xF97C00  0xFA7F800000   0xFB7FF0000000000000
-Preferred-plus serialization: 0xF97C00
-Deterministic serialization: 0xF97C00<a href="#appendix-I.1.5-7" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-8">Description: Negative inifinity
-EDN: -Infinity
-General serializations:  0xF9FC00  0xFAFF800000   0xFBFFF0000000000000
-Preferred-plus serialization: 0xF9FC00
-Deterministic serialization: 0xF9FC00<a href="#appendix-I.1.5-8" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-9">Description: The floating-point quiet NaN
-EDN: NaN
-General serializations:  0xF97E00  0xFA7FC00000   0xFB7FF8000000000000
-Preferred-plus serialization: 0xF97E00
-Deterministic serialization: 0xF97E00<a href="#appendix-I.1.5-9" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-10">Description: Floating-point NaN with payload 0x1ff
-EDN: — not possible —
-General serializations:   0xF97FFF  0xFA7FFF8000  0xFB7FFFFC0000000000
-Preferred-plus serialization: — not allowed --
-Deterministic serialization: — not allowed —<a href="#appendix-I.1.5-10" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-11">Description: The integer 2^96 -1, which can only be represented by a big number
-EDN: 79228162514264337593543950335
-General serializations:   0xC24CFFFFFFFFFFFFFFFFFFFFFFFF  0xC24E0000FFFFFFFFFFFFFFFFFFFFFFFF
-Preferred-plus serialization: 0xC24CFFFFFFFFFFFFFFFFFFFFFFFF
-Deterministic serialization:  0xC24CFFFFFFFFFFFFFFFFFFFFFFFF<a href="#appendix-I.1.5-11" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-12">Description: The byte string of length 3 0x010203
-EDN:  h'010203'
-General serializations: 0x43010203  0x5f4101420203ff
-Preferred-plus serialization:  0x43010203
-Deterministic serialization: 0x43010203<a href="#appendix-I.1.5-12" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-13">Description: text string “hi there"
-EDN:  “hi there”
-General serializations: 0x686869207468657265   0x7f6868692074686572650xff  0x7f64686920740x64686572650xff
-Preferred-plus serialization:  0x686869207468657265
-Deterministic serialization:  0x686869207468657265<a href="#appendix-I.1.5-13" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-14">Description: the array [1, 2, 3]
-EDN: [1,2,3]
-General serializations: 0x83010203, 0x9f010203ff
-Preferred-plus: 0x83010203
-Deterministic: 0x83010203<a href="#appendix-I.1.5-14" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.5-15">Description: map with three items. Note that map order is never significant in th data model in CBOR
-EDN:  { 1:"x", 2:"y", 3:”z"}   {1:"x", 3:”z", 2:”y”}   {2:”y", 3:”z", 1:”x”}   {2:"y", 1:"x", 3:"z"}  {3:"z", 1:"x", 2:"y"}   {3:"z", 2:"y", 1:"x"}
-General serializations: 0xa301617802617903617A  0xA301617803617A026179 0xA302617903617A016178 0xA302617901617803617A  0xA303617A016178026179  0xA303617A026179016178
-Preferred-plus:  0xa301617802617903617A  0xA301617803617A026179 0xA302617903617A016178 0xA302617901617803617A  0xA303617A016178026179  0xA303617A026179016178
-Deterministic: 0xa301617802617903617A<a href="#appendix-I.1.5-15" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-16">
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-3">
 <pre>
 {
-   "description": "map with three items. Note that map order is never significant in th data model in CBOR",
-   "edn-representations" : [ "{ 1:\"x\", 2:\"y\", 3:\"z\"}",
+   "description": "The integer 3" ,
+   "edn-representations" : ["3"] ,
+   "general-serializations": [h'03',
+                              h'1803',
+                              h'190003',
+                              h'1a00000003',
+                              h'1b00000000000003',
+                              h'c2420003'
+                              ],
+   "preferred-plus-serializations": [h'03'],
+   "deterministic-serialization": [h'03']
+}
+</pre><a href="#appendix-I.1.5-3" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-4">
+<pre>
+{
+   "description": "The integer -25",
+   "edn-representations" : ["-25"],
+   "general-serializations": [h'3818',
+                              h'390018',
+                              h'3a00000018',
+                              h'3b0000000000000018',
+                              h'c3420018'
+                              ],
+   "preferred-plus-serializations": [h'3818'],
+   "deterministic-serialization": [h'3818']
+}
+</pre><a href="#appendix-I.1.5-4" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-5">
+<pre>
+{
+   "description": "The floating-point value 1.5 (which can be reduced to half-precision)" ,
+   "edn-representations" : ["1.5"] ,
+   "general-serializations": [h'f93e00',
+                              h'FA3FC00000',
+                              h'FB3FF8000000000000'
+                              ],
+   "preferred-plus-serializations": [h'f93e00'],
+   "deterministic-serialization": [h'f93e00']
+}
+</pre><a href="#appendix-I.1.5-5" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-6">
+<pre>
+{
+   "description": "Postive Infinity",
+   "edn-representations" : ["Infinity"] ,
+   "general-serializations": [h'f97c00',
+                              h'FA7F800000',
+                              h'FB7FF0000000000000'
+                              ],
+   "preferred-plus-serializations": [h'f97c00'],
+   "deterministic-serialization": [h'f97c00']
+}
+</pre><a href="#appendix-I.1.5-6" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-7">
+<pre>
+{
+   "description": "Negative Infinity",
+   "edn-representations" : ["-Infinity"] ,
+   "general-serializations": [h'f9fc00',
+                              h'FAfF800000',
+                              h'FBfFF0000000000000'
+                              ],
+   "preferred-plus-serializations": [h'f9fc00'],
+   "deterministic-serialization": [h'f9fc00']
+}
+</pre><a href="#appendix-I.1.5-7" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-8">
+<pre>
+{
+   "description": "Floating-point quiet NaN",
+   "edn-representations" : ["NaN"] ,
+   "general-serializations": [h'F97E00',
+                              h'FA7FC00000',
+                              h'FB7FF8000000000000'
+                              ],
+   "preferred-plus-serializations": [h'F97E00'],
+   "deterministic-serialization": [h'F97E00']
+}
+</pre><a href="#appendix-I.1.5-8" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-9">
+<pre>
+{
+   "description": " Floating-point NaN with payload 0x1ff",
+   "edn-representations" : [] ,
+   "general-serializations": [h'F97FFF',
+                              h'FA7FFF8000',
+                              h'FB7FFFFC0000000000'
+                              ],
+   "preferred-plus-serializations": [h'F97FFF'],
+   "deterministic-serialization": [h'F97FFF']
+}
+</pre><a href="#appendix-I.1.5-9" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-10">
+<pre>
+{
+   "description": "The integer 2^96 -1, which can only be represented by a big number",
+   "edn-representations" : ["79228162514264337593543950335"],
+   "general-serializations": [h'C24CFFFFFFFFFFFFFFFFFFFFFFFF',
+                              h'C24E0000FFFFFFFFFFFFFFFFFFFFFFFF'
+                              ],
+   "preferred-plus-serializations": [h'C24CFFFFFFFFFFFFFFFFFFFFFFFF'],
+   "deterministic-serialization": [h'C24CFFFFFFFFFFFFFFFFFFFFFFFF']
+}
+</pre><a href="#appendix-I.1.5-10" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-11">
+<pre>
+{
+   "description": "The byte string of length 3: 0x010203",
+   "edn-representations" : ["h'010203'"],
+   "general-serializations": [h'43010203',
+                              h'5f4101420203ff'
+                              ],
+   "preferred-plus-serializations": [h'43010203'],
+   "deterministic-serialization": [h'43010203']
+}
+</pre><a href="#appendix-I.1.5-11" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-12">
+<pre>
+{
+   "description": "The text string 'hi there'",
+   "edn-representations" : ["hi there"],
+   "general-serializations": [h'686869207468657265',
+                              h'7f686869207468657265ff',
+                              h'7f64686920746468657265ff'
+                              ],
+   "preferred-plus-serializations": [h'686869207468657265'],
+   "deterministic-serialization": [h'686869207468657265']
+}
+</pre><a href="#appendix-I.1.5-12" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-13">
+<pre>
+{
+   "description": "The array [1, 2, 3]",
+   "edn-representations" : ["[1,2,3]"],
+   "general-serializations": [h'83010203',
+                              h'9f010203ff'
+                              ],
+   "preferred-plus-serializations": [h'83010203'],
+   "deterministic-serialization": [h'83010203']
+}
+</pre><a href="#appendix-I.1.5-13" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.1.5-14">
+<pre>
+{
+  "description": "Map with three items. Note that map order is never significant in th data model in CBOR",
+  "edn-representations" : [ "{ 1:\"x\", 2:\"y\", 3:\"z\"}",
                               "{1:\"x\", 3:\"z\", 2:\"y\"}",
                               "{2:\"y\", 3:\"z\", 1:\"x\"}",
                               "{2:\"y\", 1:\"x\", 3:\"z\"}",
                               "{3:\"z\", 1:\"x\", 2:\"y\"}",
                               "{3:\"z\", 2:\"y\", 1:\"x\"}"
                               ],
-   "general-serializations": [
-h'a301617802617903617A',
-h'A301617803617A026179',
-h'A302617903617A016178',
-h'A302617901617803617A',
-h'A303617A016178026179',
-h'A303617A026179016178'
-],
-   "preferred-plus-serializations": [
-h'a301617802617903617A',
-h'A301617803617A026179',
-h'A302617903617A016178',
-h'A302617901617803617A',
-h'A303617A016178026179',
-h'A303617A026179016178'
+  "general-serializations": [
+     h'a301617802617903617A',
+     h'A301617803617A026179',
+     h'A302617903617A016178',
+     h'A302617901617803617A',
+     h'A303617A016178026179',
+     h'A303617A026179016178'
   ],
-   "deterministic-serialization": [h'a301617802617903617A']
+  "preferred-plus-serializations": [
+    h'a301617802617903617A',
+    h'A301617803617A026179',
+    h'A302617903617A016178',
+    h'A302617901617803617A',
+    h'A303617A016178026179',
+    h'A303617A026179016178'
+  ],
+  "deterministic-serialization": [h'a301617802617903617A']
 }
-</pre><a href="#appendix-I.1.5-16" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.1.5-14" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
