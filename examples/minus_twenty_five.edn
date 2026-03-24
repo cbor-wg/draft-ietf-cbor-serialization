@@ -1,0 +1,12 @@
+{
+   "description": "The integer -25",
+   "edn-representations" : ["-25"],
+   "general-serializations": [h'3818',
+                              h'390018',
+                              h'3a00000018',
+                              h'3b0000000000000018',
+                              h'c3420018'
+                              ],
+   "preferred-plus-serializations": [h'3818'],
+   "deterministic-serialization": [h'3818']
+}

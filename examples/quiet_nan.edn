@@ -1,0 +1,10 @@
+{
+   "description": "Floating-point quiet NaN",
+   "edn-representations" : ["NaN"] ,
+   "general-serializations": [h'F97E00',
+                              h'FA7FC00000',
+			      h'FB7FF8000000000000'
+			      ],
+   "preferred-plus-serializations": [h'F97E00'],
+   "deterministic-serialization": [h'F97E00']
+}

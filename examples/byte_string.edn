@@ -1,0 +1,9 @@
+{
+   "description": "The byte string of length 3: 0x010203",
+   "edn-representations" : ["h'010203'"],
+   "general-serializations": [h'43010203',
+                              h'5f4101420203ff'
+			      ],
+   "preferred-plus-serializations": [h'43010203'],
+   "deterministic-serialization": [h'43010203']
+}

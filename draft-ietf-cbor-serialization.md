@@ -997,7 +997,7 @@ That said, for most use cases and for practical interoperability reasons, prefer
 This serves as an example of the general recommendations for CBOR-based protocols described in this document and summarized in TODO:Recommendations Reference.
 
 
-# Test Data
+# Examples
 
 PRELIMINARY TEXT!!
 
@@ -1086,136 +1086,62 @@ That same library may not support big numbers, so the correct result for the big
 
 
 
-### Test Data Items
+### Example Data Items
 
-This is the expected EDN form for each data item
-TODO: put each data item into a separate file for use in automated tests
+The following set of EDN items provide examples for the major data types and important variations.
+They are available as individual files at https://github.com/cbor-wg/draft-ietf-cbor-serialization.
 
 ~~~~
-{
-   "description": "The integer 0" ,
-   "edn-representations" : ["0"] ,
-   "general-serializations": [h'00',
-                              h'1800',
-			      h'190000',
-			      h'1a00000000',
-			      h'1b0000000000000000',
-			      h'C2420000',
-			      h'c240'],
-   "preferred-plus-serializations": [h'00'],
-   "deterministic-serialization": [h'00']
-}
+{::include examples/zero.edn}
 ~~~~
 
+~~~~
+{::include examples/three.edn}
+~~~~
 
-Description: The integer 0
-EDN: 0
-General serializations: 0x00 0x1800 0x190003 0x1a00000000 0x1b0000000000000000 0xC2420000 0xc240
-Preferred-plus serialization: 0x00
-Deterministic serialization: 0x00
+~~~~
+{::include examples/minus_twenty_five.edn}
+~~~~
 
-Description: The integer 3
-EDN: 3
-General serializations: 0x03 0x1803 0x190003 0x1a00000003 0x1b0000000000000003 0xC2420003
-Preferred-plus serialization: 0x03
-Deterministic serialization: 0x03
+~~~~
+{::include examples/one_point_five.edn}
+~~~~
 
-Description: The integer -25
-EDN: -25
-General serializations: 0x3818  0x390018 0x3a00000018 0x3b0000000000000018  0xC3420018
-Preferred-plus serialization: 0x03
-Deterministic serialization: 0x03
+~~~~
+{::include examples/positive_infinity.edn}
+~~~~
 
-Description: The floating-point value 1.5 (which can be reduced to half-precision)
-EDN: 1.5
-General serializations: 0xF93E00  0xFA3FC00000  0xFB3FF8000000000000
-Preferred-plus serialization:  0xF93E00
-Deterministic serialization:  0xF93E00
+~~~~
+{::include examples/negative_infinity.edn}
+~~~~
 
-Description: Positive inifinity
-EDN: Infinity
-General serializations:  0xF97C00  0xFA7F800000   0xFB7FF0000000000000
-Preferred-plus serialization: 0xF97C00
-Deterministic serialization: 0xF97C00
+~~~~
+{::include examples/quiet_nan.edn}
+~~~~
 
-Description: Negative inifinity
-EDN: -Infinity
-General serializations:  0xF9FC00  0xFAFF800000   0xFBFFF0000000000000
-Preferred-plus serialization: 0xF9FC00
-Deterministic serialization: 0xF9FC00
+~~~~
+{::include examples/nan_payload.edn}
+~~~~
 
-Description: The floating-point quiet NaN
-EDN: NaN
-General serializations:  0xF97E00  0xFA7FC00000   0xFB7FF8000000000000
-Preferred-plus serialization: 0xF97E00
-Deterministic serialization: 0xF97E00
+~~~~
+{::include examples/positive_bignum.edn}
+~~~~
 
-Description: Floating-point NaN with payload 0x1ff
-EDN: — not possible —
-General serializations:   0xF97FFF  0xFA7FFF8000  0xFB7FFFFC0000000000
-Preferred-plus serialization: — not allowed --
-Deterministic serialization: — not allowed —
+~~~~
+{::include examples/byte_string.edn}
+~~~~
 
-Description: The integer 2^96 -1, which can only be represented by a big number
-EDN: 79228162514264337593543950335
-General serializations:   0xC24CFFFFFFFFFFFFFFFFFFFFFFFF  0xC24E0000FFFFFFFFFFFFFFFFFFFFFFFF
-Preferred-plus serialization: 0xC24CFFFFFFFFFFFFFFFFFFFFFFFF
-Deterministic serialization:  0xC24CFFFFFFFFFFFFFFFFFFFFFFFF
+~~~~
+{::include examples/text_string.edn}
+~~~~
 
-Description: The byte string of length 3 0x010203
-EDN:  h'010203'
-General serializations: 0x43010203  0x5f4101420203ff
-Preferred-plus serialization:  0x43010203
-Deterministic serialization: 0x43010203
-
-Description: text string “hi there"
-EDN:  “hi there”
-General serializations: 0x686869207468657265   0x7f6868692074686572650xff  0x7f64686920740x64686572650xff
-Preferred-plus serialization:  0x686869207468657265
-Deterministic serialization:  0x686869207468657265
-
-
-Description: the array [1, 2, 3]
-EDN: [1,2,3]
-General serializations: 0x83010203, 0x9f010203ff
-Preferred-plus: 0x83010203
-Deterministic: 0x83010203
-
-Description: map with three items. Note that map order is never significant in th data model in CBOR
-EDN:  { 1:"x", 2:"y", 3:”z"}   {1:"x", 3:”z", 2:”y”}   {2:”y", 3:”z", 1:”x”}   {2:"y", 1:"x", 3:"z"}  {3:"z", 1:"x", 2:"y"}   {3:"z", 2:"y", 1:"x"}
-General serializations: 0xa301617802617903617A  0xA301617803617A026179 0xA302617903617A016178 0xA302617901617803617A  0xA303617A016178026179  0xA303617A026179016178
-Preferred-plus:  0xa301617802617903617A  0xA301617803617A026179 0xA302617903617A016178 0xA302617901617803617A  0xA303617A016178026179  0xA303617A026179016178
-Deterministic: 0xa301617802617903617A
+~~~~
+{::include examples/array.edn}
+~~~~
 
 
 ~~~~
-{
-   "description": "map with three items. Note that map order is never significant in th data model in CBOR",
-   "edn-representations" : [ "{ 1:\"x\", 2:\"y\", 3:\"z\"}",
-                              "{1:\"x\", 3:\"z\", 2:\"y\"}",
-			      "{2:\"y\", 3:\"z\", 1:\"x\"}",
-			      "{2:\"y\", 1:\"x\", 3:\"z\"}",
-			      "{3:\"z\", 1:\"x\", 2:\"y\"}",
-			      "{3:\"z\", 2:\"y\", 1:\"x\"}"
-			      ],
-   "general-serializations": [
-h'a301617802617903617A',
-h'A301617803617A026179',
-h'A302617903617A016178',
-h'A302617901617803617A',
-h'A303617A016178026179',
-h'A303617A026179016178'
-],
-   "preferred-plus-serializations": [
-h'a301617802617903617A',
-h'A301617803617A026179',
-h'A302617903617A016178',
-h'A302617901617803617A',
-h'A303617A016178026179',
-h'A303617A026179016178'
-  ],
-   "deterministic-serialization": [h'a301617802617903617A']
-}
+{::include examples/map.edn}
 ~~~~
 
 
