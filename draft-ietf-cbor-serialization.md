@@ -927,11 +927,6 @@ Similarly, a byte-string wrapping encoded CBOR can be treated as a container tha
 
 # Serialization for COSE {#COSESerialization}
 
-[^to-be-removed2]
-
-[^to-be-removed2]: This is new in the -02 draft. It aims to be a comprehensive example of some key concepts. There may not be consensus for this appendix.
-
-
 COSE {{-COSE}} is a framework protocol, not and end-end protocol.
 It has many messages types, allows many algorithms and leaves serialization open for most protocol elements.
 It does hashing and signing.
@@ -955,7 +950,7 @@ The serialization is selected by the protocol that defines the payload, not by C
 This highlights the principle that determinism is often NOT needed for signing and hashing described in {{WhenDeterministic}}.
 
 It is also worth noting that the payload is byte string wrapped.
-This is not for determinism or armoring or canonicalization.
+This is not for determinism, armoring or canonicalization.
 It is so that the payload can be any data format, including not CBOR.
 It is also so CBOR libraries can return the CBOR-encoded payload for processing by the verification algorithms
 Most CBOR libraries do not provide access to chunks of encoded CBOR in the middle of a message.
@@ -986,15 +981,17 @@ This illustrates the general need for deterministic serialization when signed da
 A COSE_Sign1 structure is an array of four elements containing, in order, two header parameter chunks, the payload, and the signature.
 The two header parameter chunks are maps that hold the various header parameters.
 COSE places no serialization requirements on these elements.
-The COSE protocol functions correctly regardless of the specific CBOR serialization used,as long as the decoder can decode what the encoder sends.
+The COSE protocol functions correctly regardless of the CBOR serialization used,as long as the decoder can decode what the encoder sends.
 
 In this respect, the serialization of this portion of a COSE message is no different from that of any other CBOR-based protocol.
-Indefinite-length items MAY be used, and fixed-length (i.e., non–shortest-length) CBOR encodings are permitted.
+Indefinite-length items may be used, and non-shortest CBOR arguments are permitted.
 The only requirement is that the encoded data be decodable by the receiver.
 
-That said, for most use cases and for practical interoperability reasons, preferred-plus serialization is a good choice for this part of the COSE_Sign1 structure.
+Strictly speaking, COSE is a framework protocol intended for incorporation into an end-to-end protocol, which should explicitly define its serialization requirements.
+See {{FrameworkProtocols}} and {{EndToEndProtocols}}.
 
-This serves as an example of the general recommendations for CBOR-based protocols described in this document and summarized in TODO:Recommendations Reference.
+In practice, some COSE libraries have implicitly implemented only the preferred (or preferred-plus) serialization, and end-to-end protocols have often defaulted to whatever behavior the underlying COSE library provides.
+While this generally works &mdash; particularly because the preferred serialization aligns with the recommendations here &mdash; it is more robust for an end-to-end protocol to state its serialization requirements explicitly.
 
 
 # Examples and Test Vectors
