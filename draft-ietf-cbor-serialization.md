@@ -951,8 +951,7 @@ It is also worth noting that the payload is a byte string wrapped.
 This is not for determinism, armoring or canonicalization.
 It is so that the payload can be any data format, including not CBOR.
 It is also so CBOR libraries can return the CBOR-encoded payload for processing by the verification algorithms.
-Most CBOR libraries do not provide access to any arbitrary chunk of encoded CBOR in the middle of a message.
-
+Most CBOR libraries decoders do not provide access to any arbitrary chunk of encoded CBOR in the middle of a message.
 This is an example of byte string wrapping described in {{ByteStringWrapping}}.
 
 ## COSE Sig_structure {#COSESigStructure}
@@ -960,12 +959,11 @@ This is an example of byte string wrapping described in {{ByteStringWrapping}}.
 The Sig_structure {{Section 4.4 of -COSE}} is used to aggregate all the items that are input to the signature algorithm &mdash; the payload, protected headers and other.
 
 The Sig_structure is not transmitted from the sender to the receiver; instead, it is constructed independently by both parties.
-Because it is the input to the signing process, it must use deterministic serialization.
 COSE therefore explicitly requires deterministic encoding so that both the sender and receiver produce identical encoded CBOR representations.
 This requirement is specified in {{Section 9 of -COSE}}.
 
-The COSE requirement is effectively equivalent to the deterministic serialization defined in {{DeterministicSerialization}}, since no NaN values are involved.
-It is also equivalent to preferred-plus serialization as defined in {{PreferredPlusSerialization}}, because the Sig_structure contains no maps.
+This COSE requirement is effectively equivalent to the deterministic serialization defined in {{DeterministicSerialization}}, since no floating-point NaNs are involved.
+It is also effectively equivalent to preferred-plus serialization as defined in {{PreferredPlusSerialization}}, because the Sig_structure contains no maps.
 
 The determinism requirement does not apply to the protected headers incorporated into the Sig_structure.
 Deterministic encoding of the headers is unnecessary because they are transmitted in the exact encoded form in which they are included in the Sig_structure.
@@ -973,19 +971,20 @@ Deterministic encoding of the headers is unnecessary because they are transmitte
 Furthermore, determinism requirements do not extend into CBOR inside of byte strings.
 Once CBOR data is wrapped in a byte string, its internal encoding is treated as opaque and is not subject to surrounding serialization constraints.
 
-This illustrates the general need for deterministic serialization when signed data is reconstructed rather than transmitted in the exact form that was signed. See {{WhenDeterministic}}.
+This illustrates the general need for deterministic serialization when signed data is reconstructed rather than transmitted in the exact form that was signed.
+See {{WhenDeterministic}}.
 
 
 ## The Encoded Message {#COSEMessage}
 
-A COSE_Sign1 structure is an array of four elements containing, in order, two header parameter chunks, the payload, and the signature.
+A COSE_Sign1 message is an array of four elements containing two header parameter chunks, the payload, and the signature.
 The two header parameter chunks are maps that hold the various header parameters.
 COSE places no serialization requirements on these elements.
 The COSE protocol functions correctly regardless of the CBOR serialization used, as long as the decoder can decode what the encoder sends.
 
-In this respect, the serialization of this portion of a COSE message is no different from that of any other CBOR-based protocol.
+In this respect, the serialization of the COSE_Sign1 message is no different from that of any other CBOR-based protocol message.
 Indefinite-length items may be used, and non-shortest CBOR arguments are permitted.
-The only requirement is that the encoded data be decodable by the receiver.
+The only requirement is that the serialization used by the encoder be decodable by the receiver.
 
 Strictly speaking, COSE is a framework protocol intended for incorporation into an end-to-end protocol, which should explicitly define its serialization requirements.
 See {{FrameworkProtocols}} and {{EndToEndProtocols}}.
