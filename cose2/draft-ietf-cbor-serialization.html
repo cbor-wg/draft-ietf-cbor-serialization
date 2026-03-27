@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 27 September 2026</td>
+<td class="center">Expires 28 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-26" class="published">26 March 2026</time>
+<time datetime="2026-03-27" class="published">27 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-27">27 September 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-28">28 September 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 27 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 28 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2594,8 +2594,8 @@ The serialization is selected by the protocol that defines the payload, not by C
 This is not for determinism, armoring or canonicalization.
 It is so that the payload can be any data format, including not CBOR.
 It is also so CBOR libraries can return the CBOR-encoded payload for processing by the verification algorithms.
-Most CBOR libraries do not provide access to any arbitrary chunk of encoded CBOR in the middle of a message.<a href="#appendix-H.1-3" class="pilcrow">¶</a></p>
-<p id="appendix-H.1-4">This is an example of byte string wrapping described in <a href="#ByteStringWrapping" class="auto internal xref">Appendix G</a>.<a href="#appendix-H.1-4" class="pilcrow">¶</a></p>
+Most CBOR libraries decoders do not provide access to any arbitrary chunk of encoded CBOR in the middle of a message.
+This is an example of byte string wrapping described in <a href="#ByteStringWrapping" class="auto internal xref">Appendix G</a>.<a href="#appendix-H.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="COSESigStructure">
@@ -2605,16 +2605,16 @@ Most CBOR libraries do not provide access to any arbitrary chunk of encoded CBOR
         </h3>
 <p id="appendix-H.2-1">The Sig_structure <span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> is used to aggregate all the items that are input to the signature algorithm — the payload, protected headers and other.<a href="#appendix-H.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-H.2-2">The Sig_structure is not transmitted from the sender to the receiver; instead, it is constructed independently by both parties.
-Because it is the input to the signing process, it must use deterministic serialization.
 COSE therefore explicitly requires deterministic encoding so that both the sender and receiver produce identical encoded CBOR representations.
 This requirement is specified in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-9" class="relref">Section 9</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.<a href="#appendix-H.2-2" class="pilcrow">¶</a></p>
-<p id="appendix-H.2-3">The COSE requirement is effectively equivalent to the deterministic serialization defined in <a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>, since no NaN values are involved.
-It is also equivalent to preferred-plus serialization as defined in <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>, because the Sig_structure contains no maps.<a href="#appendix-H.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-H.2-3">This COSE requirement is effectively equivalent to the deterministic serialization defined in <a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>, since no floating-point NaNs are involved.
+It is also effectively equivalent to preferred-plus serialization as defined in <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>, because the Sig_structure contains no maps.<a href="#appendix-H.2-3" class="pilcrow">¶</a></p>
 <p id="appendix-H.2-4">The determinism requirement does not apply to the protected headers incorporated into the Sig_structure.
 Deterministic encoding of the headers is unnecessary because they are transmitted in the exact encoded form in which they are included in the Sig_structure.<a href="#appendix-H.2-4" class="pilcrow">¶</a></p>
 <p id="appendix-H.2-5">Furthermore, determinism requirements do not extend into CBOR inside of byte strings.
 Once CBOR data is wrapped in a byte string, its internal encoding is treated as opaque and is not subject to surrounding serialization constraints.<a href="#appendix-H.2-5" class="pilcrow">¶</a></p>
-<p id="appendix-H.2-6">This illustrates the general need for deterministic serialization when signed data is reconstructed rather than transmitted in the exact form that was signed. See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a href="#appendix-H.2-6" class="pilcrow">¶</a></p>
+<p id="appendix-H.2-6">This illustrates the general need for deterministic serialization when signed data is reconstructed rather than transmitted in the exact form that was signed.
+See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a href="#appendix-H.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="COSEMessage">
@@ -2622,13 +2622,13 @@ Once CBOR data is wrapped in a byte string, its internal encoding is treated as 
         <h3 id="name-the-encoded-message">
 <a href="#appendix-H.3" class="section-number selfRef">H.3. </a><a href="#name-the-encoded-message" class="section-name selfRef">The Encoded Message</a>
         </h3>
-<p id="appendix-H.3-1">A COSE_Sign1 structure is an array of four elements containing, in order, two header parameter chunks, the payload, and the signature.
+<p id="appendix-H.3-1">A COSE_Sign1 message is an array of four elements containing two header parameter chunks, the payload, and the signature.
 The two header parameter chunks are maps that hold the various header parameters.
 COSE places no serialization requirements on these elements.
 The COSE protocol functions correctly regardless of the CBOR serialization used, as long as the decoder can decode what the encoder sends.<a href="#appendix-H.3-1" class="pilcrow">¶</a></p>
-<p id="appendix-H.3-2">In this respect, the serialization of this portion of a COSE message is no different from that of any other CBOR-based protocol.
+<p id="appendix-H.3-2">In this respect, the serialization of the COSE_Sign1 message is no different from that of any other CBOR-based protocol message.
 Indefinite-length items may be used, and non-shortest CBOR arguments are permitted.
-The only requirement is that the encoded data be decodable by the receiver.<a href="#appendix-H.3-2" class="pilcrow">¶</a></p>
+The only requirement is that the serialization used by the encoder be decodable by the receiver.<a href="#appendix-H.3-2" class="pilcrow">¶</a></p>
 <p id="appendix-H.3-3">Strictly speaking, COSE is a framework protocol intended for incorporation into an end-to-end protocol, which should explicitly define its serialization requirements.
 See <a href="#FrameworkProtocols" class="auto internal xref">Section 2.1.1</a> and <a href="#EndToEndProtocols" class="auto internal xref">Section 2.1.2</a>.<a href="#appendix-H.3-3" class="pilcrow">¶</a></p>
 <p id="appendix-H.3-4">In practice, some COSE libraries have implicitly implemented only the preferred (or preferred-plus) serialization, and end-to-end protocols have often defaulted to whatever behavior the underlying COSE library provides.
