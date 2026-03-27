@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                        28 February 2026
-Expires: 1 September 2026
+Intended status: Standards Track                           27 March 2026
+Expires: 28 September 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 September 2026.
+   This Internet-Draft will expire on 28 September 2026.
 
 Copyright Notice
 
@@ -279,7 +279,7 @@ Table of Contents
    serialize data to be hashed or signed, rather than transmitting the
    exact serialized bytes that were hashed or signed.  See Section 5.3.
 
-   See Appendix H for a COSE-based detailed example.
+   See Appendix H for a COSE-based example.
 
 2.1.2.  End-to-End Protocols
 
@@ -361,8 +361,8 @@ Table of Contents
 
    When a framework protocol mandates serialization requirements,
    libraries must of cource conform.  For instance, certain parts of
-   COSE mandate deterministic serialization.  See Appendix H for a
-   detailed COSE-based example.
+   COSE mandate deterministic serialization.  See Appendix H for a COSE-
+   based example.
 
 2.2.3.  Libraries for End-to-End Protocols
 
@@ -652,8 +652,8 @@ Table of Contents
    that employ signing or hashing to authenticate or protect the
    integrity of data.  For example, the payload of a COSE_Sign message
    (See [RFC9052]) does not need to be encoded deterministically because
-   it is transmitted along with the message.  The recipient receives the
-   exact same bytes that were signed.
+   it is transmitted with the message.  The recipient receives the exact
+   same bytes that were signed.
 
    Deterministic encoding becomes necessary only when the protected data
    is not transmitted as the exact bytes that are used for authenticity
@@ -1375,8 +1375,8 @@ Appendix G.  CBOR Byte String Wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
    control operators described in Section 8.  It also applies when prose
-   states the byte-string wrapping requirement such as for the COSE
-   protected headers.  See Appendix H.2.
+   states the byte-string wrapping requirement, such as for the COSE
+   protected headers.  See also Appendix H.1.
 
 G.1.  Purpose
 
@@ -1441,36 +1441,29 @@ G.3.  CBOR Library Implementation Suggestion
 
 Appendix H.  Serialization for COSE
 
+   This appendix highlights how the topics in this document apply to
+   CBOR Object Signing and Encryption (COSE [RFC9052]).
 
-   // This is new in the -02 draft.  It aims to be a comprehensive
-   // example of some key concepts.  There may not be consensus for this
-   // appendix.
-
-   COSE [RFC9052] is a framework protocol, not and end-end protocol.  It
-   has many messages types, allows many algorithms and leaves
-   serialization open for most protocol elements.  It does hashing and
-   signing.  It is thus a good framework protocol to make an example out
-   of.
-
-   This focuses on COSE_Sign1 (Section 4.2 of [RFC9052]) as the simplest
-   COSE structure that can illustrate several concepts described in this
-   document.  COSE_Sign1 serialization can be discussed in three parts:
+   It focuses on the COSE_Sign1 message (Section 4.2 of [RFC9052]),
+   which is sufficient for illustrating the relevant considerations.
+   COSE_Sign1 is a simple structure for signing a payload.  Its
+   serialization can be described in three parts:
 
    *  The payload
 
-   *  The Sig_structure (Section 4.4 of [RFC9052]).
+   *  The Sig_structure
 
    *  The encoded message (the header parameters and the array of four
       that is the COSE_Sign1)
 
 H.1.  COSE Payload Serialization
 
-   The payload may or may not be CBOR, but let’s assume it is, perhaps a
-   CWT or EAT.  The payload is transmitted from the signer/sender fully
-   in tact all the way to the verifier/receiver.  Because it is
-   transmitted fully in tact, CBOR is a binary protocol and
+   The signed payload may or may not be CBOR, but assume that it is,
+   perhaps a CWT or EAT.  The payload is transmitted from the signer/
+   sender fully intact all the way to the verifier/receiver.  Because it
+   is transmitted fully intact, CBOR is a binary protocol and
    intermediaries do not do things like wrap long lines or add base 64
-   encoding or such, it is not special in anyway and COSE imposes no
+   encoding or such, it is not special in any way and COSE imposes no
    serialization restrictions on it at all.  That is, it can use any
    serialization it wants.  The serialization is selected by the
    protocol that defines the payload, not by COSE.
@@ -1478,33 +1471,36 @@ H.1.  COSE Payload Serialization
    This highlights the principle that determinism is often NOT needed
    for signing and hashing described in Section 5.3.
 
-   It is also worth noting that the payload is byte string wrapped.
-   This is not for determinism or armoring or canonicalization.  It is
-   so that the payload can be any data format, including not CBOR.  It
-   is also so CBOR libraries can return the CBOR-encoded payload for
-   processing by the verification algorithms Most CBOR libraries do not
-   provide access to chunks of encoded CBOR in the middle of a message.
-
-   This is an example of byte string wrapping described in Appendix G.
+   It is also worth noting that the payload is a byte string wrapped.
+   This is not for determinism, armoring or canonicalization.  It is so
+   that the payload can be any data format, including not CBOR.  It is
+   also so CBOR libraries can return the CBOR-encoded payload for
+   processing by the verification algorithms.  Most CBOR libraries
+   decoders do not provide access to any arbitrary chunk of encoded CBOR
+   in the middle of a message.  This is an example of byte string
+   wrapping described in Appendix G.
 
 H.2.  COSE Sig_structure
 
-   The Sig_structure is not transmitted from the sender to the receiver;
-   instead, it is constructed independently by both parties.  Because it
-   is the input to the signing process, it must use deterministic
-   serialization.  COSE therefore explicitly requires deterministic
-   encoding so that both the sender and receiver produce identical
-   encoded CBOR representations.  This requirement is specified in
-   Section 9 of [RFC9052].
+   The Sig_structure Section 4.4 of [RFC9052] is used to aggregate all
+   the items that are input to the signature algorithm — the payload,
+   protected headers and other.
 
-   In this case, the COSE requirement is effectively equivalent to the
-   deterministic serialization defined in Section 5, since no NaN values
-   are involved.  It is also equivalent to preferred-plus serialization
-   as defined in Section 4, because the Sig_structure contains no maps.
+   The Sig_structure is not transmitted from the sender to the receiver;
+   instead, it is constructed independently by both parties.  COSE
+   therefore explicitly requires deterministic encoding so that both the
+   sender and receiver produce identical encoded CBOR representations.
+   This requirement is specified in Section 9 of [RFC9052].
+
+   This COSE requirement is effectively equivalent to the deterministic
+   serialization defined in Section 5, since no floating-point NaNs are
+   involved.  It is also effectively equivalent to preferred-plus
+   serialization as defined in Section 4, because the Sig_structure
+   contains no maps.
 
    The determinism requirement does not apply to the protected headers
-   incorporated into the Sig_structure.  Deterministic encoding is
-   unnecessary because these headers are transmitted in the exact
+   incorporated into the Sig_structure.  Deterministic encoding of the
+   headers is unnecessary because they are transmitted in the exact
    encoded form in which they are included in the Sig_structure.
 
    Furthermore, determinism requirements do not extend into CBOR inside
@@ -1518,27 +1514,32 @@ H.2.  COSE Sig_structure
 
 H.3.  The Encoded Message
 
-   A COSE_Sign1 structure is an array of four elements containing, in
-   order, two header parameter chunks, the payload, and the signature.
-   The two header parameter chunks are maps that hold the various header
+   A COSE_Sign1 message is an array of four elements containing two
+   header parameter chunks, the payload, and the signature.  The two
+   header parameter chunks are maps that hold the various header
    parameters.  COSE places no serialization requirements on these
    elements.  The COSE protocol functions correctly regardless of the
-   specific CBOR serialization used,as long as the decoder can decode
-   what the encoder sends.
+   CBOR serialization used, as long as the decoder can decode what the
+   encoder sends.
 
-   In this respect, the serialization of this portion of a COSE message
-   is no different from that of any other CBOR-based protocol.
-   Indefinite-length items MAY be used, and fixed-length (i.e.,
-   non–shortest-length) CBOR encodings are permitted.  The only
-   requirement is that the encoded data be decodable by the receiver.
+   In this respect, the serialization of the COSE_Sign1 message is no
+   different from that of any other CBOR-based protocol message.
+   Indefinite-length items may be used, and non-shortest CBOR arguments
+   are permitted.  The only requirement is that the serialization used
+   by the encoder be decodable by the receiver.
 
-   That said, for most use cases and for practical interoperability
-   reasons, preferred-plus serialization is a good choice for this part
-   of the COSE_Sign1 structure.
+   Strictly speaking, COSE is a framework protocol intended for
+   incorporation into an end-to-end protocol, which should explicitly
+   define its serialization requirements.  See Section 2.1.1 and
+   Section 2.1.2.
 
-   This serves as an example of the general recommendations for CBOR-
-   based protocols described in this document and summarized in
-   TODO:Recommendations Reference.
+   In practice, some COSE libraries have implicitly implemented only the
+   preferred (or preferred-plus) serialization, and end-to-end protocols
+   have often defaulted to whatever behavior the underlying COSE library
+   provides.  While this generally works — particularly because the
+   preferred serialization aligns with the recommendations here — it is
+   more robust for an end-to-end protocol to state its serialization
+   requirements explicitly.
 
 Appendix I.  Examples and Test Vectors
 
