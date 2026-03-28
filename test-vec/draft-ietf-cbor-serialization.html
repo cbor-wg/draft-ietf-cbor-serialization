@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 25 September 2026</td>
+<td class="center">Expires 29 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-24" class="published">24 March 2026</time>
+<time datetime="2026-03-28" class="published">28 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-25">25 September 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-29">29 September 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 29 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1349,13 +1349,13 @@ Together, these three form a complete set of serializations that cover the major
             <p id="section-toc.1-1.20.1"><a href="#appendix-I" class="auto internal xref">Appendix I</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.1">
-                <p id="section-toc.1-1.20.2.1.1"><a href="#appendix-I.1" class="auto internal xref">I.1</a>.  <a href="#name-test-process" class="internal xref">Test Process</a></p>
+                <p id="section-toc.1-1.20.2.1.1"><a href="#appendix-I.1" class="auto internal xref">I.1</a>.  <a href="#name-use-for-testing" class="internal xref">Use for Testing</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.1.2.1">
-                    <p id="section-toc.1-1.20.2.1.2.1.1"><a href="#appendix-I.1.1" class="auto internal xref">I.1.1</a>.  <a href="#name-encode-test" class="internal xref">Encode test</a></p>
+                    <p id="section-toc.1-1.20.2.1.2.1.1"><a href="#appendix-I.1.1" class="auto internal xref">I.1.1</a>.  <a href="#name-encode-test" class="internal xref">Encode Test</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.1.2.2">
-                    <p id="section-toc.1-1.20.2.1.2.2.1"><a href="#appendix-I.1.2" class="auto internal xref">I.1.2</a>.  <a href="#name-decode-test" class="internal xref">Decode test</a></p>
+                    <p id="section-toc.1-1.20.2.1.2.2.1"><a href="#appendix-I.1.2" class="auto internal xref">I.1.2</a>.  <a href="#name-decode-test" class="internal xref">Decode Test</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.1.2.3">
                     <p id="section-toc.1-1.20.2.1.2.3.1"><a href="#appendix-I.1.3" class="auto internal xref">I.1.3</a>.  <a href="#name-checking-decoder-test" class="internal xref">Checking Decoder Test</a></p>
@@ -1363,10 +1363,10 @@ Together, these three form a complete set of serializations that cover the major
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.1.2.4">
                     <p id="section-toc.1-1.20.2.1.2.4.1"><a href="#appendix-I.1.4" class="auto internal xref">I.1.4</a>.  <a href="#name-non-checking-decoder-test" class="internal xref">Non-Checking Decoder Test</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.1.2.5">
-                    <p id="section-toc.1-1.20.2.1.2.5.1"><a href="#appendix-I.1.5" class="auto internal xref">I.1.5</a>.  <a href="#name-example-data-items" class="internal xref">Example Data Items</a></p>
-</li>
                 </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.2">
+                <p id="section-toc.1-1.20.2.2.1"><a href="#appendix-I.2" class="auto internal xref">I.2</a>.  <a href="#name-example-data-items" class="internal xref">Example Data Items</a></p>
 </li>
             </ul>
 </li>
@@ -2481,7 +2481,7 @@ In this case, handlers for tags 2 and 3 MUST perform the required unification wi
 Some CBOR libraries may entirely omit support for tags 2 and 3.<a href="#appendix-E-7" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="serialization-checking">
+<div id="CheckingDecoder">
 <section id="appendix-F">
       <h2 id="name-serialization-checking">
 <a href="#appendix-F" class="section-number selfRef">Appendix F. </a><a href="#name-serialization-checking" class="section-name selfRef">Serialization Checking</a>
@@ -2664,61 +2664,81 @@ The only requirement is that the encoded data be decodable by the receiver.<a hr
       <h2 id="name-examples">
 <a href="#appendix-I" class="section-number selfRef">Appendix I. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
       </h2>
-<p id="appendix-I-1">PRELIMINARY TEXT!!<a href="#appendix-I-1" class="pilcrow">¶</a></p>
-<p id="appendix-I-2">The test data here is for testing both encoding and decoding the serializations defined in this document.
-It is not for testing anything other than what is described in this document, not for general CBOR testing.<a href="#appendix-I-2" class="pilcrow">¶</a></p>
-<p id="appendix-I-3">The test data is a series of data items.
-Each data item is defined using EDN <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>.
-Note that for maps there are multiple instances of EDN to describe the same map because map ordering is not significant in the CBOR data model, but for all others there is one EDN instance.
-For each data item, all the allowed encodings of it are given for each of the three serializations defined in this document.
-A textual description is also included.<a href="#appendix-I-3" class="pilcrow">¶</a></p>
-<p id="appendix-I-4">Putting this test data fully to use as described here requires specific implementation work for each CBOR library.
-In order to provide thorough and complete testing, this can't be run in a simple way.
-There is no way to simplify the test data and procedure and also get comprehensive coverage.
-In particular, the way the input to encode APIs and the output from the decode will vary by decoder library and programming environment.
-In the test data here it is expressed in EDN, but that can't be mechanically translated into API parameters, particularly because the data types expressed in EDN range fom simple integer to complex maps.
-It is likely that some CBOR libraries will not execute the full set of tests offered because of the effort involved.<a href="#appendix-I-4" class="pilcrow">¶</a></p>
-<div id="test-process">
-<section id="appendix-I.1">
-        <h3 id="name-test-process">
-<a href="#appendix-I.1" class="section-number selfRef">I.1. </a><a href="#name-test-process" class="section-name selfRef">Test Process</a>
-        </h3>
-<p id="appendix-I.1-1">The test process is outlined as follows:<a href="#appendix-I.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-I.1-2">
-<pre>
-For each data item:
-  For each serialization:
-    1) Encode test
-    2) Decode test
-    3a) Checking-decoder test
-    3b) Non-checking decoder test
-</pre><a href="#appendix-I.1-2" class="pilcrow">¶</a>
+<p id="appendix-I-1">This appendix provides examples of the serializations described in this document.
+Each example consists of a single data item.
+Collectively, the examples cover the major CBOR data types as well as several useful special cases.
+Each example includes five fields, as described in <a href="#tab-example" class="auto internal xref">Table 5</a>.<a href="#appendix-I-1" class="pilcrow">¶</a></p>
+<span id="name-example-data-item-fields"></span><div id="tab-example">
+<table class="center" id="table-5">
+        <caption>
+<a href="#table-5" class="selfRef">Table 5</a>:
+<a href="#name-example-data-item-fields" class="selfRef">Example Data Item Fields</a>
+        </caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">field</th>
+            <th class="text-left" rowspan="1" colspan="1">description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">description</td>
+            <td class="text-left" rowspan="1" colspan="1">Text describing the item</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">edn-representations</td>
+            <td class="text-left" rowspan="1" colspan="1">Unencoded value(s) for the data item</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">general-serializations</td>
+            <td class="text-left" rowspan="1" colspan="1">Encoded representation(s) for general serialization</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">preferred-plus-serializations</td>
+            <td class="text-left" rowspan="1" colspan="1">Encoded representation(s) for preferred-plus serialization</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">deterministic-serializations</td>
+            <td class="text-left" rowspan="1" colspan="1">Encoded representation for deterministic serialization</td>
+          </tr>
+        </tbody>
+      </table>
 </div>
-<p id="appendix-I.1-3">These test are oriented around the expection that CBOR libraries have modes for each of the three serializations described here.
-Some CBOR libraries may only support some of these modes.
-These modes may be selected at run time or compile time.
-It is up to each CBOR library to select and determine how they will fan out against the three serializations.<a href="#appendix-I.1-3" class="pilcrow">¶</a></p>
-<p id="appendix-I.1-4">Some CBOR libraries will implement decode checking and some will not.
-Similarly, this selection may be at run time or compile time.
-Again, what testing is performed for checking and non-checking decoders is up to each CBOR library.<a href="#appendix-I.1-4" class="pilcrow">¶</a></p>
+<div id="use-for-testing">
+<section id="appendix-I.1">
+        <h3 id="name-use-for-testing">
+<a href="#appendix-I.1" class="section-number selfRef">I.1. </a><a href="#name-use-for-testing" class="section-name selfRef">Use for Testing</a>
+        </h3>
+<p id="appendix-I.1-1">These examples are designed to support CBOR library testing, as described in the following sections.
+They are for validating the serialization rules defined in this document, not for general CBOR testing (all data items are well-formed and valid).<a href="#appendix-I.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-I.1-2">Most CBOR libraries operate on environment-specific data representations with library-specific APIs, rather than on EDN.
+As a result, the EDN representation of each data item will typically need to be transformed into the corresponding representation used by the target environment.
+For example, in the C programming language, the floating-point value 1.5 is a double, and the encoding API will likely accept an argument of that type.<a href="#appendix-I.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-I.1-3">Not all CBOR libraries support every data type represented in these examples.
+This is acceptable: tests for unsupported types may be skipped, or used to verify that an appropriate “unsupported” error is returned.<a href="#appendix-I.1-3" class="pilcrow">¶</a></p>
 <div id="encode-test">
 <section id="appendix-I.1.1">
           <h4 id="name-encode-test">
-<a href="#appendix-I.1.1" class="section-number selfRef">I.1.1. </a><a href="#name-encode-test" class="section-name selfRef">Encode test</a>
+<a href="#appendix-I.1.1" class="section-number selfRef">I.1.1. </a><a href="#name-encode-test" class="section-name selfRef">Encode Test</a>
           </h4>
-<p id="appendix-I.1.1-1">The encode test for each data item should run the encode for and see that the output is one of the included encodings.
-It can be any of of the provided encodings.<a href="#appendix-I.1.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.1-2">If a CBOR library has multiple APIs for encoding a data item, it is useful to test all of them.<a href="#appendix-I.1.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.1-1">To test encoding, invoke the encoder for each example data item.
+The input to the encoder is the EDN representation of the data item.
+Most examples have a single EDN representation, but some have multiple; in those cases, each EDN representation should be tested.<a href="#appendix-I.1.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.1-2">The encoder is expected to be configured for, or to default to, one of the three serialization types described in this document.
+A test succeeds if the encoder produces any valid encoded representation for that serialization type.<a href="#appendix-I.1.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.1-3">If an encoder supports multiple serialization modes, each mode can be tested in turn.<a href="#appendix-I.1.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="decode-test">
 <section id="appendix-I.1.2">
           <h4 id="name-decode-test">
-<a href="#appendix-I.1.2" class="section-number selfRef">I.1.2. </a><a href="#name-decode-test" class="section-name selfRef">Decode test</a>
+<a href="#appendix-I.1.2" class="section-number selfRef">I.1.2. </a><a href="#name-decode-test" class="section-name selfRef">Decode Test</a>
           </h4>
-<p id="appendix-I.1.2-1">For each encoding provided, the CBOR library decode function is run.
-The same data item described in the EDN must be the output of the decode.
-Decoding of all of the encodings provided must succeed.<a href="#appendix-I.1.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.2-1">To test decoding, invoke the decoder for each of the example data items.<a href="#appendix-I.1.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.2-2">The decoder is expected to be configured for, or to default to, one of the three serialization types described in this document.
+For each example, decoding should be attempted using all encoded representations defined for that serialization type.
+The test succeeds if the decoded result matches the value specified in the EDN representation.<a href="#appendix-I.1.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.2-3">If a decoder supports multiple serialization modes, each mode can be tested in turn.<a href="#appendix-I.1.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="checking-decoder-test">
@@ -2726,15 +2746,17 @@ Decoding of all of the encodings provided must succeed.<a href="#appendix-I.1.2-
           <h4 id="name-checking-decoder-test">
 <a href="#appendix-I.1.3" class="section-number selfRef">I.1.3. </a><a href="#name-checking-decoder-test" class="section-name selfRef">Checking Decoder Test</a>
           </h4>
-<p id="appendix-I.1.3-1">The purpose of this test is to see that the checking decoder correctly errors out.
-The correct result for all of these tests is a non-compliance error.<a href="#appendix-I.1.3-1" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.3-2">The three serializations are progressively more constrained.
-The provided encodings for the serializations above it should thus be rejected by a checking decoder.
-For example, a preferred-plus checking decoder must reject indefinite lengths which are allowed in general serialization.<a href="#appendix-I.1.3-2" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.3-3">The test proceeds by inputting all encoding provided by the less-restrictive encodings of the data item and seeing a confirming a check failure.
-For example a test of a preferred-plus checking decoder will be performed by inputing all of the general serializations for that data item.
-The encodings allowed for preferred-plus are excluded.<a href="#appendix-I.1.3-3" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.3-4">Many CBOR libraries will not provide a checking mode and thus should not use this test.<a href="#appendix-I.1.3-4" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.3-1">Checking decoders are described in <a href="#CheckingDecoder" class="auto internal xref">Appendix F</a>.<a href="#appendix-I.1.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.3-2">The purpose of this test is to verify that a checking decoder correctly rejects non-conforming encodings for a given serialization type.
+This test applies only to CBOR libraries that support serialization conformance checking.<a href="#appendix-I.1.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.3-3">There is no notion of a checking decoder for general serialization, since such a decoder must, by definition, accept all valid serialization forms.
+(It should still reject not-well-formed or invalid CBOR, but such cases are out of scope for this document and these examples.)<a href="#appendix-I.1.3-3" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.3-4">To test a preferred-plus checking decoder, invoke the decoder for each example data item.
+The inputs should be the encoded representations permitted by general serialization, excluding those allowed under preferred-plus.
+Each invocation is expected to result in a conformance error.<a href="#appendix-I.1.3-4" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.3-5">Similarly, to test a deterministic checking decoder, invoke it for each example data item.
+The inputs should include representations permitted by both general and preferred-plus serialization, excluding those allowed under deterministic serialization.
+Each invocation is expected to result in a conformance error.<a href="#appendix-I.1.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="non-checking-decoder-test">
@@ -2742,25 +2764,33 @@ The encodings allowed for preferred-plus are excluded.<a href="#appendix-I.1.3-3
           <h4 id="name-non-checking-decoder-test">
 <a href="#appendix-I.1.4" class="section-number selfRef">I.1.4. </a><a href="#name-non-checking-decoder-test" class="section-name selfRef">Non-Checking Decoder Test</a>
           </h4>
-<p id="appendix-I.1.4-1">Many CBOR libraries will be able to decode forms beyond the particular serialization.
-For example, it is common for a preferred-plus decoder to accept non-shortest length arguments.
-For a non-checking decoder there are no limits to this, particularly because a general serialization decoder can (and must) be able to decode deterministic serialization.
-So, the results of this test are highly dependent on what a particularly library has choosen to support.
-It is beyond the scope of this text to describe the possible successes and failures that is the correct result for all possible libraries.
-When implementing this test each test case must be evaluated against the libraries claimed decode features.<a href="#appendix-I.1.4-1" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.4-2">For example, most CBOR libraries in preferred-plus mode will correctly decode a CBOR argument of any length.
-The correct results for all the lengths of the encoding of the integer 0.
-That same library may not support big numbers, so the correct result for the big number encodings of 0 is failure.<a href="#appendix-I.1.4-2" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.4-1">A non-checking decoder may accept encodings beyond the constraints of the specific serialization type it nominally supports.
+For example, a preferred-plus decoder will often accept non-shortest-length arguments, even though such encodings are not permitted under preferred-plus.
+These examples can be used to test such extended decoding.<a href="#appendix-I.1.4-1" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.4-2">Testing proceeds similarly to that for a checking decoder, in that inputs outside the target serialization type are provided to the decoder.
+The difference is that, for a non-checking decoder, many of these inputs may successfully decode rather than producing a conformance error.
+When decoding does fail, the expected error is typically “unsupported.”<a href="#appendix-I.1.4-2" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.4-3">Which data item types are accepted and which are rejected as unsupported is highly dependent on the specific CBOR library and the additional capabilities it implements and thus not specified here.<a href="#appendix-I.1.4-3" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.4-4">Note the following:<a href="#appendix-I.1.4-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-I.1.4-5.1">
+              <p id="appendix-I.1.4-5.1.1">It is common for preferred-plus and deterministic decoders to accept non-shortest-length arguments.<a href="#appendix-I.1.4-5.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-I.1.4-5.2">
+              <p id="appendix-I.1.4-5.2.1">If the floating-point data type is supported, all serialization types described in this document require support for decoding half-precision values.<a href="#appendix-I.1.4-5.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
 </section>
 </div>
 <div id="example-data-items">
-<section id="appendix-I.1.5">
-          <h4 id="name-example-data-items">
-<a href="#appendix-I.1.5" class="section-number selfRef">I.1.5. </a><a href="#name-example-data-items" class="section-name selfRef">Example Data Items</a>
-          </h4>
-<p id="appendix-I.1.5-1">The following set of EDN items provide examples for the major data types and important variations.
-They are available as individual files at https://github.com/cbor-wg/draft-ietf-cbor-serialization.<a href="#appendix-I.1.5-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-2">
+<section id="appendix-I.2">
+        <h3 id="name-example-data-items">
+<a href="#appendix-I.2" class="section-number selfRef">I.2. </a><a href="#name-example-data-items" class="section-name selfRef">Example Data Items</a>
+        </h3>
+<p id="appendix-I.2-1">These are available as individual files at https://github.com/cbor-wg/draft-ietf-cbor-serialization.<a href="#appendix-I.2-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-2">
 <pre>
 {
    "description": "The integer 0" ,
@@ -2770,14 +2800,14 @@ They are available as individual files at https://github.com/cbor-wg/draft-ietf-
                               h'190000',
                               h'1a00000000',
                               h'1b0000000000000000',
-                              h'C2420000',
+                              h'c2420000',
                               h'c240'],
    "preferred-plus-serializations": [h'00'],
    "deterministic-serialization": [h'00']
 }
-</pre><a href="#appendix-I.1.5-2" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-2" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-3">
+<div class="alignLeft art-text artwork" id="appendix-I.2-3">
 <pre>
 {
    "description": "The integer 3" ,
@@ -2787,14 +2817,13 @@ They are available as individual files at https://github.com/cbor-wg/draft-ietf-
                               h'190003',
                               h'1a00000003',
                               h'1b00000000000003',
-                              h'c2420003'
-                              ],
+                              h'c2420003' ],
    "preferred-plus-serializations": [h'03'],
    "deterministic-serialization": [h'03']
 }
-</pre><a href="#appendix-I.1.5-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-3" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-4">
+<div class="alignLeft art-text artwork" id="appendix-I.2-4">
 <pre>
 {
    "description": "The integer -25",
@@ -2803,168 +2832,154 @@ They are available as individual files at https://github.com/cbor-wg/draft-ietf-
                               h'390018',
                               h'3a00000018',
                               h'3b0000000000000018',
-                              h'c3420018'
-                              ],
+                              h'c3420018' ],
    "preferred-plus-serializations": [h'3818'],
    "deterministic-serialization": [h'3818']
 }
-</pre><a href="#appendix-I.1.5-4" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-4" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-5">
+<div class="alignLeft art-text artwork" id="appendix-I.2-5">
 <pre>
 {
    "description": "The floating-point value 1.5 (which can be reduced to half-precision)" ,
    "edn-representations" : ["1.5"] ,
    "general-serializations": [h'f93e00',
-                              h'FA3FC00000',
-                              h'FB3FF8000000000000'
-                              ],
+                              h'fafc000000',
+                              h'fb3ff8000000000000' ],
    "preferred-plus-serializations": [h'f93e00'],
    "deterministic-serialization": [h'f93e00']
 }
-</pre><a href="#appendix-I.1.5-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-5" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-6">
+<div class="alignLeft art-text artwork" id="appendix-I.2-6">
 <pre>
 {
    "description": "Postive Infinity",
    "edn-representations" : ["Infinity"] ,
    "general-serializations": [h'f97c00',
-                              h'FA7F800000',
-                              h'FB7FF0000000000000'
-                              ],
+                              h'fa7f800000',
+                              h'fb7ff0000000000000' ],
    "preferred-plus-serializations": [h'f97c00'],
    "deterministic-serialization": [h'f97c00']
 }
-</pre><a href="#appendix-I.1.5-6" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-6" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-7">
+<div class="alignLeft art-text artwork" id="appendix-I.2-7">
 <pre>
 {
    "description": "Negative Infinity",
    "edn-representations" : ["-Infinity"] ,
    "general-serializations": [h'f9fc00',
-                              h'FAfF800000',
-                              h'FBfFF0000000000000'
-                              ],
+                              h'faff800000',
+                              h'fbfff0000000000000' ],
    "preferred-plus-serializations": [h'f9fc00'],
    "deterministic-serialization": [h'f9fc00']
 }
-</pre><a href="#appendix-I.1.5-7" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-7" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-8">
+<div class="alignLeft art-text artwork" id="appendix-I.2-8">
 <pre>
 {
    "description": "Floating-point quiet NaN",
    "edn-representations" : ["NaN"] ,
-   "general-serializations": [h'F97E00',
-                              h'FA7FC00000',
-                              h'FB7FF8000000000000'
-                              ],
-   "preferred-plus-serializations": [h'F97E00'],
-   "deterministic-serialization": [h'F97E00']
+   "general-serializations": [h'f97e00',
+                              h'fa7fc00000',
+                              h'fb7ff8000000000000' ],
+   "preferred-plus-serializations": [h'f97e00'],
+   "deterministic-serialization": [h'f97e00']
 }
-</pre><a href="#appendix-I.1.5-8" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-8" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-9">
-<pre>
-{
-   "description": " Floating-point NaN with payload 0x1ff",
-   "edn-representations" : [] ,
-   "general-serializations": [h'F97FFF',
-                              h'FA7FFF8000',
-                              h'FB7FFFFC0000000000'
-                              ],
-   "preferred-plus-serializations": [h'F97FFF'],
-   "deterministic-serialization": [h'F97FFF']
-}
-</pre><a href="#appendix-I.1.5-9" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-10">
+<div class="alignLeft art-text artwork" id="appendix-I.2-9">
 <pre>
 {
    "description": "The integer 2^96 -1, which can only be represented by a big number",
    "edn-representations" : ["79228162514264337593543950335"],
-   "general-serializations": [h'C24CFFFFFFFFFFFFFFFFFFFFFFFF',
-                              h'C24E0000FFFFFFFFFFFFFFFFFFFFFFFF'
-                              ],
-   "preferred-plus-serializations": [h'C24CFFFFFFFFFFFFFFFFFFFFFFFF'],
-   "deterministic-serialization": [h'C24CFFFFFFFFFFFFFFFFFFFFFFFF']
+   "general-serializations": [h'c24cffffffffffffffffffffffff',
+                              h'c24e0000ffffffffffffffffffffffff' ],
+   "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
+   "deterministic-serialization":   [h'c24cffffffffffffffffffffffff']
 }
-</pre><a href="#appendix-I.1.5-10" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-9" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-11">
+<div class="alignLeft art-text artwork" id="appendix-I.2-10">
 <pre>
 {
    "description": "The byte string of length 3: 0x010203",
    "edn-representations" : ["h'010203'"],
    "general-serializations": [h'43010203',
-                              h'5f4101420203ff'
-                              ],
+                              h'5f4101420203ff' ],
    "preferred-plus-serializations": [h'43010203'],
    "deterministic-serialization": [h'43010203']
 }
-</pre><a href="#appendix-I.1.5-11" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-10" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-12">
+<div class="alignLeft art-text artwork" id="appendix-I.2-11">
 <pre>
 {
    "description": "The text string 'hi there'",
-   "edn-representations" : ["hi there"],
+   "edn-representations" : ["\"hi there\""],
    "general-serializations": [h'686869207468657265',
                               h'7f686869207468657265ff',
-                              h'7f64686920746468657265ff'
-                              ],
+                              h'7f64686920746468657265ff' ],
    "preferred-plus-serializations": [h'686869207468657265'],
    "deterministic-serialization": [h'686869207468657265']
 }
-</pre><a href="#appendix-I.1.5-12" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-11" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-13">
+<div class="alignLeft art-text artwork" id="appendix-I.2-12">
 <pre>
 {
    "description": "The array [1, 2, 3]",
-   "edn-representations" : ["[1,2,3]"],
+   "edn-representations" : ["[1, 2, 3]"],
    "general-serializations": [h'83010203',
-                              h'9f010203ff'
-                              ],
+                              h'9f010203ff' ],
    "preferred-plus-serializations": [h'83010203'],
    "deterministic-serialization": [h'83010203']
 }
-</pre><a href="#appendix-I.1.5-13" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-12" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.1.5-14">
+<div class="alignLeft art-text artwork" id="appendix-I.2-13">
 <pre>
 {
   "description": "Map with three items. Note that map order is never significant in th data model in CBOR",
   "edn-representations" : [ "{ 1:\"x\", 2:\"y\", 3:\"z\"}",
-                              "{1:\"x\", 3:\"z\", 2:\"y\"}",
-                              "{2:\"y\", 3:\"z\", 1:\"x\"}",
-                              "{2:\"y\", 1:\"x\", 3:\"z\"}",
-                              "{3:\"z\", 1:\"x\", 2:\"y\"}",
-                              "{3:\"z\", 2:\"y\", 1:\"x\"}"
-                              ],
-  "general-serializations": [
-     h'a301617802617903617A',
-     h'A301617803617A026179',
-     h'A302617903617A016178',
-     h'A302617901617803617A',
-     h'A303617A016178026179',
-     h'A303617A026179016178'
-  ],
-  "preferred-plus-serializations": [
-    h'a301617802617903617A',
-    h'A301617803617A026179',
-    h'A302617903617A016178',
-    h'A302617901617803617A',
-    h'A303617A016178026179',
-    h'A303617A026179016178'
-  ],
-  "deterministic-serialization": [h'a301617802617903617A']
+                            "{1:\"x\", 3:\"z\", 2:\"y\"}",
+                            "{2:\"y\", 3:\"z\", 1:\"x\"}",
+                            "{2:\"y\", 1:\"x\", 3:\"z\"}",
+                            "{3:\"z\", 1:\"x\", 2:\"y\"}",
+                            "{3:\"z\", 2:\"y\", 1:\"x\"}" ],
+  "general-serializations": [ h'a301617802617903617a',
+                              h'a301617803617a026179',
+                              h'a302617903617a016178',
+                              h'a302617901617803617a',
+                              h'a303617a016178026179',
+                              h'a303617a026179016178'  ],
+  "preferred-plus-serializations": [ h'a301617802617903617a',
+                                     h'a301617803617a026179',
+                                     h'a302617903617a016178',
+                                     h'a302617901617803617a',
+                                     h'a303617a016178026179',
+                                     h'a303617a026179016178' ],
+  "deterministic-serialization": [h'a301617802617903617a']
 }
-</pre><a href="#appendix-I.1.5-14" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-13" class="pilcrow">¶</a>
 </div>
-</section>
+<p id="appendix-I.2-14">The NaN payload is a special case.
+For preferred-plus and deterministic serialization, the decode should fail.
+For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.<a href="#appendix-I.2-14" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-15">
+<pre>
+{
+   "description": " Floating-point NaN with payload 0x1ff",
+   "edn-representations" : [] ,
+   "general-serializations": [h'f97fff',
+                              h'f7fff80000',
+                              h'fb7ffffc0000000000' ],
+   "preferred-plus-serializations": [h'f97fff'],
+   "deterministic-serialization": [h'f97fff']
+}
+</pre><a href="#appendix-I.2-15" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
