@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                           27 March 2026
-Expires: 28 September 2026
+Intended status: Standards Track                           28 March 2026
+Expires: 29 September 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 September 2026.
+   This Internet-Draft will expire on 29 September 2026.
 
 Copyright Notice
 
@@ -128,7 +128,13 @@ Table of Contents
      H.1.  COSE Payload Serialization
      H.2.  COSE Sig_structure
      H.3.  The Encoded Message
-   Appendix I.  Examples and Test Vectors
+   Appendix I.  Examples
+     I.1.  Use for Testing
+       I.1.1.  Encode Test
+       I.1.2.  Decode Test
+       I.1.3.  Checking Decoder Test
+       I.1.4.  Non-Checking Decoder Test
+     I.2.  Example Data Items
    Contributors
    Author's Address
 
@@ -948,8 +954,7 @@ Appendix B.  General Protocol Considerations for Determinism
    This is the section that covers what is know as ALDR in some
    discussions.
 
-
-   // RFC Editor: Please remove above sentence before publication
+   [^rfced] Please remove above sentence before publication
 
    In addition to Section 5, there are considerations in the design of
    any deterministic protocol.
@@ -1541,9 +1546,298 @@ H.3.  The Encoded Message
    more robust for an end-to-end protocol to state its serialization
    requirements explicitly.
 
-Appendix I.  Examples and Test Vectors
+Appendix I.  Examples
 
-   TODO -- complete work and remove this comment before publication
+   This appendix provides examples of the serializations described in
+   this document.  Each example consists of a single data item.
+   Collectively, the examples cover the major CBOR data types as well as
+   several useful special cases.  Each example includes five fields, as
+   described in Table 5.
+
+     +===============================+===============================+
+     | field                         | description                   |
+     +===============================+===============================+
+     | description                   | Text describing the item      |
+     +-------------------------------+-------------------------------+
+     | edn-representations           | Unencoded value(s) for the    |
+     |                               | data item                     |
+     +-------------------------------+-------------------------------+
+     | general-serializations        | Encoded representation(s) for |
+     |                               | general serialization         |
+     +-------------------------------+-------------------------------+
+     | preferred-plus-serializations | Encoded representation(s) for |
+     |                               | preferred-plus serialization  |
+     +-------------------------------+-------------------------------+
+     | deterministic-serializations  | Encoded representation for    |
+     |                               | deterministic serialization   |
+     +-------------------------------+-------------------------------+
+
+                     Table 5: Example Data Item Fields
+
+I.1.  Use for Testing
+
+   These examples are designed to support CBOR library testing, as
+   described in the following sections.  They are for validating the
+   serialization rules defined in this document, not for general CBOR
+   testing (all data items are well-formed and valid).
+
+   Most CBOR libraries operate on environment-specific data
+   representations with library-specific APIs, rather than on EDN.  As a
+   result, the EDN representation of each data item will typically need
+   to be transformed into the corresponding representation used by the
+   target environment.  For example, in the C programming language, the
+   floating-point value 1.5 is a double, and the encoding API will
+   likely accept an argument of that type.
+
+   Not all CBOR libraries support every data type represented in these
+   examples.  This is acceptable: tests for unsupported types may be
+   skipped, or used to verify that an appropriate “unsupported” error is
+   returned.
+
+I.1.1.  Encode Test
+
+   To test encoding, invoke the encoder for each example data item.  The
+   input to the encoder is the EDN representation of the data item.
+   Most examples have a single EDN representation, but some have
+   multiple; in those cases, each EDN representation should be tested.
+
+   The encoder is expected to be configured for, or to default to, one
+   of the three serialization types described in this document.  A test
+   succeeds if the encoder produces any valid encoded representation for
+   that serialization type.
+
+   If an encoder supports multiple serialization modes, each mode can be
+   tested in turn.
+
+I.1.2.  Decode Test
+
+   To test decoding, invoke the decoder for each of the example data
+   items.
+
+   The decoder is expected to be configured for, or to default to, one
+   of the three serialization types described in this document.  For
+   each example, decoding should be attempted using all encoded
+   representations defined for that serialization type.  The test
+   succeeds if the decoded result matches the value specified in the EDN
+   representation.
+
+   If a decoder supports multiple serialization modes, each mode can be
+   tested in turn.
+
+I.1.3.  Checking Decoder Test
+
+   Checking decoders are described in Appendix F.
+
+   The purpose of this test is to verify that a checking decoder
+   correctly rejects non-conforming encodings for a given serialization
+   type.  This test applies only to CBOR libraries that support
+   serialization conformance checking.
+
+   There is no notion of a checking decoder for general serialization,
+   since such a decoder must, by definition, accept all valid
+   serialization forms.  (It should still reject not-well-formed or
+   invalid CBOR, but such cases are out of scope for this document and
+   these examples.)
+
+   To test a preferred-plus checking decoder, invoke the decoder for
+   each example data item.  The inputs should be the encoded
+   representations permitted by general serialization, excluding those
+   allowed under preferred-plus.  Each invocation is expected to result
+   in a conformance error.
+
+   Similarly, to test a deterministic checking decoder, invoke it for
+   each example data item.  The inputs should include representations
+   permitted by both general and preferred-plus serialization, excluding
+   those allowed under deterministic serialization.  Each invocation is
+   expected to result in a conformance error.
+
+I.1.4.  Non-Checking Decoder Test
+
+   A non-checking decoder may accept encodings beyond the constraints of
+   the specific serialization type it nominally supports.  For example,
+   a preferred-plus decoder will often accept non-shortest-length
+   arguments, even though such encodings are not permitted under
+   preferred-plus.  These examples can be used to test such extended
+   decoding.
+
+   Testing proceeds similarly to that for a checking decoder, in that
+   inputs outside the target serialization type are provided to the
+   decoder.  The difference is that, for a non-checking decoder, many of
+   these inputs may successfully decode rather than producing a
+   conformance error.  When decoding does fail, the expected error is
+   typically “unsupported.”
+
+   Which data item types are accepted and which are rejected as
+   unsupported is highly dependent on the specific CBOR library and the
+   additional capabilities it implements and thus not specified here.
+
+   Note the following:
+
+   *  It is common for preferred-plus and deterministic decoders to
+      accept non-shortest-length arguments.
+
+   *  If the floating-point data type is supported, all serialization
+      types described in this document require support for decoding
+      half-precision values.
+
+I.2.  Example Data Items
+
+   These are available as individual files at https://github.com/cbor-
+   wg/draft-ietf-cbor-serialization.
+
+   {
+      "description": "The integer 0" ,
+      "edn-representations" : ["0"] ,
+      "general-serializations": [h'00',
+                                 h'1800',
+                                 h'190000',
+                                 h'1a00000000',
+                                 h'1b0000000000000000',
+                                 h'c2420000',
+                                 h'c240'],
+      "preferred-plus-serializations": [h'00'],
+      "deterministic-serialization": [h'00']
+   }
+
+   {
+      "description": "The integer 3" ,
+      "edn-representations" : ["3"] ,
+      "general-serializations": [h'03',
+                                 h'1803',
+                                 h'190003',
+                                 h'1a00000003',
+                                 h'1b00000000000003',
+                                 h'c2420003' ],
+      "preferred-plus-serializations": [h'03'],
+      "deterministic-serialization": [h'03']
+   }
+
+   {
+      "description": "The integer -25",
+      "edn-representations" : ["-25"],
+      "general-serializations": [h'3818',
+                                 h'390018',
+                                 h'3a00000018',
+                                 h'3b0000000000000018',
+                                 h'c3420018' ],
+      "preferred-plus-serializations": [h'3818'],
+      "deterministic-serialization": [h'3818']
+   }
+
+{
+   "description": "The floating-point value 1.5 (which can be reduced to half-precision)" ,
+   "edn-representations" : ["1.5"] ,
+   "general-serializations": [h'f93e00',
+                              h'fafc000000',
+                              h'fb3ff8000000000000' ],
+   "preferred-plus-serializations": [h'f93e00'],
+   "deterministic-serialization": [h'f93e00']
+}
+
+   {
+      "description": "Postive Infinity",
+      "edn-representations" : ["Infinity"] ,
+      "general-serializations": [h'f97c00',
+                                 h'fa7f800000',
+                                 h'fb7ff0000000000000' ],
+      "preferred-plus-serializations": [h'f97c00'],
+      "deterministic-serialization": [h'f97c00']
+   }
+
+   {
+      "description": "Negative Infinity",
+      "edn-representations" : ["-Infinity"] ,
+      "general-serializations": [h'f9fc00',
+                                 h'faff800000',
+                                 h'fbfff0000000000000' ],
+      "preferred-plus-serializations": [h'f9fc00'],
+      "deterministic-serialization": [h'f9fc00']
+   }
+
+   {
+      "description": "Floating-point quiet NaN",
+      "edn-representations" : ["NaN"] ,
+      "general-serializations": [h'f97e00',
+                                 h'fa7fc00000',
+                                 h'fb7ff8000000000000' ],
+      "preferred-plus-serializations": [h'f97e00'],
+      "deterministic-serialization": [h'f97e00']
+   }
+
+{
+   "description": "The integer 2^96 -1, which can only be represented by a big number",
+   "edn-representations" : ["79228162514264337593543950335"],
+   "general-serializations": [h'c24cffffffffffffffffffffffff',
+                              h'c24e0000ffffffffffffffffffffffff' ],
+   "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
+   "deterministic-serialization":   [h'c24cffffffffffffffffffffffff']
+}
+
+   {
+      "description": "The byte string of length 3: 0x010203",
+      "edn-representations" : ["h'010203'"],
+      "general-serializations": [h'43010203',
+                                 h'5f4101420203ff' ],
+      "preferred-plus-serializations": [h'43010203'],
+      "deterministic-serialization": [h'43010203']
+   }
+
+   {
+      "description": "The text string 'hi there'",
+      "edn-representations" : ["\"hi there\""],
+      "general-serializations": [h'686869207468657265',
+                                 h'7f686869207468657265ff',
+                                 h'7f64686920746468657265ff' ],
+      "preferred-plus-serializations": [h'686869207468657265'],
+      "deterministic-serialization": [h'686869207468657265']
+   }
+
+   {
+      "description": "The array [1, 2, 3]",
+      "edn-representations" : ["[1, 2, 3]"],
+      "general-serializations": [h'83010203',
+                                 h'9f010203ff' ],
+      "preferred-plus-serializations": [h'83010203'],
+      "deterministic-serialization": [h'83010203']
+   }
+
+{
+  "description": "Map with three items. Note that map order is never significant in th data model in CBOR",
+  "edn-representations" : [ "{ 1:\"x\", 2:\"y\", 3:\"z\"}",
+                            "{1:\"x\", 3:\"z\", 2:\"y\"}",
+                            "{2:\"y\", 3:\"z\", 1:\"x\"}",
+                            "{2:\"y\", 1:\"x\", 3:\"z\"}",
+                            "{3:\"z\", 1:\"x\", 2:\"y\"}",
+                            "{3:\"z\", 2:\"y\", 1:\"x\"}" ],
+  "general-serializations": [ h'a301617802617903617a',
+                              h'a301617803617a026179',
+                              h'a302617903617a016178',
+                              h'a302617901617803617a',
+                              h'a303617a016178026179',
+                              h'a303617a026179016178'  ],
+  "preferred-plus-serializations": [ h'a301617802617903617a',
+                                     h'a301617803617a026179',
+                                     h'a302617903617a016178',
+                                     h'a302617901617803617a',
+                                     h'a303617a016178026179',
+                                     h'a303617a026179016178' ],
+  "deterministic-serialization": [h'a301617802617903617a']
+}
+
+   The NaN payload is a special case.  For preferred-plus and
+   deterministic serialization, the decode should fail.  For general
+   serialization a NaN with a payload should be returned, but there is
+   no EDN representation for that.
+
+   {
+      "description": " Floating-point NaN with payload 0x1ff",
+      "edn-representations" : [] ,
+      "general-serializations": [h'f97fff',
+                                 h'f7fff80000',
+                                 h'fb7ffffc0000000000' ],
+      "preferred-plus-serializations": [h'f97fff'],
+      "deterministic-serialization": [h'f97fff']
+   }
 
 Contributors
 
