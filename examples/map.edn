@@ -1,5 +1,5 @@
 {
-  "description": "Map with three items. Note that map order is never significant in th data model in CBOR",
+  "description": "Map with three items. Note that map order is never significant in the data model in CBOR",
   "edn-representations" : [ "{ 1:\"x\", 2:\"y\", 3:\"z\"}",
                             "{1:\"x\", 3:\"z\", 2:\"y\"}",
 			    "{2:\"y\", 3:\"z\", 1:\"x\"}",

@@ -1,5 +1,5 @@
 {
-   "description": "Postive Infinity",
+   "description": "Positive Infinity",
    "edn-representations" : ["Infinity"] ,
    "general-serializations": [h'f97c00',
                               h'fa7f800000',
