@@ -1,0 +1,13 @@
+{
+   "description": "The integer 0" ,
+   "edn-representations" : ["0"] ,
+   "general-serializations": [h'00',
+                              h'1800',
+			      h'190000',
+			      h'1a00000000',
+			      h'1b0000000000000000',
+			      h'c2420000',
+			      h'c240'],
+   "preferred-plus-serializations": [h'00'],
+   "deterministic-serialization": [h'00']
+}

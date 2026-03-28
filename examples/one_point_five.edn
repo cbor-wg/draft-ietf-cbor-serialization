@@ -1,0 +1,9 @@
+{
+   "description": "The floating-point value 1.5 (which can be reduced to half-precision)" ,
+   "edn-representations" : ["1.5"] ,
+   "general-serializations": [h'f93e00',
+                              h'fafc000000',
+			      h'fb3ff8000000000000' ],
+   "preferred-plus-serializations": [h'f93e00'],
+   "deterministic-serialization": [h'f93e00']
+}

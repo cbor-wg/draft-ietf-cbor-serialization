@@ -847,7 +847,7 @@ Finally, note that big numbers are not a widely used feature of CBOR.
 Some CBOR libraries may entirely omit support for tags 2 and 3.
 
 
-# Serialization Checking
+# Serialization Checking {#CheckingDecoder}
 
 Serialization checking rejects input which, while well-formed CBOR, does not conform to a particular serialization rule set it is enforcing.
 For example, a decoder checking for deterministic serialization will error out if map keys are not in the required sorted order.
@@ -993,11 +993,154 @@ In practice, some COSE libraries have implicitly implemented only the preferred 
 While this generally works &mdash; particularly because the preferred serialization aligns with the recommendations here &mdash; it is more robust for an end-to-end protocol to state its serialization requirements explicitly.
 
 
-# Examples and Test Vectors
+# Examples
 
-TODO -- complete work and remove this comment before publication
+This appendix provides examples of the serializations described in this document.
+Each example consists of a single data item.
+Collectively, the examples cover the major CBOR data types as well as several useful special cases.
+Each example includes five fields, as described in {{tab-example}}.
+
+| field | description |
+|-|-|
+| description| Text describing the item |
+| edn-representations | Unencoded value(s) for the data item |
+| general-serializations | Encoded representation(s) for general serialization |
+| preferred-plus-serializations | Encoded representation(s) for preferred-plus serialization  |
+| deterministic-serializations | Encoded representation for deterministic serialization |
+{: #tab-example title="Example Data Item Fields"}
 
 
+## Use for Testing
+
+These examples are designed to support CBOR library testing, as described in the following sections.
+They are for validating the serialization rules defined in this document, not for general CBOR testing (all data items are well-formed and valid).
+
+Most CBOR libraries operate on environment-specific data representations with library-specific APIs, rather than on EDN.
+As a result, the EDN representation of each data item will typically need to be transformed into the corresponding representation used by the target environment.
+For example, in the C programming language, the floating-point value 1.5 is a double, and the encoding API will likely accept an argument of that type.
+
+Not all CBOR libraries support every data type represented in these examples.
+This is acceptable: tests for unsupported types may be skipped, or used to verify that an appropriate “unsupported” error is returned.
 
 
-[^rfced]: RFC Editor:
+### Encode Test
+
+To test encoding, invoke the encoder for each example data item.
+The input to the encoder is the EDN representation of the data item.
+Most examples have a single EDN representation, but some have multiple; in those cases, each EDN representation should be tested.
+
+The encoder is expected to be configured for, or to default to, one of the three serialization types described in this document.
+A test succeeds if the encoder produces any valid encoded representation for that serialization type.
+
+If an encoder supports multiple serialization modes, each mode can be tested in turn.
+
+
+### Decode Test
+
+To test decoding, invoke the decoder for each of the example data items.
+
+The decoder is expected to be configured for, or to default to, one of the three serialization types described in this document.
+For each example, decoding should be attempted using all encoded representations defined for that serialization type.
+The test succeeds if the decoded result matches the value specified in the EDN representation.
+
+If a decoder supports multiple serialization modes, each mode can be tested in turn.
+
+
+### Checking Decoder Test
+
+Checking decoders are described in {{CheckingDecoder}}.
+
+The purpose of this test is to verify that a checking decoder correctly rejects non-conforming encodings for a given serialization type.
+This test applies only to CBOR libraries that support serialization conformance checking.
+
+There is no notion of a checking decoder for general serialization, since such a decoder must, by definition, accept all valid serialization forms.
+(It should still reject not-well-formed or invalid CBOR, but such cases are out of scope for this document and these examples.)
+
+To test a preferred-plus checking decoder, invoke the decoder for each example data item.
+The inputs should be the encoded representations permitted by general serialization, excluding those allowed under preferred-plus.
+Each invocation is expected to result in a conformance error.
+
+Similarly, to test a deterministic checking decoder, invoke it for each example data item.
+The inputs should include representations permitted by both general and preferred-plus serialization, excluding those allowed under deterministic serialization.
+Each invocation is expected to result in a conformance error.
+
+
+### Non-Checking Decoder Test
+
+A non-checking decoder may accept encodings beyond the constraints of the specific serialization type it nominally supports.
+For example, a preferred-plus decoder will often accept non-shortest-length arguments, even though such encodings are not permitted under preferred-plus.
+These examples can be used to test such extended decoding.
+
+Testing proceeds similarly to that for a checking decoder, in that inputs outside the target serialization type are provided to the decoder.
+The difference is that, for a non-checking decoder, many of these inputs may successfully decode rather than producing a conformance error.
+When decoding does fail, the expected error is typically “unsupported.”
+
+Which data item types are accepted and which are rejected as unsupported is highly dependent on the specific CBOR library and the additional capabilities it implements and thus not specified here.
+
+Note the following:
+
+- It is common for preferred-plus and deterministic decoders to accept non-shortest-length arguments.
+- If the floating-point data type is supported, all serialization types described in this document require support for decoding half-precision values.
+
+
+## Example Data Items
+
+These are available as individual files at https://github.com/cbor-wg/draft-ietf-cbor-serialization.
+
+~~~~
+{::include examples/zero.edn}
+~~~~
+
+~~~~
+{::include examples/three.edn}
+~~~~
+
+~~~~
+{::include examples/minus_twenty_five.edn}
+~~~~
+
+~~~~
+{::include examples/one_point_five.edn}
+~~~~
+
+~~~~
+{::include examples/positive_infinity.edn}
+~~~~
+
+~~~~
+{::include examples/negative_infinity.edn}
+~~~~
+
+~~~~
+{::include examples/quiet_nan.edn}
+~~~~
+
+~~~~
+{::include examples/positive_bignum.edn}
+~~~~
+
+~~~~
+{::include examples/byte_string.edn}
+~~~~
+
+~~~~
+{::include examples/text_string.edn}
+~~~~
+
+~~~~
+{::include examples/array.edn}
+~~~~
+
+~~~~
+{::include examples/map.edn}
+~~~~
+
+The NaN payload is a special case.
+For preferred-plus and deterministic serialization, the decode should fail.
+For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.
+
+~~~~
+{::include examples/nan_payload.edn}
+~~~~
+
+

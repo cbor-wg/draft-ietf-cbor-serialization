@@ -1,0 +1,9 @@
+{
+   "description": " Floating-point NaN with payload 0x1ff",
+   "edn-representations" : [] ,
+   "general-serializations": [h'f97fff',
+                              h'f7fff80000',
+			      h'fb7ffffc0000000000' ],
+   "preferred-plus-serializations": [h'f97fff'],
+   "deterministic-serialization": [h'f97fff']
+}
