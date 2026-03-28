@@ -2,9 +2,8 @@
    "description": "Postive Infinity",
    "edn-representations" : ["Infinity"] ,
    "general-serializations": [h'f97c00',
-                              h'FA7F800000',
-			      h'FB7FF0000000000000'
-			      ],
+                              h'fa7f800000',
+			      h'fb7ff0000000000000' ],
    "preferred-plus-serializations": [h'f97c00'],
    "deterministic-serialization": [h'f97c00']
 }

@@ -1,10 +1,9 @@
 {
    "description": "The text string 'hi there'",
-   "edn-representations" : ["hi there"],
+   "edn-representations" : ["\"hi there\""],
    "general-serializations": [h'686869207468657265',
                               h'7f686869207468657265ff',
-                              h'7f64686920746468657265ff'
-			      ],
+                              h'7f64686920746468657265ff' ],
    "preferred-plus-serializations": [h'686869207468657265'],
    "deterministic-serialization": [h'686869207468657265']
 }

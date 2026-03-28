@@ -1,9 +1,8 @@
 {
    "description": "The array [1, 2, 3]",
-   "edn-representations" : ["[1,2,3]"],
+   "edn-representations" : ["[1, 2, 3]"],
    "general-serializations": [h'83010203',
-                              h'9f010203ff'
-			      ],
+                              h'9f010203ff' ],
    "preferred-plus-serializations": [h'83010203'],
    "deterministic-serialization": [h'83010203']
 }
