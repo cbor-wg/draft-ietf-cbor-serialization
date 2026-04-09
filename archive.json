@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-29T02:27:41.755117+00:00",
+  "timestamp": "2026-04-09T02:13:28.058235+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -2778,7 +2778,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-03-28T22:33:45Z",
-      "updatedAt": "2026-03-28T22:33:45Z",
+      "updatedAt": "2026-04-07T17:38:32Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "85e59c98563c18015174d87c91f6c64d82fc8f42",
@@ -2790,7 +2790,28 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c7ymTTw",
+          "commit": {
+            "abbreviatedOid": "ecf8ec4"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2026-04-07T17:38:11Z",
+          "updatedAt": "2026-04-07T17:38:32Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Please restore this to the original empty set. This notation for float values is not published or in any drafts that are to be published.",
+              "createdAt": "2026-04-07T17:38:11Z",
+              "updatedAt": "2026-04-07T17:38:32Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
