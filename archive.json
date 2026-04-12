@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-04-09T02:13:28.058235+00:00",
+  "timestamp": "2026-04-12T02:34:29.222993+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -2523,7 +2523,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-03-03T17:15:11Z",
-      "updatedAt": "2026-03-16T04:17:54Z",
+      "updatedAt": "2026-04-09T17:58:14Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "e9f27bf2c3a75549898c6cbe7bf6042a771699a4",
@@ -2705,6 +2705,26 @@
               "body": "Please indicate what the terms \"sometimes\" and \"often\" mean for you.\r\nThe sentence is constructed in a way to imply that these two decisions (implement PS in the encoder, do not support indefinite length in the decoder) are somehow related; they are not.\r\n",
               "createdAt": "2026-03-16T04:01:24Z",
               "updatedAt": "2026-03-16T04:19:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c7zcxef",
+          "commit": {
+            "abbreviatedOid": "8f732f6"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-04-09T17:58:14Z",
+          "updatedAt": "2026-04-09T17:58:14Z",
+          "comments": [
+            {
+              "originalPosition": 79,
+              "body": "The point of the paragraph is that there is large enough base of use cases to make preferred-plus highly worthwhile. I think it's important to minimize text for readability. The point of the paragraph is made without this detail.\r\n\r\nImplementors in constrained environments will be able to figure out that they can use preferred-plus.",
+              "createdAt": "2026-04-09T17:58:14Z",
+              "updatedAt": "2026-04-09T17:58:14Z"
             }
           ]
         }
