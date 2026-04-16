@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-04-12T02:34:29.222993+00:00",
+  "timestamp": "2026-04-16T02:38:22.049218+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -2832,6 +2832,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 56,
+      "id": "PR_kwDOQYX63c7Sz27x",
+      "title": "Expand map examples",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/56",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-04-15T23:39:47Z",
+      "updatedAt": "2026-04-15T23:39:47Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "85e59c98563c18015174d87c91f6c64d82fc8f42",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "more_map_examples",
+      "headRefOid": "e0dd62a25fad9f526647ed00112940302e378a2e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
