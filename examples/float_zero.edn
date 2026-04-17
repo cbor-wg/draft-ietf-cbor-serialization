@@ -1,0 +1,9 @@
+{
+   "description": "Floating-point positive zero",
+   "edn-representations" : ["0.0"] ,
+   "general-serializations": [h'f90000',
+                              h'fa00000000',
+			      h'fb0000000000000000' ],
+   "preferred-plus-serializations": [h'f90000'],
+   "deterministic-serialization": [h'f90000']
+}

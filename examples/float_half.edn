@@ -1,0 +1,10 @@
+{
+   "description": "half-precision normal float" ,
+   "edn-representations" : ["65504.0"] ,
+   "general-serializations": [h'fb40effc0000000000',
+                              h'fa477fe000',
+                              h'f97bff' ],
+   "preferred-plus-serializations": [h'f97bff'],
+   "deterministic-serialization": [h'f97bff']
+}
+
