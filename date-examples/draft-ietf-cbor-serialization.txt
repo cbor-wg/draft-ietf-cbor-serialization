@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                           19 April 2026
-Expires: 21 October 2026
+Intended status: Standards Track                           20 April 2026
+Expires: 22 October 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 October 2026.
+   This Internet-Draft will expire on 22 October 2026.
 
 Copyright Notice
 
@@ -1725,24 +1725,63 @@ I.2.  Example Data Items
    }
 
 {
-   "description": "The floating-point value 1.5 (which can be reduced to half-precision)" ,
-   "edn-representations" : ["1.5"] ,
-   "general-serializations": [h'f93e00',
-                              h'fafc000000',
-                              h'fb3ff8000000000000' ],
-   "preferred-plus-serializations": [h'f93e00'],
-   "deterministic-serialization": [h'f93e00']
+   "description": "Large negative integer that doesn't fit in a typical 64-bit signed type" ,
+   "edn-representations" : ["-18446742974197923840"] ,
+   "general-serializations": [h'3bfffffeffffffffff'],
+   "preferred-plus-serializations": [h'3bfffffeffffffffff'],
+   "deterministic-serialization": [h'3bfffffeffffffffff']
 }
 
    {
-      "description": "Postive Infinity",
-      "edn-representations" : ["Infinity"] ,
-      "general-serializations": [h'f97c00',
-                                 h'fa7f800000',
-                                 h'fb7ff0000000000000' ],
-      "preferred-plus-serializations": [h'f97c00'],
-      "deterministic-serialization": [h'f97c00']
+      "description": "Double-precision negative subnormal float",
+      "edn-representations": ["-5.0e-324"],
+      "general-serializations": [h'fb8000000000000001' ],
+      "preferred-plus-serializations": [h'fb8000000000000001' ],
+      "deterministic-serialization": [h'fb8000000000000001']
    }
+
+   {
+      "description": "Double-precision normal float" ,
+      "edn-representations" : ["1.7976931348623157e+308"] ,
+      "general-serializations": [h'fb7fefffffffffffff'],
+      "preferred-plus-serializations": [h'fb7fefffffffffffff'],
+      "deterministic-serialization": [h'fb7fefffffffffffff']
+   }
+
+   {
+      "description": "Half-precision subnormal float" ,
+      "edn-representations" : ["3.0517578125E-5"] ,
+      "general-serializations": [h'fb3f00000000000000',
+                                 h'fa38000000',
+                                 h'f90200' ],
+      "preferred-plus-serializations": [h'f90200'],
+      "deterministic-serialization": [h'f90200']
+   }
+
+   {
+      "description": "half-precision normal float" ,
+      "edn-representations" : ["65504.0"] ,
+      "general-serializations": [h'fb40effc0000000000',
+                                 h'fa477fe000',
+                                 h'f97bff' ],
+      "preferred-plus-serializations": [h'f97bff'],
+      "deterministic-serialization": [h'f97bff']
+   }
+
+   The NaN payload is a special case.  For preferred-plus and
+   deterministic serialization, the decode should fail.  For general
+   serialization a NaN with a payload should be returned, but there is
+   no EDN representation for that.
+
+ {
+    "description": " Floating-point NaN with payload/significand 0x1ff",
+    "edn-representations" : [] ,
+    "general-serializations": [h'f97dff',
+                               h'fa7fbfe000',
+                               h'fb7ff7fc0000000000' ],
+    "preferred-plus-serializations": [],
+    "deterministic-serialization": []
+ }
 
    {
       "description": "Negative Infinity",
@@ -1762,6 +1801,40 @@ I.2.  Example Data Items
                                  h'fb7ff8000000000000' ],
       "preferred-plus-serializations": [h'f97e00'],
       "deterministic-serialization": [h'f97e00']
+   }
+
+   {
+      "description": "Single-precision subnormal float" ,
+      "edn-representations" : ["5.8774717541114375E-39"] ,
+      "general-serializations": [h'fb3800000000000000',
+                                 h'fa00400000' ],
+      "preferred-plus-serializations": [h'fa00400000'],
+      "deterministic-serialization": [h'fa00400000']
+   }
+
+   {
+      "description": "Single-precision normal float" ,
+      "edn-representations" : ["-16777216.0"] ,
+      "general-serializations": [h'fbc170000000000000',
+                                 h'facb800000'],
+      "preferred-plus-serializations": [h'facb800000'],
+      "deterministic-serialization": [h'facb800000']
+   }
+
+   {
+      "description": "The simple value 'true'" ,
+      "edn-representations" : ["true"] ,
+      "general-serializations": [h'f5'],
+      "preferred-plus-serializations": [h'f5'],
+      "deterministic-serialization": [h'f5']
+   }
+
+   {
+      "description": "The simple value 111" ,
+      "edn-representations" : ["simple(111)"] ,
+      "general-serializations": [h'f86f'],
+      "preferred-plus-serializations": [h'f86f'],
+      "deterministic-serialization": [h'f86f']
    }
 
 {
@@ -1824,20 +1897,32 @@ I.2.  Example Data Items
   "deterministic-serialization": [h'a301617802617903617a']
 }
 
-   The NaN payload is a special case.  For preferred-plus and
-   deterministic serialization, the decode should fail.  For general
-   serialization a NaN with a payload should be returned, but there is
-   no EDN representation for that.
-
    {
-      "description": " Floating-point NaN with payload 0x1ff",
-      "edn-representations" : [] ,
-      "general-serializations": [h'f97fff',
-                                 h'f7fff80000',
-                                 h'fb7ffffc0000000000' ],
-      "preferred-plus-serializations": [h'f97fff'],
-      "deterministic-serialization": [h'f97fff']
+      "description": "An epoch date" ,
+      "edn-representations" : ["1(1776614355)"] ,
+      "general-serializations": [h'c11a69e4fbd3',
+                                 h'd8011a69e4fbd3',
+                                 h'd900011a69e4fbd3',
+                                 h'da000000011a69e4fbd3',
+                                 h'db00000000000000011a69e4fbd3',
+                                 h'c11b0000000069e4fbd3'],
+      "preferred-plus-serializations": [h'c11a69e4fbd3'],
+      "deterministic-serialization":   [h'c11a69e4fbd3']
    }
+
+{
+   "description": "A date string" ,
+   "edn-representations" : ["0(\"2026-04-19T03:59:15Z\")"] ,
+   "general-serializations": [h'c074323032362d30342d31395430333a35393a31355a',
+                             h'd80074323032362d30342d31395430333a35393a31355a',
+                             h'd9000074323032362d30342d31395430333a35393a31355a',
+                             h'da0000000074323032362d30342d31395430333a35393a31355a',
+                             h'db000000000000000074323032362d30342d31395430333a35393a31355a',
+                             h'c07f74323032362d30342d31395430333a35393a31355aff',
+                             h'c07f6232307232362d30342d31395430333a35393a31355aff'],
+   "preferred-plus-serializations": [h'c074323032362d30342d31395430333a35393a31355a'],
+   "deterministic-serialization":   [h'c074323032362d30342d31395430333a35393a31355a']
+}
 
 Contributors
 
