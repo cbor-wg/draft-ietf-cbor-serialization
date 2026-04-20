@@ -1,5 +1,5 @@
 {
-   "description": "The simple value true" ,
+   "description": "The simple value 'true'" ,
    "edn-representations" : ["true"] ,
    "general-serializations": [h'f5'],
    "preferred-plus-serializations": [h'f5'],
