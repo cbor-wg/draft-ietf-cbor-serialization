@@ -1100,6 +1100,11 @@ These are available as individual files at https://github.com/cbor-wg/draft-ietf
 ~~~~
 
 ~~~~
+{::include examples/65_bit_neg.edn}
+~~~~
+
+
+~~~~
 {::include examples/one_point_five.edn}
 ~~~~
 
@@ -1113,6 +1118,14 @@ These are available as individual files at https://github.com/cbor-wg/draft-ietf
 
 ~~~~
 {::include examples/quiet_nan.edn}
+~~~~
+
+~~~~
+{::include examples/true.edn}
+~~~~
+
+~~~~
+{::include examples/simple111.edn}
 ~~~~
 
 ~~~~

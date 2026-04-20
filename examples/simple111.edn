@@ -1,0 +1,7 @@
+{
+   "description": "The simple value 111" ,
+   "edn-representations" : ["simple(111)"] ,
+   "general-serializations": [h'f86f'],
+   "preferred-plus-serializations": [h'f86f'],
+   "deterministic-serialization": [h'f86f']
+}
