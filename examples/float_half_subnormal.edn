@@ -1,0 +1,9 @@
+{
+   "description": "Half-precision subnormal float" ,
+   "edn-representations" : ["3.0517578125E-5"] ,
+   "general-serializations": [h'fb3f00000000000000',
+                              h'fa38000000',
+                              h'f90200' ],
+   "preferred-plus-serializations": [h'f90200'],
+   "deterministic-serialization": [h'f90200']
+}

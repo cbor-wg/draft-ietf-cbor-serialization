@@ -1,0 +1,8 @@
+{
+   "description": "Single-precision normal float" ,
+   "edn-representations" : ["-16777216.0"] ,
+   "general-serializations": [h'fbc170000000000000',
+                              h'facb800000'],
+   "preferred-plus-serializations": [h'facb800000'],
+   "deterministic-serialization": [h'facb800000']
+}
