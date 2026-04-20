@@ -1103,21 +1103,44 @@ These are available as individual files at https://github.com/cbor-wg/draft-ietf
 {::include examples/65_bit_neg.edn}
 ~~~~
 
-
 ~~~~
-{::include examples/one_point_five.edn}
-~~~~
-
-~~~~
-{::include examples/positive_infinity.edn}
+{::include examples/float_double_subnormal.edn}
 ~~~~
 
 ~~~~
-{::include examples/negative_infinity.edn}
+{::include examples/float_double.edn}
 ~~~~
 
 ~~~~
-{::include examples/quiet_nan.edn}
+{::include examples/float_half_subnormal.edn}
+~~~~
+
+~~~~
+{::include examples/float_half.edn}
+~~~~
+
+The NaN payload is a special case.
+For preferred-plus and deterministic serialization, the decode should fail.
+For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.
+
+~~~~
+{::include examples/float_nan_payload.edn}
+~~~~
+
+~~~~
+{::include examples/float_neg_infinity.edn}
+~~~~
+
+~~~~
+{::include examples/float_quiet_nan.edn}
+~~~~
+
+~~~~
+{::include examples/float_single_subnormal.edn}
+~~~~
+
+~~~~
+{::include examples/float_single.edn}
 ~~~~
 
 ~~~~
@@ -1148,12 +1171,6 @@ These are available as individual files at https://github.com/cbor-wg/draft-ietf
 {::include examples/map.edn}
 ~~~~
 
-The NaN payload is a special case.
-For preferred-plus and deterministic serialization, the decode should fail.
-For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.
 
-~~~~
-{::include examples/nan_payload.edn}
-~~~~
 
 
