@@ -2852,30 +2852,69 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
 <div class="alignLeft art-text artwork" id="appendix-I.2-6">
 <pre>
 {
-   "description": "The floating-point value 1.5 (which can be reduced to half-precision)" ,
-   "edn-representations" : ["1.5"] ,
-   "general-serializations": [h'f93e00',
-                              h'fafc000000',
-                              h'fb3ff8000000000000' ],
-   "preferred-plus-serializations": [h'f93e00'],
-   "deterministic-serialization": [h'f93e00']
+   "description": "Double-precision negative subnormal float",
+   "edn-representations": ["-5.0e-324"],
+   "general-serializations": [h'fb8000000000000001' ],
+   "preferred-plus-serializations": [h'fb8000000000000001' ],
+   "deterministic-serialization": [h'fb8000000000000001']
 }
 </pre><a href="#appendix-I.2-6" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-text artwork" id="appendix-I.2-7">
 <pre>
 {
-   "description": "Postive Infinity",
-   "edn-representations" : ["Infinity"] ,
-   "general-serializations": [h'f97c00',
-                              h'fa7f800000',
-                              h'fb7ff0000000000000' ],
-   "preferred-plus-serializations": [h'f97c00'],
-   "deterministic-serialization": [h'f97c00']
+   "description": "Double-precision normal float" ,
+   "edn-representations" : ["1.7976931348623157e+308"] ,
+   "general-serializations": [h'fb7fefffffffffffff'],
+   "preferred-plus-serializations": [h'fb7fefffffffffffff'],
+   "deterministic-serialization": [h'fb7fefffffffffffff']
 }
 </pre><a href="#appendix-I.2-7" class="pilcrow">¶</a>
 </div>
 <div class="alignLeft art-text artwork" id="appendix-I.2-8">
+<pre>
+{
+   "description": "Half-precision subnormal float" ,
+   "edn-representations" : ["3.0517578125E-5"] ,
+   "general-serializations": [h'fb3f00000000000000',
+                              h'fa38000000',
+                              h'f90200' ],
+   "preferred-plus-serializations": [h'f90200'],
+   "deterministic-serialization": [h'f90200']
+}
+</pre><a href="#appendix-I.2-8" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.2-9">
+<pre>
+{
+   "description": "half-precision normal float" ,
+   "edn-representations" : ["65504.0"] ,
+   "general-serializations": [h'fb40effc0000000000',
+                              h'fa477fe000',
+                              h'f97bff' ],
+   "preferred-plus-serializations": [h'f97bff'],
+   "deterministic-serialization": [h'f97bff']
+}
+
+</pre><a href="#appendix-I.2-9" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-10">The NaN payload is a special case.
+For preferred-plus and deterministic serialization, the decode should fail.
+For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.<a href="#appendix-I.2-10" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-11">
+<pre>
+{
+   "description": " Floating-point NaN with payload/significand 0x1ff",
+   "edn-representations" : [] ,
+   "general-serializations": [h'f97dff',
+                              h'fa7fbfe000',
+                              h'fb7ff7fc0000000000' ],
+   "preferred-plus-serializations": [],
+   "deterministic-serialization": []
+}
+</pre><a href="#appendix-I.2-11" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.2-12">
 <pre>
 {
    "description": "Negative Infinity",
@@ -2886,9 +2925,9 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'f9fc00'],
    "deterministic-serialization": [h'f9fc00']
 }
-</pre><a href="#appendix-I.2-8" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-12" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-9">
+<div class="alignLeft art-text artwork" id="appendix-I.2-13">
 <pre>
 {
    "description": "Floating-point quiet NaN",
@@ -2899,9 +2938,33 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'f97e00'],
    "deterministic-serialization": [h'f97e00']
 }
-</pre><a href="#appendix-I.2-9" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-13" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-10">
+<div class="alignLeft art-text artwork" id="appendix-I.2-14">
+<pre>
+{
+   "description": "Single-precision subnormal float" ,
+   "edn-representations" : ["5.8774717541114375E-39"] ,
+   "general-serializations": [h'fb3800000000000000',
+                              h'fa00400000' ],
+   "preferred-plus-serializations": [h'fa00400000'],
+   "deterministic-serialization": [h'fa00400000']
+}
+</pre><a href="#appendix-I.2-14" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.2-15">
+<pre>
+{
+   "description": "Single-precision normal float" ,
+   "edn-representations" : ["-16777216.0"] ,
+   "general-serializations": [h'fbc170000000000000',
+                              h'facb800000'],
+   "preferred-plus-serializations": [h'facb800000'],
+   "deterministic-serialization": [h'facb800000']
+}
+</pre><a href="#appendix-I.2-15" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.2-16">
 <pre>
 {
    "description": "The simple value 'true'" ,
@@ -2910,9 +2973,9 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'f5'],
    "deterministic-serialization": [h'f5']
 }
-</pre><a href="#appendix-I.2-10" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-16" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-11">
+<div class="alignLeft art-text artwork" id="appendix-I.2-17">
 <pre>
 {
    "description": "The simple value 111" ,
@@ -2921,9 +2984,9 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'f86f'],
    "deterministic-serialization": [h'f86f']
 }
-</pre><a href="#appendix-I.2-11" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-17" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-12">
+<div class="alignLeft art-text artwork" id="appendix-I.2-18">
 <pre>
 {
    "description": "The integer 2^96 -1, which can only be represented by a big number",
@@ -2933,9 +2996,9 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
    "deterministic-serialization":   [h'c24cffffffffffffffffffffffff']
 }
-</pre><a href="#appendix-I.2-12" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-18" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-13">
+<div class="alignLeft art-text artwork" id="appendix-I.2-19">
 <pre>
 {
    "description": "The byte string of length 3: 0x010203",
@@ -2945,9 +3008,9 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'43010203'],
    "deterministic-serialization": [h'43010203']
 }
-</pre><a href="#appendix-I.2-13" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-19" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-14">
+<div class="alignLeft art-text artwork" id="appendix-I.2-20">
 <pre>
 {
    "description": "The text string 'hi there'",
@@ -2958,9 +3021,9 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'686869207468657265'],
    "deterministic-serialization": [h'686869207468657265']
 }
-</pre><a href="#appendix-I.2-14" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-20" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-15">
+<div class="alignLeft art-text artwork" id="appendix-I.2-21">
 <pre>
 {
    "description": "The array [1, 2, 3]",
@@ -2970,9 +3033,9 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'83010203'],
    "deterministic-serialization": [h'83010203']
 }
-</pre><a href="#appendix-I.2-15" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-21" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-16">
+<div class="alignLeft art-text artwork" id="appendix-I.2-22">
 <pre>
 {
   "description": "Map with three items. Note that map order is never significant in th data model in CBOR",
@@ -2996,23 +3059,7 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
                                      h'a303617a026179016178' ],
   "deterministic-serialization": [h'a301617802617903617a']
 }
-</pre><a href="#appendix-I.2-16" class="pilcrow">¶</a>
-</div>
-<p id="appendix-I.2-17">The NaN payload is a special case.
-For preferred-plus and deterministic serialization, the decode should fail.
-For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.<a href="#appendix-I.2-17" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-I.2-18">
-<pre>
-{
-   "description": " Floating-point NaN with payload 0x1ff",
-   "edn-representations" : [] ,
-   "general-serializations": [h'f97fff',
-                              h'f7fff80000',
-                              h'fb7ffffc0000000000' ],
-   "preferred-plus-serializations": [h'f97fff'],
-   "deterministic-serialization": [h'f97fff']
-}
-</pre><a href="#appendix-I.2-18" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-22" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
