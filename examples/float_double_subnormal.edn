@@ -1,0 +1,7 @@
+{
+   "description": "Double-precision negative subnormal float",
+   "edn-representations": ["-5.0e-324"],
+   "general-serializations": [h'fb8000000000000001' ],
+   "preferred-plus-serializations": [h'fb8000000000000001' ],
+   "deterministic-serialization": [h'fb8000000000000001']
+}
