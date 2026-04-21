@@ -1104,6 +1104,10 @@ These are available as individual files at https://github.com/cbor-wg/draft-ietf
 ~~~~
 
 ~~~~
+{::include examples/float_zero.edn}
+~~~~
+
+~~~~
 {::include examples/float_double_subnormal.edn}
 ~~~~
 
@@ -1169,6 +1173,10 @@ For general serialization a NaN with a payload should be returned, but there is 
 
 ~~~~
 {::include examples/map.edn}
+~~~~
+
+~~~~
+{::include examples/map_strings.edn}
 ~~~~
 
 ~~~~
