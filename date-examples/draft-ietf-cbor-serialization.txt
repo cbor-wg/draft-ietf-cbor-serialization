@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                           20 April 2026
-Expires: 22 October 2026
+Intended status: Standards Track                           21 April 2026
+Expires: 23 October 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 October 2026.
+   This Internet-Draft will expire on 23 October 2026.
 
 Copyright Notice
 
@@ -1898,7 +1898,7 @@ I.2.  Example Data Items
 }
 
    {
-      "description": "An epoch date" ,
+      "description": "An epoch date tag" ,
       "edn-representations" : ["1(1776614355)"] ,
       "general-serializations": [h'c11a69e4fbd3',
                                  h'd8011a69e4fbd3',
@@ -1911,15 +1911,15 @@ I.2.  Example Data Items
    }
 
 {
-   "description": "A date string" ,
+   "description": "A date string tag" ,
    "edn-representations" : ["0(\"2026-04-19T03:59:15Z\")"] ,
    "general-serializations": [h'c074323032362d30342d31395430333a35393a31355a',
-                             h'd80074323032362d30342d31395430333a35393a31355a',
-                             h'd9000074323032362d30342d31395430333a35393a31355a',
-                             h'da0000000074323032362d30342d31395430333a35393a31355a',
-                             h'db000000000000000074323032362d30342d31395430333a35393a31355a',
-                             h'c07f74323032362d30342d31395430333a35393a31355aff',
-                             h'c07f6232307232362d30342d31395430333a35393a31355aff'],
+                              h'd80074323032362d30342d31395430333a35393a31355a',
+                              h'd9000074323032362d30342d31395430333a35393a31355a',
+                              h'da0000000074323032362d30342d31395430333a35393a31355a',
+                              h'db000000000000000074323032362d30342d31395430333a35393a31355a',
+                              h'c07f74323032362d30342d31395430333a35393a31355aff',
+                              h'c07f6232307232362d30342d31395430333a35393a31355aff'],
    "preferred-plus-serializations": [h'c074323032362d30342d31395430333a35393a31355a'],
    "deterministic-serialization":   [h'c074323032362d30342d31395430333a35393a31355a']
 }
