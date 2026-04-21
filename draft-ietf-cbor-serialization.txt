@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                           20 April 2026
-Expires: 22 October 2026
+Intended status: Standards Track                           21 April 2026
+Expires: 23 October 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 October 2026.
+   This Internet-Draft will expire on 23 October 2026.
 
 Copyright Notice
 
@@ -1850,20 +1850,22 @@ I.2.  Example Data Items
       "description": "The byte string of length 3: 0x010203",
       "edn-representations" : ["h'010203'"],
       "general-serializations": [h'43010203',
-                                 h'5f4101420203ff' ],
+                                 h'5f4101420203ff',
+                                 h'5f5801015a000000020203ff'],
       "preferred-plus-serializations": [h'43010203'],
       "deterministic-serialization": [h'43010203']
    }
 
-   {
-      "description": "The text string 'hi there'",
-      "edn-representations" : ["\"hi there\""],
-      "general-serializations": [h'686869207468657265',
-                                 h'7f686869207468657265ff',
-                                 h'7f64686920746468657265ff' ],
-      "preferred-plus-serializations": [h'686869207468657265'],
-      "deterministic-serialization": [h'686869207468657265']
-   }
+{
+   "description": "The text string 'hi there'",
+   "edn-representations" : ["\"hi there\""],
+   "general-serializations": [h'686869207468657265',
+                              h'7f686869207468657265ff',
+                              h'7f64686920746468657265ff',
+                              h'7f790004686920747B000000000000000468657265ff'],
+   "preferred-plus-serializations": [h'686869207468657265'],
+   "deterministic-serialization": [h'686869207468657265']
+}
 
    {
       "description": "The array [1, 2, 3]",
