@@ -1878,7 +1878,7 @@ I.2.  Example Data Items
 
 {
   "description": "Map with three items. Note that map order is never significant in th data model in CBOR",
-  "edn-representations" : [ "{ 1:\"x\", 2:\"y\", 3:\"z\"}",
+  "edn-representations" : [ "{1:\"x\", 2:\"y\", 3:\"z\"}",
                             "{1:\"x\", 3:\"z\", 2:\"y\"}",
                             "{2:\"y\", 3:\"z\", 1:\"x\"}",
                             "{2:\"y\", 1:\"x\", 3:\"z\"}",
@@ -1889,7 +1889,9 @@ I.2.  Example Data Items
                               h'a302617903617a016178',
                               h'a302617901617803617a',
                               h'a303617a016178026179',
-                              h'a303617a026179016178'  ],
+                              h'a303617a026179016178',
+                              h'bf03617a026179016178ff',
+                              h'a31a00000003617a19000261791B00000000000000016178' ],
   "preferred-plus-serializations": [ h'a301617802617903617a',
                                      h'a301617803617a026179',
                                      h'a302617903617a016178',
