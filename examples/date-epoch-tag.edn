@@ -1,5 +1,5 @@
 {
-   "description": "An epoch date" ,
+   "description": "An epoch date tag" ,
    "edn-representations" : ["1(1776614355)"] ,
    "general-serializations": [h'c11a69e4fbd3',
                               h'd8011a69e4fbd3',
