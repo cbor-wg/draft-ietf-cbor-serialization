@@ -2816,7 +2816,7 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
                               h'1803',
                               h'190003',
                               h'1a00000003',
-                              h'1b00000000000003',
+                              h'1b0000000000000003',
                               h'c2420003' ],
    "preferred-plus-serializations": [h'03'],
    "deterministic-serialization": [h'03']
@@ -2852,15 +2852,28 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
 <div class="alignLeft art-text artwork" id="appendix-I.2-6">
 <pre>
 {
+   "description": "Floating-point positive zero",
+   "edn-representations" : ["0.0"] ,
+   "general-serializations": [h'f90000',
+                              h'fa00000000',
+                              h'fb0000000000000000' ],
+   "preferred-plus-serializations": [h'f90000'],
+   "deterministic-serialization": [h'f90000']
+}
+</pre><a href="#appendix-I.2-6" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.2-7">
+<pre>
+{
    "description": "Double-precision negative subnormal float",
    "edn-representations": ["-5.0e-324"],
    "general-serializations": [h'fb8000000000000001' ],
    "preferred-plus-serializations": [h'fb8000000000000001' ],
    "deterministic-serialization": [h'fb8000000000000001']
 }
-</pre><a href="#appendix-I.2-6" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-7" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-7">
+<div class="alignLeft art-text artwork" id="appendix-I.2-8">
 <pre>
 {
    "description": "Double-precision normal float" ,
@@ -2869,9 +2882,9 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'fb7fefffffffffffff'],
    "deterministic-serialization": [h'fb7fefffffffffffff']
 }
-</pre><a href="#appendix-I.2-7" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-8" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-8">
+<div class="alignLeft art-text artwork" id="appendix-I.2-9">
 <pre>
 {
    "description": "Half-precision subnormal float" ,
@@ -2882,9 +2895,9 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'f90200'],
    "deterministic-serialization": [h'f90200']
 }
-</pre><a href="#appendix-I.2-8" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-9" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-9">
+<div class="alignLeft art-text artwork" id="appendix-I.2-10">
 <pre>
 {
    "description": "half-precision normal float" ,
@@ -2896,12 +2909,12 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "deterministic-serialization": [h'f97bff']
 }
 
-</pre><a href="#appendix-I.2-9" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-10" class="pilcrow">¶</a>
 </div>
-<p id="appendix-I.2-10">The NaN payload is a special case.
+<p id="appendix-I.2-11">The NaN payload is a special case.
 For preferred-plus and deterministic serialization, the decode should fail.
-For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.<a href="#appendix-I.2-10" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-I.2-11">
+For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.<a href="#appendix-I.2-11" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-12">
 <pre>
 {
    "description": " Floating-point NaN with payload/significand 0x1ff",
@@ -2912,9 +2925,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [],
    "deterministic-serialization": []
 }
-</pre><a href="#appendix-I.2-11" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-12" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-12">
+<div class="alignLeft art-text artwork" id="appendix-I.2-13">
 <pre>
 {
    "description": "Negative Infinity",
@@ -2925,9 +2938,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'f9fc00'],
    "deterministic-serialization": [h'f9fc00']
 }
-</pre><a href="#appendix-I.2-12" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-13" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-13">
+<div class="alignLeft art-text artwork" id="appendix-I.2-14">
 <pre>
 {
    "description": "Floating-point quiet NaN",
@@ -2938,9 +2951,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'f97e00'],
    "deterministic-serialization": [h'f97e00']
 }
-</pre><a href="#appendix-I.2-13" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-14" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-14">
+<div class="alignLeft art-text artwork" id="appendix-I.2-15">
 <pre>
 {
    "description": "Single-precision subnormal float" ,
@@ -2950,9 +2963,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'fa00400000'],
    "deterministic-serialization": [h'fa00400000']
 }
-</pre><a href="#appendix-I.2-14" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-15" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-15">
+<div class="alignLeft art-text artwork" id="appendix-I.2-16">
 <pre>
 {
    "description": "Single-precision normal float" ,
@@ -2962,9 +2975,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'facb800000'],
    "deterministic-serialization": [h'facb800000']
 }
-</pre><a href="#appendix-I.2-15" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-16" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-16">
+<div class="alignLeft art-text artwork" id="appendix-I.2-17">
 <pre>
 {
    "description": "The simple value 'true'" ,
@@ -2973,9 +2986,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'f5'],
    "deterministic-serialization": [h'f5']
 }
-</pre><a href="#appendix-I.2-16" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-17" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-17">
+<div class="alignLeft art-text artwork" id="appendix-I.2-18">
 <pre>
 {
    "description": "The simple value 111" ,
@@ -2984,9 +2997,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'f86f'],
    "deterministic-serialization": [h'f86f']
 }
-</pre><a href="#appendix-I.2-17" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-18" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-18">
+<div class="alignLeft art-text artwork" id="appendix-I.2-19">
 <pre>
 {
    "description": "The integer 2^96 -1, which can only be represented by a big number",
@@ -2996,9 +3009,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
    "deterministic-serialization":   [h'c24cffffffffffffffffffffffff']
 }
-</pre><a href="#appendix-I.2-18" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-19" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-19">
+<div class="alignLeft art-text artwork" id="appendix-I.2-20">
 <pre>
 {
    "description": "The byte string of length 3: 0x010203",
@@ -3009,9 +3022,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'43010203'],
    "deterministic-serialization": [h'43010203']
 }
-</pre><a href="#appendix-I.2-19" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-20" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-20">
+<div class="alignLeft art-text artwork" id="appendix-I.2-21">
 <pre>
 {
    "description": "The text string 'hi there'",
@@ -3023,9 +3036,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'686869207468657265'],
    "deterministic-serialization": [h'686869207468657265']
 }
-</pre><a href="#appendix-I.2-20" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-21" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-21">
+<div class="alignLeft art-text artwork" id="appendix-I.2-22">
 <pre>
 {
    "description": "The array [1, 2, 3]",
@@ -3035,12 +3048,12 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'83010203'],
    "deterministic-serialization": [h'83010203']
 }
-</pre><a href="#appendix-I.2-21" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-22" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-22">
+<div class="alignLeft art-text artwork" id="appendix-I.2-23">
 <pre>
 {
-  "description": "Map with three items. Note that map order is never significant in th data model in CBOR",
+  "description": "Map with three items. Note that map order is never significant in the data model in CBOR",
   "edn-representations" : [ "{1:\"x\", 2:\"y\", 3:\"z\"}",
                             "{1:\"x\", 3:\"z\", 2:\"y\"}",
                             "{2:\"y\", 3:\"z\", 1:\"x\"}",
@@ -3063,9 +3076,38 @@ For general serialization a NaN with a payload should be returned, but there is 
                                      h'a303617a026179016178' ],
   "deterministic-serialization": [h'a301617802617903617a']
 }
-</pre><a href="#appendix-I.2-22" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-23" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-23">
+<div class="alignLeft art-text artwork" id="appendix-I.2-24">
+<pre>
+{
+  "description": "Three item map with string keys. Note that map order is never significant in the data model in CBOR",
+  "edn-representations" : [ {"abc": 1, "def": 2, "ghi": 3},
+                            {"abc": 1, "ghi": 3, "def": 2},
+                            {"def": 2, "abc": 1, "ghi": 3},
+                            {"def": 2, "ghi": 3, "abc": 1},
+                            {"ghi": 3, "abc": 1, "def": 2},
+                            {"ghi": 3, "def": 2, "abc": 1} ],
+  "general-serializations": [ h'a3636162630163646566026367686903',
+                              h'a3636162630163676869036364656602',
+                              h'a3636465660263616263016367686903',
+                              h'a3636465660263676869036361626301',
+                              h'a3636768690363616263016364656602',
+                              h'a3636768690363646566026361626301',
+                              h'bf6162630163646566026367686903ff',
+                              h'bf7f6161626263ff017f6264656166ff027f63676869ff03ff' ],
+  "preferred-plus-serializations": [ h'a3636162630163646566026367686903',
+                                     h'a3636162630163676869036364656602',
+                                     h'a3636465660263616263016367686903',
+                                     h'a3636465660263676869036361626301',
+                                     h'a3636768690363616263016364656602',
+                                     h'a3636768690363646566026361626301',
+                                     h'bf6162630163646566026367686903ff' ],
+  "deterministic-serialization": [h'a3636162630163646566026367686903' ]
+}
+</pre><a href="#appendix-I.2-24" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.2-25">
 <pre>
 {
    "description": "An epoch date tag" ,
@@ -3080,9 +3122,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "deterministic-serialization":   [h'c11a69e4fbd3']
 }
 
-</pre><a href="#appendix-I.2-23" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-25" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-24">
+<div class="alignLeft art-text artwork" id="appendix-I.2-26">
 <pre>
 {
    "description": "A date string tag" ,
@@ -3098,7 +3140,7 @@ For general serialization a NaN with a payload should be returned, but there is 
    "deterministic-serialization":   [h'c074323032362d30342d31395430333a35393a31355a']
 }
 
-</pre><a href="#appendix-I.2-24" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-26" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
