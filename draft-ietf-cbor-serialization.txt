@@ -1901,6 +1901,33 @@ I.2.  Example Data Items
   "deterministic-serialization": [h'a301617802617903617a']
 }
 
+   {
+      "description": "An epoch date tag" ,
+      "edn-representations" : ["1(1776614355)"] ,
+      "general-serializations": [h'c11a69e4fbd3',
+                                 h'd8011a69e4fbd3',
+                                 h'd900011a69e4fbd3',
+                                 h'da000000011a69e4fbd3',
+                                 h'db00000000000000011a69e4fbd3',
+                                 h'c11b0000000069e4fbd3'],
+      "preferred-plus-serializations": [h'c11a69e4fbd3'],
+      "deterministic-serialization":   [h'c11a69e4fbd3']
+   }
+
+{
+   "description": "A date string tag" ,
+   "edn-representations" : ["0(\"2026-04-19T03:59:15Z\")"] ,
+   "general-serializations": [h'c074323032362d30342d31395430333a35393a31355a',
+                              h'd80074323032362d30342d31395430333a35393a31355a',
+                              h'd9000074323032362d30342d31395430333a35393a31355a',
+                              h'da0000000074323032362d30342d31395430333a35393a31355a',
+                              h'db000000000000000074323032362d30342d31395430333a35393a31355a',
+                              h'c07f74323032362d30342d31395430333a35393a31355aff',
+                              h'c07f6232307232362d30342d31395430333a35393a31355aff'],
+   "preferred-plus-serializations": [h'c074323032362d30342d31395430333a35393a31355a'],
+   "deterministic-serialization":   [h'c074323032362d30342d31395430333a35393a31355a']
+}
+
 Contributors
 
    Rohan Mahy
