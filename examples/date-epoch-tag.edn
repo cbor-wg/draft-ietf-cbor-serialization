@@ -1,0 +1,13 @@
+{
+   "description": "An epoch date tag" ,
+   "edn-representations" : ["1(1776614355)"] ,
+   "general-serializations": [h'c11a69e4fbd3',
+                              h'd8011a69e4fbd3',
+                              h'd900011a69e4fbd3',
+                              h'da000000011a69e4fbd3',
+                              h'db00000000000000011a69e4fbd3',
+                              h'c11b0000000069e4fbd3'],
+   "preferred-plus-serializations": [h'c11a69e4fbd3'],
+   "deterministic-serialization":   [h'c11a69e4fbd3']
+}
+
