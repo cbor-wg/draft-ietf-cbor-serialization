@@ -1156,6 +1156,10 @@ For general serialization a NaN with a payload should be returned, but there is 
 ~~~~
 
 ~~~~
+{::include examples/negative_bignum.edn}
+~~~~
+
+~~~~
 {::include examples/byte_string.edn}
 ~~~~
 
