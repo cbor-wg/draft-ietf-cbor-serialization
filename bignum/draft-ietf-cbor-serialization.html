@@ -3002,6 +3002,19 @@ For general serialization a NaN with a payload should be returned, but there is 
 <div class="alignLeft art-text artwork" id="appendix-I.2-19">
 <pre>
 {
+   "description": "Negative bignum on boundary with type 1 integer",
+   "edn-representations" : ["-18446744073709551617"],
+   "general-serializations": [h'c349010000000000000000',
+                              h'c34c000000010000000000000000',
+                              h'c35f450000000001480000000000000000ff'],
+   "preferred-plus-serializations": [h'c349010000000000000000'],
+   "deterministic-serialization":   [h'c349010000000000000000']
+}
+</pre><a href="#appendix-I.2-19" class="pilcrow">¶</a>
+</div>
+<div class="alignLeft art-text artwork" id="appendix-I.2-20">
+<pre>
+{
    "description": "The byte string of length 3: 0x010203",
    "edn-representations" : ["h'010203'"],
    "general-serializations": [h'43010203',
@@ -3010,9 +3023,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'43010203'],
    "deterministic-serialization": [h'43010203']
 }
-</pre><a href="#appendix-I.2-19" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-20" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-20">
+<div class="alignLeft art-text artwork" id="appendix-I.2-21">
 <pre>
 {
    "description": "The text string 'hi there'",
@@ -3024,9 +3037,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'686869207468657265'],
    "deterministic-serialization": [h'686869207468657265']
 }
-</pre><a href="#appendix-I.2-20" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-21" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-21">
+<div class="alignLeft art-text artwork" id="appendix-I.2-22">
 <pre>
 {
    "description": "The array [1, 2, 3]",
@@ -3036,9 +3049,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'83010203'],
    "deterministic-serialization": [h'83010203']
 }
-</pre><a href="#appendix-I.2-21" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-22" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-22">
+<div class="alignLeft art-text artwork" id="appendix-I.2-23">
 <pre>
 {
   "description": "Map with three items. Note that map order is never significant in th data model in CBOR",
@@ -3064,9 +3077,9 @@ For general serialization a NaN with a payload should be returned, but there is 
                                      h'a303617a026179016178' ],
   "deterministic-serialization": [h'a301617802617903617a']
 }
-</pre><a href="#appendix-I.2-22" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-23" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-23">
+<div class="alignLeft art-text artwork" id="appendix-I.2-24">
 <pre>
 {
    "description": "An epoch date tag" ,
@@ -3081,9 +3094,9 @@ For general serialization a NaN with a payload should be returned, but there is 
    "deterministic-serialization":   [h'c11a69e4fbd3']
 }
 
-</pre><a href="#appendix-I.2-23" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-24" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-24">
+<div class="alignLeft art-text artwork" id="appendix-I.2-25">
 <pre>
 {
    "description": "A date string tag" ,
@@ -3099,7 +3112,7 @@ For general serialization a NaN with a payload should be returned, but there is 
    "deterministic-serialization":   [h'c074323032362d30342d31395430333a35393a31355a']
 }
 
-</pre><a href="#appendix-I.2-24" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-25" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
