@@ -1,7 +1,8 @@
 {
-   "description": "Large negative integer that doesn't fit in a typical 64-bit signed type" ,
-   "edn-representations" : ["-18446742974197923840"] ,
-   "general-serializations": [h'3bfffffeffffffffff'],
-   "preferred-plus-serializations": [h'3bfffffeffffffffff'],
-   "deterministic-serialization": [h'3bfffffeffffffffff']
+   "description": "Largest negative integer" ,
+   "edn-representations" : ["-18446744073709551616"] ,
+   "general-serializations": [h'3bffffffffffffffff',
+                              h'c348ffffffffffffffff'],
+   "preferred-plus-serializations": [h'3bffffffffffffffff'],
+   "deterministic-serialization": [h'3bffffffffffffffff']
 }
