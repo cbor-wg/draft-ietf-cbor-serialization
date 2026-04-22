@@ -996,9 +996,9 @@ While this generally works &mdash; particularly because the preferred serializat
 # Examples
 
 This appendix provides examples of the serializations described in this document.
-Each example consists of a single data item.
-Collectively, the examples cover the major CBOR data types as well as several useful special cases.
-Each example includes five fields, as described in {{tab-example}}.
+Each example is a single data item.
+Collectively, the examples cover the major CBOR data types and some special cases.
+{{tab-example}} describes the five fields provide for each example.
 
 | field | description |
 |-|-|
@@ -1012,12 +1012,13 @@ Each example includes five fields, as described in {{tab-example}}.
 
 ## Use for Testing
 
-These examples are designed to support CBOR library testing, as described in the following sections.
-They are for validating the serialization rules defined in this document, not for general CBOR testing (all data items are well-formed and valid).
+These examples are designed to support testing of CBOR libraries.
+They cover only what is defined in this document and therefore do not provide complete or general CBOR test coverage.
+All examples are well-formed and valid.
 
-Most CBOR libraries operate on environment-specific data representations with library-specific APIs, rather than on EDN.
-As a result, the EDN representation of each data item will typically need to be transformed into the corresponding representation used by the target environment.
-For example, in the C programming language, the floating-point value 1.5 is a double, and the encoding API will likely accept an argument of that type.
+
+While the CBOR-encoded serializations for each item can be used directly as test input, the EDN representation usually must be incorporated into the test manually.
+For example, the EDN string "-5.0e-324" will likely need to be passed as a value of type double to the API of a C-language CBOR library that encodes double-precision numbers.
 
 Not all CBOR libraries support every data type represented in these examples.
 This is acceptable: tests for unsupported types may be skipped, or used to verify that an appropriate “unsupported” error is returned.
@@ -1026,22 +1027,22 @@ This is acceptable: tests for unsupported types may be skipped, or used to verif
 ### Encode Test
 
 To test encoding, invoke the encoder for each example data item.
-The input to the encoder is the EDN representation of the data item.
-Most examples have a single EDN representation, but some have multiple; in those cases, each EDN representation should be tested.
+The encoder input is the item's EDN representations.
+If an example provides multiple EDN representations, each of them should be tested.
 
-The encoder is expected to be configured for, or to default to, one of the three serialization types described in this document.
-A test succeeds if the encoder produces any valid encoded representation for that serialization type.
+The encoder should be either configured for, or to default to, one of the three serialization types described in this document.
+A test succeeds if the encoder produces any of the encoded representations given in the example for that serialization type.
 
 If an encoder supports multiple serialization modes, each mode can be tested in turn.
 
 
 ### Decode Test
 
-To test decoding, invoke the decoder for each of the example data items.
+To test decoding, invoke the decoder for each example data.
 
-The decoder is expected to be configured for, or to default to, one of the three serialization types described in this document.
-For each example, decoding should be attempted using all encoded representations defined for that serialization type.
-The test succeeds if the decoded result matches the value specified in the EDN representation.
+The decoder should be either to be configured for, or to default to, one of the three serialization types described in this document.
+For the selected serialization type, process every encoded representation defined for that type.
+A test passes if the decoded output matches the value specified by the corresponding EDN representation.
 
 If a decoder supports multiple serialization modes, each mode can be tested in turn.
 
@@ -1050,37 +1051,31 @@ If a decoder supports multiple serialization modes, each mode can be tested in t
 
 Checking decoders are described in {{CheckingDecoder}}.
 
-The purpose of this test is to verify that a checking decoder correctly rejects non-conforming encodings for a given serialization type.
-This test applies only to CBOR libraries that support serialization conformance checking.
+This test verifies that a checking decoder rejects encodings allowed by general serialization but non-conforming for the target serialization type.
+It applies only to CBOR libraries that implement serialization conformance checking.
 
-There is no notion of a checking decoder for general serialization, since such a decoder must, by definition, accept all valid serialization forms.
-(It should still reject not-well-formed or invalid CBOR, but such cases are out of scope for this document and these examples.)
+Testing a checking decoder for a target serialization type is typically performed as follows: for each example, supply the decoder with every representation permitted under general serialization except those allowed for the target serialization type.
+Decoding each such input must result in a conformance-checking error.
 
-To test a preferred-plus checking decoder, invoke the decoder for each example data item.
-The inputs should be the encoded representations permitted by general serialization, excluding those allowed under preferred-plus.
-Each invocation is expected to result in a conformance error.
-
-Similarly, to test a deterministic checking decoder, invoke it for each example data item.
-The inputs should include representations permitted by both general and preferred-plus serialization, excluding those allowed under deterministic serialization.
-Each invocation is expected to result in a conformance error.
+General-serialization decoders are not tested in this way, since they must accept all valid serialization forms.
 
 
 ### Non-Checking Decoder Test
 
-A non-checking decoder may accept encodings beyond the constraints of the specific serialization type it nominally supports.
-For example, a preferred-plus decoder will often accept non-shortest-length arguments, even though such encodings are not permitted under preferred-plus.
+A non-checking decoder may accept encodings beyond what is required for the target serialization type.
+For example, a preferred-plus decoder will often accept non-shortest-length arguments, even though it is not required to do so, and such encodings are not permitted under preferred-plus.
 These examples can be used to test such extended decoding.
 
-Testing proceeds similarly to that for a checking decoder, in that inputs outside the target serialization type are provided to the decoder.
+Testing proceeds similarly to that for a checking decoder: inputs outside the target serialization type are supplied to the decoder.
 The difference is that, for a non-checking decoder, many of these inputs may successfully decode rather than producing a conformance error.
 When decoding does fail, the expected error is typically “unsupported.”
 
-Which data item types are accepted and which are rejected as unsupported is highly dependent on the specific CBOR library and the additional capabilities it implements and thus not specified here.
+Which encoding forms are accepted and which are rejected as unsupported is entirely dependent on the additional capabilities a CBOR library chooses to support and therefore not specified here.
 
 Note the following:
 
 - It is common for preferred-plus and deterministic decoders to accept non-shortest-length arguments.
-- If the floating-point data type is supported, all serialization types described in this document require support for decoding half-precision values.
+- If the floating-point data type is supported, all serialization types described in this document require support for decoding half-precision representations and subnormals.
 
 
 ## Example Data Items
