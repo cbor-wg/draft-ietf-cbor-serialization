@@ -1,8 +1,8 @@
 {
-   "description": "The integer 2^96 -1, which can only be represented by a big number",
-   "edn-representations" : ["79228162514264337593543950335"],
-   "general-serializations": [h'c24cffffffffffffffffffffffff',
-                              h'c24e0000ffffffffffffffffffffffff' ],
-   "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
-   "deterministic-serialization":   [h'c24cffffffffffffffffffffffff']
+  "description": "A positive big num",
+  "edn-representations" : ["79228162514264337593543950335"],
+  "general-serializations": [h'c24cffffffffffffffffffffffff',
+                             h'c24e0000ffffffffffffffffffffffff' ],
+  "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
+  "deterministic-serialization":  [h'c24cffffffffffffffffffffffff']
 }
