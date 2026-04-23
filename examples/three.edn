@@ -3,10 +3,10 @@
    "edn-representations" : ["3"] ,
    "general-serializations": [h'03',
                               h'1803',
-			      h'190003',
-			      h'1a00000003',
-			      h'1b0000000000000003',
-			      h'c2420003' ],
+                              h'190003',
+                              h'1a00000003',
+                              h'1b0000000000000003',
+                              h'c2420003' ],
    "preferred-plus-serializations": [h'03'],
    "deterministic-serialization": [h'03']
 }

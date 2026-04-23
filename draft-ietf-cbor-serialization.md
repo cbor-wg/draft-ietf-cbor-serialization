@@ -1192,11 +1192,11 @@ For general serialization a NaN with a payload should be returned, but there is 
 ~~~~
 
 ~~~~
-{::include examples/date-epoch-tag.edn}
+{::include examples/date_epoch_tag.edn}
 ~~~~
 
 ~~~~
-{::include examples/date-string-tag.edn}
+{::include examples/date_string_tag.edn}
 ~~~~
 
 

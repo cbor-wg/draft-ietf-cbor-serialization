@@ -1,9 +1,9 @@
 {
-   "description": "Negative Infinity",
-   "edn-representations" : ["-Infinity"] ,
-   "general-serializations": [h'f9fc00',
-                              h'faff800000',
-			      h'fbfff0000000000000' ],
-   "preferred-plus-serializations": [h'f9fc00'],
-   "deterministic-serialization": [h'f9fc00']
+  "description": "Negative Infinity",
+  "edn-representations" : ["-Infinity"] ,
+  "general-serializations": [h'f9fc00',
+                             h'faff800000',
+                             h'fbfff0000000000000'],
+  "preferred-plus-serializations": [h'f9fc00'],
+  "deterministic-serialization": [h'f9fc00']
 }

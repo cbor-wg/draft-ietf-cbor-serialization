@@ -1,9 +1,12 @@
 {
    "description": "Negative bignum on boundary with type 1 integer",
    "edn-representations" : ["-18446744073709551617"],
-   "general-serializations": [h'c349010000000000000000',
-                              h'c34c000000010000000000000000',
-                              h'c35f450000000001480000000000000000ff'],
-   "preferred-plus-serializations": [h'c349010000000000000000'],
-   "deterministic-serialization":   [h'c349010000000000000000']
+   "general-serializations": [
+     h'c349010000000000000000',
+     h'c34c000000010000000000000000',
+     h'c35f450000000001480000000000000000ff'],
+   "preferred-plus-serializations": [
+     h'c349010000000000000000'],
+   "deterministic-serialization":  [
+    h'c349010000000000000000']
 }
