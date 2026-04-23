@@ -127,7 +127,7 @@ Background material on serialization and determinism concepts is provided in {{m
 Readers may wish to review this background information first.
 
 CBOR intentionally allows multiple valid serializations of the same data item.
-For example, the array [1, 2] can be serialized in more than one way:
+For example, the array \[1, 2\] can be serialized in more than one way:
 
 | Type              | Description                                      | Bytes                |
 |-------------------|--------------------------------------------------|----------------------|
@@ -172,7 +172,7 @@ This document defines that serialization: preferred-plus serialization.
 ## Determinism
 
 The determinism challenge arises because there are multiple ways to serialize the same data item.
-The example serialization of the array [1,2] above shows this.
+The example serialization of the array \[1,2\] above shows this.
 This is a problem in some protocols that hash or sign encoded CBOR.
 
 Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
@@ -198,10 +198,6 @@ Preferred-plus serialization as defined here is largely the same as preferred se
 
 
 # Recommendations Summary {#Recommendations}
-
-[^to-be-removed5]
-
-[^to-be-removed5]: This section substantially revised in -03 and hopefully close to its final form
 
 ## Protocol Specifications
 
@@ -616,7 +612,9 @@ That is, the variation in JSON is for human readability, not to facilitate easie
 
 This is the section that covers what is know as ALDR in some discussions.
 
-[^rfced] Please remove above sentence before publication
+[^rfced]
+
+[^rfced]: Please remove above sentence before publication
 
 In addition to {{DeterministicSerialization}}, there are considerations in the design of any deterministic protocol.
 
