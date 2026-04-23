@@ -83,7 +83,7 @@ informative:
    Examples-Repo:
      title: draft-ietf-cbor-serialization
      author:
-     -org: IETF CBOR WG
+     - org: IETF CBOR WG
      date: false
      target: https://github.com/cbor-wg/draft-ietf-cbor-serialization/tree/main/examples
 
@@ -1067,7 +1067,7 @@ Decoding each such input must result in a conformance-checking error.
 General-serialization decoders are not tested in this way, since they must accept all valid serialization forms.
 
 
-### Non-Checking Decoder Test
+### Non-Checking Decoder Test {#NonChecking}
 
 A non-checking decoder may accept encodings beyond what is required for the target serialization type.
 For example, a preferred-plus decoder will often accept non-shortest-length arguments, even though it is not required to do so, and such encodings are not permitted under preferred-plus.
@@ -1089,6 +1089,11 @@ Note the following:
 
 These are available as individual files at {{Examples-Repo}}.
 
+All general serialization examples of strings, arrays and maps include indefinite-length encodings so as to provide full test cases.
+CBOR libraries that don't support indefinite-length decoding can not claim to support general serialization even if they support most of the rest of general serialization.
+For the purpose of classification by this document they are preferred-plus libraries with extra decoding features.
+The extra decoding features can be tested as described in {{NonChecking}}.
+
 File: zero.edn
 
 ~~~~
@@ -1107,29 +1112,153 @@ File: minus_twenty_five.edn
 {::include examples/minus_twenty_five.edn}
 ~~~~
 
+File: 65_bit_neg.edn
+
 ~~~~
 {::include examples/65_bit_neg.edn}
 ~~~~
+
+File: byte_string.edn
+
+~~~~
+{::include examples/byte_string.edn}
+~~~~
+
+File: text_string.edn
+
+~~~~
+{::include examples/text_string.edn}
+~~~~
+
+File: array.edn
+
+~~~~
+{::include examples/array.edn}
+~~~~
+
+File: map.edn
+
+Note that map order is not significant in the CBOR data model.
+Maps are only sorted to provide deterministic encoding.
+
+~~~~
+{::include examples/map.edn}
+~~~~
+
+File: map_strings.edn
+
+~~~~
+{::include examples/map_strings.edn}
+~~~~
+
+File: positive_bignum.edn
+
+Note that big numbers are included in the test data because preferred-plus serialization requires their unification with integers.
+
+~~~~
+{::include examples/positive_bignum.edn}
+~~~~
+
+File: negative_bignum.edn
+
+Note that this is the value closest that can be represented as a big number, not a type 1 integer for preferred-plus serialization.
+
+~~~~
+{::include examples/negative_bignum.edn}
+~~~~
+
+File: date_epoch_tag.edn
+
+Note that this is provided as a test case for tags.
+There are no requirements for dates in this document.
+The tag content in this example does vary by serialization type.
+
+~~~~
+{::include examples/date_epoch_tag.edn}
+~~~~
+
+File: date_string_tag.edn
+
+Note that this is provided as a test case for tags.
+There are no requirements for dates in this document.
+The tag content in this example does vary by serialization type.
+
+~~~~
+{::include examples/date_string_tag.edn}
+~~~~
+
+File: true.edn
+
+~~~~
+{::include examples/true.edn}
+~~~~
+
+File: simple111.edn
+
+Note that the simple value 111 is of not particular significance.
+It was selected because it is an unassigned simple value.
+
+~~~~
+{::include examples/simple111.edn}
+~~~~
+
+File: float_zero.edn
 
 ~~~~
 {::include examples/float_zero.edn}
 ~~~~
 
-~~~~
-{::include examples/float_double_subnormal.edn}
-~~~~
+File: float_double.edn
 
 ~~~~
 {::include examples/float_double.edn}
 ~~~~
 
+File: float_double_subnormal.edn
+
+Note that full subnormal support is required for all serializations defined in this document.
+
 ~~~~
-{::include examples/float_half_subnormal.edn}
+{::include examples/float_double_subnormal.edn}
 ~~~~
+
+File: float_single.edn
+
+~~~~
+{::include examples/float_single.edn}
+~~~~
+
+File: float_single_subnormal.edn
+
+~~~~
+{::include examples/float_single_subnormal.edn}
+~~~~
+
+File: float_half.edn
 
 ~~~~
 {::include examples/float_half.edn}
 ~~~~
+
+File: float_half_subnormal.edn
+
+~~~~
+{::include examples/float_half_subnormal.edn}
+~~~~
+
+File: float_neg_infinity.edn
+
+~~~~
+{::include examples/float_neg_infinity.edn}
+~~~~
+
+File: float_quiet_nan.edn
+
+~~~~
+{::include examples/float_quiet_nan.edn}
+~~~~
+
+File: float_nan_payload.edn
 
 The NaN payload is a special case.
 For preferred-plus and deterministic serialization, the decode should fail.
@@ -1139,65 +1268,7 @@ For general serialization a NaN with a payload should be returned, but there is 
 {::include examples/float_nan_payload.edn}
 ~~~~
 
-~~~~
-{::include examples/float_neg_infinity.edn}
-~~~~
 
-~~~~
-{::include examples/float_quiet_nan.edn}
-~~~~
-
-~~~~
-{::include examples/float_single_subnormal.edn}
-~~~~
-
-~~~~
-{::include examples/float_single.edn}
-~~~~
-
-~~~~
-{::include examples/true.edn}
-~~~~
-
-~~~~
-{::include examples/simple111.edn}
-~~~~
-
-~~~~
-{::include examples/positive_bignum.edn}
-~~~~
-
-~~~~
-{::include examples/negative_bignum.edn}
-~~~~
-
-~~~~
-{::include examples/byte_string.edn}
-~~~~
-
-~~~~
-{::include examples/text_string.edn}
-~~~~
-
-~~~~
-{::include examples/array.edn}
-~~~~
-
-~~~~
-{::include examples/map.edn}
-~~~~
-
-~~~~
-{::include examples/map_strings.edn}
-~~~~
-
-~~~~
-{::include examples/date_epoch_tag.edn}
-~~~~
-
-~~~~
-{::include examples/date_string_tag.edn}
-~~~~
 
 
 
