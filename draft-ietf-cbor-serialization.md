@@ -80,6 +80,13 @@ informative:
 
    RFC7049:
 
+   Examples-Repo:
+     title: draft-ietf-cbor-serialization
+     author:
+     -org: IETF CBOR WG
+     date: false
+     target: https://github.com/cbor-wg/draft-ietf-cbor-serialization/tree/main/examples
+
    CTAP2:
      title: Client To Authenticator Protocol v2
      target: https://fidoalliance.org/specs/fido-v2.0-ps-20190130/fido-client-to-authenticator-protocol-v2.0-ps-20190130.html
@@ -1085,15 +1092,21 @@ Note the following:
 
 ## Example Data Items
 
-These are available as individual files at https://github.com/cbor-wg/draft-ietf-cbor-serialization.
+These are available as individual files at {{Examples-Repo}}.
+
+File: zero.edn
 
 ~~~~
 {::include examples/zero.edn}
 ~~~~
 
+File: three.edn
+
 ~~~~
 {::include examples/three.edn}
 ~~~~
+
+File: minus_twenty_five.edn
 
 ~~~~
 {::include examples/minus_twenty_five.edn}
