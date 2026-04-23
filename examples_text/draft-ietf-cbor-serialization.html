@@ -1052,7 +1052,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 24 October 2026</td>
+<td class="center">Expires 25 October 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-04-22" class="published">22 April 2026</time>
+<time datetime="2026-04-23" class="published">23 April 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-10-24">24 October 2026</time></dd>
+<dd class="expires"><time datetime="2026-10-25">25 October 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ Together, these three form a complete set of serializations that cover the major
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 24 October 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 October 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2667,7 +2667,7 @@ While this generally works — particularly because the preferred serialization 
 <p id="appendix-I-1">This appendix provides examples of the serializations described in this document.
 Each example is a single data item.
 Collectively, the examples cover the major CBOR data types and some special cases.
-<a href="#tab-example" class="auto internal xref">Table 5</a> describes the five fields provide for each example.<a href="#appendix-I-1" class="pilcrow">¶</a></p>
+<a href="#tab-example" class="auto internal xref">Table 5</a> describes the five fields provided for each example.<a href="#appendix-I-1" class="pilcrow">¶</a></p>
 <span id="name-example-data-item-fields"></span><div id="tab-example">
 <table class="center" id="table-5">
         <caption>
@@ -2726,7 +2726,7 @@ The encoder input is the item's EDN representations.
 If an example provides multiple EDN representations, each of them should be tested.<a href="#appendix-I.1.1-1" class="pilcrow">¶</a></p>
 <p id="appendix-I.1.1-2">The encoder should be either configured for, or to default to, one of the three serialization types described in this document.
 A test succeeds if the encoder produces any of the encoded representations given in the example for that serialization type.<a href="#appendix-I.1.1-2" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.1-3">If an encoder supports multiple serialization modes, each mode can be tested in turn.<a href="#appendix-I.1.1-3" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.1-3">If an encoder supports multiple serialization types, each type can be tested in turn.<a href="#appendix-I.1.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="decode-test">
@@ -2736,9 +2736,9 @@ A test succeeds if the encoder produces any of the encoded representations given
           </h4>
 <p id="appendix-I.1.2-1">To test decoding, invoke the decoder for each example data.<a href="#appendix-I.1.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-I.1.2-2">The decoder should be either to be configured for, or to default to, one of the three serialization types described in this document.
-For the selected serialization type, process every encoded representation defined for that type.
+For the selected serialization type, process every encoded representation defined for the target type.
 A test passes if the decoded output matches the value specified by the corresponding EDN representation.<a href="#appendix-I.1.2-2" class="pilcrow">¶</a></p>
-<p id="appendix-I.1.2-3">If a decoder supports multiple serialization modes, each mode can be tested in turn.<a href="#appendix-I.1.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-I.1.2-3">If a decoder supports multiple serialization types, each type can be tested in turn.<a href="#appendix-I.1.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="checking-decoder-test">

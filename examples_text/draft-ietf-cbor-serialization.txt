@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                           22 April 2026
-Expires: 24 October 2026
+Intended status: Standards Track                           23 April 2026
+Expires: 25 October 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 October 2026.
+   This Internet-Draft will expire on 25 October 2026.
 
 Copyright Notice
 
@@ -1551,7 +1551,7 @@ Appendix I.  Examples
    This appendix provides examples of the serializations described in
    this document.  Each example is a single data item.  Collectively,
    the examples cover the major CBOR data types and some special cases.
-   Table 5 describes the five fields provide for each example.
+   Table 5 describes the five fields provided for each example.
 
      +===============================+===============================+
      | field                         | description                   |
@@ -1603,7 +1603,7 @@ I.1.1.  Encode Test
    succeeds if the encoder produces any of the encoded representations
    given in the example for that serialization type.
 
-   If an encoder supports multiple serialization modes, each mode can be
+   If an encoder supports multiple serialization types, each type can be
    tested in turn.
 
 I.1.2.  Decode Test
@@ -1613,10 +1613,10 @@ I.1.2.  Decode Test
    The decoder should be either to be configured for, or to default to,
    one of the three serialization types described in this document.  For
    the selected serialization type, process every encoded representation
-   defined for that type.  A test passes if the decoded output matches
-   the value specified by the corresponding EDN representation.
+   defined for the target type.  A test passes if the decoded output
+   matches the value specified by the corresponding EDN representation.
 
-   If a decoder supports multiple serialization modes, each mode can be
+   If a decoder supports multiple serialization types, each type can be
    tested in turn.
 
 I.1.3.  Checking Decoder Test
