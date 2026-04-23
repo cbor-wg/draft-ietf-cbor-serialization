@@ -862,6 +862,11 @@ Table of Contents
               fido-client-to-authenticator-protocol-v2.0-ps-
               20190130.html>.
 
+   [Examples-Repo]
+              IETF CBOR WG, "draft-ietf-cbor-serialization",
+              <https://github.com/cbor-wg/draft-ietf-cbor-
+              serialization/tree/main/examples>.
+
    [I-D.mcnally-deterministic-cbor]
               McNally, W., Allen, C., Bormann, C., and L. Lundblade,
               "dCBOR: Deterministic CBOR", Work in Progress, Internet-
@@ -1668,8 +1673,18 @@ I.1.4.  Non-Checking Decoder Test
 
 I.2.  Example Data Items
 
-   These are available as individual files at https://github.com/cbor-
-   wg/draft-ietf-cbor-serialization.
+   These are available as individual files at [Examples-Repo].
+
+   All general serialization examples of strings, arrays and maps
+   include indefinite-length encodings so as to provide full test cases.
+   CBOR libraries that don't support indefinite-length decoding can not
+   claim to support general serialization even if they support most of
+   the rest of general serialization.  For the purpose of classification
+   by this document they are preferred-plus libraries with extra
+   decoding features.  The extra decoding features can be tested as
+   described in Appendix I.1.4.
+
+   File: zero.edn
 
    {
       "description": "The integer 0" ,
@@ -1685,6 +1700,8 @@ I.2.  Example Data Items
       "deterministic-serialization": [h'00']
    }
 
+   File: three.edn
+
    {
       "description": "The integer 3" ,
       "edn-representations" : ["3"] ,
@@ -1698,6 +1715,8 @@ I.2.  Example Data Items
       "deterministic-serialization": [h'03']
    }
 
+   File: minus_twenty_five.edn
+
    {
       "description": "The integer -25",
       "edn-representations" : ["-25"],
@@ -1710,6 +1729,8 @@ I.2.  Example Data Items
       "deterministic-serialization": [h'3818']
    }
 
+   File: 65_bit_neg.edn
+
    {
       "description": "Largest negative integer" ,
       "edn-representations" : ["-18446744073709551616"] ,
@@ -1719,139 +1740,7 @@ I.2.  Example Data Items
       "deterministic-serialization": [h'3bffffffffffffffff']
    }
 
-   {
-      "description": "Floating-point positive zero",
-      "edn-representations" : ["0.0"] ,
-      "general-serializations": [h'f90000',
-                                 h'fa00000000',
-                                 h'fb0000000000000000' ],
-      "preferred-plus-serializations": [h'f90000'],
-      "deterministic-serialization": [h'f90000']
-   }
-
-   {
-      "description": "Double-precision negative subnormal float",
-      "edn-representations": ["-5.0e-324"],
-      "general-serializations": [h'fb8000000000000001' ],
-      "preferred-plus-serializations": [h'fb8000000000000001' ],
-      "deterministic-serialization": [h'fb8000000000000001']
-   }
-
-   {
-      "description": "Double-precision normal float" ,
-      "edn-representations" : ["1.7976931348623157e+308"] ,
-      "general-serializations": [h'fb7fefffffffffffff'],
-      "preferred-plus-serializations": [h'fb7fefffffffffffff'],
-      "deterministic-serialization": [h'fb7fefffffffffffff']
-   }
-
-   {
-      "description": "Half-precision subnormal float" ,
-      "edn-representations" : ["3.0517578125E-5"] ,
-      "general-serializations": [h'fb3f00000000000000',
-                                 h'fa38000000',
-                                 h'f90200' ],
-      "preferred-plus-serializations": [h'f90200'],
-      "deterministic-serialization": [h'f90200']
-   }
-
-   {
-      "description": "half-precision normal float" ,
-      "edn-representations" : ["65504.0"] ,
-      "general-serializations": [h'fb40effc0000000000',
-                                 h'fa477fe000',
-                                 h'f97bff' ],
-      "preferred-plus-serializations": [h'f97bff'],
-      "deterministic-serialization": [h'f97bff']
-   }
-
-   The NaN payload is a special case.  For preferred-plus and
-   deterministic serialization, the decode should fail.  For general
-   serialization a NaN with a payload should be returned, but there is
-   no EDN representation for that.
-
- {
-    "description": " Floating-point NaN with payload/significand 0x1ff",
-    "edn-representations" : [] ,
-    "general-serializations": [h'f97dff',
-                               h'fa7fbfe000',
-                               h'fb7ff7fc0000000000' ],
-    "preferred-plus-serializations": [],
-    "deterministic-serialization": []
- }
-
-   {
-      "description": "Negative Infinity",
-      "edn-representations" : ["-Infinity"] ,
-      "general-serializations": [h'f9fc00',
-                                 h'faff800000',
-                                 h'fbfff0000000000000' ],
-      "preferred-plus-serializations": [h'f9fc00'],
-      "deterministic-serialization": [h'f9fc00']
-   }
-
-   {
-      "description": "Floating-point quiet NaN",
-      "edn-representations" : ["NaN"] ,
-      "general-serializations": [h'f97e00',
-                                 h'fa7fc00000',
-                                 h'fb7ff8000000000000' ],
-      "preferred-plus-serializations": [h'f97e00'],
-      "deterministic-serialization": [h'f97e00']
-   }
-
-   {
-      "description": "Single-precision subnormal float" ,
-      "edn-representations" : ["5.8774717541114375E-39"] ,
-      "general-serializations": [h'fb3800000000000000',
-                                 h'fa00400000' ],
-      "preferred-plus-serializations": [h'fa00400000'],
-      "deterministic-serialization": [h'fa00400000']
-   }
-
-   {
-      "description": "Single-precision normal float" ,
-      "edn-representations" : ["-16777216.0"] ,
-      "general-serializations": [h'fbc170000000000000',
-                                 h'facb800000'],
-      "preferred-plus-serializations": [h'facb800000'],
-      "deterministic-serialization": [h'facb800000']
-   }
-
-   {
-      "description": "The simple value 'true'" ,
-      "edn-representations" : ["true"] ,
-      "general-serializations": [h'f5'],
-      "preferred-plus-serializations": [h'f5'],
-      "deterministic-serialization": [h'f5']
-   }
-
-   {
-      "description": "The simple value 111" ,
-      "edn-representations" : ["simple(111)"] ,
-      "general-serializations": [h'f86f'],
-      "preferred-plus-serializations": [h'f86f'],
-      "deterministic-serialization": [h'f86f']
-   }
-
-{
-   "description": "The integer 2^96 -1, which can only be represented by a big number",
-   "edn-representations" : ["79228162514264337593543950335"],
-   "general-serializations": [h'c24cffffffffffffffffffffffff',
-                              h'c24e0000ffffffffffffffffffffffff' ],
-   "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
-   "deterministic-serialization":   [h'c24cffffffffffffffffffffffff']
-}
-
- {
-    "description": "Negative bignum on boundary with type 1 integer",
-    "edn-representations" : ["-18446744073709551617"],
-    "general-serializations": [h'c349010000000000000000',
-                               h'c34c000000010000000000000000',
-                               h'c35f450000000001480000000000000000ff'],
-    "preferred-plus-serializations": [h'c349010000000000000000'],
-    "deterministic-serialization":   [h'c349010000000000000000']
- }
+   File: byte_string.edn
 
    {
       "description": "The byte string of length 3: 0x010203",
@@ -1863,16 +1752,23 @@ I.2.  Example Data Items
       "deterministic-serialization": [h'43010203']
    }
 
-{
-   "description": "The text string 'hi there'",
-   "edn-representations" : ["\"hi there\""],
-   "general-serializations": [h'686869207468657265',
-                              h'7f686869207468657265ff',
-                              h'7f64686920746468657265ff',
-                              h'7f790004686920747B000000000000000468657265ff'],
-   "preferred-plus-serializations": [h'686869207468657265'],
-   "deterministic-serialization": [h'686869207468657265']
-}
+   File: text_string.edn
+
+   {
+      "description": "The text string 'hi there'",
+      "edn-representations" : ["\"hi there\""],
+      "general-serializations": [
+        h'686869207468657265',
+        h'7f686869207468657265ff',
+        h'7f64686920746468657265ff',
+        h'7f790004686920747B000000000000000468657265ff'],
+      "preferred-plus-serializations": [
+        h'686869207468657265'],
+      "deterministic-serialization": [
+        h'686869207468657265']
+   }
+
+   File: array.edn
 
    {
       "description": "The array [1, 2, 3]",
@@ -1883,56 +1779,110 @@ I.2.  Example Data Items
       "deterministic-serialization": [h'83010203']
    }
 
-{
-  "description": "Map with three items. Note that map order is never significant in the data model in CBOR",
-  "edn-representations" : [ "{1:\"x\", 2:\"y\", 3:\"z\"}",
-                            "{1:\"x\", 3:\"z\", 2:\"y\"}",
-                            "{2:\"y\", 3:\"z\", 1:\"x\"}",
-                            "{2:\"y\", 1:\"x\", 3:\"z\"}",
-                            "{3:\"z\", 1:\"x\", 2:\"y\"}",
-                            "{3:\"z\", 2:\"y\", 1:\"x\"}" ],
-  "general-serializations": [ h'a301617802617903617a',
-                              h'a301617803617a026179',
-                              h'a302617903617a016178',
-                              h'a302617901617803617a',
-                              h'a303617a016178026179',
-                              h'a303617a026179016178',
-                              h'bf03617a026179016178ff',
-                              h'a31a00000003617a19000261791B00000000000000016178' ],
-  "preferred-plus-serializations": [ h'a301617802617903617a',
-                                     h'a301617803617a026179',
-                                     h'a302617903617a016178',
-                                     h'a302617901617803617a',
-                                     h'a303617a016178026179',
-                                     h'a303617a026179016178' ],
-  "deterministic-serialization": [h'a301617802617903617a']
-}
+   File: map.edn
 
-{
-  "description": "Three item map with string keys. Note that map order is never significant in the data model in CBOR",
-  "edn-representations" : [ {"abc": 1, "def": 2, "ghi": 3},
-                            {"abc": 1, "ghi": 3, "def": 2},
-                            {"def": 2, "abc": 1, "ghi": 3},
-                            {"def": 2, "ghi": 3, "abc": 1},
-                            {"ghi": 3, "abc": 1, "def": 2},
-                            {"ghi": 3, "def": 2, "abc": 1} ],
-  "general-serializations": [ h'a3636162630163646566026367686903',
-                              h'a3636162630163676869036364656602',
-                              h'a3636465660263616263016367686903',
-                              h'a3636465660263676869036361626301',
-                              h'a3636768690363616263016364656602',
-                              h'a3636768690363646566026361626301',
-                              h'bf6162630163646566026367686903ff',
-                              h'bf7f6161626263ff017f6264656166ff027f63676869ff03ff' ],
-  "preferred-plus-serializations": [ h'a3636162630163646566026367686903',
-                                     h'a3636162630163676869036364656602',
-                                     h'a3636465660263616263016367686903',
-                                     h'a3636465660263676869036361626301',
-                                     h'a3636768690363616263016364656602',
-                                     h'a3636768690363646566026361626301',
-                                     h'bf6162630163646566026367686903ff' ],
-  "deterministic-serialization": [h'a3636162630163646566026367686903' ]
-}
+   Note that map order is not significant in the CBOR data model.  Maps
+   are only sorted to provide deterministic encoding.
+
+   {
+     "description": "Map with three items using integer map keys",
+     "edn-representations" : [
+       "{1:\"x\", 2:\"y\", 3:\"z\"}",
+       "{1:\"x\", 3:\"z\", 2:\"y\"}",
+       "{2:\"y\", 3:\"z\", 1:\"x\"}",
+       "{2:\"y\", 1:\"x\", 3:\"z\"}",
+       "{3:\"z\", 1:\"x\", 2:\"y\"}",
+       "{3:\"z\", 2:\"y\", 1:\"x\"}" ],
+     "general-serializations": [
+        h'a301617802617903617a',
+        h'a301617803617a026179',
+        h'a302617903617a016178',
+        h'a302617901617803617a',
+        h'a303617a016178026179',
+        h'a303617a026179016178',
+        h'bf03617a026179016178ff',
+        h'a31a00000003617a19000261791B00000000000000016178'],
+     "preferred-plus-serializations": [
+        h'a301617802617903617a',
+        h'a301617803617a026179',
+        h'a302617903617a016178',
+        h'a302617901617803617a',
+        h'a303617a016178026179',
+        h'a303617a026179016178'],
+     "deterministic-serialization": [
+       h'a301617802617903617a']
+   }
+
+   File: map_strings.edn
+
+   {
+     "description": "Three item map with string keys",
+     "edn-representations" : [
+        {"abc": 1, "def": 2, "ghi": 3},
+        {"abc": 1, "ghi": 3, "def": 2},
+        {"def": 2, "abc": 1, "ghi": 3},
+        {"def": 2, "ghi": 3, "abc": 1},
+        {"ghi": 3, "abc": 1, "def": 2},
+        {"ghi": 3, "def": 2, "abc": 1} ],
+     "general-serializations": [
+        h'a3636162630163646566026367686903',
+        h'a3636162630163676869036364656602',
+        h'a3636465660263616263016367686903',
+        h'a3636465660263676869036361626301',
+        h'a3636768690363616263016364656602',
+        h'a3636768690363646566026361626301',
+        h'bf6162630163646566026367686903ff',
+        h'bf7f6161626263ff017f6264656166ff027f63676869ff03ff'],
+     "preferred-plus-serializations": [
+       h'a3636162630163646566026367686903',
+       h'a3636162630163676869036364656602',
+       h'a3636465660263616263016367686903',
+       h'a3636465660263676869036361626301',
+       h'a3636768690363616263016364656602',
+       h'a3636768690363646566026361626301',
+       h'bf6162630163646566026367686903ff' ],
+     "deterministic-serialization": [
+       h'a3636162630163646566026367686903' ]
+   }
+
+   File: positive_bignum.edn
+
+   Note that big numbers are included in the test data because
+   preferred-plus serialization requires their unification with
+   integers.
+
+   {
+     "description": "A positive big num",
+     "edn-representations" : ["79228162514264337593543950335"],
+     "general-serializations": [h'c24cffffffffffffffffffffffff',
+                                h'c24e0000ffffffffffffffffffffffff' ],
+     "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
+     "deterministic-serialization":  [h'c24cffffffffffffffffffffffff']
+   }
+
+   File: negative_bignum.edn
+
+   Note that this is the value closest that can be represented as a big
+   number, not a type 1 integer for preferred-plus serialization.
+
+   {
+      "description": "Negative bignum on boundary with type 1 integer",
+      "edn-representations" : ["-18446744073709551617"],
+      "general-serializations": [
+        h'c349010000000000000000',
+        h'c34c000000010000000000000000',
+        h'c35f450000000001480000000000000000ff'],
+      "preferred-plus-serializations": [
+        h'c349010000000000000000'],
+      "deterministic-serialization":  [
+       h'c349010000000000000000']
+   }
+
+   File: date_epoch_tag.edn
+
+   Note that this is provided as a test case for tags.  There are no
+   requirements for dates in this document.  The tag content in this
+   example does vary by serialization type.
 
    {
       "description": "An epoch date tag" ,
@@ -1947,19 +1897,173 @@ I.2.  Example Data Items
       "deterministic-serialization":   [h'c11a69e4fbd3']
    }
 
-{
-   "description": "A date string tag" ,
-   "edn-representations" : ["0(\"2026-04-19T03:59:15Z\")"] ,
-   "general-serializations": [h'c074323032362d30342d31395430333a35393a31355a',
-                              h'd80074323032362d30342d31395430333a35393a31355a',
-                              h'd9000074323032362d30342d31395430333a35393a31355a',
-                              h'da0000000074323032362d30342d31395430333a35393a31355a',
-                              h'db000000000000000074323032362d30342d31395430333a35393a31355a',
-                              h'c07f74323032362d30342d31395430333a35393a31355aff',
-                              h'c07f6232307232362d30342d31395430333a35393a31355aff'],
-   "preferred-plus-serializations": [h'c074323032362d30342d31395430333a35393a31355a'],
-   "deterministic-serialization":   [h'c074323032362d30342d31395430333a35393a31355a']
-}
+   File: date_string_tag.edn
+
+   Note that this is provided as a test case for tags.  There are no
+   requirements for dates in this document.  The tag content in this
+   example does vary by serialization type.
+
+   {
+     "description": "A date string tag" ,
+     "edn-representations" : ["0(\"2026-04-19T03:59:15Z\")"] ,
+     "general-serializations": [
+       h'c074323032362d30342d31395430333a35393a31355a',
+       h'd80074323032362d30342d31395430333a35393a31355a',
+       h'd9000074323032362d30342d31395430333a35393a31355a',
+       h'da0000000074323032362d30342d31395430333a35393a31355a',
+       h'db000000000000000074323032362d30342d31395430333a35393a31355a',
+       h'c07f74323032362d30342d31395430333a35393a31355aff',
+       h'c07f6232307232362d30342d31395430333a35393a31355aff'],
+     "preferred-plus-serializations": [
+       h'c074323032362d30342d31395430333a35393a31355a'],
+     "deterministic-serialization":  [
+       h'c074323032362d30342d31395430333a35393a31355a']
+   }
+
+   File: true.edn
+
+   {
+      "description": "The simple value 'true'" ,
+      "edn-representations" : ["true"] ,
+      "general-serializations": [h'f5'],
+      "preferred-plus-serializations": [h'f5'],
+      "deterministic-serialization": [h'f5']
+   }
+
+   File: simple111.edn
+
+   Note that the simple value 111 is of not particular significance.  It
+   was selected because it is an unassigned simple value.
+
+   {
+      "description": "The simple value 111" ,
+      "edn-representations" : ["simple(111)"] ,
+      "general-serializations": [h'f86f'],
+      "preferred-plus-serializations": [h'f86f'],
+      "deterministic-serialization": [h'f86f']
+   }
+
+   File: float_zero.edn
+
+   {
+      "description": "Floating-point positive zero",
+      "edn-representations" : ["0.0"] ,
+      "general-serializations": [h'f90000',
+                                 h'fa00000000',
+                                 h'fb0000000000000000'],
+      "preferred-plus-serializations": [h'f90000'],
+      "deterministic-serialization": [h'f90000']
+   }
+
+   File: float_double.edn
+
+   {
+      "description": "Double-precision normal float" ,
+      "edn-representations" : ["1.7976931348623157e+308"] ,
+      "general-serializations": [h'fb7fefffffffffffff'],
+      "preferred-plus-serializations": [h'fb7fefffffffffffff'],
+      "deterministic-serialization": [h'fb7fefffffffffffff']
+   }
+
+   File: float_double_subnormal.edn
+
+   Note that full subnormal support is required for all serializations
+   defined in this document.
+
+   {
+      "description": "Double-precision negative subnormal float",
+      "edn-representations": ["-5.0e-324"],
+      "general-serializations": [h'fb8000000000000001' ],
+      "preferred-plus-serializations": [h'fb8000000000000001' ],
+      "deterministic-serialization": [h'fb8000000000000001']
+   }
+
+   File: float_single.edn
+
+   {
+      "description": "Single-precision normal float" ,
+      "edn-representations" : ["-16777216.0"] ,
+      "general-serializations": [h'fbc170000000000000',
+                                 h'facb800000'],
+      "preferred-plus-serializations": [h'facb800000'],
+      "deterministic-serialization": [h'facb800000']
+   }
+
+   File: float_single_subnormal.edn
+
+   {
+      "description": "Single-precision subnormal float" ,
+      "edn-representations" : ["5.8774717541114375E-39"] ,
+      "general-serializations": [h'fb3800000000000000',
+                                 h'fa00400000' ],
+      "preferred-plus-serializations": [h'fa00400000'],
+      "deterministic-serialization": [h'fa00400000']
+   }
+
+   File: float_half.edn
+
+   {
+      "description": "half-precision normal float" ,
+      "edn-representations" : ["65504.0"] ,
+      "general-serializations": [h'fb40effc0000000000',
+                                 h'fa477fe000',
+                                 h'f97bff' ],
+      "preferred-plus-serializations": [h'f97bff'],
+      "deterministic-serialization": [h'f97bff']
+   }
+
+   File: float_half_subnormal.edn
+
+   {
+      "description": "Half-precision subnormal float" ,
+      "edn-representations" : ["3.0517578125E-5"] ,
+      "general-serializations": [h'fb3f00000000000000',
+                                 h'fa38000000',
+                                 h'f90200' ],
+      "preferred-plus-serializations": [h'f90200'],
+      "deterministic-serialization": [h'f90200']
+   }
+
+   File: float_neg_infinity.edn
+
+   {
+     "description": "Negative Infinity",
+     "edn-representations" : ["-Infinity"] ,
+     "general-serializations": [h'f9fc00',
+                                h'faff800000',
+                                h'fbfff0000000000000'],
+     "preferred-plus-serializations": [h'f9fc00'],
+     "deterministic-serialization": [h'f9fc00']
+   }
+
+   File: float_quiet_nan.edn
+
+   {
+     "description": "Floating-point quiet NaN",
+     "edn-representations" : ["NaN"] ,
+     "general-serializations": [h'f97e00',
+                                h'fa7fc00000',
+                                h'fb7ff8000000000000'],
+     "preferred-plus-serializations": [h'f97e00'],
+     "deterministic-serialization": [h'f97e00']
+   }
+
+   File: float_nan_payload.edn
+
+   The NaN payload is a special case.  For preferred-plus and
+   deterministic serialization, the decode should fail.  For general
+   serialization a NaN with a payload should be returned, but there is
+   no EDN representation for that.
+
+   {
+     "description": " Floating-point NaN payload/significand is 0x1ff",
+     "edn-representations" : [] ,
+     "general-serializations": [h'f97dff',
+                                h'fa7fbfe000',
+                                h'fb7ff7fc0000000000'],
+     "preferred-plus-serializations": [],
+     "deterministic-serialization": []
+   }
 
 Contributors
 
