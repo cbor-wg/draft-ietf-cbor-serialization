@@ -2084,7 +2084,7 @@ number of this RFC and remove this note.</span><a href="#section-10-1" class="pi
 <dd class="break"></dd>
 <dt id="Examples-Repo">[Examples-Repo]</dt>
         <dd>
-<span class="refTitle">"draft-ietf-cbor-serialization"</span>, <span>&lt;<a href="https://github.com/cbor-wg/draft-ietf-cbor-serialization/tree/main/examples">https://github.com/cbor-wg/draft-ietf-cbor-serialization/tree/main/examples</a>&gt;</span>. </dd>
+<span class="refAuthor">IETF CBOR WG</span>, <span class="refTitle">"draft-ietf-cbor-serialization"</span>, <span>&lt;<a href="https://github.com/cbor-wg/draft-ietf-cbor-serialization/tree/main/examples">https://github.com/cbor-wg/draft-ietf-cbor-serialization/tree/main/examples</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.mcnally-deterministic-cbor">[I-D.mcnally-deterministic-cbor]</dt>
         <dd>
@@ -2758,7 +2758,7 @@ Decoding each such input must result in a conformance-checking error.<a href="#a
 <p id="appendix-I.1.3-4">General-serialization decoders are not tested in this way, since they must accept all valid serialization forms.<a href="#appendix-I.1.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="non-checking-decoder-test">
+<div id="NonChecking">
 <section id="appendix-I.1.4">
           <h4 id="name-non-checking-decoder-test">
 <a href="#appendix-I.1.4" class="section-number selfRef">I.1.4. </a><a href="#name-non-checking-decoder-test" class="section-name selfRef">Non-Checking Decoder Test</a>
@@ -2789,8 +2789,12 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
 <a href="#appendix-I.2" class="section-number selfRef">I.2. </a><a href="#name-example-data-items" class="section-name selfRef">Example Data Items</a>
         </h3>
 <p id="appendix-I.2-1">These are available as individual files at <span>[<a href="#Examples-Repo" class="cite xref">Examples-Repo</a>]</span>.<a href="#appendix-I.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-I.2-2">File: zero.edn<a href="#appendix-I.2-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-I.2-3">
+<p id="appendix-I.2-2">All general serialization examples of strings, arrays and maps include indefinite-length encodings so as to provide full test cases.
+CBOR libraries that don't support indefinite-length decoding can not claim to support general serialization even if they support most of the rest of general serialization.
+For the purpose of classification by this document they are preferred-plus libraries with extra decoding features.
+The extra decoding features can be tested as described in <a href="#NonChecking" class="auto internal xref">Appendix I.1.4</a>.<a href="#appendix-I.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-3">File: zero.edn<a href="#appendix-I.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-4">
 <pre>
 {
    "description": "The integer 0" ,
@@ -2805,10 +2809,10 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'00'],
    "deterministic-serialization": [h'00']
 }
-</pre><a href="#appendix-I.2-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-4" class="pilcrow">¶</a>
 </div>
-<p id="appendix-I.2-4">File: three.edn<a href="#appendix-I.2-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-I.2-5">
+<p id="appendix-I.2-5">File: three.edn<a href="#appendix-I.2-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-6">
 <pre>
 {
    "description": "The integer 3" ,
@@ -2822,10 +2826,10 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'03'],
    "deterministic-serialization": [h'03']
 }
-</pre><a href="#appendix-I.2-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-6" class="pilcrow">¶</a>
 </div>
-<p id="appendix-I.2-6">File: minus_twenty_five.edn<a href="#appendix-I.2-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-I.2-7">
+<p id="appendix-I.2-7">File: minus_twenty_five.edn<a href="#appendix-I.2-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-8">
 <pre>
 {
    "description": "The integer -25",
@@ -2838,9 +2842,10 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'3818'],
    "deterministic-serialization": [h'3818']
 }
-</pre><a href="#appendix-I.2-7" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-8" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-8">
+<p id="appendix-I.2-9">File: 65_bit_neg.edn<a href="#appendix-I.2-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-10">
 <pre>
 {
    "description": "Largest negative integer" ,
@@ -2850,187 +2855,10 @@ When decoding does fail, the expected error is typically “unsupported.”<a hr
    "preferred-plus-serializations": [h'3bffffffffffffffff'],
    "deterministic-serialization": [h'3bffffffffffffffff']
 }
-</pre><a href="#appendix-I.2-8" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-9">
-<pre>
-{
-   "description": "Floating-point positive zero",
-   "edn-representations" : ["0.0"] ,
-   "general-serializations": [h'f90000',
-                              h'fa00000000',
-                              h'fb0000000000000000'],
-   "preferred-plus-serializations": [h'f90000'],
-   "deterministic-serialization": [h'f90000']
-}
-</pre><a href="#appendix-I.2-9" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-10">
-<pre>
-{
-   "description": "Double-precision negative subnormal float",
-   "edn-representations": ["-5.0e-324"],
-   "general-serializations": [h'fb8000000000000001' ],
-   "preferred-plus-serializations": [h'fb8000000000000001' ],
-   "deterministic-serialization": [h'fb8000000000000001']
-}
 </pre><a href="#appendix-I.2-10" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-11">
-<pre>
-{
-   "description": "Double-precision normal float" ,
-   "edn-representations" : ["1.7976931348623157e+308"] ,
-   "general-serializations": [h'fb7fefffffffffffff'],
-   "preferred-plus-serializations": [h'fb7fefffffffffffff'],
-   "deterministic-serialization": [h'fb7fefffffffffffff']
-}
-</pre><a href="#appendix-I.2-11" class="pilcrow">¶</a>
-</div>
+<p id="appendix-I.2-11">File: byte_string.edn<a href="#appendix-I.2-11" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-I.2-12">
-<pre>
-{
-   "description": "Half-precision subnormal float" ,
-   "edn-representations" : ["3.0517578125E-5"] ,
-   "general-serializations": [h'fb3f00000000000000',
-                              h'fa38000000',
-                              h'f90200' ],
-   "preferred-plus-serializations": [h'f90200'],
-   "deterministic-serialization": [h'f90200']
-}
-</pre><a href="#appendix-I.2-12" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-13">
-<pre>
-{
-   "description": "half-precision normal float" ,
-   "edn-representations" : ["65504.0"] ,
-   "general-serializations": [h'fb40effc0000000000',
-                              h'fa477fe000',
-                              h'f97bff' ],
-   "preferred-plus-serializations": [h'f97bff'],
-   "deterministic-serialization": [h'f97bff']
-}
-
-</pre><a href="#appendix-I.2-13" class="pilcrow">¶</a>
-</div>
-<p id="appendix-I.2-14">The NaN payload is a special case.
-For preferred-plus and deterministic serialization, the decode should fail.
-For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.<a href="#appendix-I.2-14" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-I.2-15">
-<pre>
-{
-  "description": " Floating-point NaN payload/significand is 0x1ff",
-  "edn-representations" : [] ,
-  "general-serializations": [h'f97dff',
-                             h'fa7fbfe000',
-                             h'fb7ff7fc0000000000'],
-  "preferred-plus-serializations": [],
-  "deterministic-serialization": []
-}
-</pre><a href="#appendix-I.2-15" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-16">
-<pre>
-{
-  "description": "Negative Infinity",
-  "edn-representations" : ["-Infinity"] ,
-  "general-serializations": [h'f9fc00',
-                             h'faff800000',
-                             h'fbfff0000000000000'],
-  "preferred-plus-serializations": [h'f9fc00'],
-  "deterministic-serialization": [h'f9fc00']
-}
-</pre><a href="#appendix-I.2-16" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-17">
-<pre>
-{
-  "description": "Floating-point quiet NaN",
-  "edn-representations" : ["NaN"] ,
-  "general-serializations": [h'f97e00',
-                             h'fa7fc00000',
-                             h'fb7ff8000000000000'],
-  "preferred-plus-serializations": [h'f97e00'],
-  "deterministic-serialization": [h'f97e00']
-}
-</pre><a href="#appendix-I.2-17" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-18">
-<pre>
-{
-   "description": "Single-precision subnormal float" ,
-   "edn-representations" : ["5.8774717541114375E-39"] ,
-   "general-serializations": [h'fb3800000000000000',
-                              h'fa00400000' ],
-   "preferred-plus-serializations": [h'fa00400000'],
-   "deterministic-serialization": [h'fa00400000']
-}
-</pre><a href="#appendix-I.2-18" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-19">
-<pre>
-{
-   "description": "Single-precision normal float" ,
-   "edn-representations" : ["-16777216.0"] ,
-   "general-serializations": [h'fbc170000000000000',
-                              h'facb800000'],
-   "preferred-plus-serializations": [h'facb800000'],
-   "deterministic-serialization": [h'facb800000']
-}
-</pre><a href="#appendix-I.2-19" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-20">
-<pre>
-{
-   "description": "The simple value 'true'" ,
-   "edn-representations" : ["true"] ,
-   "general-serializations": [h'f5'],
-   "preferred-plus-serializations": [h'f5'],
-   "deterministic-serialization": [h'f5']
-}
-</pre><a href="#appendix-I.2-20" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-21">
-<pre>
-{
-   "description": "The simple value 111" ,
-   "edn-representations" : ["simple(111)"] ,
-   "general-serializations": [h'f86f'],
-   "preferred-plus-serializations": [h'f86f'],
-   "deterministic-serialization": [h'f86f']
-}
-</pre><a href="#appendix-I.2-21" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-22">
-<pre>
-{
-  "description": "A positive big num",
-  "edn-representations" : ["79228162514264337593543950335"],
-  "general-serializations": [h'c24cffffffffffffffffffffffff',
-                             h'c24e0000ffffffffffffffffffffffff' ],
-  "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
-  "deterministic-serialization":  [h'c24cffffffffffffffffffffffff']
-}
-</pre><a href="#appendix-I.2-22" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-23">
-<pre>
-{
-   "description": "Negative bignum on boundary with type 1 integer",
-   "edn-representations" : ["-18446744073709551617"],
-   "general-serializations": [
-     h'c349010000000000000000',
-     h'c34c000000010000000000000000',
-     h'c35f450000000001480000000000000000ff'],
-   "preferred-plus-serializations": [
-     h'c349010000000000000000'],
-   "deterministic-serialization":  [
-    h'c349010000000000000000']
-}
-</pre><a href="#appendix-I.2-23" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-24">
 <pre>
 {
    "description": "The byte string of length 3: 0x010203",
@@ -3041,9 +2869,10 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'43010203'],
    "deterministic-serialization": [h'43010203']
 }
-</pre><a href="#appendix-I.2-24" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-12" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-25">
+<p id="appendix-I.2-13">File: text_string.edn<a href="#appendix-I.2-13" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-14">
 <pre>
 {
    "description": "The text string 'hi there'",
@@ -3058,9 +2887,10 @@ For general serialization a NaN with a payload should be returned, but there is 
    "deterministic-serialization": [
      h'686869207468657265']
 }
-</pre><a href="#appendix-I.2-25" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-14" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-26">
+<p id="appendix-I.2-15">File: array.edn<a href="#appendix-I.2-15" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-16">
 <pre>
 {
    "description": "The array [1, 2, 3]",
@@ -3070,9 +2900,12 @@ For general serialization a NaN with a payload should be returned, but there is 
    "preferred-plus-serializations": [h'83010203'],
    "deterministic-serialization": [h'83010203']
 }
-</pre><a href="#appendix-I.2-26" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-16" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-27">
+<p id="appendix-I.2-17">File: map.edn<a href="#appendix-I.2-17" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-18">Note that map order is not significant in the CBOR data model.
+Maps are only sorted to provide deterministic encoding.<a href="#appendix-I.2-18" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-19">
 <pre>
 {
   "description": "Map with three items using integer map keys",
@@ -3102,9 +2935,10 @@ For general serialization a NaN with a payload should be returned, but there is 
   "deterministic-serialization": [
     h'a301617802617903617a']
 }
-</pre><a href="#appendix-I.2-27" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-19" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-28">
+<p id="appendix-I.2-20">File: map_strings.edn<a href="#appendix-I.2-20" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-21">
 <pre>
 {
   "description": "Three item map with string keys",
@@ -3135,9 +2969,45 @@ For general serialization a NaN with a payload should be returned, but there is 
   "deterministic-serialization": [
     h'a3636162630163646566026367686903' ]
 }
-</pre><a href="#appendix-I.2-28" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-21" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-29">
+<p id="appendix-I.2-22">File: positive_bignum.edn<a href="#appendix-I.2-22" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-23">Note that big numbers are included in the test data because preferred-plus serialization requires their unification with integers.<a href="#appendix-I.2-23" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-24">
+<pre>
+{
+  "description": "A positive big num",
+  "edn-representations" : ["79228162514264337593543950335"],
+  "general-serializations": [h'c24cffffffffffffffffffffffff',
+                             h'c24e0000ffffffffffffffffffffffff' ],
+  "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
+  "deterministic-serialization":  [h'c24cffffffffffffffffffffffff']
+}
+</pre><a href="#appendix-I.2-24" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-25">File: negative_bignum.edn<a href="#appendix-I.2-25" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-26">Note that this is the value closest that can be represented as a big number, not a type 1 integer for preferred-plus serialization.<a href="#appendix-I.2-26" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-27">
+<pre>
+{
+   "description": "Negative bignum on boundary with type 1 integer",
+   "edn-representations" : ["-18446744073709551617"],
+   "general-serializations": [
+     h'c349010000000000000000',
+     h'c34c000000010000000000000000',
+     h'c35f450000000001480000000000000000ff'],
+   "preferred-plus-serializations": [
+     h'c349010000000000000000'],
+   "deterministic-serialization":  [
+    h'c349010000000000000000']
+}
+</pre><a href="#appendix-I.2-27" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-28">File: date_epoch_tag.edn<a href="#appendix-I.2-28" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-29">Note that this is provided as a test case for tags.
+There are no requirements for dates in this document.
+The tag content in this example does vary by serialization type.<a href="#appendix-I.2-29" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-30">
 <pre>
 {
    "description": "An epoch date tag" ,
@@ -3152,9 +3022,13 @@ For general serialization a NaN with a payload should be returned, but there is 
    "deterministic-serialization":   [h'c11a69e4fbd3']
 }
 
-</pre><a href="#appendix-I.2-29" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-30" class="pilcrow">¶</a>
 </div>
-<div class="alignLeft art-text artwork" id="appendix-I.2-30">
+<p id="appendix-I.2-31">File: date_string_tag.edn<a href="#appendix-I.2-31" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-32">Note that this is provided as a test case for tags.
+There are no requirements for dates in this document.
+The tag content in this example does vary by serialization type.<a href="#appendix-I.2-32" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-33">
 <pre>
 {
   "description": "A date string tag" ,
@@ -3173,7 +3047,172 @@ For general serialization a NaN with a payload should be returned, but there is 
     h'c074323032362d30342d31395430333a35393a31355a']
 }
 
-</pre><a href="#appendix-I.2-30" class="pilcrow">¶</a>
+</pre><a href="#appendix-I.2-33" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-34">File: true.edn<a href="#appendix-I.2-34" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-35">
+<pre>
+{
+   "description": "The simple value 'true'" ,
+   "edn-representations" : ["true"] ,
+   "general-serializations": [h'f5'],
+   "preferred-plus-serializations": [h'f5'],
+   "deterministic-serialization": [h'f5']
+}
+</pre><a href="#appendix-I.2-35" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-36">File: simple111.edn<a href="#appendix-I.2-36" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-37">Note that the simple value 111 is of not particular significance.
+It was selected because it is an unassigned simple value.<a href="#appendix-I.2-37" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-38">
+<pre>
+{
+   "description": "The simple value 111" ,
+   "edn-representations" : ["simple(111)"] ,
+   "general-serializations": [h'f86f'],
+   "preferred-plus-serializations": [h'f86f'],
+   "deterministic-serialization": [h'f86f']
+}
+</pre><a href="#appendix-I.2-38" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-39">File: float_zero.edn<a href="#appendix-I.2-39" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-40">
+<pre>
+{
+   "description": "Floating-point positive zero",
+   "edn-representations" : ["0.0"] ,
+   "general-serializations": [h'f90000',
+                              h'fa00000000',
+                              h'fb0000000000000000'],
+   "preferred-plus-serializations": [h'f90000'],
+   "deterministic-serialization": [h'f90000']
+}
+</pre><a href="#appendix-I.2-40" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-41">File: float_double.edn<a href="#appendix-I.2-41" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-42">
+<pre>
+{
+   "description": "Double-precision normal float" ,
+   "edn-representations" : ["1.7976931348623157e+308"] ,
+   "general-serializations": [h'fb7fefffffffffffff'],
+   "preferred-plus-serializations": [h'fb7fefffffffffffff'],
+   "deterministic-serialization": [h'fb7fefffffffffffff']
+}
+</pre><a href="#appendix-I.2-42" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-43">File: float_double_subnormal.edn<a href="#appendix-I.2-43" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-44">Note that full subnormal support is required for all serializations defined in this document.<a href="#appendix-I.2-44" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-45">
+<pre>
+{
+   "description": "Double-precision negative subnormal float",
+   "edn-representations": ["-5.0e-324"],
+   "general-serializations": [h'fb8000000000000001' ],
+   "preferred-plus-serializations": [h'fb8000000000000001' ],
+   "deterministic-serialization": [h'fb8000000000000001']
+}
+</pre><a href="#appendix-I.2-45" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-46">File: float_single.edn<a href="#appendix-I.2-46" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-47">
+<pre>
+{
+   "description": "Single-precision normal float" ,
+   "edn-representations" : ["-16777216.0"] ,
+   "general-serializations": [h'fbc170000000000000',
+                              h'facb800000'],
+   "preferred-plus-serializations": [h'facb800000'],
+   "deterministic-serialization": [h'facb800000']
+}
+</pre><a href="#appendix-I.2-47" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-48">File: float_single_subnormal.edn<a href="#appendix-I.2-48" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-49">
+<pre>
+{
+   "description": "Single-precision subnormal float" ,
+   "edn-representations" : ["5.8774717541114375E-39"] ,
+   "general-serializations": [h'fb3800000000000000',
+                              h'fa00400000' ],
+   "preferred-plus-serializations": [h'fa00400000'],
+   "deterministic-serialization": [h'fa00400000']
+}
+</pre><a href="#appendix-I.2-49" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-50">File: float_half.edn<a href="#appendix-I.2-50" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-51">
+<pre>
+{
+   "description": "half-precision normal float" ,
+   "edn-representations" : ["65504.0"] ,
+   "general-serializations": [h'fb40effc0000000000',
+                              h'fa477fe000',
+                              h'f97bff' ],
+   "preferred-plus-serializations": [h'f97bff'],
+   "deterministic-serialization": [h'f97bff']
+}
+
+</pre><a href="#appendix-I.2-51" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-52">File: float_half_subnormal.edn<a href="#appendix-I.2-52" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-53">
+<pre>
+{
+   "description": "Half-precision subnormal float" ,
+   "edn-representations" : ["3.0517578125E-5"] ,
+   "general-serializations": [h'fb3f00000000000000',
+                              h'fa38000000',
+                              h'f90200' ],
+   "preferred-plus-serializations": [h'f90200'],
+   "deterministic-serialization": [h'f90200']
+}
+</pre><a href="#appendix-I.2-53" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-54">File: float_neg_infinity.edn<a href="#appendix-I.2-54" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-55">
+<pre>
+{
+  "description": "Negative Infinity",
+  "edn-representations" : ["-Infinity"] ,
+  "general-serializations": [h'f9fc00',
+                             h'faff800000',
+                             h'fbfff0000000000000'],
+  "preferred-plus-serializations": [h'f9fc00'],
+  "deterministic-serialization": [h'f9fc00']
+}
+</pre><a href="#appendix-I.2-55" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-56">File: float_quiet_nan.edn<a href="#appendix-I.2-56" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-57">
+<pre>
+{
+  "description": "Floating-point quiet NaN",
+  "edn-representations" : ["NaN"] ,
+  "general-serializations": [h'f97e00',
+                             h'fa7fc00000',
+                             h'fb7ff8000000000000'],
+  "preferred-plus-serializations": [h'f97e00'],
+  "deterministic-serialization": [h'f97e00']
+}
+</pre><a href="#appendix-I.2-57" class="pilcrow">¶</a>
+</div>
+<p id="appendix-I.2-58">File: float_nan_payload.edn<a href="#appendix-I.2-58" class="pilcrow">¶</a></p>
+<p id="appendix-I.2-59">The NaN payload is a special case.
+For preferred-plus and deterministic serialization, the decode should fail.
+For general serialization a NaN with a payload should be returned, but there is no EDN representation for that.<a href="#appendix-I.2-59" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-I.2-60">
+<pre>
+{
+  "description": " Floating-point NaN payload/significand is 0x1ff",
+  "edn-representations" : [] ,
+  "general-serializations": [h'f97dff',
+                             h'fa7fbfe000',
+                             h'fb7ff7fc0000000000'],
+  "preferred-plus-serializations": [],
+  "deterministic-serialization": []
+}
+</pre><a href="#appendix-I.2-60" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
