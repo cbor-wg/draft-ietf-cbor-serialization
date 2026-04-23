@@ -251,10 +251,6 @@ Table of Contents
 
 2.  Recommendations Summary
 
-
-   // This section substantially revised in -03 and hopefully close to
-   // its final form
-
 2.1.  Protocol Specifications
 
 2.1.1.  Framework Protocols
@@ -959,7 +955,8 @@ Appendix B.  General Protocol Considerations for Determinism
    This is the section that covers what is know as ALDR in some
    discussions.
 
-   [^rfced] Please remove above sentence before publication
+
+   // Please remove above sentence before publication
 
    In addition to Section 5, there are considerations in the design of
    any deterministic protocol.
