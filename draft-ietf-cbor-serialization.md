@@ -998,7 +998,7 @@ While this generally works &mdash; particularly because the preferred serializat
 This appendix provides examples of the serializations described in this document.
 Each example is a single data item.
 Collectively, the examples cover the major CBOR data types and some special cases.
-{{tab-example}} describes the five fields provide for each example.
+{{tab-example}} describes the five fields provided for each example.
 
 | field | description |
 |-|-|
@@ -1033,7 +1033,7 @@ If an example provides multiple EDN representations, each of them should be test
 The encoder should be either configured for, or to default to, one of the three serialization types described in this document.
 A test succeeds if the encoder produces any of the encoded representations given in the example for that serialization type.
 
-If an encoder supports multiple serialization modes, each mode can be tested in turn.
+If an encoder supports multiple serialization types, each type can be tested in turn.
 
 
 ### Decode Test
@@ -1041,10 +1041,10 @@ If an encoder supports multiple serialization modes, each mode can be tested in 
 To test decoding, invoke the decoder for each example data.
 
 The decoder should be either to be configured for, or to default to, one of the three serialization types described in this document.
-For the selected serialization type, process every encoded representation defined for that type.
+For the selected serialization type, process every encoded representation defined for the target type.
 A test passes if the decoded output matches the value specified by the corresponding EDN representation.
 
-If a decoder supports multiple serialization modes, each mode can be tested in turn.
+If a decoder supports multiple serialization types, each type can be tested in turn.
 
 
 ### Checking Decoder Test
