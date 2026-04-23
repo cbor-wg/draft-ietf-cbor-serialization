@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                           21 April 2026
-Expires: 23 October 2026
+Intended status: Standards Track                           23 April 2026
+Expires: 25 October 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 October 2026.
+   This Internet-Draft will expire on 25 October 2026.
 
 Copyright Notice
 
@@ -1724,13 +1724,14 @@ I.2.  Example Data Items
       "deterministic-serialization": [h'3818']
    }
 
-{
-   "description": "Large negative integer that doesn't fit in a typical 64-bit signed type" ,
-   "edn-representations" : ["-18446742974197923840"] ,
-   "general-serializations": [h'3bfffffeffffffffff'],
-   "preferred-plus-serializations": [h'3bfffffeffffffffff'],
-   "deterministic-serialization": [h'3bfffffeffffffffff']
-}
+   {
+      "description": "Largest negative integer" ,
+      "edn-representations" : ["-18446744073709551616"] ,
+      "general-serializations": [h'3bffffffffffffffff',
+                                 h'c348ffffffffffffffff'],
+      "preferred-plus-serializations": [h'3bffffffffffffffff'],
+      "deterministic-serialization": [h'3bffffffffffffffff']
+   }
 
    {
       "description": "Floating-point positive zero",
@@ -1855,6 +1856,16 @@ I.2.  Example Data Items
    "preferred-plus-serializations": [h'c24cffffffffffffffffffffffff'],
    "deterministic-serialization":   [h'c24cffffffffffffffffffffffff']
 }
+
+ {
+    "description": "Negative bignum on boundary with type 1 integer",
+    "edn-representations" : ["-18446744073709551617"],
+    "general-serializations": [h'c349010000000000000000',
+                               h'c34c000000010000000000000000',
+                               h'c35f450000000001480000000000000000ff'],
+    "preferred-plus-serializations": [h'c349010000000000000000'],
+    "deterministic-serialization":   [h'c349010000000000000000']
+ }
 
    {
       "description": "The byte string of length 3: 0x010203",
