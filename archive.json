@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-04-26T02:42:42.813060+00:00",
+  "timestamp": "2026-04-30T02:53:10.223393+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -338,7 +338,7 @@
       "labels": [],
       "body": "- using ordinary and deterministic eliminate some avenues for exfiltrating data that is invisible to the attackers\n  - based on indefinite length choices - very powerful\n  - based on specific encoding chosen\n  - based on order of maps\n- using ordinary or deterministic encoding eliminates some categories of resource exhaustion attacks\n- ",
       "createdAt": "2025-12-10T14:57:41Z",
-      "updatedAt": "2025-12-11T20:20:45Z",
+      "updatedAt": "2026-04-29T09:13:24Z",
       "closedAt": null,
       "comments": [
         {
@@ -347,6 +347,13 @@
           "body": "1) The critical security considerations would be NEW ones that come into play because of the NEW things this draft defines over and above RFC 8949. I don't think there are any of these because we already have preferred and 4.2.1 in RFC 8949.\n\n2) If we have come to understand new threats that apply to 8949, then they should be errata for 8949, a separate document or if in this document framed as an update to 8949 security considerations. The threats you mention seem to be in this category.\n\n3) I'm a security considerations minimalist (but of course will go with consensus).\n\n4) I'm probably not the person to write these up.",
           "createdAt": "2025-12-11T20:20:45Z",
           "updatedAt": "2025-12-11T20:20:45Z"
+        },
+        {
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As this document is normative, I think the IESG will insist on discussing relevant security concerns that were left out of RFC 8949, some of which we have discovered since. I will add the security concerns about blindingly trying to check equality or greater than / less than operators on NaN values.",
+          "createdAt": "2026-04-29T09:13:24Z",
+          "updatedAt": "2026-04-29T09:13:24Z"
         }
       ]
     },
