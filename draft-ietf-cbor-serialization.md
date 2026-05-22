@@ -114,7 +114,7 @@ informative:
 
 This document defines two CBOR serializations: "preferred-plus serialization" and "deterministic serialization."
 It also introduces the term "general serialization" to name the superset of all serializations defined in RFC 8949.
-Together, these three form a complete set of serializations that cover the majority of CBOR serialization use cases.
+Together, these three form a set of serializations that cover the majority of CBOR serialization use cases.
 
 These serializations are largely compatible with those widely implemented by the CBOR community.
 
@@ -285,7 +285,7 @@ If an end-to-end protocol specification does not state serialization requirement
 
 This section assigns the name "general serialization" to the superset of all encodings standardized in {{Section 3 of -cbor}}.
 The term itself was not explicitly defined in {{-cbor}}.
-Preferred-plus and deterministic serialization are subsets of general serialization.
+Preferred-plus and deterministic serialization are subsets of it.
 
 General serialization permits any and all of these:
 
@@ -299,13 +299,13 @@ A decoder claiming to support general serialization MUST accept and decode any a
 
 ## General Serialization is the Default
 
-When a CBOR-based protocol specification does not explicitly specify serialization, general serialization is implied &mdash;
+When a CBOR-based protocol specification does not explicitly specify serialization, general serialization is the implied requirement &mdash;
 meaning a compliant decoder must accept and decode any and all encodings it permits, including both definite and indefinite lengths.
 
 CBOR Web Token {{-CWT}}, for example, does not specify serialization, so a fully compliant CWT decoder must handle general serialization, including indefinite-length strings, arrays, and maps.
-In practice, however, many CWT decoders cannot process the full range of general serialization mdash; indefinite lengths in particular.
+In practice, however, many CWT decoders cannot process the full range of general serialization &mdash; indefinite lengths in particular.
 Encoders have adapted accordingly, typically restricting their output to the subset of serializations that decoders can reliably handle, most notably by avoiding indefinite lengths altogether.
-The same pattern holds for other protocols in practice, such as COSE [RFC9052].
+The same pattern holds for other protocols, such as COSE [RFC9052].
 
 
 ## When To Use General Serialization {#WhenGeneral}
@@ -321,7 +321,7 @@ Although it is the default for CBOR in theory, it has not been widely implemente
 
 See also special serialization ({{SpecialSerializations}}), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
 
-CBOR libraries may nonetheless wish to support general serialization, as a superset of other serialization forms, to remain useful across a broader range of protocols.
+CBOR libraries may nonetheless wish to support general serialization, as a superset of other serialization forms, to be useful across a broader range of protocols.
 
 
 # Preferred-Plus Serialization {#PreferredPlusSerialization}
@@ -385,12 +385,12 @@ See also {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further backgro
 ## When to use preferred-plus serialization
 
 Preferred-plus is the recommended default.
-It supports all CBOR data types and value ranges (except non-trivial NaNs), typically produces the most compact encoding, is straightforward to implement, and is widely supported by CBOR libraries
-Its requirements are stated formally, requiring decoders to accept anything an encoder is permitted to send, which assures interoperability.
+It supports all CBOR data types and value ranges (except non-trivial NaNs), typically produces the most compact encoding, is straightforward to implement, and is widely supported by CBOR libraries.
+It provides strong interoperability because (1) decoders are required to accept all encodings that a preferred-plus encoder is permitted to produce, and (2) the requirements are formally specified.
 
 Choose a different serialization only when you have a specific need: deterministic serialization when determinism is required, a special serialization with indefinite lengths when streaming is required,
 or another special serialization for capabilities beyond what preferred-plus provides (see {{SpecialSerializations}}).
-Note that preferred-plus is fully deterministic when maps are not in use.
+Note that preferred-plus is deterministic when maps are not in use.
 
 ## Relation To Preferred Serialization {#RelationToPreferred}
 
