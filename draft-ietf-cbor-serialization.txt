@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                           23 April 2026
-Expires: 25 October 2026
+Intended status: Standards Track                             22 May 2026
+Expires: 23 November 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 October 2026.
+   This Internet-Draft will expire on 23 November 2026.
 
 Copyright Notice
 
@@ -1828,7 +1828,7 @@ I.2.  Example Data Items
         h'a3636465660263676869036361626301',
         h'a3636768690363616263016364656602',
         h'a3636768690363646566026361626301',
-        h'bf6162630163646566026367686903ff',
+        h'bf636162630163646566026367686903ff',
         h'bf7f6161626263ff017f6264656166ff027f63676869ff03ff'],
      "preferred-plus-serializations": [
        h'a3636162630163646566026367686903',
@@ -1836,8 +1836,7 @@ I.2.  Example Data Items
        h'a3636465660263616263016367686903',
        h'a3636465660263676869036361626301',
        h'a3636768690363616263016364656602',
-       h'a3636768690363646566026361626301',
-       h'bf6162630163646566026367686903ff' ],
+       h'a3636768690363646566026361626301'],
      "deterministic-serialization": [
        h'a3636162630163646566026367686903' ]
    }
