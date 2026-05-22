@@ -443,6 +443,9 @@ See {{PreferredPlusSerialization}} and {{NaN}} for details on, and the rationale
 Note that in deterministic serialization, any big number that can be represented as an integer must be encoded as an integer.
 This rule is inherited from preferred-plus serialization ({{PreferredPlusSerialization}}), just as {{Section 4.2.1 of -cbor}} inherits this requirement from preferred serialization.
 
+See also {{DeterministicConsiderations}} for considerations involved in designing a deterministic protocol that extend beyond serialization.
+
+
 
 ## Encoder Requirements {#DeterministicEncoding}
 
@@ -608,13 +611,7 @@ In contrast, JSON permits variations (e.g., representing 1 as 1, 1.0, or 0.1e1),
 That is, the variation in JSON is for human readability, not to facilitate easier implementation in constrained environments.
 
 
-# General Protocol Considerations for Determinism
-
-This is the section that covers what is know as ALDR in some discussions.
-
-[^rfced]
-
-[^rfced]: Please remove above sentence before publication
+# General Protocol Considerations for Determinism {#DeterministicConsiderations}
 
 In addition to {{DeterministicSerialization}}, there are considerations in the design of any deterministic protocol.
 
