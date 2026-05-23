@@ -797,6 +797,21 @@ The primary use case for non-trivial NaNs is existing systems that already use t
 For example, a program that relies on non-trivial NaNs internally may need to serialize its data to run across machines connected by a network.
 
 
+# Example Code for Encoding into Half-Precision Floating Point
+
+Preferred and deterministic serialization require floating-point values that fit in half-precision to be encoded as such.
+{{Appendix D of -cbor}} provides example code for decoding half-precision values; this appendix provides corresponding code for encoding them.
+
+The function takes a double-precision value passed as a 64-bit integer.
+It returns -1 if the conversion would lose precision, or a two-byte integer in the range 0x0000–0xffff if successful.
+Prepend 0xf9 to obtain the CBOR-encoded form.
+
+~~~ c
+{::include half-encode.c}
+~~~
+{: #half-encode title="Example C Code for a Half-Precision Encoder"}
+
+
 # Big Numbers and the CBOR Data Model {#BigNumbersDataModel}
 
 The primary purpose of this document is to define preferred-plus and deterministic serialization.
