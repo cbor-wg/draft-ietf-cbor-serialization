@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                             22 May 2026
-Expires: 23 November 2026
+Intended status: Standards Track                             27 May 2026
+Expires: 28 November 2026
 
 
                    CBOR Serialization and Determinism
@@ -15,7 +15,7 @@ Abstract
 
    This document defines two CBOR serializations: "preferred-plus
    serialization" and "deterministic serialization."  It also introduces
-   the term "general serialization" to name the superset of all
+   the term "general serialization" to name the complete set of all
    serializations defined in RFC 8949.  Together, these three form a set
    of serializations that cover the majority of CBOR serialization use
    cases.
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 November 2026.
+   This Internet-Draft will expire on 28 November 2026.
 
 Copyright Notice
 
@@ -377,8 +377,8 @@ Table of Contents
 
 3.  General Serialization
 
-   This section assigns the name "general serialization" to the superset
-   of all encodings standardized in Section 3 of [STD94].  The term
+   This section assigns the name "general serialization" to the complete
+   set of all encodings standardized in Section 3 of [STD94].  The term
    itself was not explicitly defined in [STD94].  Preferred-plus and
    deterministic serialization are subsets of it.
 
@@ -397,7 +397,7 @@ Table of Contents
       big number 0xc34100).
 
    A decoder claiming to support general serialization MUST accept and
-   decode any and all of these encodings.
+   decode all the encodings for the data types it supports.
 
 3.1.  General Serialization is the Default
 
@@ -437,7 +437,7 @@ Table of Contents
    full general serialization support in the decoder.
 
    CBOR libraries may nonetheless wish to support general serialization,
-   as a superset of other serialization forms, to be useful across a
+   as a complete set of other serialization forms, to be useful across a
    broader range of protocols.
 
 4.  Preferred-Plus Serialization
@@ -700,6 +700,10 @@ Table of Contents
       to and from hardware registers.  CBOR is simple enough that
       encoders and decoders for some protocols can be implemented
       entirely in hardware.
+
+   *  Fixed-width floating-point encoding, relieving the encoder from
+      performing floating-point reduction to the shortest representable
+      form.
 
    *  In-place length updates for strings, arrays, and maps, by encoding
       their lengths in a fixed number of bits.  For example, if a string
