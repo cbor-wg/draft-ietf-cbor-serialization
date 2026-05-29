@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                             22 May 2026
-Expires: 23 November 2026
+Intended status: Standards Track                             29 May 2026
+Expires: 30 November 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 November 2026.
+   This Internet-Draft will expire on 30 November 2026.
 
 Copyright Notice
 
@@ -628,6 +628,9 @@ Table of Contents
    Section 4.2.1 of [STD94] inherits this requirement from preferred
    serialization.
 
+   See also Appendix B for considerations involved in designing a
+   deterministic protocol that extend beyond serialization.
+
 5.1.  Encoder Requirements
 
    1.  All of preferred-plus serialization defined in Section 4.1 MUST
@@ -951,12 +954,6 @@ Appendix A.  Information Model, Data Model and Serialization
    constrained environments.
 
 Appendix B.  General Protocol Considerations for Determinism
-
-   This is the section that covers what is know as ALDR in some
-   discussions.
-
-
-   // Please remove above sentence before publication
 
    In addition to Section 5, there are considerations in the design of
    any deterministic protocol.
