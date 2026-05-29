@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                             23 May 2026
-Expires: 24 November 2026
+Intended status: Standards Track                             29 May 2026
+Expires: 30 November 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 November 2026.
+   This Internet-Draft will expire on 30 November 2026.
 
 Copyright Notice
 
@@ -1267,23 +1267,25 @@ Appendix D.  Example Code for Encoding into Half-Precision Floating
    two-byte integer in the range 0x0000–0xffff if successful.  Prepend
    0xf9 to obtain the CBOR-encoded form.
 
-   int try_float16_encode(unsigned long b64) {
-     unsigned long s16 = b64 >> 48 & 0x8000UL;
-     unsigned long mant = b64 & 0xfffffffffffffUL;
-     unsigned long exp = b64 >> 52 & 0x7ffUL;
+   long try_float16_encode(unsigned long long b64) {
+     /* use 64-bit unsigned for internal work */
+     /* return 32-bit signed to allow for -1 for error and 16-bits unsigned for success */
+     unsigned long long s16  = b64 >> 48 & 0x8000ULL;
+     unsigned long long mant = b64 & 0xfffffffffffffULL;
+     unsigned long long exp  = b64 >> 52 & 0x7ffULL;
      if (exp == 0 && mant == 0)    /* f64 denorms are out of range */
-       return s16;                 /* so handle 0.0 and -0.0 only */
+       return (long)s16;           /* so handle 0.0 and -0.0 only */
      if (exp >= 999 && exp < 1009) { /* f16 denorm, exp16 = 0 */
        if (mant & ((1UL << (1051 - exp)) - 1))
          return -1;                /* bits lost in f16 denorm */
-       return s16 + ((mant + 0x10000000000000UL) >> (1051 - exp));
+       return (long)(s16 + ((mant + 0x10000000000000ULL) >> (1051 - exp)));
      }
-     if (mant & 0x3ffffffffffUL)   /* bits lost in f16 */
+     if (mant & 0x3ffffffffffULL)   /* bits lost in f16 */
        return -1;
      if (exp >= 1009 && exp <= 1038) /* normalized f16 */
-       return s16 + ((exp - 1008) << 10) + (mant >> 42);
+       return (long)(s16 + ((exp - 1008) << 10) + (mant >> 42));
      if (exp == 2047)              /* Inf, NaN */
-       return s16 + 0x7c00 + (mant >> 42);
+       return (long)(s16 + 0x7c00 + (mant >> 42));
      return -1;
    }
 
