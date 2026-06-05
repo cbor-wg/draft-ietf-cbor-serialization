@@ -37,7 +37,7 @@ contributor:
 - name: Wolf McNally
   organization: Blockchain Commons
   email: wolf@wolfmcnally.com
-- name: Carsten Borman
+- name: Carsten Bormann
   organization: Universität Bremen TZI
   email: cabo@tzi.org
 - name: Anders Rundgren
@@ -133,17 +133,17 @@ For example, the array \[1, 2\] can be serialized in more than one way:
 |-------------------|--------------------------------------------------|----------------------|
 | Definite-length   | The array length (2) is encoded at the beginning | 0x82 0x01 0x02       |
 | Indefinite-length | The array is terminated by the break byte (0xff) | 0x9f  0x01 0x02 0xff |
+{: #tab-array-ser title="[1, 2] definite-length and indefinite-length serializations"}
 
-
-Similar variation exists for integers, maps, strings, and floating-point numbers.
+Similar variation exists for most other CBOR data types.
 
 This variability is deliberate.
 CBOR is designed to allow encodings to be selected according to the constraints and requirements of a particular environment.
 The flexibility is a core design feature.
-(CBOR is not unique in this regard; BER and DER encoding for ASN.1 are a similar design choice.)
+(CBOR is not unique in this regard; compare ASN.1's BER encoding rules).
 
 For example, indefinite-length serialization is suited for streaming large arrays in constrained environments, where the total length is not known in advance.
-Conversely, definite-length serialization works well to decode small arrays in constrained environments.
+Conversely, definite-length serialization makes it easier to decode small arrays in constrained environments.
 
 As a result, CBOR libraries and protocol implementations commonly support only the serialization forms required for their intended use cases.
 This behavior is expected and aligns with CBOR’s design goals.
@@ -155,16 +155,16 @@ However, this flexibility introduces two challenges: interoperability and determ
 
 The interoperability challenge arises because partial implementations are both permitted and expected.
 For example, an encoder might transmit an indefinite-length array to a decoder that does not support indefinite-length encodings.
-Both implementations are compliant with {{-cbor}}.
+Both this encoder and decoder are allowed by {{-cbor}}.
 
 Decoders, in particular, frequently choose not to support all serialization forms.
 This may be due to operation in constrained environments or because implementing a full general decoder is significantly more work
 (particularly in languages like C and Rust, which lack built-in support for dynamic arrays, maps, and strings).
 
 In practice, most CBOR usage occurs outside highly constrained environments.
-This makes it both feasible and beneficial to define a common serialization suitable for general use.
+This makes it both feasible and beneficial to define a common reduced-feature serialization suitable for general use.
 
-Protocol specifications can reference such a serialization rather than restating detailed encoding rules, and library implementations can prioritize support for it.
+Protocol specifications can reference this serialization; library implementations can prioritize support for it.
 
 This document defines that serialization: preferred-plus serialization.
 
@@ -179,22 +179,21 @@ Many approaches to deterministic serialization are possible, each optimized for 
 However, as noted earlier, the majority of CBOR usage occurs outside constrained environments.
 It is therefore practical to define a single deterministic serialization suitable for general use.
 
-Protocol specifications and library implementations can reference this serialization instead of defining their own deterministic encoding rules.
+Protocol specifications can reference this serialization instead of defining their own deterministic encoding rules; library implementations can prioritize support for it.
 
 This document defines that serialization: deterministic serialization.
 
 
 ## Relation to RFC 8949
 
-This document defines new serializations rather than attempting to clarify those in {{-cbor}} (that need clarification).
-This approach enables the serialization requirements to be expressed directly in normative {{RFC2119}} language, and to be consolidated in this single comprehensive specification.
+This document defines new serializations rather than updating those in {{-cbor}}.
+This approach enables the serialization requirements to be expressed directly in normative {{RFC2119}} language and to be defined entirely in this document.
 This approach provides clarity and simplicity for implementers and the CBOR community over the long term.
 
-The serializations defined herein are formally new, but largely interchangeable with the way the serializations desecribed in {{-cbor}} are implemented.
+The serializations defined herein are formally new but largely interchangeable with the way the serializations described in {{-cbor}} are implemented.
 
-For example, preferred serialization described in {{-cbor}} is commonly implemented without support for indefinite-lengths.
-
-Preferred-plus serialization as defined here is largely the same as preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.
+For example, preferred serialization ({{Section 4.1 of -cbor}}) is commonly implemented without support for indefinite lengths.
+Preferred-plus serialization is effectively the same as preferred serialization without indefinite lengths, so it is largely interchangeable with what is commonly implemented.
 
 
 # Recommendations Summary {#Recommendations}
@@ -536,6 +535,9 @@ Four new control operators are defined for use in CDDL {{-cddl}}.
 | .prefpseq  | Use preferred-plus serialization for a CBOR sequence |
 | .dtrm      | Use deterministic serialization for a data item      |
 | .dtrmseq   | Use deterministic serialization for a CBOR sequence  |
+{: #tab-control-ops title="CDDL control operators for serialization"}
+
+
 
 These operators have the same semantics as the .cbor and .cborseq operators (See {{Section 3.8.4 of -cddl}}) with the additional requirement for preferred-plus or deterministic serialization.
 These specify that what is in the “controller” (the right side of the operator) be serialized as indicated.
@@ -590,6 +592,8 @@ These are broad concepts that can be applied to other serialization schemes like
  | Example | The temperature of something | A floating-point number representing the temperature | Encoded CBOR of a floating-point number |
  | Standards | {{UML}} | CDDL | CBOR |
  | Implementation Representation | n/a | API Input to CBOR encoder library, output from CBOR decoder library | Encoded CBOR in memory or for transmission |
+ {: #tab-models title="Information Model, Data Model and Serialization"}
+
 
 CBOR doesn't provide facilities for information models.
 They are mentioned here for completeness and to provide some context.
