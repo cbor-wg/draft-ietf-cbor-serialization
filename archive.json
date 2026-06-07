@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-31T03:49:54.110963+00:00",
+  "timestamp": "2026-06-07T03:54:24.561013+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -2553,7 +2553,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-03-03T17:15:11Z",
-      "updatedAt": "2026-04-09T17:58:14Z",
+      "updatedAt": "2026-06-05T17:58:44Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "e9f27bf2c3a75549898c6cbe7bf6042a771699a4",
@@ -2564,7 +2564,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Change of terminology from \u201cserialization\u201d to \u201c serialization constraint\u201d should be resolved in the mailing list (it\u2019s inconsistent with 8949 and seems to be the consensus)\r\n\r\nThe point of section 1 is clear introduction, not exposition. Each into paragraph only needs to make an essential point, not give details and information. This is the main reason I\u2019m not integrating many comments (and a very big difference my writing approach).\r\n\r\nThese are intentionally new definitions, not a restatement to avoid this being an update to RFC 8949 and so the whole definition is here. Preferred-plus is not a restatement of Preferred, just very similar.\r\n\r\nI did go over the PR line by line.\r\n\r\nI did pick up many useful changes in #70\r\n",
+          "createdAt": "2026-06-05T17:58:44Z",
+          "updatedAt": "2026-06-05T17:58:44Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOQYX63c7rgM3D",
@@ -3252,6 +3260,32 @@
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "f16",
       "headRefOid": "d7e69d6e180dbb6ac1ad6baaecff04ea09e716ec",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 70,
+      "id": "PR_kwDOQYX63c7jNCVh",
+      "title": "Intro improvements and response to Carsten's PR",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/70",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-06-05T17:53:39Z",
+      "updatedAt": "2026-06-05T17:53:39Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "d460ef43ec920e4745c8c7b86593a61da365e0ba",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "c-pr",
+      "headRefOid": "131093862fa7a000551fc5074a9d53ff427e078f",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
