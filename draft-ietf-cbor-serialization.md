@@ -161,7 +161,7 @@ Decoders in particular often support only a subset of serialization forms &mdash
 or because a full general-purpose decoder is substantially more work to implement, especially in languages like C and Rust that lack built-in dynamic arrays, maps, and strings.
 
 In practice, most CBOR usage occurs outside highly constrained environments.
-This makes it both feasible and beneficial to define a common reduced-feature serialization suitable for general use.
+This makes it both feasible and beneficial to define a common serialization suitable for general use.
 
 Protocol specifications can reference this serialization; library implementations can prioritize support for it.
 
