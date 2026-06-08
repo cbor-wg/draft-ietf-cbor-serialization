@@ -113,8 +113,8 @@ informative:
 --- abstract
 
 This document defines two CBOR serializations: "preferred-plus serialization" and "deterministic serialization."
-It also introduces the term "general serialization" to name the full, variable set of serialization options defined in RFC 8949.
-Together, these three form a complete set of serializations that cover the majority of CBOR serialization use cases.
+It also introduces the term "general serialization" to name the complete set of all serializations defined in RFC 8949.
+Together, these three form a set of serializations that cover the majority of CBOR serialization use cases.
 
 These serializations are largely compatible with those widely implemented by the CBOR community.
 
@@ -154,12 +154,11 @@ However, this flexibility introduces two challenges: interoperability and determ
 ## Interoperability
 
 The interoperability challenge arises because partial implementations are both permitted and expected.
-For example, an encoder might transmit an indefinite-length array to a decoder that does not support indefinite-length encodings.
+For example, an encoder may produce an indefinite-length array that is sent to a decoder that supports only definite-length arrays.
 Both this encoder and decoder are allowed by {{-cbor}}.
 
-Decoders, in particular, frequently choose not to support all serialization forms.
-This may be due to operation in constrained environments or because implementing a full general decoder is significantly more work
-(particularly in languages like C and Rust, which lack built-in support for dynamic arrays, maps, and strings).
+Decoders in particular often support only a subset of serialization forms &mdash; whether because they operate in constrained environments,
+or because a full general-purpose decoder is substantially more work to implement, especially in languages like C and Rust that lack built-in dynamic arrays, maps, and strings.
 
 In practice, most CBOR usage occurs outside highly constrained environments.
 This makes it both feasible and beneficial to define a common reduced-feature serialization suitable for general use.
@@ -284,51 +283,45 @@ If an end-to-end protocol specification does not state serialization requirement
 
 # General Serialization {#GeneralSerialization}
 
-This section assigns the name "general serialization" to the full set of serialization options standardized in {{Section 3 of -cbor}}.
-This full set was not explicitly named in {{-cbor}}.
+This section assigns the name "general serialization" to the complete set of all encodings standardized in {{Section 3 of -cbor}}.
+The term itself was not explicitly defined in {{-cbor}}.
+Preferred-plus and deterministic serialization are subsets of it.
 
-General serialization consists of all of these:
+General serialization permits any and all of these:
 
-* Any length CBOR argument (e.g., the integer 0 may be encoded as 0x00, 0x1800 or or 0x190000 and so on).
-* Floating-point values may be encoded using any length (e.g. 0.00 can be 0xf900, 0xfa000000000 and so on).
-* Both definite or indefinite-length strings, arrays and maps are allowed.
-* Big numbers can represent values that are also representable by major types 0 and 1 (e.g., 0 can be encoded as a big number, as 0xc34100).
+* CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, or 0x190000 and so on).
+* Floating-point values encoded at any length (for example, 0.00 can be 0xf900, 0xfa000000000, and so on).
+* Both definite or indefinite-length strings, arrays, and maps.
+* Big number representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the big number 0xc34100).
 
-A decoder that supports general serialization is able to decode all of these.
-
-## When To Use General Serialization {#WhenGeneral}
-
-Preferred-plus serialization ({{PreferredPlusSerialization}}) satisfies the vast majority of CBOR use cases; therefore, the need for general serialization is rare and arises only in unusual circumstances.
-The following are representative examples:
-
-* Enable on-the-fly, streaming encoding of strings, arrays, and maps with indefinite lengths.
-This is useful when an array, map, or string is many times larger than the available memory on the encoding device.
-
-* Directly encode or decode integer values from hardware registers with fixed-size integer encoding.
-CBOR is sufficiently simple that encoders and decoders for some protocols can be implemented solely in hardware without any software.
-Fixed-size integer encoding allows values to be copied directly in and out of hardware registers.
-
-* Enable in place update of the lengths of strings, arrays and maps by using fixed-size encoding of their lengths.
-For example, if the length of a string is always encoded in 32 bits, increasing the length from 2^16 to 2^16+1, requires only overwriting the length field rather than shifting all 2^16 bytes of content.
-
-* Transmission of non-trivial NaNs in floating-point values (see {{NaN}}).
-
-Except for non-trivial NaNs, the other serializations can encode the same data types and value ranges as general serialization.
-Its purpose is solely to simplify or optimize encoding in atypical constrained environments.
-The choice of serialization is orthogonal to the data model.
-See also the section on special serializations in {{SpecialSerializations}}.
-
+A decoder claiming to support general serialization MUST accept and decode all the encodings for the data types it supports.
 
 
 ## General Serialization is the Default
 
-If a CBOR-based protocol specification does not explicitly specify serialization, general serialization is implied.
-This means that a compliant decoder for such a protocol is required to accept all forms allowed by general serialization including both definite and indefinite lengths.
-For example, CBOR Web Token, {{-CWT}} does not specify serialization; therefore, a full and proper CWT decoder must be able to handle variable-length CBOR argments plus indefinite-length strings, arrays and maps.
+When a CBOR-based protocol specification does not explicitly specify serialization, general serialization is the implied requirement &mdash;
+meaning a compliant decoder must accept and decode any and all encodings it permits, including both definite and indefinite lengths.
 
-In practice, however, it is widely recognized that some CWT decoders cannot process the full range of general serialization, particularly indefinite lengths.
-As a result, CWT encoders typically limit themselves to the subset of serializations that decoders can reliably handle, most notably by never encoding indefinite lengths.
-This is also true in practice of other protocols implementations like those for {{-COSE}}.
+CBOR Web Token {{-CWT}}, for example, does not specify serialization, so a fully compliant CWT decoder must handle general serialization, including indefinite-length strings, arrays, and maps.
+In practice, however, many CWT decoders cannot process the full range of general serialization &mdash; indefinite lengths in particular.
+Encoders have adapted accordingly, typically restricting their output to the subset of serializations that decoders can reliably handle, most notably by avoiding indefinite lengths altogether.
+The same pattern holds for other protocols, such as COSE [RFC9052].
+
+
+## When To Use General Serialization {#WhenGeneral}
+
+Preferred-plus serialization ({{PreferredPlusSerialization}}) is efficient and supports the full CBOR data model (except NaN payloads), satisfying the vast majority of CBOR use cases.
+Full general serialization is rarely necessary, and support for it is not widespread.
+
+The main scenario where general serialization is warranted is a protocol that must accommodate highly constrained encoders,
+at the cost of requiring decoders &mdash; assumed to be unconstrained &mdash; to support every possible serialization option.
+
+When general serialization is required by a protocol, this SHOULD be stated explicitly.
+Although it is the default for CBOR in theory, it has not been widely implemented as such in practice.
+
+See also special serialization ({{SpecialSerializations}}), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
+
+CBOR libraries may nonetheless wish to support general serialization, as a complete set of other serialization forms, to be useful across a broader range of protocols.
 
 
 # Preferred-Plus Serialization {#PreferredPlusSerialization}
@@ -391,19 +384,13 @@ See also {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further backgro
 
 ## When to use preferred-plus serialization
 
-The purpose of preferred-plus serialization is to provide interoperability without requiring support for indefinite-length decoding.
-If an encoder never produces indefinite-length items, the decoder can safely treat them as errors.
-Supporting indefinite-length decoding, especially for strings, introduces additional complexity and often necessitates dynamic memory allocation, so omitting it significantly reduces the implementation burden.
+Preferred-plus is the recommended default.
+It supports all CBOR data types and value ranges (except non-trivial NaNs), typically produces the most compact encoding, is straightforward to implement, and is widely supported by CBOR libraries.
+It provides strong interoperability because (1) decoders are required to accept all encodings that a preferred-plus encoder is permitted to produce, and (2) the requirements are formally specified.
 
-Preferred-plus serialization also provides a size efficiency gain by encoding the CBOR argument in the shortest form.
-Implementations typically find encoding and decoding in this form to be straightforward.
-
-The easy implementation and broad usefulness makes preferred-plus serialization the best choice for most CBOR protocols.
-To some degree it is a de facto standard for common CBOR protocols.
-
-See {{WhenGeneral}} for uses cases where preferred-plus serialization may not be suitable.
-Otherwise, for the vast majority of use cases, preferred-plus serialization provides interoperaibility, small encoded size and low implementation costs.
-
+Choose a different serialization only when you have a specific need: deterministic serialization when determinism is required, a special serialization with indefinite lengths when streaming is required,
+or another special serialization for capabilities beyond what preferred-plus provides (see {{SpecialSerializations}}).
+Note that preferred-plus is deterministic when maps are not in use.
 
 ## Relation To Preferred Serialization {#RelationToPreferred}
 
@@ -441,6 +428,9 @@ See {{PreferredPlusSerialization}} and {{NaN}} for details on, and the rationale
 
 Note that in deterministic serialization, any big number that can be represented as an integer must be encoded as an integer.
 This rule is inherited from preferred-plus serialization ({{PreferredPlusSerialization}}), just as {{Section 4.2.1 of -cbor}} inherits this requirement from preferred serialization.
+
+See also {{DeterministicConsiderations}} for considerations involved in designing a deterministic protocol that extend beyond serialization.
+
 
 
 ## Encoder Requirements {#DeterministicEncoding}
@@ -496,16 +486,31 @@ If an application requires a map to be ordered, it is responsible for applying i
 
 # Special Serializations {#SpecialSerializations}
 
-Although discouraged, defining special serializations that differ from those specified here is permitted.
-For example, a use case might require deterministim from a protocol that uses indefinite lengths.
-For another example, a protocol may require only a subset of general serialization features &mdash; for instance, fixed-length integer encodings but not indefinite lengths.
+When needed, protocols may define special serializations beyond the three described above.
+The main capabilities they enable are:
 
-A recommended way to define a special serialization is to describe it as preferred-plus or deterministic serialization with additional constraints or extensions.
-For example, a protocol requiring deterministic streaming of maps and arrays can be defined as follows:
 
->> Deterministic serialization MUST be used, but all maps and arrays MUST be encoded with indefinite lengths, never definite lengths.
->> Strings are still encoded with definite lengths.
->> Maps are still to be ordered as required by deterministic serialization.
+* Streaming encoding of strings, arrays, and maps using indefinite lengths, for use when the encoded item(s) exceeds the memory available on the encoding device.
+
+* Fixed-size integer encoding, allowing values to be copied directly to and from hardware registers.
+CBOR is simple enough that encoders and decoders for some protocols can be implemented entirely in hardware.
+
+* Fixed-width floating-point encoding, relieving the encoder from performing floating-point reduction to the shortest representable form.
+
+* In-place length updates for strings, arrays, and maps, by encoding their lengths in a fixed number of bits.
+For example, if a string length is always encoded in 32 bits, increasing its length from 2^16 to 2^16+1 requires only overwriting the length field rather than shifting all 2^16 bytes of content.
+
+* Transmission of non-trivial NaN floating-point values (see {{NaN}}).
+
+* Deterministic serialization with any or all of the above.
+
+All of these except determinism are also available with general serialization, but a targeted special serialization will usually be substantially easier to implement.
+
+A recommended approach is to define a special serialization as preferred-plus or deterministic serialization with additional constraints or extensions.
+For example, a protocol requiring deterministic streaming of maps and arrays could be specified as:
+
+>> Deterministic serialization MUST be used, except that maps and arrays MUST be encoded with indefinite lengths.
+>> Strings retain definite-length encoding, and map ordering MUST follow the rules of deterministic serialization.
 
 
 # New Tag Data Model Rule {#TagDataModelRule}
@@ -612,13 +617,7 @@ In contrast, JSON permits variations (e.g., representing 1 as 1, 1.0, or 0.1e1),
 That is, the variation in JSON is for human readability, not to facilitate easier implementation in constrained environments.
 
 
-# General Protocol Considerations for Determinism
-
-This is the section that covers what is know as ALDR in some discussions.
-
-[^rfced]
-
-[^rfced]: Please remove above sentence before publication
+# General Protocol Considerations for Determinism {#DeterministicConsiderations}
 
 In addition to {{DeterministicSerialization}}, there are considerations in the design of any deterministic protocol.
 
