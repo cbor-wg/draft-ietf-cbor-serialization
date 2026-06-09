@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-07T03:54:24.561013+00:00",
+  "timestamp": "2026-06-09T03:29:00.625967+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -733,6 +733,22 @@
           "updatedAt": "2026-05-22T17:03:25Z"
         }
       ]
+    },
+    {
+      "number": 71,
+      "id": "I_kwDOQYX63c8AAAABExKoIQ",
+      "title": "CDDL operators for top-level, not just byte strings",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/71",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Looks like Steven has a point.\n\n\n\nHi,\n\nI am writing a tool which parses and processes arbitrary CDDL documents and validates CBOR payloads against them.\n\nI would like to support, for my own use case, unambiguous ctlops like .dtrm so the CDDL is the source of truth, not the CDDL and some prose.\n\nI have concern about the way .dtrm (and the others) are documented:\n\nleaf = #6.24(bytes .dtrm any)\n\nMeans as i understand, heres a bytestring, and the contents are deterministically encoded. But this wont\nconstrain the leaf (bytestring), so it can be an indefinite byte string, with deterministic CBOR internally.\nThat would be a conforming interpretation of the spec, as I read it.\n\nIt seems to me, that what would be ideal is if we could use this to say the whole CBOR encoded structure is deterministically encoded, without having to wrap it in a bytestring.\n\nI would like to propose the following:\n\nbody = any .dtrm type2\n\nWhat this means is, type2 is encoded with no wrapper deterministically.\nThis would also work with .dtrmseq, .prefp, .prefpseq and the original .cborseq when you don't want to encapsulate it in a byte string, but still want to indicate the encoding.\n\nI think there is still value in the `bytes .dtrm type2` form, when its inside a structure that is itself\ndeterministically encoded.  But I do struggle with the value of only allowing it to be constrained inside a byte string that can't be marked as being deterministically encoded itself.\n\n--\n\nSteven Johnson\nSakura Industries LLC\n[steven.johnson@sakuraindustries.net](mailto:steven.johnson@sakuraindustries.net)",
+      "createdAt": "2026-06-08T17:07:05Z",
+      "updatedAt": "2026-06-08T17:07:05Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -3192,24 +3208,26 @@
       "id": "PR_kwDOQYX63c7eD9q8",
       "title": "Improved wording for when to use general, preferred and specialized",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/67",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Reframing -> general serialization is the super set of serialization\r\n\r\nThe recommendations for when to use general serialization and preferred-plus serializations are much more to that point.\r\n\r\nThe list of things preferred-plus can't do moved from the section on general serialization to special serialization. I believe the list is pretty comprehensive even though it is short. I can't think of anything else.",
       "createdAt": "2026-05-21T18:39:07Z",
-      "updatedAt": "2026-05-27T17:00:14Z",
+      "updatedAt": "2026-06-08T16:14:40Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "6feaa5b0125c86773af99ee2be4c7e7ec28d87e3",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "wording1",
       "headRefOid": "d0165c1f81bea21558b19c82dc9c672e61564f47",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-06-08T16:14:35Z",
+      "mergedAt": "2026-06-08T16:14:35Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "6d4d1ab4b261e75a82a1dd1dde629aa56d6c74bc"
+      },
       "comments": [],
       "reviews": []
     },
@@ -3279,13 +3297,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-06-05T17:53:39Z",
-      "updatedAt": "2026-06-05T17:53:39Z",
+      "updatedAt": "2026-06-08T16:38:15Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
-      "baseRefOid": "d460ef43ec920e4745c8c7b86593a61da365e0ba",
+      "baseRefOid": "6d4d1ab4b261e75a82a1dd1dde629aa56d6c74bc",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "c-pr",
-      "headRefOid": "131093862fa7a000551fc5074a9d53ff427e078f",
+      "headRefOid": "bf3d6f04dd186c745ad3114bc8b97a43171fb5f5",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
