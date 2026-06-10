@@ -799,17 +799,24 @@ For example, a program that relies on non-trivial NaNs internally may need to se
 
 # Example Code for Encoding into Half-Precision Floating Point
 
-Preferred and deterministic serialization require floating-point values that fit in half-precision to be encoded as such.
+Preferred and deterministic serialization require floating-point values that fit in single-precision and half-precision be encoded as such.
 {{Appendix D of -cbor}} provides example code for decoding half-precision values; this appendix provides corresponding code for encoding them.
 
-The function takes a double-precision value passed as a 64-bit integer.
-It returns -1 if the conversion would lose precision, or a two-byte integer in the range 0x0000–0xffff if successful.
+Two functions are provided, one to convert from double to single and another from single to half.
+These two functions used together cover all the possible use cases.
+If the input is double, then pref_plus_double_to_single() must be called first, and if it succeeds pref_plus_single_to_half() is called to effect the conversion all the way from double to half if required.
+If the input is single, then only pref_plus_single_to_half() need be called.
+
+(The structure of the two functions is identical.
+It is fairly difficult to compute and verify all the constants so both are provided rather than one.)
+
+Both functions return -1 if the conversion fails.
 Prepend 0xf9 to obtain the CBOR-encoded form.
 
 ~~~ c
 {::include half-encode.c}
 ~~~
-{: #half-encode title="Example C Code for a Half-Precision Encoder"}
+{: #half-encode title="Example C Code for Preferred-Plus Ploating-Point Encoding"}
 
 
 # Big Numbers and the CBOR Data Model {#BigNumbersDataModel}
