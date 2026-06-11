@@ -533,26 +533,36 @@ Tags 2 and 3 are exempt from this rule, as they were defined prior to the establ
 
 # CDDL Control Operators {#CDDL-Operators}
 
-Four new control operators are defined for use in CDDL {{-cddl}}.
+Two new control operators are defined for use in CDDL {{-cddl}}.
 
-| Name       | Purpose                                              |
-| .prefp     | Use preferred-plus serialization for a data item     |
-| .prefpseq  | Use preferred-plus serialization for a CBOR sequence |
-| .dtrm      | Use deterministic serialization for a data item      |
-| .dtrmseq   | Use deterministic serialization for a CBOR sequence  |
+| Name       | Purpose                                      |
+| .prefp     | Use preferred-plus serialization for a type  |
+| .dtrm      | Use deterministic serialization for a type   |
 
-These operators have the same semantics as the .cbor and .cborseq operators (See {{Section 3.8.4 of -cddl}}) with the additional requirement for preferred-plus or deterministic serialization.
-These specify that what is in the “controller” (the right side of the operator) be serialized as indicated.
+These operators specify the serialization to be used for the given CDDL type.
+For CDDL group types (composite types), the requirement applies recursively to all items in the group, stopping when another control operator is encountered.
+The recursion does not extend into byte strings or other types that may contain embedded CBOR.
 
-For example, a byte string containing embedded CBOR that must be deterministically encoded can be described in CDDL as:
+One common use is to apply the serialization at CDDL document top level:
 
 ~~~
-leaf = #6.24(bytes .dtrm any)
+root = my_protocol .prefp
+my_protocol = ...
 ~~~
 
-The scope of these operators applies recursively through nested arrays and maps, but does not extend into byte strings or other data items that happen to contain encoded CBOR.
-Every instance of embedded CBOR that requires constrained serialization must specify that constraint explicitly.
+Another common use is to apply it to a byte string that contains CBOR.
+
+~~~
+wrapped = bytes .cbor (signed_stuff .dtrm)
+signed_stuff = ...
+~~~
+
+Note that while the wrapped CBOR is encoded deterministically, the byte string containing it is not &mdash; its serialization is unspecified here.
+This is intentional, as only the contents of the byte string are signed.
 See also {{ByteStringWrapping}}.
+
+Although these serialization control operators can be applied to any item or sub-part of a protocol, this is generally not recommended, as there is usually no benefit in doing so.
+The intended use is to apply them to an entire protocol message, or to a sub-part that is byte-string-wrapped, hashed, or signed.
 
 
 # Security Considerations
@@ -575,9 +585,7 @@ This document requests IANA to register the contents of
 
 | Name        | Reference |
 | .prefp      | \[RFCXXXX] |
-| .prefpseq   | \[RFCXXXX] |
 | .dtrm       | \[RFCXXXX] |
-| .dtrmseq    | \[RFCXXXX] |
 {: #tbl-iana-reqs title="New control operators to be registered"}
 
 IANA is requested to add a reference to {{TagDataModelRule}} to the CBOR tag registry {{IANA.cbor-tags}}.
