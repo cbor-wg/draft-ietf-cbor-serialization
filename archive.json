@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-09T03:29:00.625967+00:00",
+  "timestamp": "2026-06-11T03:56:36.796060+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -746,9 +746,17 @@
       "labels": [],
       "body": "Looks like Steven has a point.\n\n\n\nHi,\n\nI am writing a tool which parses and processes arbitrary CDDL documents and validates CBOR payloads against them.\n\nI would like to support, for my own use case, unambiguous ctlops like .dtrm so the CDDL is the source of truth, not the CDDL and some prose.\n\nI have concern about the way .dtrm (and the others) are documented:\n\nleaf = #6.24(bytes .dtrm any)\n\nMeans as i understand, heres a bytestring, and the contents are deterministically encoded. But this wont\nconstrain the leaf (bytestring), so it can be an indefinite byte string, with deterministic CBOR internally.\nThat would be a conforming interpretation of the spec, as I read it.\n\nIt seems to me, that what would be ideal is if we could use this to say the whole CBOR encoded structure is deterministically encoded, without having to wrap it in a bytestring.\n\nI would like to propose the following:\n\nbody = any .dtrm type2\n\nWhat this means is, type2 is encoded with no wrapper deterministically.\nThis would also work with .dtrmseq, .prefp, .prefpseq and the original .cborseq when you don't want to encapsulate it in a byte string, but still want to indicate the encoding.\n\nI think there is still value in the `bytes .dtrm type2` form, when its inside a structure that is itself\ndeterministically encoded.  But I do struggle with the value of only allowing it to be constrained inside a byte string that can't be marked as being deterministically encoded itself.\n\n--\n\nSteven Johnson\nSakura Industries LLC\n[steven.johnson@sakuraindustries.net](mailto:steven.johnson@sakuraindustries.net)",
       "createdAt": "2026-06-08T17:07:05Z",
-      "updatedAt": "2026-06-08T17:07:05Z",
+      "updatedAt": "2026-06-09T12:52:07Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "stevenj",
+          "authorAssociation": "NONE",
+          "body": "Thanks Laurence,\n\nI preemptively implemented this in the tool I am working on and it seems to work well.\nBut happy to adapt it if theres a better solution.",
+          "createdAt": "2026-06-09T12:52:06Z",
+          "updatedAt": "2026-06-09T12:52:06Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -3271,13 +3279,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-05-23T16:15:05Z",
-      "updatedAt": "2026-05-29T18:19:40Z",
+      "updatedAt": "2026-06-10T20:21:19Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "118c20abf66e9093509cd2333461df163d76be3d",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "f16",
-      "headRefOid": "d7e69d6e180dbb6ac1ad6baaecff04ea09e716ec",
+      "headRefOid": "a6b70545be06911abeedbeca1875f9752cd3e3cd",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
