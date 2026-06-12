@@ -797,24 +797,26 @@ The primary use case for non-trivial NaNs is existing systems that already use t
 For example, a program that relies on non-trivial NaNs internally may need to serialize its data to run across machines connected by a network.
 
 
-# Example Code for Encoding into Half-Precision Floating Point
+# Code for Encoding Preferred-Plus Floating-Point Values
 
-Preferred and deterministic serialization require floating-point values that fit in single-precision and half-precision be encoded as such.
+Preferred-plus ({{PreferredPlusEncoding}}) and deterministic serialization require that floating-point values fitting in single-precision and half-precision be encoded as such.
+This C code implements that conversion.
+While conversion between single and double is widely supported, conversion to half-precision is not.
 {{Appendix D of -cbor}} provides example code for decoding half-precision values; this appendix provides corresponding code for encoding them.
 
-Two functions are provided, one to convert from double to single and another from single to half.
-These two functions used together cover all the possible use cases.
-If the input is double, then pref_plus_double_to_single() must be called first, and if it succeeds pref_plus_single_to_half() is called to effect the conversion all the way from double to half if required.
-If the input is single, then only pref_plus_single_to_half() need be called.
+Two functions are provided: one to convert from double to single, and another from single to half.
+Used together, they cover all possible cases.
+If the input is a double, pref_plus_double_to_single() must be called first;
+if it succeeds, pref_plus_single_to_half() is then called to complete the conversion from double to half.
+If the input is already a single, only pref_plus_single_to_half() need be called.
 
-(The structure of the two functions is identical.
-It is fairly difficult to compute and verify all the constants so both are provided rather than one.)
+(The two functions have identical structure.
+Because the constants are difficult to compute and verify, both are provided.)
 
-Both functions return -1 if the conversion fails.
-Prepend 0xf9 to obtain the CBOR-encoded form.
+Both functions return an integer with the bit pattern for the resulting floating-point value, or -1 if the conversion can't be performed because the input is out of range or precision would be lost.
 
 ~~~ c
-{::include half-encode.c}
+{::include prefp-float-encode.c}
 ~~~
 {: #half-encode title="Example C Code for Preferred-Plus Ploating-Point Encoding"}
 
