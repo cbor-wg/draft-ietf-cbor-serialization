@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                            10 June 2026
-Expires: 12 December 2026
+Intended status: Standards Track                            12 June 2026
+Expires: 14 December 2026
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 December 2026.
+   This Internet-Draft will expire on 14 December 2026.
 
 Copyright Notice
 
@@ -116,8 +116,7 @@ Table of Contents
      C.4.  Clarification of RFC 8949
      C.5.  Divergence from STD94
      C.6.  Recommendations for Use of Non-Trival NaNs
-   Appendix D.  Example Code for Encoding into Half-Precision Floating
-           Point
+   Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
    Appendix E.  Big Numbers and the CBOR Data Model
    Appendix F.  Big Number Implementation Strategies
    Appendix G.  Serialization Checking
@@ -1254,29 +1253,30 @@ C.6.  Recommendations for Use of Non-Trival NaNs
    NaNs internally may need to serialize its data to run across machines
    connected by a network.
 
-Appendix D.  Example Code for Encoding into Half-Precision Floating
-             Point
+Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
 
-   Preferred and deterministic serialization require floating-point
-   values that fit in single-precision and half-precision be encoded as
-   such.  Appendix D of [STD94] provides example code for decoding half-
-   precision values; this appendix provides corresponding code for
-   encoding them.
+   Preferred-plus (Section 4.1) and deterministic serialization require
+   that floating-point values fitting in single-precision and half-
+   precision be encoded as such.  This C code implements that
+   conversion.  While conversion between single and double is widely
+   supported, conversion to half-precision is not.  Appendix D of
+   [STD94] provides example code for decoding half-precision values;
+   this appendix provides corresponding code for encoding them.
 
-   Two functions are provided, one to convert from double to single and
-   another from single to half.  These two functions used together cover
-   all the possible use cases.  If the input is double, then
-   pref_plus_double_to_single() must be called first, and if it succeeds
-   pref_plus_single_to_half() is called to effect the conversion all the
-   way from double to half if required.  If the input is single, then
-   only pref_plus_single_to_half() need be called.
+   Two functions are provided: one to convert from double to single, and
+   another from single to half.  Used together, they cover all possible
+   cases.  If the input is a double, pref_plus_double_to_single() must
+   be called first; if it succeeds, pref_plus_single_to_half() is then
+   called to complete the conversion from double to half.  If the input
+   is already a single, only pref_plus_single_to_half() need be called.
 
-   (The structure of the two functions is identical.  It is fairly
-   difficult to compute and verify all the constants so both are
-   provided rather than one.)
+   (The two functions have identical structure.  Because the constants
+   are difficult to compute and verify, both are provided.)
 
-   Both functions return -1 if the conversion fails.  Prepend 0xf9 to
-   obtain the CBOR-encoded form.
+   Both functions return an integer with the bit pattern for the
+   resulting floating-point value, or -1 if the conversion can't be
+   performed because the input is out of range or precision would be
+   lost.
 
    /* Constants based on IEEE 754; _LEN is in bits */
 
@@ -1284,49 +1284,49 @@ Appendix D.  Example Code for Encoding into Half-Precision Floating
    #define HLF_MANT_LEN          10
    #define HLF_EXP_LEN           5
    #define HLF_MANT_BITS         0x3ffUL /* 10 bits */
-   #define HLF_SIGN_BIT          (0x01UL << (HLF_EXP_LEN + HLF_MANT_LEN))
+   #define HLF_SIGN_BIT         (0x01UL << (HLF_EXP_LEN + HLF_MANT_LEN))
    #define HLF_NAN_INF_EXP_BITS  0x7c00
-   #define HLF_QUIET_NAN         (0x1UL << (HLF_MANT_LEN-1))
+   #define HLF_QUIET_NAN        (0x1UL << (HLF_MANT_LEN-1))
 
    /* Single-precision */
    #define SGL_MANT_LEN          23
    #define SGL_EXP_LEN           8
    #define SGL_MANT_BITS         0x7fffffUL /* 23 bits */
-   #define SGL_SIGN_BIT          (0x01UL << (SGL_EXP_LEN + SGL_MANT_LEN))
+   #define SGL_SIGN_BIT         (0x01UL << (SGL_EXP_LEN + SGL_MANT_LEN))
    #define SGL_EXP_BITS          0xffUL /* 8 bits */
-   #define SGL_QUIET_NAN         (0x1UL << (SGL_MANT_LEN - 1))
+   #define SGL_QUIET_NAN        (0x1UL << (SGL_MANT_LEN - 1))
    #define SGL_ZERO_SUBNORM_EXP  0
    #define SGL_NAN_INF_EXP       255
-   #define SGL_NAN_INF_EXP_BITS  (SGL_NAN_INF_EXP << SGL_MANT_LEN)
-   #define SGL_MANT_ADD_ONE      (0x01UL << SGL_MANT_LEN)
+   #define SGL_NAN_INF_EXP_BITS (SGL_NAN_INF_EXP << SGL_MANT_LEN)
+   #define SGL_MANT_ADD_ONE     (0x01UL << SGL_MANT_LEN)
 
    /* Double-precision */
    #define DBL_MANT_LEN          52
    #define DBL_EXP_LEN           11
    #define DBL_MANT_BITS         0xfffffffffffffULL /* 52 bits */
    #define DBL_EXP_BITS          0x7ffULL /* 11 bits */
-   #define DBL_QUIET_NAN         (0x1UL << (DBL_MANT_LEN-1))
+   #define DBL_QUIET_NAN        (0x1ULL << (DBL_MANT_LEN-1))
    #define DBL_ZERO_SUBNORM_EXP  0
    #define DBL_NAN_INF_EXP       2047
-   #define DBL_MANT_ADD_ONE      (0x01ULL << (DBL_MANT_LEN))
+   #define DBL_MANT_ADD_ONE     (0x01ULL << (DBL_MANT_LEN))
 
-   /* Converting single to half _EXP are biased single exponents */
-   #define S2H_SIGN_SHIFT ((SGL_MANT_LEN + SGL_EXP_LEN) - (HLF_MANT_LEN + HLF_EXP_LEN))
-   #define S2H_BIAS_DIFF_EXP        (127 - 15)
-   #define S2H_SMALLEST_NORM_EXP    113
-   #define S2H_SMALLEST_SUBNORM_EXP 102
-   #define S2H_SUBNORM_SHIFT        126
-   #define S2H_LARGEST_NORM_EXP     142
-   #define S2H_LOST_BITS            0xfffUL /* 23 - 10 bits */
+   /* Converting single to half; _EXP are biased single exponents */
+   #define S2H_SIGN_SHIFT       16
+   #define S2H_BIAS_DIFF_EXP   (127 - 15)
+   #define S2H_MIN_NORM_EXP     113
+   #define S2H_MIN_SUBNORM_EXP  102
+   #define S2H_SUBNORM_SHIFT    126
+   #define S2H_MAX_NORM_EXP     142
+   #define S2H_LOST_BITS        0x1fffUL /* 23 - 10 bits */
 
    /* Converting double to single; _EXP are biased double exponents */
-   #define D2S_SIGN_SHIFT ((DBL_MANT_LEN + DBL_EXP_LEN) - (SGL_MANT_LEN + SGL_EXP_LEN))
-   #define D2H_BIAS_DIFF_EXP        (1023 - 127)
-   #define D2S_SMALLEST_NORM_EXP    898
-   #define D2S_SMALLEST_SUBNORM_EXP 874
-   #define D2S_SUBNORM_SHIFT        926
-   #define D2S_LARGEST_NORM_EXP     1150
-   #define D2S_LOST_BITS            0x1fffffffUL /* 52 - 23 bits */
+   #define D2S_SIGN_SHIFT       32
+   #define D2S_BIAS_DIFF_EXP   (1023 - 127)
+   #define D2S_MIN_NORM_EXP     898
+   #define D2S_MIN_SUBNORM_EXP  874
+   #define D2S_SUBNORM_SHIFT    926
+   #define D2S_MAX_NORM_EXP     1150
+   #define D2S_LOST_BITS        0x1fffffffULL /* 52 - 23 bits */
 
 
    long pref_plus_single_to_half(unsigned long single) {
@@ -1335,75 +1335,79 @@ Appendix D.  Example Code for Encoding into Half-Precision Floating
      const unsigned long exp  = single >> SGL_MANT_LEN & SGL_EXP_BITS;
 
      if (exp == SGL_ZERO_SUBNORM_EXP) {
-       if(mant == 0) {
+       if (mant == 0) {
          return (long)sign; /* +/- 0.0 */
        } else {
          return -1; /* single subnormals are out of range for half */
        }
-     } else if (exp >= S2H_SMALLEST_SUBNORM_EXP && exp < S2H_SMALLEST_NORM_EXP) {
+     } else if (exp >= S2H_MIN_SUBNORM_EXP && exp < S2H_MIN_NORM_EXP) {
        if (mant & ((1UL << (S2H_SUBNORM_SHIFT - exp)) - 1)) {
          return -1;   /* bits lost in conversion to half subnormal */
        } else {
          return (long)(sign + /* converts to half subnormal */
-                      ((mant + SGL_MANT_ADD_ONE) >> (S2H_SUBNORM_SHIFT - exp)));
+              ((mant + SGL_MANT_ADD_ONE) >> (S2H_SUBNORM_SHIFT - exp)));
        }
-     } else if (exp >= S2H_SMALLEST_NORM_EXP && exp <= S2H_LARGEST_NORM_EXP) {
+     } else if (exp >= S2H_MIN_NORM_EXP && exp <= S2H_MAX_NORM_EXP) {
        if (mant & S2H_LOST_BITS) {
          return -1; /* bits lost in conversion */
        } else {
          return (long)(sign + /* Converts to normal */
                       ((exp - S2H_BIAS_DIFF_EXP) << HLF_MANT_LEN) +
                       (mant >> (SGL_MANT_LEN - HLF_MANT_LEN)));
-         }
+       }
      } else if (exp == SGL_NAN_INF_EXP) {
-       if(mant == 0) {
-         return (long)(sign + HLF_NAN_INF_EXP_BITS); /* +/- inifinity */
+       if (mant == 0) {
+         return (long)(sign + HLF_NAN_INF_EXP_BITS); /* +/- infinity */
        } else if (mant == SGL_QUIET_NAN && sign == 0) {
           return HLF_QUIET_NAN + HLF_NAN_INF_EXP_BITS; /* trivial NaN */
        } else {
           return -1; /* non-trivial NaN */
        }
+     } else {
+        return -1; /* large exponent -- out of range for half */
      }
-     return -1;
    }
 
 
-   long long pref_plus_double_to_single(unsigned long long b64) {
-     const unsigned long long sign = b64 >> D2S_SIGN_SHIFT & SGL_SIGN_BIT;
-     const unsigned long long mant = b64 & DBL_MANT_BITS;
-     const unsigned long long exp  = b64 >> DBL_MANT_LEN & DBL_EXP_BITS;
+   long long pref_plus_double_to_single(unsigned long long dbl) {
+     const unsigned long long sign =
+                                   dbl >> D2S_SIGN_SHIFT & SGL_SIGN_BIT;
+     const unsigned long long mant = dbl & DBL_MANT_BITS;
+     const unsigned long long exp  = dbl >> DBL_MANT_LEN & DBL_EXP_BITS;
 
      if (exp == DBL_ZERO_SUBNORM_EXP) {
-       if(mant == 0) {
+       if (mant == 0) {
          return (long long)sign; /* +/- 0.0 */
        } else {
          return -1; /* double subnormals are out of range for single */
        }
-     } else if (exp >= D2S_SMALLEST_SUBNORM_EXP && exp < D2S_SMALLEST_NORM_EXP) {
-       if (mant & ((1UL << (D2S_SUBNORM_SHIFT - exp)) - 1)) {
-         return -1; /* bits lost in conversion to half subnormal */
+     } else if (exp >= D2S_MIN_SUBNORM_EXP && exp < D2S_MIN_NORM_EXP) {
+       if (mant & ((1ULL << (D2S_SUBNORM_SHIFT - exp)) - 1)) {
+         return -1; /* bits lost in conversion to single subnormal */
        } else {
-         return (long long)(sign + /* converts to half subnormal */
-                           ((mant + DBL_MANT_ADD_ONE) >> (D2S_SUBNORM_SHIFT - exp)));
+         return (long long)(sign + /* converts to single subnormal */
+              ((mant + DBL_MANT_ADD_ONE) >> (D2S_SUBNORM_SHIFT - exp)));
         }
-     } else if (exp >= D2S_SMALLEST_NORM_EXP && exp <= D2S_LARGEST_NORM_EXP) {
+     } else if (exp >= D2S_MIN_NORM_EXP && exp <= D2S_MAX_NORM_EXP) {
        if (mant & D2S_LOST_BITS) {
          return -1; /* bits lost in conversion */
        } else {
           return (long long)(sign + /* Converts to normal */
-                             ((exp - D2H_BIAS_DIFF_EXP) << SGL_MANT_LEN) +
-                             (mant >> (DBL_MANT_LEN - SGL_MANT_LEN)));
+                           ((exp - D2S_BIAS_DIFF_EXP) << SGL_MANT_LEN) +
+                            (mant >> (DBL_MANT_LEN - SGL_MANT_LEN)));
        }
-      } else if (exp == DBL_NAN_INF_EXP) {
-       if(mant == 0) {
-          return (long long)(sign + SGL_NAN_INF_EXP_BITS); /* +/- inifinity */
+     } else if (exp == DBL_NAN_INF_EXP) {
+       if (mant == 0) {
+         /* +/- infinity */
+         return (long long)(sign + SGL_NAN_INF_EXP_BITS);
        } else if (mant == DBL_QUIET_NAN && sign == 0) {
           return SGL_QUIET_NAN + SGL_NAN_INF_EXP_BITS; /* quiet NaN */
        } else {
           return -1; /* non-trivial NaN */
        }
+     } else {
+        return -1; /* large exponent -- out of range for single */
      }
-     return -1;
    }
 
     Figure 1: Example C Code for Preferred-Plus Ploating-Point Encoding
