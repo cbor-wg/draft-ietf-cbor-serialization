@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-14T04:02:28.455740+00:00",
+  "timestamp": "2026-06-16T04:04:52.702847+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -3331,7 +3331,7 @@
       "labels": [],
       "body": "This is a large change to the control operators.\r\n\r\nThey are no longer based on .cbor and .cborseq, but instead can apply to any CDDL type including groups. This allows specification of the serialization at the top level of a CDDL document. Byte string wrapping is no longer required to use these.\r\n\r\nPlease comment on this. I want to be sure I thought this through correctly.\r\n\r\nAddress #71 \r\n",
       "createdAt": "2026-06-11T17:40:58Z",
-      "updatedAt": "2026-06-11T17:40:58Z",
+      "updatedAt": "2026-06-15T06:03:24Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "6d4d1ab4b261e75a82a1dd1dde629aa56d6c74bc",
@@ -3342,7 +3342,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "stevenj",
+          "authorAssociation": "NONE",
+          "body": "So the change here is .dtrm and .prefp has no RHS?\r\n\r\nIts always (\\<type> .dtrm) or (\\<type> .prefp)\r\n\r\nSo used like:\r\n\r\n``` cddl\r\nmy-deterministic-type = some-type .dtrm\r\nsome-type = any\r\n```\r\n\r\nHow does that play with existing ABNF for ctlops which need a type2 on the RHS?\r\n\r\n```\r\ntype1 = type2 [S (rangeop / ctlop) S type2]\r\n```\r\n\r\n??",
+          "createdAt": "2026-06-15T06:01:55Z",
+          "updatedAt": "2026-06-15T06:03:24Z"
+        }
+      ],
       "reviews": []
     }
   ]
