@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-16T04:04:52.702847+00:00",
+  "timestamp": "2026-06-18T03:56:21.748241+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -3331,7 +3331,7 @@
       "labels": [],
       "body": "This is a large change to the control operators.\r\n\r\nThey are no longer based on .cbor and .cborseq, but instead can apply to any CDDL type including groups. This allows specification of the serialization at the top level of a CDDL document. Byte string wrapping is no longer required to use these.\r\n\r\nPlease comment on this. I want to be sure I thought this through correctly.\r\n\r\nAddress #71 \r\n",
       "createdAt": "2026-06-11T17:40:58Z",
-      "updatedAt": "2026-06-15T06:03:24Z",
+      "updatedAt": "2026-06-16T13:28:55Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "6d4d1ab4b261e75a82a1dd1dde629aa56d6c74bc",
@@ -3349,6 +3349,20 @@
           "body": "So the change here is .dtrm and .prefp has no RHS?\r\n\r\nIts always (\\<type> .dtrm) or (\\<type> .prefp)\r\n\r\nSo used like:\r\n\r\n``` cddl\r\nmy-deterministic-type = some-type .dtrm\r\nsome-type = any\r\n```\r\n\r\nHow does that play with existing ABNF for ctlops which need a type2 on the RHS?\r\n\r\n```\r\ntype1 = type2 [S (rangeop / ctlop) S type2]\r\n```\r\n\r\n??",
           "createdAt": "2026-06-15T06:01:55Z",
           "updatedAt": "2026-06-15T06:03:24Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "You are right, there must be a RHS.\r\n\r\nJust adding a dummy RHS seems out of the spirit here so then It seems the the way to do this may then be  \r\n   .serial dtr\r\n   .serial prefp\r\n   \r\n   I think the controller for .serial should not have an IANA registry, but require standards action.\r\n   \r\nThe other approach is to go back to it being for a byte string containing CBOR with some special case for the top level. That may be much easier for implementors.",
+          "createdAt": "2026-06-16T05:13:35Z",
+          "updatedAt": "2026-06-16T05:13:35Z"
+        },
+        {
+          "author": "stevenj",
+          "authorAssociation": "NONE",
+          "body": "I have a tooling implementation that just uses `any` on the LHS to mean its a copy of the RHS but deterministic, not packed into a byte string.  The advantage with this method is it can be used to also solve the problem of unadorned cbor sequences which currently cant be notated, but are certainly legal cbor.  It still has the property for cborseq that the array from the RHS isn't present on the LHS, `any` just means its not wrapped in a bytestring.\r\n\r\nClearly there are places where that does not work for cborseq, like inline with other cbor, but toolling would be able to determine raw cbor sequences cant go in that location (basically it can only be a top level rule if its not in a byte string)\r\n\r\nso like:\r\n\r\n```\r\ncborseq = any .cborseq [ *type2 ]\r\ncborseq-in-bstr = bstr .cborseq [ *type2 ]\r\ndeterministic-type2 = any .dtrm type2\r\ndeterministic-type2-in-bstr = bstr .dtrm type2\r\nprefplus-type2 = any .prefp type2\r\nprefplus-type2-in0bstr = bstr .prefp type2\r\n```\r\n\r\nTheres a second alternative which i like a bit better.  Its making a set of ctlops which extend .cbor and .cborseq\r\n\r\nSo:\r\n```\r\ncborseq = any .cborseq.dtrm [ *type2 ]\r\ncborseq-in-bstr = bstr .cborseq.prefp [ *type2 ]\r\ndeterministic-type2 = any .cbor.dtrm type2\r\ndeterministic-type2-in-bstr = bstr cbor.dtrm type2\r\nprefplus-type2 = any .cbor.prefp type2\r\nprefplus-type2-in0bstr = bstr .cbor..prefp type2\r\n```\r\netc\r\n\r\neffectively its still .cbor or .cborseq with new qualified versions of the ctlop defined.\r\n\r\nSo, as i said above I do have tooling which I wrote in the last week that works this way with `any` i know thats not official, i just wanted to see how it worked, and for my use case its worked well and the specifications look clean.  Happy to change it though once a final determination is made.\r\n",
+          "createdAt": "2026-06-16T13:27:11Z",
+          "updatedAt": "2026-06-16T13:28:55Z"
         }
       ],
       "reviews": []
