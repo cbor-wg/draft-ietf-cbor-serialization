@@ -530,39 +530,33 @@ A set of tags MAY affect each other, provided that all defining authorities for 
 
 Tags 2 and 3 are exempt from this rule, as they were defined prior to the establishment of this requirement.
 
+# CDDL Serialization Control Operator {#CDDL-Operators}
 
-# CDDL Control Operators {#CDDL-Operators}
+The ".serial" control operator specifies the serialization of any type in CDDL, including the serialization of the whole document or byte-string-wrapped sub-parts.
 
-Two new control operators are defined for use in CDDL {{-cddl}}.
+The controller (the right-hand side) MUST be either "prefp" or "dtrm", specifying preferred-plus ({{PreferredPlusSerialization}}) or deterministic ({{DeterministicSerialization}}) serialization, respectively.
 
-| Name       | Purpose                                      |
-| .prefp     | Use preferred-plus serialization for a type  |
-| .dtrm      | Use deterministic serialization for a type   |
-
-These operators specify the serialization to be used for the given CDDL type.
-For CDDL group types (composite types), the requirement applies recursively to all items in the group, stopping when another control operator is encountered.
-The recursion does not extend into byte strings or other types that may contain embedded CBOR.
-
-One common use is to apply the serialization at CDDL document top level:
-
-~~~
-root = my_protocol .prefp
-my_protocol = ...
-~~~
-
-Another common use is to apply it to a byte string that contains CBOR.
-
-~~~
-wrapped = bytes .cbor (signed_stuff .dtrm)
-signed_stuff = ...
-~~~
-
-Note that while the wrapped CBOR is encoded deterministically, the byte string containing it is not &mdash; its serialization is unspecified here.
-This is intentional, as only the contents of the byte string are signed.
+The scope of .serial applies recursively through nested arrays and maps, but does not extend into byte strings or other data items that happen to contain encoded CBOR.
+Every instance of embedded CBOR that requires specific serialization must specify it explicitly.
 See also {{ByteStringWrapping}}.
 
-Although these serialization control operators can be applied to any item or sub-part of a protocol, this is generally not recommended, as there is usually no benefit in doing so.
-The intended use is to apply them to an entire protocol message, or to a sub-part that is byte-string-wrapped, hashed, or signed.
+For example, the following specifies that a message or protocol described by "stuff" is deterministically serialized and wrapped in a byte string:
+
+~~~
+stuff = ...
+deterministic-stuff = stuff .serial dtrm
+wrapped-deterministic-stuff = #6.24(bytes .cbor deterministic-stuff)
+~~~
+
+For another example, the first lines of a CDDL document as follows specify that "my-protocol" be serialized with preferred-plus.
+
+~~~
+my-prefp-protocol = my-protocol .serial prefp
+my-protocol = ...
+~~~
+
+New controller values for new serializations are possible but are highly discouraged.
+Standards action is required to add them.
 
 
 # Security Considerations
@@ -576,17 +570,7 @@ The security considerations in {{Section 10 of -cbor}} apply.
 [^to-be-removed]: RFC Editor: please replace RFCXXXX with the RFC
     number of this RFC and remove this note.
 
-This document requests IANA to register the contents of
-{{tbl-iana-reqs}} into the registry
-"{{cddl-control-operators (CDDL Control Operators)<IANA.cddl}}" of the
-{{IANA.cddl}} registry group:
-
-<?v3xml2rfc table_borders="light" ?>
-
-| Name        | Reference |
-| .prefp      | \[RFCXXXX] |
-| .dtrm       | \[RFCXXXX] |
-{: #tbl-iana-reqs title="New control operators to be registered"}
+This document requests IANA to register the ".serial" control operator into the registry "{{cddl-control-operators (CDDL Control Operators)<IANA.cddl}}" of the {{IANA.cddl}} registry group.
 
 IANA is requested to add a reference to {{TagDataModelRule}} to the CBOR tag registry {{IANA.cbor-tags}}.
 
