@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-23T03:31:59.184403+00:00",
+  "timestamp": "2026-06-25T03:31:22.335528+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -2577,7 +2577,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-03-03T17:15:11Z",
-      "updatedAt": "2026-06-05T17:58:44Z",
+      "updatedAt": "2026-06-24T15:53:48Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "e9f27bf2c3a75549898c6cbe7bf6042a771699a4",
@@ -2787,6 +2787,76 @@
               "body": "The point of the paragraph is that there is large enough base of use cases to make preferred-plus highly worthwhile. I think it's important to minimize text for readability. The point of the paragraph is made without this detail.\r\n\r\nImplementors in constrained environments will be able to figure out that they can use preferred-plus.",
               "createdAt": "2026-04-09T17:58:14Z",
               "updatedAt": "2026-04-09T17:58:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABD_sZ8g",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-24T14:26:09Z",
+          "updatedAt": "2026-06-24T14:26:09Z",
+          "comments": [
+            {
+              "originalPosition": 52,
+              "body": "I prefer the old wording.\n```suggestion\n(CBOR is not unique in this regard; BER and DER encoding for ASN.1 are a similar design choice.)\n```",
+              "createdAt": "2026-06-24T14:26:09Z",
+              "updatedAt": "2026-06-24T14:26:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABD_xqqw",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "I do not support most of the changes in this PR. I think the original text is generally shorter, clearer, and easier to understand.",
+          "createdAt": "2026-06-24T14:34:59Z",
+          "updatedAt": "2026-06-24T15:53:47Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "I don't think the longer table is going to render well. ",
+              "createdAt": "2026-06-24T14:34:59Z",
+              "updatedAt": "2026-06-24T15:53:47Z"
+            },
+            {
+              "originalPosition": 31,
+              "body": "```suggestion\nFor example, the array [1, 2] can be serialized in more than one way:\n```\nthere is no need to forward reference a table that immediately follows a colon.",
+              "createdAt": "2026-06-24T14:36:55Z",
+              "updatedAt": "2026-06-24T15:53:47Z"
+            },
+            {
+              "originalPosition": 73,
+              "body": "```suggestion\n```\n\ni don't find this statement relevant.",
+              "createdAt": "2026-06-24T15:50:11Z",
+              "updatedAt": "2026-06-24T15:53:47Z"
+            },
+            {
+              "originalPosition": 21,
+              "body": "I'm not a fan of using `serialization constraints` here.",
+              "createdAt": "2026-06-24T15:51:32Z",
+              "updatedAt": "2026-06-24T15:53:47Z"
+            },
+            {
+              "originalPosition": 46,
+              "body": "\ud83d\udc4d ",
+              "createdAt": "2026-06-24T15:52:01Z",
+              "updatedAt": "2026-06-24T15:53:48Z"
+            },
+            {
+              "originalPosition": 5,
+              "body": "\ud83d\udc4d ",
+              "createdAt": "2026-06-24T15:52:10Z",
+              "updatedAt": "2026-06-24T15:53:48Z"
             }
           ]
         }
