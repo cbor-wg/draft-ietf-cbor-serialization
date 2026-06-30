@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-25T03:31:22.335528+00:00",
+  "timestamp": "2026-06-30T03:36:52.604916+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -2577,7 +2577,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2026-03-03T17:15:11Z",
-      "updatedAt": "2026-06-24T15:53:48Z",
+      "updatedAt": "2026-06-29T21:36:10Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "e9f27bf2c3a75549898c6cbe7bf6042a771699a4",
@@ -2859,6 +2859,159 @@
               "updatedAt": "2026-06-24T15:53:48Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABEeme2Q",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "OR13",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-29T21:27:46Z",
+          "updatedAt": "2026-06-29T21:27:46Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "```suggestion\nThis document defines two CBOR serializations: \"preferred-plus serialization\" and \"deterministic serialization.\"\n```",
+              "createdAt": "2026-06-29T21:27:46Z",
+              "updatedAt": "2026-06-29T21:27:46Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABEemkZw",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "OR13",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-29T21:28:04Z",
+          "updatedAt": "2026-06-29T21:28:04Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "```suggestion\nThese serializations are largely compatible with those widely implemented by the CBOR community.\n```",
+              "createdAt": "2026-06-29T21:28:04Z",
+              "updatedAt": "2026-06-29T21:28:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABEemx_A",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "OR13",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-29T21:28:51Z",
+          "updatedAt": "2026-06-29T21:28:51Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "this is harmless imo.",
+              "createdAt": "2026-06-29T21:28:51Z",
+              "updatedAt": "2026-06-29T21:28:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABEenNQg",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "OR13",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-29T21:30:26Z",
+          "updatedAt": "2026-06-29T21:30:26Z",
+          "comments": [
+            {
+              "originalPosition": 52,
+              "body": "I like the new wording.",
+              "createdAt": "2026-06-29T21:30:26Z",
+              "updatedAt": "2026-06-29T21:30:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABEengQA",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "OR13",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-29T21:31:20Z",
+          "updatedAt": "2026-06-29T21:31:20Z",
+          "comments": [
+            {
+              "originalPosition": 73,
+              "body": "This is relevant, web authn has a similar sentence about JSON parsers on constrained devices.",
+              "createdAt": "2026-06-29T21:31:20Z",
+              "updatedAt": "2026-06-29T21:31:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABEen4xQ",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "OR13",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-29T21:32:32Z",
+          "updatedAt": "2026-06-29T21:32:32Z",
+          "comments": [
+            {
+              "originalPosition": 93,
+              "body": "```suggestion\nProtocol specifications can reference such a serialization, rather than restating them; library implementations could also prioritize support for these referenced serialization constraints.\n```",
+              "createdAt": "2026-06-29T21:32:32Z",
+              "updatedAt": "2026-06-29T21:32:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABEeoRbA",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "OR13",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-29T21:33:48Z",
+          "updatedAt": "2026-06-29T21:33:48Z",
+          "comments": [
+            {
+              "originalPosition": 131,
+              "body": "```suggestion\nThis document independently restates the definition of serializations rather than attempting to clarify those in {{-cbor}} (that need clarification).\n```",
+              "createdAt": "2026-06-29T21:33:48Z",
+              "updatedAt": "2026-06-29T21:33:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABEepAEA",
+          "commit": {
+            "abbreviatedOid": "7583d01"
+          },
+          "author": "OR13",
+          "authorAssociation": "NONE",
+          "state": "CHANGES_REQUESTED",
+          "body": "I'm not a fan of adding the word constraints. Not a hill I would die on though.",
+          "createdAt": "2026-06-29T21:36:10Z",
+          "updatedAt": "2026-06-29T21:36:10Z",
+          "comments": []
         }
       ]
     },
