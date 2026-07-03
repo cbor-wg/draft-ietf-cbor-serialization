@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                             8 June 2026
-Expires: 10 December 2026
+Intended status: Standards Track                             3 July 2026
+Expires: 4 January 2027
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 December 2026.
+   This Internet-Draft will expire on 4 January 2027.
 
 Copyright Notice
 
@@ -101,7 +101,7 @@ Table of Contents
        5.3.3.  No Map Ordering Semantics
    6.  Special Serializations
    7.  New Tag Data Model Rule
-   8.  CDDL Control Operators
+   8.  CDDL Serialization Control Operator
    9.  Security Considerations
    10. IANA Considerations
    11. References
@@ -759,40 +759,38 @@ Table of Contents
    Tags 2 and 3 are exempt from this rule, as they were defined prior to
    the establishment of this requirement.
 
-8.  CDDL Control Operators
+8.  CDDL Serialization Control Operator
 
-   Four new control operators are defined for use in CDDL [RFC8610].
+   The ".serial" control operator specifies the serialization of any
+   type in CDDL, including the serialization of the whole document or
+   byte-string-wrapped sub-parts.
 
-   +===========+======================================================+
-   | Name      | Purpose                                              |
-   +===========+======================================================+
-   | .prefp    | Use preferred-plus serialization for a data item     |
-   +-----------+------------------------------------------------------+
-   | .prefpseq | Use preferred-plus serialization for a CBOR sequence |
-   +-----------+------------------------------------------------------+
-   | .dtrm     | Use deterministic serialization for a data item      |
-   +-----------+------------------------------------------------------+
-   | .dtrmseq  | Use deterministic serialization for a CBOR sequence  |
-   +-----------+------------------------------------------------------+
+   The controller (the right-hand side) MUST be either "prefp" or
+   "dtrm", specifying preferred-plus (Section 4) or deterministic
+   (Section 5) serialization, respectively.
 
-                                 Table 2
+   The scope of .serial applies recursively through nested arrays and
+   maps, but does not extend into byte strings or other data items that
+   happen to contain encoded CBOR.  Every instance of embedded CBOR that
+   requires specific serialization must specify it explicitly.  See also
+   Appendix G.
 
-   These operators have the same semantics as the .cbor and .cborseq
-   operators (See Section 3.8.4 of [RFC8610]) with the additional
-   requirement for preferred-plus or deterministic serialization.  These
-   specify that what is in the “controller” (the right side of the
-   operator) be serialized as indicated.
+   For example, the following specifies that a message or protocol
+   described by "stuff" is deterministically serialized and wrapped in a
+   byte string:
 
-   For example, a byte string containing embedded CBOR that must be
-   deterministically encoded can be described in CDDL as:
+   stuff = ...
+   deterministic-stuff = stuff .serial dtrm
+   wrapped-deterministic-stuff = #6.24(bytes .cbor deterministic-stuff)
 
-   leaf = #6.24(bytes .dtrm any)
+   For another example, the first lines of a CDDL document as follows
+   specify that "my-protocol" be serialized with preferred-plus.
 
-   The scope of these operators applies recursively through nested
-   arrays and maps, but does not extend into byte strings or other data
-   items that happen to contain encoded CBOR.  Every instance of
-   embedded CBOR that requires constrained serialization must specify
-   that constraint explicitly.  See also Appendix G.
+   my-prefp-protocol = my-protocol .serial prefp
+   my-protocol = ...
+
+   New controller values for new serializations are possible but are
+   highly discouraged.  Standards action is required to add them.
 
 9.  Security Considerations
 
@@ -804,22 +802,9 @@ Table of Contents
    // RFC Editor: please replace RFCXXXX with the RFC number of this RFC
    // and remove this note.
 
-   This document requests IANA to register the contents of Table 3 into
-   the registry "CDDL Control Operators" of the [IANA.cddl] registry
-   group:
-
-                         +-----------+-----------+
-                         | Name      | Reference |
-                         +-----------+-----------+
-                         | .prefp    | [RFCXXXX] |
-                         | .prefpseq | [RFCXXXX] |
-                         | .dtrm     | [RFCXXXX] |
-                         | .dtrmseq  | [RFCXXXX] |
-                         +-----------+-----------+
-
-                            Table 3: New control
-                              operators to be
-                                 registered
+   This document requests IANA to register the ".serial" control
+   operator into the registry "CDDL Control Operators" of the
+   [IANA.cddl] registry group.
 
    IANA is requested to add a reference to Section 7 to the CBOR tag
    registry [IANA.cbor-tags].
@@ -930,7 +915,7 @@ Appendix A.  Information Model, Data Model and Serialization
    |                |             | decoder library   |                |
    +----------------+-------------+-------------------+----------------+
 
-                                  Table 4
+                                  Table 2
 
    CBOR doesn't provide facilities for information models.  They are
    mentioned here for completeness and to provide some context.
@@ -1552,7 +1537,7 @@ Appendix I.  Examples
    This appendix provides examples of the serializations described in
    this document.  Each example is a single data item.  Collectively,
    the examples cover the major CBOR data types and some special cases.
-   Table 5 describes the five fields provided for each example.
+   Table 3 describes the five fields provided for each example.
 
      +===============================+===============================+
      | field                         | description                   |
@@ -1572,7 +1557,7 @@ Appendix I.  Examples
      |                               | deterministic serialization   |
      +-------------------------------+-------------------------------+
 
-                     Table 5: Example Data Item Fields
+                     Table 3: Example Data Item Fields
 
 I.1.  Use for Testing
 
