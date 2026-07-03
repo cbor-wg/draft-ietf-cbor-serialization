@@ -1388,8 +1388,12 @@ Together, these three form a set of serializations that cover the majority of CB
 Readers may wish to review this background information first.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">CBOR intentionally allows multiple valid serializations of the same data item.
 For example, the array [1, 2] can be serialized in more than one way:<a href="#section-1-2" class="pilcrow">¶</a></p>
+<span id="name-1-2-definite-length-and-ind"></span><div id="tab-array-ser">
 <table class="center" id="table-1">
-        <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+        <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-1-2-definite-length-and-ind" class="selfRef">[1, 2] definite-length and indefinite-length serializations</a>
+        </caption>
 <thead>
           <tr>
             <th class="text-left" rowspan="1" colspan="1">Type</th>
@@ -1410,13 +1414,14 @@ For example, the array [1, 2] can be serialized in more than one way:<a href="#s
           </tr>
         </tbody>
       </table>
-<p id="section-1-4">Similar variation exists for integers, maps, strings, and floating-point numbers.<a href="#section-1-4" class="pilcrow">¶</a></p>
+</div>
+<p id="section-1-4">Similar variation exists for most other CBOR data types.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">This variability is deliberate.
 CBOR is designed to allow encodings to be selected according to the constraints and requirements of a particular environment.
 The flexibility is a core design feature.
-(CBOR is not unique in this regard; BER and DER encoding for ASN.1 are a similar design choice.)<a href="#section-1-5" class="pilcrow">¶</a></p>
+(CBOR is not unique in this regard; compare ASN.1's BER encoding rules).<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">For example, indefinite-length serialization is suited for streaming large arrays in constrained environments, where the total length is not known in advance.
-Conversely, definite-length serialization works well to decode small arrays in constrained environments.<a href="#section-1-6" class="pilcrow">¶</a></p>
+Conversely, definite-length serialization makes it easier to decode small arrays in constrained environments.<a href="#section-1-6" class="pilcrow">¶</a></p>
 <p id="section-1-7">As a result, CBOR libraries and protocol implementations commonly support only the serialization forms required for their intended use cases.
 This behavior is expected and aligns with CBOR’s design goals.<a href="#section-1-7" class="pilcrow">¶</a></p>
 <p id="section-1-8">However, this flexibility introduces two challenges: interoperability and determinism.<a href="#section-1-8" class="pilcrow">¶</a></p>
@@ -1426,12 +1431,13 @@ This behavior is expected and aligns with CBOR’s design goals.<a href="#sectio
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-interoperability" class="section-name selfRef">Interoperability</a>
         </h3>
 <p id="section-1.1-1">The interoperability challenge arises because partial implementations are both permitted and expected.
-For example, an encoder might transmit an indefinite-length array to a decoder that does decodes only definite length arrays.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+For example, an encoder may produce an indefinite-length array that is sent to a decoder that supports only definite-length arrays.
+Both this encoder and decoder are allowed by <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <p id="section-1.1-2">Decoders in particular often support only a subset of serialization forms — whether because they operate in constrained environments,
-or because a full general-purpose decoder is substantially more work to implement, especially in languages like C and Rust that lack built-in dynamic arrays, maps, and strings<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+or because a full general-purpose decoder is substantially more work to implement, especially in languages like C and Rust that lack built-in dynamic arrays, maps, and strings.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
 <p id="section-1.1-3">In practice, most CBOR usage occurs outside highly constrained environments.
 This makes it both feasible and beneficial to define a common serialization suitable for general use.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
-<p id="section-1.1-4">Protocol specifications can reference such a serialization rather than restating detailed encoding rules, and library implementations can prioritize support for it.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">Protocol specifications can reference this serialization; library implementations can prioritize support for it.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
 <p id="section-1.1-5">This document defines that serialization: preferred-plus serialization.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1446,7 +1452,7 @@ This is a problem in some protocols that hash or sign encoded CBOR.<a href="#sec
 <p id="section-1.2-2">Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
 However, as noted earlier, the majority of CBOR usage occurs outside constrained environments.
 It is therefore practical to define a single deterministic serialization suitable for general use.<a href="#section-1.2-2" class="pilcrow">¶</a></p>
-<p id="section-1.2-3">Protocol specifications and library implementations can reference this serialization instead of defining their own deterministic encoding rules.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
+<p id="section-1.2-3">Protocol specifications can reference this serialization instead of defining their own deterministic encoding rules; library implementations can prioritize support for it.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
 <p id="section-1.2-4">This document defines that serialization: deterministic serialization.<a href="#section-1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1455,12 +1461,12 @@ It is therefore practical to define a single deterministic serialization suitabl
         <h3 id="name-relation-to-rfc-8949">
 <a href="#section-1.3" class="section-number selfRef">1.3. </a><a href="#name-relation-to-rfc-8949" class="section-name selfRef">Relation to RFC 8949</a>
         </h3>
-<p id="section-1.3-1">This document defines new serializations rather than attempting to clarify those in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> (that need clarification).
-This approach enables the serialization requirements to be expressed directly in normative <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> language, and to be consolidated in this single comprehensive specification.
+<p id="section-1.3-1">This document defines new serializations rather than updating those in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>.
+This approach enables the serialization requirements to be expressed directly in normative <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> language and to be defined entirely in this document.
 This approach provides clarity and simplicity for implementers and the CBOR community over the long term.<a href="#section-1.3-1" class="pilcrow">¶</a></p>
-<p id="section-1.3-2">The serializations defined herein are formally new, but largely interchangeable with the way the serializations desecribed in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> are implemented.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
-<p id="section-1.3-3">For example, preferred serialization described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> is commonly implemented without support for indefinite-lengths.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
-<p id="section-1.3-4">Preferred-plus serialization as defined here is largely the same as preferred serialization without indefinite-lengths, so it is largely interchangeable with what is commonly implemented.<a href="#section-1.3-4" class="pilcrow">¶</a></p>
+<p id="section-1.3-2">The serializations defined herein are formally new but largely interchangeable with the way the serializations described in <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> are implemented.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
+<p id="section-1.3-3">For example, preferred serialization (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.1" class="relref">Section 4.1</a> of [<a href="#STD94" class="cite xref">STD94</a>]</span>) is commonly implemented without support for indefinite lengths.
+Preferred-plus serialization is effectively the same as preferred serialization without indefinite lengths, so it is largely interchangeable with what is commonly implemented.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2074,8 +2080,12 @@ number of this RFC and remove this note.</span><a href="#section-10-1" class="pi
       </h2>
 <p id="appendix-A-1">To understand CBOR serialization and determinism, it's helpful to distinguish between the general concepts of an information model, a data model, and serialization.
 These are broad concepts that can be applied to other serialization schemes like JSON and ASN.1<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<span id="name-information-model-data-model"></span><div id="tab-models">
 <table class="center" id="table-2">
-        <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+        <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#name-information-model-data-model" class="selfRef">Information Model, Data Model and Serialization</a>
+        </caption>
 <thead>
           <tr>
             <th class="text-left" rowspan="1" colspan="1"> </th>
@@ -2113,6 +2123,7 @@ These are broad concepts that can be applied to other serialization schemes like
           </tr>
         </tbody>
       </table>
+</div>
 <p id="appendix-A-3">CBOR doesn't provide facilities for information models.
 They are mentioned here for completeness and to provide some context.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
 <p id="appendix-A-4">CBOR defines a palette of basic types that are the usual integers, floating-point numbers, strings, arrays, maps and other.
@@ -3191,7 +3202,7 @@ For general serialization a NaN with a payload should be returned, but there is 
 </div>
 </address>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Carsten Borman</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Carsten Bormann</span></div>
 <div dir="auto" class="left"><span class="org">Universität Bremen TZI</span></div>
 <div class="email">
 <span>Email:</span>
