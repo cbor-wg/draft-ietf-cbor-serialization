@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                             6 July 2026
-Expires: 7 January 2027
+Intended status: Standards Track                             7 July 2026
+Expires: 8 January 2027
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 January 2027.
+   This Internet-Draft will expire on 8 January 2027.
 
 Copyright Notice
 
@@ -803,12 +803,12 @@ Table of Contents
 
    For example, a CBOR argument (such as an integer encoding or a string
    length) can be encoded up to five different ways (e.g. the value 1
-   can be encoded as 0x01, 0x1801, 0x190001, ...).  This variability can
-   be used to encode ~2 hidden bits per argument.  Since every CBOR item
-   carries an argument, even moderately complex protocols may accumulate
-   sufficient bits to exfiltrate sensitive material (e.g., cryptographic
-   keys) or to generate persistent identifiers for tracking users or
-   devices.
+   can be encoded as 0x01, 0x1801, 0x190001, 0x1A00000001, or
+   0x1B0000000000000001).  This variability can be used to encode ~2
+   hidden bits per argument.  Since every CBOR item carries an argument,
+   even moderately complex protocols may accumulate sufficient bits to
+   exfiltrate sensitive material (e.g., cryptographic keys) or to
+   generate persistent identifiers for tracking users or devices.
 
    The following techniques may be used to establish a covert channel:
 
@@ -831,8 +831,8 @@ Table of Contents
    trustworthy and does not exfiltrate data.
 
    Another option is to require preferred-plus or deterministic
-   serialization and to have decoders verify compliance.  See
-   Appendix G.
+   serialization and to have decoders issue a warning if not compliant.
+   See Appendix G.
 
 10.  IANA Considerations
 

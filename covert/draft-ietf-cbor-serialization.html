@@ -1051,7 +1051,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 7 January 2027</td>
+<td class="center">Expires 8 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-06" class="published">6 July 2026</time>
+<time datetime="2026-07-07" class="published">7 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-01-08">8 January 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1121,7 +1121,7 @@ Together, these three form a set of serializations that cover the majority of CB
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1989,7 +1989,7 @@ Standards action is required to add them.<a href="#section-8-8" class="pilcrow">
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-covert-channel" class="section-name selfRef">Covert Channel</a>
         </h3>
 <p id="section-9.1-1">CBOR’s serialization variants can be used as a covert channel <span>[<a href="#LAM73" class="cite xref">LAM73</a>]</span> to steganographically exfiltrate data.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
-<p id="section-9.1-2">For example, a CBOR argument (such as an integer encoding or a string length) can be encoded up to five different ways (e.g. the value 1 can be encoded as 0x01, 0x1801, 0x190001, ...).
+<p id="section-9.1-2">For example, a CBOR argument (such as an integer encoding or a string length) can be encoded up to five different ways (e.g. the value 1 can be encoded as 0x01, 0x1801, 0x190001, 0x1A00000001, or 0x1B0000000000000001).
 This variability can be used to encode ~2 hidden bits per argument.
 Since every CBOR item carries an argument, even moderately complex protocols may accumulate sufficient bits to exfiltrate sensitive material (e.g., cryptographic keys) or to generate persistent identifiers for tracking users or devices.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
 <p id="section-9.1-3">The following techniques may be used to establish a covert channel:<a href="#section-9.1-3" class="pilcrow">¶</a></p>
@@ -2012,7 +2012,7 @@ Since every CBOR item carries an argument, even moderately complex protocols may
         </ul>
 <p id="section-9.1-5">These channels are covert because most CBOR decoders accept all such representations without raising errors or warnings.¶<a href="#section-9.1-5" class="pilcrow">¶</a></p>
 <p id="section-9.1-6">The primary safeguard is to ensure the CBOR encoding library used is trustworthy and does not exfiltrate data.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
-<p id="section-9.1-7">Another option is to require preferred-plus or deterministic serialization and to have decoders verify compliance.
+<p id="section-9.1-7">Another option is to require preferred-plus or deterministic serialization and to have decoders issue a warning if not compliant.
 See <a href="#CheckingDecoder" class="auto internal xref">Appendix G</a>.<a href="#section-9.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
