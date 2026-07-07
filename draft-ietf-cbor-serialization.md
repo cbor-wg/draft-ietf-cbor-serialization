@@ -596,7 +596,7 @@ These channels are covert because most CBOR decoders accept all such representat
 
 The primary safeguard is to ensure the CBOR encoding library used is trustworthy and does not exfiltrate data.
 
-Another option is to require preferred-plus or deterministic serialization and to have decoders verify compliance.
+Another option is to require preferred-plus or deterministic serialization and to have decoders issue a warning if not compliant.
 See {{CheckingDecoder}}.
 
 
