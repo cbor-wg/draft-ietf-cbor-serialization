@@ -580,7 +580,7 @@ The security considerations in {{Section 10 of -cbor}} apply.
 
 CBOR’s serialization variants can be used as a covert channel {{LAM73}} to steganographically exfiltrate data.
 
-For example, a CBOR argument (such as an integer encoding or a string length) can be encoded up to five different ways (e.g. the value 1 can be encoded as 0x01, 0x1801, 0x190001, ...).
+For example, a CBOR argument (such as an integer encoding or a string length) can be encoded up to five different ways (e.g. the value 1 can be encoded as 0x01, 0x1801, 0x190001, 0x1A00000001, or 0x1B0000000000000001).
 This variability can be used to encode ~2 hidden bits per argument.
 Since every CBOR item carries an argument, even moderately complex protocols may accumulate sufficient bits to exfiltrate sensitive material (e.g., cryptographic keys) or to generate persistent identifiers for tracking users or devices.
 
