@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-05T03:21:30.154454+00:00",
+  "timestamp": "2026-07-07T03:19:57.269440+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -3572,7 +3572,7 @@
       "labels": [],
       "body": "This is a large change to the control operators.\r\n\r\nThey are no longer based on .cbor and .cborseq, but instead can apply to any CDDL type including groups. This allows specification of the serialization at the top level of a CDDL document. Byte string wrapping is no longer required to use these.\r\n\r\nPlease comment on this. I want to be sure I thought this through correctly.\r\n\r\nAddress #71 \r\n",
       "createdAt": "2026-06-11T17:40:58Z",
-      "updatedAt": "2026-07-03T17:32:20Z",
+      "updatedAt": "2026-07-06T00:18:33Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "6d4d1ab4b261e75a82a1dd1dde629aa56d6c74bc",
@@ -3613,9 +3613,96 @@
           "body": "I've change the PR to \".serial\", but I'm not necessarily opposed to your proposal. We need a working group discussion to choose. Right now the working group is busy with other stuff, so I'm not bring it up, but I will. I really appreciate your input here! Thx!",
           "createdAt": "2026-06-22T18:29:30Z",
           "updatedAt": "2026-06-22T18:29:30Z"
+        },
+        {
+          "author": "stevenj",
+          "authorAssociation": "NONE",
+          "body": "> \r\n> I think the controller for .serial should not have an IANA registry, but require standards action.\r\n> \r\n100% Agree\r\n",
+          "createdAt": "2026-07-06T00:18:33Z",
+          "updatedAt": "2026-07-06T00:18:33Z"
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 73,
+      "id": "PR_kwDOQYX63c7uh31h",
+      "title": "Add section on covert channels",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/73",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-07-06T20:14:52Z",
+      "updatedAt": "2026-07-07T02:43:46Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "fd9c21f02fa02c916834346cae38bd310079621f",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "covert",
+      "headRefOid": "43bf70d9bdad1ebebc6f2feea7c8c7a409c66e90",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c8AAAABFIibzw",
+          "commit": {
+            "abbreviatedOid": "b37377d"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-07-06T20:19:03Z",
+          "updatedAt": "2026-07-06T20:19:04Z",
+          "comments": [
+            {
+              "originalPosition": 44,
+              "body": "I think it is also worth mentioning that preferred-plus addresses the first three manipulations. Displaying/logging maps in the order received, or using deterministic encoding addresses the 4th option. And I think you had some text about Unicode normalization for the last point.\n\n\n```suggestion\nAnother option is to require preferred-plus or deterministic serialization and to have decoders issue a warning if not compliant.\n```",
+              "createdAt": "2026-07-06T20:19:04Z",
+              "updatedAt": "2026-07-06T20:23:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABFIi0mg",
+          "commit": {
+            "abbreviatedOid": "b37377d"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-07-06T20:20:02Z",
+          "updatedAt": "2026-07-06T20:20:02Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "```suggestion\nFor example, a CBOR argument (such as an integer encoding or a string length) can be encoded up to five different ways (e.g. the value 1 can be encoded as 0x01, 0x1801, 0x190001, 0x1A00000001, or 0x1B0000000000000001).\n```",
+              "createdAt": "2026-07-06T20:20:02Z",
+              "updatedAt": "2026-07-06T20:20:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABFIkTyg",
+          "commit": {
+            "abbreviatedOid": "b37377d"
+          },
+          "author": "rohanmahy",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "I made some suggestions, but I think the important thing is getting the main idea into the document.",
+          "createdAt": "2026-07-06T20:23:52Z",
+          "updatedAt": "2026-07-06T20:23:52Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
