@@ -268,7 +268,7 @@ For example, it is recommended that a library implementing CWT or COSE implement
 
 However, a library MAY choose to support only deterministic serialization if this aligns with its deployment environment and design goals.
 
-When a framework protocol mandates serialization requirements, libraries must of cource conform.
+When a framework protocol mandates serialization requirements, libraries must of course conform.
 For instance, certain parts of COSE mandate deterministic serialization.
 See {{COSESerialization}} for a COSE-based example.
 
@@ -276,7 +276,7 @@ See {{COSESerialization}} for a COSE-based example.
 ### Libraries for End-to-End Protocols
 
 End-to-end protocols should have explicit serialization requirements to ensure interoperability.
-Libraries for end-to-end protocols should fullfill them.
+Libraries for end-to-end protocols should fulfill them.
 
 If an end-to-end protocol specification does not state serialization requirements, the library is free to choose, but it is RECOMMENDED that they implement preferred-plus serialization.
 
@@ -290,7 +290,7 @@ Preferred-plus and deterministic serialization are subsets of it.
 General serialization permits any and all of these:
 
 * CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, or 0x190000 and so on).
-* Floating-point values encoded at any length (for example, 0.00 can be 0xf900, 0xfa000000000, and so on).
+* Floating-point values encoded at any length (for example, 0.00 can be 0xf90000, 0xfa00000000, and so on).
 * Both definite or indefinite-length strings, arrays, and maps.
 * Big number representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the big number 0xc34100).
 
@@ -346,15 +346,15 @@ This section defines a serialization named "preferred-plus serialization."
 
     * Half-precision MUST be supported
     * Values MUST be encoded in the shortest of double, single or half-precision that preserves precision.
-      For example, 0.0 can always be reduced to half-precision so it MUST be encoded as 0xf90000
-      For another example, 0.1 would loose precision if not encoded as double-precision so it MUST be encoded as 0xfb3fb999999999999a.
+      For example, 0.0 can always be reduced to half-precision so it MUST be encoded as 0xf90000.
+      For another example, 0.1 would lose precision if not encoded as double-precision so it MUST be encoded as 0xfb3fb999999999999a.
       Subnormal numbers MUST be supported in this shortest-length encoding.
    * The only NaN that may be encoded is a half-precision quiet NaN (the sign bit and all but the highest payload bit is clear), specifically 0xf97e00.
-   * Aside from the the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as {{Section 4.1 of -cbor}} and also as {{Section 4.2.1 of -cbor}}.
+   * Aside from the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as {{Section 4.1 of -cbor}} and also as {{Section 4.2.1 of -cbor}}.
 
 1. If big numbers (tags 2 and 3) are encoded, the following apply:
 
-   * Leadings zeros MUST NOT be encoded.
+   * Leading zeros MUST NOT be encoded.
 
    * If a value can be encoded using major type 0 or 1, then it MUST be encoded with major type 0 or 1, never as a big number.
 
@@ -405,7 +405,7 @@ The differences are:
 These differences are not of significance in real-world implementations, so preferred-plus serialization is already largely supported.
 
 {{Section 3 of -cbor}} states that in preferred serialization the use of definite-length encoding is a "preference", not a requirement.
-Technically that means preferred seriaization decoders must support indefinite legnths, but in reality many do not.
+Technically that means preferred serialization decoders must support indefinite lengths, but in reality many do not.
 Indefinite lengths, particularly for strings, are often not supported because they are more complex to implement than other parts of CBOR.
 Because of this, the implementation of most CBOR protocols use only definite lengths.
 
@@ -416,7 +416,7 @@ That preferred serialization decoders are technically required to support indefi
 Briefly stated, the reason that the divergence on NaNs is not of consequence in the real world, is that their non-trivial forms are used extremely rarely and support for them in programming environments and CBOR libraries is unreliable.
 See {{NaNCompatibility}} for a detailed discussion.
 
-Thus preferred-plus serialization is largely interchangable with preferred serialization in the real world.
+Thus preferred-plus serialization is largely interchangeable with preferred serialization in the real world.
 
 
 # Deterministic Serialization {#DeterministicSerialization}
@@ -438,7 +438,7 @@ See also {{DeterministicConsiderations}} for considerations involved in designin
 1. All of preferred-plus serialization defined in {{PreferredPlusEncoding}} MUST be used.
 
 1. If a map is encoded, the items in it MUST be sorted in the bytewise lexicographic order of their deterministic encodings of the map keys.
-   (Note that this is the same as the sorting in {{Section 4.2.1 of -cbor}} and not the same as {{Section 3.9 of RFC7049}} / {{Section 4.2.3 of -cbor}}.
+   (Note that this is the same as the sorting in {{Section 4.2.1 of -cbor}} and not the same as {{Section 3.9 of RFC7049}} / {{Section 4.2.3 of -cbor}}.)
 
 ## Decoder Requirements {#DeterministicDecoding}
 
@@ -472,7 +472,7 @@ Because of this property, deterministic serialization can always be used in plac
 In environments where map sorting is not costly, it is both acceptable and beneficial to always use deterministic serialization.
 In such environments, a CBOR encoder may produce deterministic encoding by default and may even omit support for preferred-plus encoding entirely.
 
-However, note that deterministic serialization is never a substitute for general serialization where uses cases may require indefinite lengths, separate big numbers from integers in the data model, or need non-trivial NaNs.
+However, note that deterministic serialization is never a substitute for general serialization where use cases may require indefinite lengths, separate big numbers from integers in the data model, or need non-trivial NaNs.
 
 
 ### No Map Ordering Semantics
@@ -498,7 +498,7 @@ CBOR is simple enough that encoders and decoders for some protocols can be imple
 * Fixed-width floating-point encoding, relieving the encoder from performing floating-point reduction to the shortest representable form.
 
 * In-place length updates for strings, arrays, and maps, by encoding their lengths in a fixed number of bits.
-For example, if a string length is always encoded in 32 bits, increasing its length from 2^16 to 2^16+1 requires only overwriting the length field rather than shifting all 2^16 bytes of content.
+For example, if a string length is always encoded in 32 bits, increasing its length from 2^16-1 to 2^16 requires only overwriting the length field rather than shifting all 2^16 bytes of content.
 
 * Transmission of non-trivial NaN floating-point values (see {{NaN}}).
 
@@ -631,8 +631,8 @@ Again, this ensures interoperability but not determinism &mdash; identical fluid
 Determinism can be achieved by allowing only floating-point, though that doesn’t minimize encoding size.
 
 A better solution requires the fluid level always be encoded using the smallest representation for every particular value.
-For example, a fluid level of 2 is always encoding as an integer, never as a floating-point number.
-2.000001 is always be encoded as a floating-point number so as to not lose precision.
+For example, a fluid level of 2 is always encoded as an integer, never as a floating-point number.
+2.000001 is always encoded as a floating-point number so as to not lose precision.
 See the numeric reduction defined by {{I-D.mcnally-deterministic-cbor}}.
 
 Although this is not strictly a CBOR issue, deterministic CBOR protocol designers should be mindful of variability in Unicode text, as some characters can be encoded in multiple ways.
@@ -735,7 +735,7 @@ Some floating-point values cannot be represented in shorter formats (e.g., 2.0e+
 The same is true for some NaNs.
 
 In preferred serialization, this equivalence MUST be used to shorten encoding length.
-If a NaN can be represented equivalently in a shorter form (e.g., half-precision rather than single-precision), then the shorter representation MUS be used.
+If a NaN can be represented equivalently in a shorter form (e.g., half-precision rather than single-precision), then the shorter representation MUST be used.
 
 This equivalence also applies when floating-point values are used as map keys.
 A map key encoded as half-precision MUST be considered a duplicate of one encoded as double-precision if they meet the equivalence rules above.
@@ -775,7 +775,7 @@ The divergence is justified by the following:
 - A new CBOR tag can be defined in the future to explicitly support them.
 
 
-## Recommendations for Use of Non-Trival NaNs
+## Recommendations for Use of Non-Trivial NaNs
 
 While non-trivial NaNs are excluded from preferred-plus and deterministic serialization, they are theoretically supported by {{-cbor}}.
 General serialization does support them.
@@ -810,7 +810,7 @@ Both functions return an integer with the bit pattern for the resulting floating
 ~~~ c
 {::include prefp-float-encode.c}
 ~~~
-{: #half-encode title="Example C Code for Preferred-Plus Ploating-Point Encoding"}
+{: #half-encode title="Example C Code for Preferred-Plus Floating-Point Encoding"}
 
 
 # Big Numbers and the CBOR Data Model {#BigNumbersDataModel}
@@ -1027,7 +1027,7 @@ Collectively, the examples cover the major CBOR data types and some special case
 | edn-representations | Unencoded value(s) for the data item |
 | general-serializations | Encoded representation(s) for general serialization |
 | preferred-plus-serializations | Encoded representation(s) for preferred-plus serialization  |
-| deterministic-serializations | Encoded representation for deterministic serialization |
+| deterministic-serialization | Encoded representation for deterministic serialization |
 {: #tab-example title="Example Data Item Fields"}
 
 
