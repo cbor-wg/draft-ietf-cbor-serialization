@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                             3 July 2026
-Expires: 4 January 2027
+Intended status: Standards Track                            13 July 2026
+Expires: 14 January 2027
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 January 2027.
+   This Internet-Draft will expire on 14 January 2027.
 
 Copyright Notice
 
@@ -115,7 +115,7 @@ Table of Contents
      C.3.  Use and Non-use for Non-Trivial NaNs
      C.4.  Clarification of RFC 8949
      C.5.  Divergence from STD94
-     C.6.  Recommendations for Use of Non-Trival NaNs
+     C.6.  Recommendations for Use of Non-Trivial NaNs
    Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
    Appendix E.  Big Numbers and the CBOR Data Model
    Appendix F.  Big Number Implementation Strategies
@@ -360,7 +360,7 @@ Table of Contents
    design goals.
 
    When a framework protocol mandates serialization requirements,
-   libraries must of cource conform.  For instance, certain parts of
+   libraries must of course conform.  For instance, certain parts of
    COSE mandate deterministic serialization.  See Appendix I for a COSE-
    based example.
 
@@ -368,7 +368,7 @@ Table of Contents
 
    End-to-end protocols should have explicit serialization requirements
    to ensure interoperability.  Libraries for end-to-end protocols
-   should fullfill them.
+   should fulfill them.
 
    If an end-to-end protocol specification does not state serialization
    requirements, the library is free to choose, but it is RECOMMENDED
@@ -387,7 +387,7 @@ Table of Contents
       encoded as 0x00, 0x1800, or 0x190000 and so on).
 
    *  Floating-point values encoded at any length (for example, 0.00 can
-      be 0xf900, 0xfa000000000, and so on).
+      be 0xf90000, 0xfa00000000, and so on).
 
    *  Both definite or indefinite-length strings, arrays, and maps.
 
@@ -475,8 +475,8 @@ Table of Contents
        *  Values MUST be encoded in the shortest of double, single or
           half-precision that preserves precision.  For example, 0.0 can
           always be reduced to half-precision so it MUST be encoded as
-          0xf90000 For another example, 0.1 would loose precision if not
-          encoded as double-precision so it MUST be encoded as
+          0xf90000.  For another example, 0.1 would lose precision if
+          not encoded as double-precision so it MUST be encoded as
           0xfb3fb999999999999a.  Subnormal numbers MUST be supported in
           this shortest-length encoding.
 
@@ -484,14 +484,13 @@ Table of Contents
           (the sign bit and all but the highest payload bit is clear),
           specifically 0xf97e00.
 
-       *  Aside from the the requirement allowing only the half-
-          precision quiet NaN, these are the same floating-point
-          requirements as Section 4.1 of [STD94] and also as
-          Section 4.2.1 of [STD94].
+       *  Aside from the requirement allowing only the half-precision
+          quiet NaN, these are the same floating-point requirements as
+          Section 4.1 of [STD94] and also as Section 4.2.1 of [STD94].
 
    5.  If big numbers (tags 2 and 3) are encoded, the following apply:
 
-       *  Leadings zeros MUST NOT be encoded.
+       *  Leading zeros MUST NOT be encoded.
 
        *  If a value can be encoded using major type 0 or 1, then it
           MUST be encoded with major type 0 or 1, never as a big number.
@@ -567,8 +566,8 @@ Table of Contents
 
    Section 3 of [STD94] states that in preferred serialization the use
    of definite-length encoding is a "preference", not a requirement.
-   Technically that means preferred seriaization decoders must support
-   indefinite legnths, but in reality many do not.  Indefinite lengths,
+   Technically that means preferred serialization decoders must support
+   indefinite lengths, but in reality many do not.  Indefinite lengths,
    particularly for strings, are often not supported because they are
    more complex to implement than other parts of CBOR.  Because of this,
    the implementation of most CBOR protocols use only definite lengths.
@@ -587,7 +586,7 @@ Table of Contents
    environments and CBOR libraries is unreliable.  See Appendix C.5 for
    a detailed discussion.
 
-   Thus preferred-plus serialization is largely interchangable with
+   Thus preferred-plus serialization is largely interchangeable with
    preferred serialization in the real world.
 
 5.  Deterministic Serialization
@@ -618,7 +617,7 @@ Table of Contents
        bytewise lexicographic order of their deterministic encodings of
        the map keys.  (Note that this is the same as the sorting in
        Section 4.2.1 of [STD94] and not the same as Section 3.9 of
-       [RFC7049] / Section 4.2.3 of [STD94].
+       [RFC7049] / Section 4.2.3 of [STD94].)
 
 5.2.  Decoder Requirements
 
@@ -671,7 +670,7 @@ Table of Contents
    support for preferred-plus encoding entirely.
 
    However, note that deterministic serialization is never a substitute
-   for general serialization where uses cases may require indefinite
+   for general serialization where use cases may require indefinite
    lengths, separate big numbers from integers in the data model, or
    need non-trivial NaNs.
 
@@ -710,7 +709,7 @@ Table of Contents
    *  In-place length updates for strings, arrays, and maps, by encoding
       their lengths in a fixed number of bits.  For example, if a string
       length is always encoded in 32 bits, increasing its length from
-      2^16 to 2^16+1 requires only overwriting the length field rather
+      2^16-1 to 2^16 requires only overwriting the length field rather
       than shifting all 2^16 bytes of content.
 
    *  Transmission of non-trivial NaN floating-point values (see
@@ -984,9 +983,9 @@ Appendix B.  General Protocol Considerations for Determinism
 
    A better solution requires the fluid level always be encoded using
    the smallest representation for every particular value.  For example,
-   a fluid level of 2 is always encoding as an integer, never as a
-   floating-point number. 2.000001 is always be encoded as a floating-
-   point number so as to not lose precision.  See the numeric reduction
+   a fluid level of 2 is always encoded as an integer, never as a
+   floating-point number. 2.000001 is always encoded as a floating-point
+   number so as to not lose precision.  See the numeric reduction
    defined by [I-D.mcnally-deterministic-cbor].
 
    Although this is not strictly a CBOR issue, deterministic CBOR
@@ -1149,7 +1148,7 @@ C.4.  Clarification of RFC 8949
    In preferred serialization, this equivalence MUST be used to shorten
    encoding length.  If a NaN can be represented equivalently in a
    shorter form (e.g., half-precision rather than single-precision),
-   then the shorter representation MUS be used.
+   then the shorter representation MUST be used.
 
    This equivalence also applies when floating-point values are used as
    map keys.  A map key encoded as half-precision MUST be considered a
@@ -1218,7 +1217,7 @@ C.5.  Divergence from [STD94]
    *  A new CBOR tag can be defined in the future to explicitly support
       them.
 
-C.6.  Recommendations for Use of Non-Trival NaNs
+C.6.  Recommendations for Use of Non-Trivial NaNs
 
    While non-trivial NaNs are excluded from preferred-plus and
    deterministic serialization, they are theoretically supported by
@@ -1392,7 +1391,7 @@ Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
      }
    }
 
-    Figure 1: Example C Code for Preferred-Plus Ploating-Point Encoding
+    Figure 1: Example C Code for Preferred-Plus Floating-Point Encoding
 
 Appendix E.  Big Numbers and the CBOR Data Model
 
@@ -1711,7 +1710,7 @@ Appendix J.  Examples
      | preferred-plus-serializations | Encoded representation(s) for |
      |                               | preferred-plus serialization  |
      +-------------------------------+-------------------------------+
-     | deterministic-serializations  | Encoded representation for    |
+     | deterministic-serialization   | Encoded representation for    |
      |                               | deterministic serialization   |
      +-------------------------------+-------------------------------+
 
@@ -1900,7 +1899,7 @@ J.2.  Example Data Items
         h'686869207468657265',
         h'7f686869207468657265ff',
         h'7f64686920746468657265ff',
-        h'7f790004686920747B000000000000000468657265ff'],
+        h'7f790004686920747b000000000000000468657265ff'],
       "preferred-plus-serializations": [
         h'686869207468657265'],
       "deterministic-serialization": [
@@ -1940,7 +1939,7 @@ J.2.  Example Data Items
         h'a303617a016178026179',
         h'a303617a026179016178',
         h'bf03617a026179016178ff',
-        h'a31a00000003617a19000261791B00000000000000016178'],
+        h'a31a00000003617a19000261791b00000000000000016178'],
      "preferred-plus-serializations": [
         h'a301617802617903617a',
         h'a301617803617a026179',
@@ -1957,12 +1956,12 @@ J.2.  Example Data Items
    {
      "description": "Three item map with string keys",
      "edn-representations" : [
-        {"abc": 1, "def": 2, "ghi": 3},
-        {"abc": 1, "ghi": 3, "def": 2},
-        {"def": 2, "abc": 1, "ghi": 3},
-        {"def": 2, "ghi": 3, "abc": 1},
-        {"ghi": 3, "abc": 1, "def": 2},
-        {"ghi": 3, "def": 2, "abc": 1} ],
+        "{\"abc\": 1, \"def\": 2, \"ghi\": 3}",
+        "{\"abc\": 1, \"ghi\": 3, \"def\": 2}",
+        "{\"def\": 2, \"abc\": 1, \"ghi\": 3}",
+        "{\"def\": 2, \"ghi\": 3, \"abc\": 1}",
+        "{\"ghi\": 3, \"abc\": 1, \"def\": 2}",
+        "{\"ghi\": 3, \"def\": 2, \"abc\": 1}" ],
      "general-serializations": [
         h'a3636162630163646566026367686903',
         h'a3636162630163676869036364656602',
