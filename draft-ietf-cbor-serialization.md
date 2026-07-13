@@ -109,6 +109,18 @@ informative:
      date: December, 2017
      target: https://www.omg.org/spec/UML/2.5.1/PDF
 
+   LAM73:
+      title: A Note on the Confinement Problem
+      author:
+        -
+          fullname: Butler W. Lampson
+      date: 1973-10
+      seriesinfo:
+        - name: Communications of the ACM
+          value: "16(10)"
+        - name: DOI
+          value: 10.1145/362375.362389
+
 
 --- abstract
 
@@ -562,6 +574,31 @@ Standards action is required to add them.
 # Security Considerations
 
 The security considerations in {{Section 10 of -cbor}} apply.
+
+## Covert Channel
+
+
+CBOR’s serialization variants can be used as a covert channel {{LAM73}} to steganographically exfiltrate data.
+
+For example, a CBOR argument (such as an integer encoding or a string length) can be encoded up to five different ways (e.g. the value 1 can be encoded as 0x01, 0x1801, 0x190001, 0x1A00000001, or 0x1B0000000000000001).
+This variability can be used to encode ~2 hidden bits per argument.
+Since every CBOR item carries an argument, even moderately complex protocols may accumulate sufficient bits to exfiltrate sensitive material (e.g., cryptographic keys) or to generate persistent identifiers for tracking users or devices.
+
+The following techniques may be used to establish a covert channel:
+
+* Varying the encoding of CBOR arguments (as above)
+* Representing text or byte strings as indefinite-length encodings, and encoding information in the segmentation structure (e.g., segment lengths or insertion of empty segments)
+* Encoding data within NaN payloads
+* Manipulating the ordering of map entries
+* Varying the Unicode representation of text strings
+
+These channels are covert because most CBOR decoders accept all such representations without raising errors or warnings.¶
+
+The primary safeguard is to ensure the CBOR encoding library used is trustworthy and does not exfiltrate data.
+
+Another option is to require preferred-plus or deterministic serialization and to have decoders issue a warning if not compliant.
+See {{CheckingDecoder}}.
+
 
 # IANA Considerations
 
