@@ -1,12 +1,12 @@
 {
   "description": "Three item map with string keys",
   "edn-representations" : [
-     {"abc": 1, "def": 2, "ghi": 3},
-     {"abc": 1, "ghi": 3, "def": 2},
-     {"def": 2, "abc": 1, "ghi": 3},
-     {"def": 2, "ghi": 3, "abc": 1},
-     {"ghi": 3, "abc": 1, "def": 2},
-     {"ghi": 3, "def": 2, "abc": 1} ],
+     "{\"abc\": 1, \"def\": 2, \"ghi\": 3}",
+     "{\"abc\": 1, \"ghi\": 3, \"def\": 2}",
+     "{\"def\": 2, \"abc\": 1, \"ghi\": 3}",
+     "{\"def\": 2, \"ghi\": 3, \"abc\": 1}",
+     "{\"ghi\": 3, \"abc\": 1, \"def\": 2}",
+     "{\"ghi\": 3, \"def\": 2, \"abc\": 1}" ],
   "general-serializations": [
      h'a3636162630163646566026367686903',
      h'a3636162630163676869036364656602',
