@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-07T03:19:57.269440+00:00",
+  "timestamp": "2026-07-14T02:26:49.570212+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -338,7 +338,7 @@
       "labels": [],
       "body": "- using ordinary and deterministic eliminate some avenues for exfiltrating data that is invisible to the attackers\n  - based on indefinite length choices - very powerful\n  - based on specific encoding chosen\n  - based on order of maps\n- using ordinary or deterministic encoding eliminates some categories of resource exhaustion attacks\n- ",
       "createdAt": "2025-12-10T14:57:41Z",
-      "updatedAt": "2026-04-29T09:13:24Z",
+      "updatedAt": "2026-07-13T20:37:58Z",
       "closedAt": null,
       "comments": [
         {
@@ -354,6 +354,13 @@
           "body": "As this document is normative, I think the IESG will insist on discussing relevant security concerns that were left out of RFC 8949, some of which we have discovered since. I will add the security concerns about blindingly trying to check equality or greater than / less than operators on NaN values.",
           "createdAt": "2026-04-29T09:13:24Z",
           "updatedAt": "2026-04-29T09:13:24Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed by #73",
+          "createdAt": "2026-07-13T20:37:58Z",
+          "updatedAt": "2026-07-13T20:37:58Z"
         }
       ]
     },
@@ -3629,24 +3636,26 @@
       "id": "PR_kwDOQYX63c7uh31h",
       "title": "Add section on covert channels",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/73",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2026-07-06T20:14:52Z",
-      "updatedAt": "2026-07-07T02:43:46Z",
+      "updatedAt": "2026-07-13T20:36:54Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "fd9c21f02fa02c916834346cae38bd310079621f",
       "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "headRefName": "covert",
       "headRefOid": "43bf70d9bdad1ebebc6f2feea7c8c7a409c66e90",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-07-13T20:36:45Z",
+      "mergedAt": "2026-07-13T20:36:45Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "990918834ff4b417c847123f8eb7533397e12b29"
+      },
       "comments": [],
       "reviews": [
         {
@@ -3703,6 +3712,34 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 74,
+      "id": "PR_kwDOQYX63c7w1byB",
+      "title": "Fix errors and typos",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/74",
+      "state": "MERGED",
+      "author": "fxamacker",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Changes focused mostly on non-normative text.  The only edit to an RFC 2119 keyword restores the truncated \"MUS\" to \"MUST\".\r\n\r\n- **Section 3 \"General Serialization\" float example:** fixed CBOR float encoding in \"0.00 can be 0xf900, 0xfa000000000\". 0xf900 is truncated, and 0xfa000000000 has nine hex digits.\r\n\r\n- **Section 6 \"Special Serializations\" in-place length example**: corrected the length transition in \"For example, if a string length is always encoded in 32 bits, increasing its length from 2^16 to 2^16+1 requires only overwriting the length field rather than shifting all 2^16 bytes of content.\"  Both 2^16 and 2^16+1 require a 32-bit length encoding, so it doesn't demonstrate the benefit of in-place length updating.  Instead, 2^16-1 -> 2^16 shows the benefit when the length encoding width boundary is crossed.\r\n\r\n- **Appendix J Table 3**: changed \"deterministic-serializations\" to \"deterministic-serialization\" to match the field in all example files.\r\n\r\n- **examples/map_strings.edn**: quoted the six entries in \"edn-representations\" as strings, as the other example files do.\r\n\r\n- Other fixes include typos, grammar, punctuation, and case of hex literals in example files.\r\n\r\nChanges that require discussion or clarification are not included in this pull request; I'll raise those separately.",
+      "createdAt": "2026-07-12T22:45:48Z",
+      "updatedAt": "2026-07-13T20:33:38Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "fd9c21f02fa02c916834346cae38bd310079621f",
+      "headRepository": "fxamacker/draft-ietf-cbor-serialization",
+      "headRefName": "typo-and-error-fixes",
+      "headRefOid": "9b009bd898116148859d6806e6443bfbc952f50f",
+      "closedAt": "2026-07-13T20:33:38Z",
+      "mergedAt": "2026-07-13T20:33:38Z",
+      "mergedBy": "laurencelundblade",
+      "mergeCommit": {
+        "oid": "b49bbcb7800ece625be9a005819ef5ff7f833392"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
