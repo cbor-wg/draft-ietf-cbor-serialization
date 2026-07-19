@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-14T02:26:49.570212+00:00",
+  "timestamp": "2026-07-19T02:38:49.506878+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -331,15 +331,15 @@
       "id": "I_kwDOQYX63c7ddwAk",
       "title": "Discuss additional topics in Security Considerations",
       "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/18",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rohanmahy",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "- using ordinary and deterministic eliminate some avenues for exfiltrating data that is invisible to the attackers\n  - based on indefinite length choices - very powerful\n  - based on specific encoding chosen\n  - based on order of maps\n- using ordinary or deterministic encoding eliminates some categories of resource exhaustion attacks\n- ",
       "createdAt": "2025-12-10T14:57:41Z",
-      "updatedAt": "2026-07-13T20:37:58Z",
-      "closedAt": null,
+      "updatedAt": "2026-07-16T17:29:39Z",
+      "closedAt": "2026-07-16T17:29:39Z",
       "comments": [
         {
           "author": "laurencelundblade",
@@ -361,6 +361,13 @@
           "body": "Addressed by #73",
           "createdAt": "2026-07-13T20:37:58Z",
           "updatedAt": "2026-07-13T20:37:58Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed by https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/73",
+          "createdAt": "2026-07-16T17:29:39Z",
+          "updatedAt": "2026-07-16T17:29:39Z"
         }
       ]
     },
@@ -771,6 +778,22 @@
           "updatedAt": "2026-07-03T17:37:34Z"
         }
       ]
+    },
+    {
+      "number": 75,
+      "id": "I_kwDOQYX63c8AAAABJFSvyQ",
+      "title": "Add text regarding hashing of non-wrapped CBOR",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/issues/75",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "C509, Bundle and EDHOC sign/hash data that is not byte-string wrapped. This has implications for CBOR decoders. There are issues to discuss with indefinite lengths, tags and array/map slices.\n\nTarget audience is protocol designers and library implementors.",
+      "createdAt": "2026-07-16T17:31:53Z",
+      "updatedAt": "2026-07-16T17:31:53Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
