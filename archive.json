@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-19T02:38:49.506878+00:00",
+  "timestamp": "2026-07-21T02:36:31.786498+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -3761,6 +3761,32 @@
       "mergeCommit": {
         "oid": "b49bbcb7800ece625be9a005819ef5ff7f833392"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 76,
+      "id": "PR_kwDOQYX63c7z-v0o",
+      "title": "Add appendix on signing and hashing",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/76",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-07-20T17:54:45Z",
+      "updatedAt": "2026-07-20T17:54:45Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "990918834ff4b417c847123f8eb7533397e12b29",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "sign-hash",
+      "headRefOid": "92ed8d94431996918e2bf0f11dd67feff2ff0d9c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
