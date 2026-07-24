@@ -1683,7 +1683,7 @@ For another example, 0.1 would lose precision if not encoded as double-precision
 Subnormal numbers MUST be supported in this shortest-length encoding.<a href="#section-4.1-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.4.2.3">
-                <p id="section-4.1-1.4.2.3.1">Implementations MUST NOT output any encoded NaN other than the half-precision quiet NaN 0xf97e00 (sign bit clear, highest significand bit set, all other significand bits clear).
+                <p id="section-4.1-1.4.2.3.1">Encoders MUST NOT output any NaN other than the half-precision quiet NaN 0xf97e00 (sign bit clear, highest significand bit set, all other significand bits clear).
 Non-trivial NaNs (see <a href="#NaNBasics" class="auto internal xref">Appendix C.1</a>) presented to an application or library for encoding may be rejected or encoded as 0xf97e00.<a href="#section-4.1-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.4.2.4">
@@ -2258,7 +2258,7 @@ These are sometimes called the NaN payload and used to hold additional data.<a h
             <p id="appendix-C.1-6.1.1">A "non-trivial NaN" refers to any NaN that is not a quiet NaN.<a href="#appendix-C.1-6.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-C.1-6.2">
-            <p id="appendix-C.1-6.2.1">A non-trivial NaN is used to carry additional, protocol-specific information within floating-point values.<a href="#appendix-C.1-6.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-C.1-6.2.1">A non-trivial NaN is used to carry a payload — additional, protocol-specific information within floating-point values.<a href="#appendix-C.1-6.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

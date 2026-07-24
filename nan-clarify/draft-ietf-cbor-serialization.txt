@@ -482,11 +482,11 @@ Table of Contents
           0xfb3fb999999999999a.  Subnormal numbers MUST be supported in
           this shortest-length encoding.
 
-       *  Implementations MUST NOT output any encoded NaN other than the
-          half-precision quiet NaN 0xf97e00 (sign bit clear, highest
-          significand bit set, all other significand bits clear).  Non-
-          trivial NaNs (see Appendix C.1) presented to an application or
-          library for encoding may be rejected or encoded as 0xf97e00.
+       *  Encoders MUST NOT output any NaN other than the half-precision
+          quiet NaN 0xf97e00 (sign bit clear, highest significand bit
+          set, all other significand bits clear).  Non-trivial NaNs (see
+          Appendix C.1) presented to an application or library for
+          encoding may be rejected or encoded as 0xf97e00.
 
        *  Aside from the requirement allowing only the half-precision
           quiet NaN, these are the same floating-point requirements as
@@ -1080,8 +1080,8 @@ C.1.  Basics
 
    *  A "non-trivial NaN" refers to any NaN that is not a quiet NaN.
 
-   *  A non-trivial NaN is used to carry additional, protocol-specific
-      information within floating-point values.
+   *  A non-trivial NaN is used to carry a payload — additional,
+      protocol-specific information within floating-point values.
 
 C.2.  Implementation Support for Non-Trivial NaNs
 
