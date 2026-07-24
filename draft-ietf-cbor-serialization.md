@@ -361,7 +361,7 @@ This section defines a serialization named "preferred-plus serialization."
       For example, 0.0 can always be reduced to half-precision so it MUST be encoded as 0xf90000.
       For another example, 0.1 would lose precision if not encoded as double-precision so it MUST be encoded as 0xfb3fb999999999999a.
       Subnormal numbers MUST be supported in this shortest-length encoding.
-   * Implementations MUST NOT output any encoded NaN other than the half-precision quiet NaN 0xf97e00 (sign bit clear, highest significand bit set, all other significand bits clear).
+   * Encoders MUST NOT output any NaN other than the half-precision quiet NaN 0xf97e00 (sign bit clear, highest significand bit set, all other significand bits clear).
      Non-trivial NaNs (see {{NaNBasics}}) presented to an application or library for encoding may be rejected or encoded as 0xf97e00.
    * Aside from the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as {{Section 4.1 of -cbor}} and also as {{Section 4.2.1 of -cbor}}.
 
@@ -701,7 +701,7 @@ IEEE 754 distinguishes between quiet NaNs (qNaNs) and signaling NaNs (sNaNs):
 In this document:
 
 - A "non-trivial NaN" refers to any NaN that is not a quiet NaN.
-- A non-trivial NaN is used to carry additional, protocol-specific information within floating-point values.
+- A non-trivial NaN is used to carry a payload &mdash; additional, protocol-specific information within floating-point values.
 
 
 ## Implementation Support for Non-Trivial NaNs
