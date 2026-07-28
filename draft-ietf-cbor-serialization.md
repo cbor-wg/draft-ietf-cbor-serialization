@@ -361,8 +361,9 @@ This section defines a serialization named "preferred-plus serialization."
       For example, 0.0 can always be reduced to half-precision so it MUST be encoded as 0xf90000.
       For another example, 0.1 would lose precision if not encoded as double-precision so it MUST be encoded as 0xfb3fb999999999999a.
       Subnormal numbers MUST be supported in this shortest-length encoding.
-   * Encoders MUST NOT output any NaN other than the half-precision quiet NaN 0xf97e00 (sign bit clear, highest significand bit set, all other significand bits clear).
-     Non-trivial NaNs (see {{NaNBasics}}) presented to an application or library for encoding may be rejected or encoded as 0xf97e00.
+   * Encoders MUST NOT output any NaN other than the half-precision NaN 0xf9 0x7e 0x00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
+     When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf9 0x7e 0x00.
+     Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and a single NaN.
    * Aside from the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as {{Section 4.1 of -cbor}} and also as {{Section 4.2.1 of -cbor}}.
 
 1. If big numbers (tags 2 and 3) are encoded, the following apply:
@@ -687,21 +688,26 @@ This section provides background information on {{IEEE754}} NaN (Not a Number) a
 
 {{IEEE754}} defines the most widely used representation for floating-point numbers.
 It includes special values for infinity and NaN (Not a Number).
-NaN was originally designed to represent the result of indeterminate operations, such as the square root of a negative number.
-Although IEEE 754 intended NaN primarily for local computation, NaN values are sometimes transmitted in network protocols, and CBOR can support this.
+NaN is designed to represent the result of invalid operations, such as the square root of a negative number.
 
-An IEEE 754 NaN has up to 52 bits (fewer with single and half precision) in the significand and sign whose use is not formally defined.
-These are sometimes called the NaN payload and used to hold additional data.
+A NaN is not a single value the way positive infinity is.
+It has a sign bit and a trailing significand field &mdash; 10 bits in half precision, 23 in single, 52 in double &mdash; whose use is not formally defined.
+The design intent is that these bits distinguish NaN types and hold diagnostic detail about a local computation.
 
-IEEE 754 distinguishes between quiet NaNs (qNaNs) and signaling NaNs (sNaNs):
+IEEE 754 formally defines the notions of quiet and signaling NaN, but the bit pattern distinguishing them is only a recommendation, directed at CPU designers:
 
-- A signaling NaN typically raises a floating-point exception when encountered; a quiet NaN does not.
-- The encoding is not fully standardized, but the recommended convention is that the highest significand bit is set for a quiet NaN and clear (with at least one other significand bit set) for a signaling NaN.
+- A quiet NaN has the most significant significand bit set.
+- A signaling NaN has that bit clear and at least one other significand bit set, to distinguish it from infinity.
+- Either can have a non-zero payload, which is the bits other than the most significant significand bit.
+- No recommendation is made for the sign bit.
 
-In this document:
+This recommendation is not universally followed (e.g., PA-RISC and pre-R6 MIPS).
 
-- A "non-trivial NaN" refers to any NaN that is not a quiet NaN.
-- A non-trivial NaN is used to carry a payload &mdash; additional, protocol-specific information within floating-point values.
+An arithmetic operation on a signaling NaN raises the invalid operation exception and does not preserve it, whereas quiet NaNs are usually propagated with the payload intact.
+Implementations vary, but this makes quiet NaNs usable for application-defined purposes in a way signaling NaNs are not.
+
+For this discussion, a non-trivial NaN is a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set, as the host represents it.
+A trivial NaN is one that passively indicates that the value is not a number, and nothing more.
 
 
 ## Implementation Support for Non-Trivial NaNs
