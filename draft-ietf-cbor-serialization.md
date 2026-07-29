@@ -322,7 +322,7 @@ The same pattern holds for other protocols, such as COSE [RFC9052].
 
 ## When To Use General Serialization {#WhenGeneral}
 
-Preferred-plus serialization ({{PreferredPlusSerialization}}) is efficient and supports the full CBOR data model (except NaN payloads), satisfying the vast majority of CBOR use cases.
+Preferred-plus serialization ({{PreferredPlusSerialization}}) is efficient and supports the full CBOR data model (except non-trivial NaNs; see {{NaNBasics}}), satisfying the vast majority of CBOR use cases.
 Full general serialization is rarely necessary, and support for it is not widespread.
 
 The main scenario where general serialization is warranted is a protocol that must accommodate highly constrained encoders,
@@ -361,7 +361,9 @@ This section defines a serialization named "preferred-plus serialization."
       For example, 0.0 can always be reduced to half-precision so it MUST be encoded as 0xf90000.
       For another example, 0.1 would lose precision if not encoded as double-precision so it MUST be encoded as 0xfb3fb999999999999a.
       Subnormal numbers MUST be supported in this shortest-length encoding.
-   * The only NaN that may be encoded is a half-precision quiet NaN (the sign bit and all but the highest payload bit is clear), specifically 0xf97e00.
+   * Encoders MUST NOT output any NaN other than the half-precision NaN 0xf9 0x7e 0x00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
+     When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf9 0x7e 0x00.
+     Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and a single NaN.
    * Aside from the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as {{Section 4.1 of -cbor}} and also as {{Section 4.2.1 of -cbor}}.
 
 1. If big numbers (tags 2 and 3) are encoded, the following apply:
@@ -411,7 +413,7 @@ Preferred-plus serialization is defined to be the long-term replacement for pref
 The differences are:
 
 * Definite lengths are a requirement, not a preference.
-* The only NaN allowed is the half-precision quiet NaN.
+* The only NaN allowed in encoded output is the half-precision quiet NaN.
 * For big numbers, leading zeros must be ignored and the empty string must be accepted as zero.
 
 These differences are not of significance in real-world implementations, so preferred-plus serialization is already largely supported.
@@ -682,29 +684,30 @@ While this is not an exhaustive list of application-layer considerations for det
 This section provides background information on {{IEEE754}} NaN (Not a Number) and its use in CBOR.
 
 
-## Basics
+## Basics {#NaNBasics}
 
 {{IEEE754}} defines the most widely used representation for floating-point numbers.
-It includes special values for infinity and NaN.
-NaN was originally designed to represent the result of invalid computations, such as division by zero.
-Although IEEE 754 intended NaN primarily for local computation, NaN values are sometimes transmitted in network protocols, and CBOR supports their representation.
+It includes special values for infinity and NaN (Not a Number).
+NaN is designed to represent the result of invalid operations, such as the square root of a negative number.
 
-An IEEE 754 NaN includes a payload of up to 52 bits (depending on precision) whose use is not formally defined.
-NaN values also include an unused sign bit.
+A NaN is not a single value the way positive infinity is.
+It has a sign bit and a trailing significand field &mdash; 10 bits in half precision, 23 in single, 52 in double &mdash; whose use is not formally defined.
+The design intent is that these bits distinguish NaN types and hold diagnostic detail about a local computation.
 
-IEEE 754 distinguishes between quiet NaNs (qNaNs) and signaling NaNs (sNaNs):
+IEEE 754 formally defines the notions of quiet and signaling NaN, but the bit pattern distinguishing them is only a recommendation, directed at CPU designers:
 
-- A signaling NaN typically raises a floating-point exception when encountered.
-- A quiet NaN does not raise an exception.
-- The distinction is implementation-specific, but typically:
-  - The highest bit of the payload is set --> quiet NaN.
-  - Any other payload bit is set --> signaling NaN.
-- At least one payload bit must be set for a signaling NaN to distinguish it from infinity.
+- A quiet NaN has the most significant significand bit set.
+- A signaling NaN has that bit clear and at least one other significand bit set, to distinguish it from infinity.
+- Either can have a non-zero payload, which is the bits other than the most significant significand bit.
+- No recommendation is made for the sign bit.
 
-In this document:
+This recommendation is not universally followed (e.g., PA-RISC and pre-R6 MIPS).
 
-- A "non-trivial NaN" refers to any NaN that is not a quiet NaN.
-- A non-trivial NaN is used to carry additional, protocol-specific information within floating-point values.
+An arithmetic operation on a signaling NaN raises the invalid operation exception and does not preserve it, whereas quiet NaNs are usually propagated with the payload intact.
+Implementations vary, but this makes quiet NaNs usable for application-defined purposes in a way signaling NaNs are not.
+
+For this discussion, a non-trivial NaN is a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set, as the host represents it.
+A trivial NaN is one that passively indicates that the value is not a number, and nothing more.
 
 
 ## Implementation Support for Non-Trivial NaNs
@@ -814,8 +817,7 @@ The divergence is justified by the following:
 
 ## Recommendations for Use of Non-Trivial NaNs
 
-While non-trivial NaNs are excluded from preferred-plus and deterministic serialization, they are theoretically supported by {{-cbor}}.
-General serialization does support them.
+While non-trivial NaNs are excluded from preferred-plus and deterministic serialization, they are supported by {{GeneralSerialization}}.
 
 New protocol designs SHOULD avoid non-trivial NaNs.
 Support for them is unreliable, and it is straightforward to design CBOR-based protocols that do not depend on them.
