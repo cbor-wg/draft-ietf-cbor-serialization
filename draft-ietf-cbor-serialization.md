@@ -983,6 +983,43 @@ A more efficient approach can be for the CBOR library to treat the wrapped CBOR 
 Many CBOR implementations already handle arrays and maps as containers without requiring a separate instance.
 Similarly, a byte-string wrapping encoded CBOR can be treated as a container that always contains exactly one item.
 
+
+# Signing and Hashing Encoded CBOR
+
+CBOR protocols are generally described as a collection of data items, often using CDDL.
+Signing or hashing is performed over some range of the encoded CBOR, possibly all of it.
+For signing or hashing to work, the sender/encoder and the receiver/verifier must operate on exactly the same range of encoded bytes, so a protocol definition MUST define that range unambiguously.
+There are several ways to specify it:
+
+- Name an existing data item (e.g., a CDDL type)
+- Name a data item created specifically for this purpose (e.g., a CDDL type)
+- Describe the input data items in prose
+- Wrap the input in a byte string
+
+Typically, a named data item is an array or a map, but non-aggregate items can be named as well.
+When naming an item, the specification should state explicitly whether the input is the full encoded item (head, contents, and trailing "break" if indefinite-length) or only its contents.
+Covering the full encoded item is recommended, as it is clearer.
+If the item might be tag content (i.e., preceded by one or more tag numbers), the specification should state whether the tag numbers are included in the input; including them is recommended.
+
+It is also possible to specify a slice of a map or array as the input.
+A good way to do this is to define a CDDL type that represents the slice as a CBOR sequence.
+
+Another practice is to wrap the bytes to be signed or hashed in a byte string, following the pattern of tag 24 (the tag number itself is typically unnecessary and omitted).
+This makes the input to the signature or hash &mdash; the contents of the byte string &mdash; entirely unambiguous: there are no concerns about definite versus indefinite lengths, serialization variants, or tagging; any or all of these work.
+
+The choice of input bytes also affects implementations and their use of CBOR libraries.
+
+Byte-string wrapping is guaranteed to work with even simple, basic libraries, although it will probably require two instances of the encoder or decoder: one for the wrapped (signed/hashed) CBOR and one for the wrapping CBOR. See {{ByteStringWrapping}}.
+
+If byte-string wrapping is not used, the CBOR library must provide an additional feature that gives access to the undecoded CBOR.
+For example, it may offer a "tell()" operation that reports the byte offset of the start of the first covered item and of the end of the last covered item (which is more complicated when indefinite lengths are involved), or it may offer an API that directly returns the undecoded bytes of an item.
+
+Another tactic is to require deterministic encoding.
+The receiver then reconstructs the signed/hashed bytes from the decoded data items rather than accessing the received encoded CBOR.
+
+In summary, byte-string wrapping is the most reliable approach because it clearly delineates what is signed or hashed and works with every decoder, but the other designs can also be made to work.
+
+
 # Serialization for COSE {#COSESerialization}
 
 This appendix highlights how the topics in this document apply to CBOR Object Signing and Encryption  (COSE {{-COSE}}).
