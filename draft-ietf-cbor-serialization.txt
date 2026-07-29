@@ -119,25 +119,26 @@ Table of Contents
      C.6.  Recommendations for Use of Non-Trivial NaNs
    Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
    Appendix E.  Big Numbers and the CBOR Data Model
-   Appendix F.  Big Number Implementation Strategies
-   Appendix G.  Serialization Checking
-     G.1.  Serialization Checking Use Cases
-   Appendix H.  CBOR Byte String Wrapping
-     H.1.  Purpose
-     H.2.  Wrapping Recommendations
-     H.3.  CBOR Library Implementation Suggestion
-   Appendix I.  Signing and Hashing Encoded CBOR
-   Appendix J.  Serialization for COSE
-     J.1.  COSE Payload Serialization
-     J.2.  COSE Sig_structure
-     J.3.  The Encoded Message
-   Appendix K.  Examples
-     K.1.  Use for Testing
-       K.1.1.  Encode Test
-       K.1.2.  Decode Test
-       K.1.3.  Checking Decoder Test
-       K.1.4.  Non-Checking Decoder Test
-     K.2.  Example Data Items
+   Appendix F.  CDDL for Big Numbers
+   Appendix G.  Big Number Implementation Strategies
+   Appendix H.  Serialization Checking
+     H.1.  Serialization Checking Use Cases
+   Appendix I.  CBOR Byte String Wrapping
+     I.1.  Purpose
+     I.2.  Wrapping Recommendations
+     I.3.  CBOR Library Implementation Suggestion
+   Appendix J.  Signing and Hashing Encoded CBOR
+   Appendix K.  Serialization for COSE
+     K.1.  COSE Payload Serialization
+     K.2.  COSE Sig_structure
+     K.3.  The Encoded Message
+   Appendix L.  Examples
+     L.1.  Use for Testing
+       L.1.1.  Encode Test
+       L.1.2.  Decode Test
+       L.1.3.  Checking Decoder Test
+       L.1.4.  Non-Checking Decoder Test
+     L.2.  Example Data Items
    Contributors
    Author's Address
 
@@ -281,7 +282,7 @@ Table of Contents
    serialize data to be hashed or signed, rather than transmitting the
    exact serialized bytes that were hashed or signed.  See Section 5.3.
 
-   See Appendix J for a COSE-based example.
+   See Appendix K for a COSE-based example.
 
 2.1.2.  End-to-End Protocols
 
@@ -363,7 +364,7 @@ Table of Contents
 
    When a framework protocol mandates serialization requirements,
    libraries must of course conform.  For instance, certain parts of
-   COSE mandate deterministic serialization.  See Appendix J for a COSE-
+   COSE mandate deterministic serialization.  See Appendix K for a COSE-
    based example.
 
 2.2.3.  Libraries for End-to-End Protocols
@@ -420,9 +421,10 @@ Table of Contents
 3.2.  When To Use General Serialization
 
    Preferred-plus serialization (Section 4) is efficient and supports
-   the full CBOR data model (except NaN payloads), satisfying the vast
-   majority of CBOR use cases.  Full general serialization is rarely
-   necessary, and support for it is not widespread.
+   the full CBOR data model (except non-trivial NaNs; see Appendix C.1),
+   satisfying the vast majority of CBOR use cases.  Full general
+   serialization is rarely necessary, and support for it is not
+   widespread.
 
    The main scenario where general serialization is warranted is a
    protocol that must accommodate highly constrained encoders, at the
@@ -482,9 +484,15 @@ Table of Contents
           0xfb3fb999999999999a.  Subnormal numbers MUST be supported in
           this shortest-length encoding.
 
-       *  The only NaN that may be encoded is a half-precision quiet NaN
-          (the sign bit and all but the highest payload bit is clear),
-          specifically 0xf97e00.
+       *  Encoders MUST NOT output any NaN other than the half-precision
+          NaN 0xf9 0x7e 0x00 (sign bit clear, most significant
+          significand bit set, all remaining significand bits clear).
+          When a signaling NaN, a NaN with a non-zero payload, or a NaN
+          with the sign bit set is presented to an application or
+          library for encoding, the encoder MUST either reject it or
+          encode it as 0xf9 0x7e 0x00.  Consequently, the floating-point
+          values that can be encoded are the finite numbers, positive
+          and negative infinity, and a single NaN.
 
        *  Aside from the requirement allowing only the half-precision
           quiet NaN, these are the same floating-point requirements as
@@ -528,8 +536,8 @@ Table of Contents
        *  An empty byte string MUST be accepted and treated as the value
           zero.
 
-   See also Appendix E and Appendix F for further background on big
-   numbers.
+   See also Appendix E and Appendix G for further background on big
+   numbers.  See Appendix F for specification in CDDL.
 
 4.3.  When to use preferred-plus serialization
 
@@ -557,7 +565,8 @@ Table of Contents
 
    *  Definite lengths are a requirement, not a preference.
 
-   *  The only NaN allowed is the half-precision quiet NaN.
+   *  The only NaN allowed in encoded output is the half-precision quiet
+      NaN.
 
    *  For big numbers, leading zeros must be ignored and the empty
       string must be accepted as zero.
@@ -649,7 +658,7 @@ Table of Contents
    often chosen to reduce data size, preserve privacy, or meet other
    design constraints.
 
-   See the more detailed, COSE-based example in Appendix J.
+   See the more detailed, COSE-based example in Appendix K.
 
 5.3.2.  Decoding Deterministic Serialization and Relation to Preferred-
         Plus Serialization
@@ -773,7 +782,7 @@ Table of Contents
    maps, but does not extend into byte strings or other data items that
    happen to contain encoded CBOR.  Every instance of embedded CBOR that
    requires specific serialization must specify it explicitly.  See also
-   Appendix H.
+   Appendix I.
 
    For example, the following specifies that a message or protocol
    described by "stuff" is deterministically serialized and wrapped in a
@@ -832,7 +841,7 @@ Table of Contents
 
    Another option is to require preferred-plus or deterministic
    serialization and to have decoders issue a warning if not compliant.
-   See Appendix G.
+   See Appendix H.
 
 10.  IANA Considerations
 
@@ -1050,40 +1059,43 @@ Appendix C.  IEEE 754 NaN
 C.1.  Basics
 
    [IEEE754] defines the most widely used representation for floating-
-   point numbers.  It includes special values for infinity and NaN.  NaN
-   was originally designed to represent the result of invalid
-   computations, such as division by zero.  Although IEEE 754 intended
-   NaN primarily for local computation, NaN values are sometimes
-   transmitted in network protocols, and CBOR supports their
-   representation.
+   point numbers.  It includes special values for infinity and NaN (Not
+   a Number).  NaN is designed to represent the result of invalid
+   operations, such as the square root of a negative number.
 
-   An IEEE 754 NaN includes a payload of up to 52 bits (depending on
-   precision) whose use is not formally defined.  NaN values also
-   include an unused sign bit.
+   A NaN is not a single value the way positive infinity is.  It has a
+   sign bit and a trailing significand field — 10 bits in half
+   precision, 23 in single, 52 in double — whose use is not formally
+   defined.  The design intent is that these bits distinguish NaN types
+   and hold diagnostic detail about a local computation.
 
-   IEEE 754 distinguishes between quiet NaNs (qNaNs) and signaling NaNs
-   (sNaNs):
+   IEEE 754 formally defines the notions of quiet and signaling NaN, but
+   the bit pattern distinguishing them is only a recommendation,
+   directed at CPU designers:
 
-   *  A signaling NaN typically raises a floating-point exception when
-      encountered.
+   *  A quiet NaN has the most significant significand bit set.
 
-   *  A quiet NaN does not raise an exception.
+   *  A signaling NaN has that bit clear and at least one other
+      significand bit set, to distinguish it from infinity.
 
-   *  The distinction is implementation-specific, but typically:
+   *  Either can have a non-zero payload, which is the bits other than
+      the most significant significand bit.
 
-      -  The highest bit of the payload is set --> quiet NaN.
+   *  No recommendation is made for the sign bit.
 
-      -  Any other payload bit is set --> signaling NaN.
+   This recommendation is not universally followed (e.g., PA-RISC and
+   pre-R6 MIPS).
 
-   *  At least one payload bit must be set for a signaling NaN to
-      distinguish it from infinity.
+   An arithmetic operation on a signaling NaN raises the invalid
+   operation exception and does not preserve it, whereas quiet NaNs are
+   usually propagated with the payload intact.  Implementations vary,
+   but this makes quiet NaNs usable for application-defined purposes in
+   a way signaling NaNs are not.
 
-   In this document:
-
-   *  A "non-trivial NaN" refers to any NaN that is not a quiet NaN.
-
-   *  A non-trivial NaN is used to carry additional, protocol-specific
-      information within floating-point values.
+   For this discussion, a non-trivial NaN is a signaling NaN, a NaN with
+   a non-zero payload, or a NaN with the sign bit set, as the host
+   represents it.  A trivial NaN is one that passively indicates that
+   the value is not a number, and nothing more.
 
 C.2.  Implementation Support for Non-Trivial NaNs
 
@@ -1265,8 +1277,7 @@ C.5.  Divergence from [STD94]
 C.6.  Recommendations for Use of Non-Trivial NaNs
 
    While non-trivial NaNs are excluded from preferred-plus and
-   deterministic serialization, they are theoretically supported by
-   [STD94].  General serialization does support them.
+   deterministic serialization, they are supported by Section 3.
 
    New protocol designs SHOULD avoid non-trivial NaNs.  Support for them
    is unreliable, and it is straightforward to design CBOR-based
@@ -1480,7 +1491,34 @@ Appendix E.  Big Numbers and the CBOR Data Model
    This document does create a new rule for future tag definitions.  See
    Section 7.
 
-Appendix F.  Big Number Implementation Strategies
+Appendix F.  CDDL for Big Numbers
+
+   The types bigint and biguint in the CDDL Standard Prelude (Appendix D
+   of [RFC8610]) do NOT describe the big numbers described in this
+   document or in Section 3.4.3 of [STD94], not even for general
+   serialization.  The types integer and unsigned can be used, but note
+   that they do not fully express the rules that govern the choice
+   between major types 0 and 1 and the big number tags.  CDDL-described
+   protocols SHOULD use integer and unsigned and in prose state that
+   these values correspond to either Section 4 of this document or
+   Section 3.4.3 of [STD94].  Appendix E explains the reasons for this.
+
+   The following CDDL can be used:
+
+   ; big number byte strings are of unlimited size, but that
+   ; can't be expressed in CDDL, so a limit of 1,000
+   bnmax = 1000
+   bnbstr = bstr .size (8..bnmax)
+
+   pplus-tag2bstr = #6.2(bnbstr)
+   pplus-biguint  = #0 / pplus-tag2bstr
+
+   pplus-tag3bstr = #6.3(bnbstr)
+   pplus-bignint  = #1 / pplus-tag3bstr
+
+   pplus-bigint = pplus-biguint / pplus-bignint
+
+Appendix G.  Big Number Implementation Strategies
 
    Appendix E describes how CBOR defines a single integer number space,
    in which big numbers are not distinct from values encoded using major
@@ -1521,7 +1559,7 @@ Appendix F.  Big Number Implementation Strategies
    Finally, note that big numbers are not a widely used feature of CBOR.
    Some CBOR libraries may entirely omit support for tags 2 and 3.
 
-Appendix G.  Serialization Checking
+Appendix H.  Serialization Checking
 
    Serialization checking rejects input which, while well-formed CBOR,
    does not conform to a particular serialization rule set it is
@@ -1536,7 +1574,7 @@ Appendix G.  Serialization Checking
    checking is well-formed; it is rejected because it violates
    additional serialization constraints.
 
-G.1.  Serialization Checking Use Cases
+H.1.  Serialization Checking Use Cases
 
    Some applications that rely on deterministic serialization may choose
    serialization checking in order to ensure that the data they consume
@@ -1562,16 +1600,16 @@ G.1.  Serialization Checking Use Cases
    appropriate remedy is to fix their input validation, not to add the
    serialization checking described here.
 
-Appendix H.  CBOR Byte String Wrapping
+Appendix I.  CBOR Byte String Wrapping
 
    This appendix provides non-normative guidance on byte-string wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
    control operators described in Section 8.  It also applies when prose
    states the byte-string wrapping requirement, such as for the COSE
-   protected headers.  See also Appendix J.1.
+   protected headers.  See also Appendix K.1.
 
-H.1.  Purpose
+I.1.  Purpose
 
    Error isolation:  Wrapping CBOR in a byte string prevents encoding
       errors in the wrapped data from causing the enclosing CBOR to fail
@@ -1594,7 +1632,7 @@ H.1.  Purpose
       data types like arrays and maps as map keys, they can be wrapped
       in a byte string.
 
-H.2.  Wrapping Recommendations
+I.2.  Wrapping Recommendations
 
    The serialization requirements for the wrapping CBOR may differ from
    those for the wrapped CBOR.  CBOR itself imposes no universal rule
@@ -1617,7 +1655,7 @@ H.2.  Wrapping Recommendations
    other data representation formats such as JSON.  See the discussion
    in Section 5.3.
 
-H.3.  CBOR Library Implementation Suggestion
+I.3.  CBOR Library Implementation Suggestion
 
    A straightforward implementation strategy is to instantiate a second
    CBOR encoder or decoder for the wrapped message.  However, this may
@@ -1632,7 +1670,7 @@ H.3.  CBOR Library Implementation Suggestion
    encoded CBOR can be treated as a container that always contains
    exactly one item.
 
-Appendix I.  Signing and Hashing Encoded CBOR
+Appendix J.  Signing and Hashing Encoded CBOR
 
    CBOR protocols are generally described as a collection of data items,
    often using CDDL.  Signing or hashing is performed over some range of
@@ -1678,7 +1716,7 @@ Appendix I.  Signing and Hashing Encoded CBOR
    Byte-string wrapping is guaranteed to work with even simple, basic
    libraries, although it will probably require two instances of the
    encoder or decoder: one for the wrapped (signed/hashed) CBOR and one
-   for the wrapping CBOR.  See Appendix H.
+   for the wrapping CBOR.  See Appendix I.
 
    If byte-string wrapping is not used, the CBOR library must provide an
    additional feature that gives access to the undecoded CBOR.  For
@@ -1696,7 +1734,7 @@ Appendix I.  Signing and Hashing Encoded CBOR
    because it clearly delineates what is signed or hashed and works with
    every decoder, but the other designs can also be made to work.
 
-Appendix J.  Serialization for COSE
+Appendix K.  Serialization for COSE
 
    This appendix highlights how the topics in this document apply to
    CBOR Object Signing and Encryption (COSE [RFC9052]).
@@ -1713,7 +1751,7 @@ Appendix J.  Serialization for COSE
    *  The encoded message (the header parameters and the array of four
       that is the COSE_Sign1)
 
-J.1.  COSE Payload Serialization
+K.1.  COSE Payload Serialization
 
    The signed payload may or may not be CBOR, but assume that it is,
    perhaps a CWT or EAT.  The payload is transmitted from the signer/
@@ -1735,9 +1773,9 @@ J.1.  COSE Payload Serialization
    processing by the verification algorithms.  Most CBOR libraries
    decoders do not provide access to any arbitrary chunk of encoded CBOR
    in the middle of a message.  This is an example of byte string
-   wrapping described in Appendix H.
+   wrapping described in Appendix I.
 
-J.2.  COSE Sig_structure
+K.2.  COSE Sig_structure
 
    The Sig_structure Section 4.4 of [RFC9052] is used to aggregate all
    the items that are input to the signature algorithm — the payload,
@@ -1769,7 +1807,7 @@ J.2.  COSE Sig_structure
    when signed data is reconstructed rather than transmitted in the
    exact form that was signed.  See Section 5.3.
 
-J.3.  The Encoded Message
+K.3.  The Encoded Message
 
    A COSE_Sign1 message is an array of four elements containing two
    header parameter chunks, the payload, and the signature.  The two
@@ -1798,7 +1836,7 @@ J.3.  The Encoded Message
    more robust for an end-to-end protocol to state its serialization
    requirements explicitly.
 
-Appendix K.  Examples
+Appendix L.  Examples
 
    This appendix provides examples of the serializations described in
    this document.  Each example is a single data item.  Collectively,
@@ -1825,7 +1863,7 @@ Appendix K.  Examples
 
                      Table 3: Example Data Item Fields
 
-K.1.  Use for Testing
+L.1.  Use for Testing
 
    These examples are designed to support testing of CBOR libraries.
    They cover only what is defined in this document and therefore do not
@@ -1844,7 +1882,7 @@ K.1.  Use for Testing
    skipped, or used to verify that an appropriate “unsupported” error is
    returned.
 
-K.1.1.  Encode Test
+L.1.1.  Encode Test
 
    To test encoding, invoke the encoder for each example data item.  The
    encoder input is the item's EDN representations.  If an example
@@ -1858,7 +1896,7 @@ K.1.1.  Encode Test
    If an encoder supports multiple serialization types, each type can be
    tested in turn.
 
-K.1.2.  Decode Test
+L.1.2.  Decode Test
 
    To test decoding, invoke the decoder for each example data.
 
@@ -1871,9 +1909,9 @@ K.1.2.  Decode Test
    If a decoder supports multiple serialization types, each type can be
    tested in turn.
 
-K.1.3.  Checking Decoder Test
+L.1.3.  Checking Decoder Test
 
-   Checking decoders are described in Appendix G.
+   Checking decoders are described in Appendix H.
 
    This test verifies that a checking decoder rejects encodings allowed
    by general serialization but non-conforming for the target
@@ -1889,7 +1927,7 @@ K.1.3.  Checking Decoder Test
    General-serialization decoders are not tested in this way, since they
    must accept all valid serialization forms.
 
-K.1.4.  Non-Checking Decoder Test
+L.1.4.  Non-Checking Decoder Test
 
    A non-checking decoder may accept encodings beyond what is required
    for the target serialization type.  For example, a preferred-plus
@@ -1918,7 +1956,7 @@ K.1.4.  Non-Checking Decoder Test
       types described in this document require support for decoding
       half-precision representations and subnormals.
 
-K.2.  Example Data Items
+L.2.  Example Data Items
 
    These are available as individual files at [Examples-Repo].
 
@@ -1929,7 +1967,7 @@ K.2.  Example Data Items
    the rest of general serialization.  For the purpose of classification
    by this document they are preferred-plus libraries with extra
    decoding features.  The extra decoding features can be tested as
-   described in Appendix K.1.4.
+   described in Appendix L.1.4.
 
    File: zero.edn
 
