@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                            13 July 2026
-Expires: 14 January 2027
+Intended status: Standards Track                            29 July 2026
+Expires: 30 January 2027
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 January 2027.
+   This Internet-Draft will expire on 30 January 2027.
 
 Copyright Notice
 
@@ -126,17 +126,18 @@ Table of Contents
      H.1.  Purpose
      H.2.  Wrapping Recommendations
      H.3.  CBOR Library Implementation Suggestion
-   Appendix I.  Serialization for COSE
-     I.1.  COSE Payload Serialization
-     I.2.  COSE Sig_structure
-     I.3.  The Encoded Message
-   Appendix J.  Examples
-     J.1.  Use for Testing
-       J.1.1.  Encode Test
-       J.1.2.  Decode Test
-       J.1.3.  Checking Decoder Test
-       J.1.4.  Non-Checking Decoder Test
-     J.2.  Example Data Items
+   Appendix I.  Signing and Hashing Encoded CBOR
+   Appendix J.  Serialization for COSE
+     J.1.  COSE Payload Serialization
+     J.2.  COSE Sig_structure
+     J.3.  The Encoded Message
+   Appendix K.  Examples
+     K.1.  Use for Testing
+       K.1.1.  Encode Test
+       K.1.2.  Decode Test
+       K.1.3.  Checking Decoder Test
+       K.1.4.  Non-Checking Decoder Test
+     K.2.  Example Data Items
    Contributors
    Author's Address
 
@@ -280,7 +281,7 @@ Table of Contents
    serialize data to be hashed or signed, rather than transmitting the
    exact serialized bytes that were hashed or signed.  See Section 5.3.
 
-   See Appendix I for a COSE-based example.
+   See Appendix J for a COSE-based example.
 
 2.1.2.  End-to-End Protocols
 
@@ -362,7 +363,7 @@ Table of Contents
 
    When a framework protocol mandates serialization requirements,
    libraries must of course conform.  For instance, certain parts of
-   COSE mandate deterministic serialization.  See Appendix I for a COSE-
+   COSE mandate deterministic serialization.  See Appendix J for a COSE-
    based example.
 
 2.2.3.  Libraries for End-to-End Protocols
@@ -648,7 +649,7 @@ Table of Contents
    often chosen to reduce data size, preserve privacy, or meet other
    design constraints.
 
-   See the more detailed, COSE-based example in Appendix I.
+   See the more detailed, COSE-based example in Appendix J.
 
 5.3.2.  Decoding Deterministic Serialization and Relation to Preferred-
         Plus Serialization
@@ -1568,7 +1569,7 @@ Appendix H.  CBOR Byte String Wrapping
    .cborseq control operators, but also to the serialization-specifying
    control operators described in Section 8.  It also applies when prose
    states the byte-string wrapping requirement, such as for the COSE
-   protected headers.  See also Appendix I.1.
+   protected headers.  See also Appendix J.1.
 
 H.1.  Purpose
 
@@ -1631,7 +1632,71 @@ H.3.  CBOR Library Implementation Suggestion
    encoded CBOR can be treated as a container that always contains
    exactly one item.
 
-Appendix I.  Serialization for COSE
+Appendix I.  Signing and Hashing Encoded CBOR
+
+   CBOR protocols are generally described as a collection of data items,
+   often using CDDL.  Signing or hashing is performed over some range of
+   the encoded CBOR, possibly all of it.  For signing or hashing to
+   work, the sender/encoder and the receiver/verifier must operate on
+   exactly the same range of encoded bytes, so a protocol definition
+   MUST define that range unambiguously.  There are several ways to
+   specify it:
+
+   *  Name an existing data item (e.g., a CDDL type)
+
+   *  Name a data item created specifically for this purpose (e.g., a
+      CDDL type)
+
+   *  Describe the input data items in prose
+
+   *  Wrap the input in a byte string
+
+   Typically, a named data item is an array or a map, but non-aggregate
+   items can be named as well.  When naming an item, the specification
+   should state explicitly whether the input is the full encoded item
+   (head, contents, and trailing "break" if indefinite-length) or only
+   its contents.  Covering the full encoded item is recommended, as it
+   is clearer.  If the item might be tag content (i.e., preceded by one
+   or more tag numbers), the specification should state whether the tag
+   numbers are included in the input; including them is recommended.
+
+   It is also possible to specify a slice of a map or array as the
+   input.  A good way to do this is to define a CDDL type that
+   represents the slice as a CBOR sequence.
+
+   Another practice is to wrap the bytes to be signed or hashed in a
+   byte string, following the pattern of tag 24 (the tag number itself
+   is typically unnecessary and omitted).  This makes the input to the
+   signature or hash — the contents of the byte string — entirely
+   unambiguous: there are no concerns about definite versus indefinite
+   lengths, serialization variants, or tagging; any or all of these
+   work.
+
+   The choice of input bytes also affects implementations and their use
+   of CBOR libraries.
+
+   Byte-string wrapping is guaranteed to work with even simple, basic
+   libraries, although it will probably require two instances of the
+   encoder or decoder: one for the wrapped (signed/hashed) CBOR and one
+   for the wrapping CBOR.  See Appendix H.
+
+   If byte-string wrapping is not used, the CBOR library must provide an
+   additional feature that gives access to the undecoded CBOR.  For
+   example, it may offer a "tell()" operation that reports the byte
+   offset of the start of the first covered item and of the end of the
+   last covered item (which is more complicated when indefinite lengths
+   are involved), or it may offer an API that directly returns the
+   undecoded bytes of an item.
+
+   Another tactic is to require deterministic encoding.  The receiver
+   then reconstructs the signed/hashed bytes from the decoded data items
+   rather than accessing the received encoded CBOR.
+
+   In summary, byte-string wrapping is the most reliable approach
+   because it clearly delineates what is signed or hashed and works with
+   every decoder, but the other designs can also be made to work.
+
+Appendix J.  Serialization for COSE
 
    This appendix highlights how the topics in this document apply to
    CBOR Object Signing and Encryption (COSE [RFC9052]).
@@ -1648,7 +1713,7 @@ Appendix I.  Serialization for COSE
    *  The encoded message (the header parameters and the array of four
       that is the COSE_Sign1)
 
-I.1.  COSE Payload Serialization
+J.1.  COSE Payload Serialization
 
    The signed payload may or may not be CBOR, but assume that it is,
    perhaps a CWT or EAT.  The payload is transmitted from the signer/
@@ -1672,7 +1737,7 @@ I.1.  COSE Payload Serialization
    in the middle of a message.  This is an example of byte string
    wrapping described in Appendix H.
 
-I.2.  COSE Sig_structure
+J.2.  COSE Sig_structure
 
    The Sig_structure Section 4.4 of [RFC9052] is used to aggregate all
    the items that are input to the signature algorithm — the payload,
@@ -1704,7 +1769,7 @@ I.2.  COSE Sig_structure
    when signed data is reconstructed rather than transmitted in the
    exact form that was signed.  See Section 5.3.
 
-I.3.  The Encoded Message
+J.3.  The Encoded Message
 
    A COSE_Sign1 message is an array of four elements containing two
    header parameter chunks, the payload, and the signature.  The two
@@ -1733,7 +1798,7 @@ I.3.  The Encoded Message
    more robust for an end-to-end protocol to state its serialization
    requirements explicitly.
 
-Appendix J.  Examples
+Appendix K.  Examples
 
    This appendix provides examples of the serializations described in
    this document.  Each example is a single data item.  Collectively,
@@ -1760,7 +1825,7 @@ Appendix J.  Examples
 
                      Table 3: Example Data Item Fields
 
-J.1.  Use for Testing
+K.1.  Use for Testing
 
    These examples are designed to support testing of CBOR libraries.
    They cover only what is defined in this document and therefore do not
@@ -1779,7 +1844,7 @@ J.1.  Use for Testing
    skipped, or used to verify that an appropriate “unsupported” error is
    returned.
 
-J.1.1.  Encode Test
+K.1.1.  Encode Test
 
    To test encoding, invoke the encoder for each example data item.  The
    encoder input is the item's EDN representations.  If an example
@@ -1793,7 +1858,7 @@ J.1.1.  Encode Test
    If an encoder supports multiple serialization types, each type can be
    tested in turn.
 
-J.1.2.  Decode Test
+K.1.2.  Decode Test
 
    To test decoding, invoke the decoder for each example data.
 
@@ -1806,7 +1871,7 @@ J.1.2.  Decode Test
    If a decoder supports multiple serialization types, each type can be
    tested in turn.
 
-J.1.3.  Checking Decoder Test
+K.1.3.  Checking Decoder Test
 
    Checking decoders are described in Appendix G.
 
@@ -1824,7 +1889,7 @@ J.1.3.  Checking Decoder Test
    General-serialization decoders are not tested in this way, since they
    must accept all valid serialization forms.
 
-J.1.4.  Non-Checking Decoder Test
+K.1.4.  Non-Checking Decoder Test
 
    A non-checking decoder may accept encodings beyond what is required
    for the target serialization type.  For example, a preferred-plus
@@ -1853,7 +1918,7 @@ J.1.4.  Non-Checking Decoder Test
       types described in this document require support for decoding
       half-precision representations and subnormals.
 
-J.2.  Example Data Items
+K.2.  Example Data Items
 
    These are available as individual files at [Examples-Repo].
 
@@ -1864,7 +1929,7 @@ J.2.  Example Data Items
    the rest of general serialization.  For the purpose of classification
    by this document they are preferred-plus libraries with extra
    decoding features.  The extra decoding features can be tested as
-   described in Appendix J.1.4.
+   described in Appendix K.1.4.
 
    File: zero.edn
 
