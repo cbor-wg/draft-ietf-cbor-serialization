@@ -1,0 +1,13 @@
+; big number byte strings are of unlimited size, but that 
+; can't be expressed in CDDL, so a limit of 1,000
+bnmax = 1000
+bnbstr = bstr .size (8..bnmax)
+
+pplus-tag2bstr = #6.2(bnbstr)
+pplus-biguint  = #0 / pplus-tag2bstr
+
+pplus-tag3bstr = #6.3(bnbstr)
+pplus-bignint  = #1 / pplus-tag3bstr
+
+pplus-bigint = pplus-biguint / pplus-bignint
+

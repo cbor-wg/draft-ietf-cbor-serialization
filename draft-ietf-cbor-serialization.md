@@ -881,12 +881,18 @@ This document does create a new rule for future tag definitions.
 See {{TagDataModelRule}}.
 
 
-# Big Numbers in CDDL {#BigNumbersCDDL}
+# CDDL for Big Numbers {#BigNumbersCDDL}
 
 The types bigint and biguint in the CDDL Standard Prelude ({{Appendix D of -cddl}}) do NOT describe the big numbers described in this document or in {{Section 3.4.3 of -cbor}}, not even for general serialization.
 The types integer and unsigned can be used, but note that they do not fully express the rules that govern the choice between major types 0 and 1 and the big number tags.
 CDDL-described protocols SHOULD use integer and unsigned and in prose state that these values correspond to either {{PreferredPlusSerialization}} of this document or {{Section 3.4.3 of -cbor}}.
 {{BigNumbersDataModel}} explains the reasons for this.
+
+The following CDDL can be used:
+
+~~~~
+{::include bn.cddl}
+~~~~
 
 
 # Big Number Implementation Strategies {#BigNumberStrategies}
