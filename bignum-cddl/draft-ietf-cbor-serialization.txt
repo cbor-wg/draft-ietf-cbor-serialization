@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                            23 July 2026
-Expires: 24 January 2027
+Intended status: Standards Track                            29 July 2026
+Expires: 30 January 2027
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 January 2027.
+   This Internet-Draft will expire on 30 January 2027.
 
 Copyright Notice
 
@@ -119,7 +119,7 @@ Table of Contents
      C.6.  Recommendations for Use of Non-Trivial NaNs
    Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
    Appendix E.  Big Numbers and the CBOR Data Model
-   Appendix F.  Big Numbers in CDDL
+   Appendix F.  CDDL for Big Numbers
    Appendix G.  Big Number Implementation Strategies
    Appendix H.  Serialization Checking
      H.1.  Serialization Checking Use Cases
@@ -1480,7 +1480,7 @@ Appendix E.  Big Numbers and the CBOR Data Model
    This document does create a new rule for future tag definitions.  See
    Section 7.
 
-Appendix F.  Big Numbers in CDDL
+Appendix F.  CDDL for Big Numbers
 
    The types bigint and biguint in the CDDL Standard Prelude (Appendix D
    of [RFC8610]) do NOT describe the big numbers described in this
@@ -1491,6 +1491,21 @@ Appendix F.  Big Numbers in CDDL
    protocols SHOULD use integer and unsigned and in prose state that
    these values correspond to either Section 4 of this document or
    Section 3.4.3 of [STD94].  Appendix E explains the reasons for this.
+
+   The following CDDL can be used:
+
+   ; big number byte strings are of unlimited size, but that
+   ; can't be expressed in CDDL, so a limit of 1,000
+   bnmax = 1000
+   bnbstr = bstr .size (8..bnmax)
+
+   pplus-tag2bstr = #6.2(bnbstr)
+   pplus-biguint  = #0 / pplus-tag2bstr
+
+   pplus-tag3bstr = #6.3(bnbstr)
+   pplus-bignint  = #1 / pplus-tag3bstr
+
+   pplus-bigint = pplus-biguint / pplus-bignint
 
 Appendix G.  Big Number Implementation Strategies
 
