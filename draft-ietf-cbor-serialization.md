@@ -135,32 +135,51 @@ These serializations are largely compatible with those widely implemented by the
 
 # Introduction {#Introduction}
 
-Background material on serialization and determinism concepts is provided in {{models}}.
-Readers may wish to review this background information first.
+## Information Model, Data Model and Serialization {#models}
+
+To understand CBOR serialization and determinism, it's helpful to distinguish between the general concepts of an information model, a data model, and serialization.
+These are broad concepts that can be applied to other serialization schemes like JSON and ASN.1.
+
+ |  | Information Model | Data Model | Serialization |
+ | Abstraction Level | Top level; conceptual | Realization of information in data structures and data types | Actual bytes encoded for transmission |
+ | Example | The temperature of something | A floating-point number representing the temperature | Encoded CBOR of a floating-point number |
+ | Standards | e.g., {{UML}} | CDDL {{-cddl}} | CBOR {{-cbor}} |
+ | Implementation Representation | n/a | API input to CBOR encoder library, output from CBOR decoder library | Encoded CBOR in memory or for transmission |
+ {: #tab-models title="Information Model, Data Model and Serialization"}
+
+CBOR doesn't provide facilities for information models.
+They are mentioned here for completeness and context.
+
+CBOR defines a palette of basic types, including the usual integers, floating-point numbers, strings, arrays, and maps.
+Extended types may be constructed from these basic types.
+These basic and extended types are used to construct the data model of a CBOR protocol.
+While not required, CDDL may be used to describe the data model of a protocol.
+
+The types in the data model are serialized per {{-cbor}} to create encoded CBOR.
+
+
+## Flexible Serialization
 
 CBOR intentionally allows multiple valid serializations of the same data item.
 For example, the array \[1, 2\] can be serialized in more than one way:
 
-| Type              | Description                                      | Bytes                |
+| Type              | Description                                      | Encoded Bytes        |
 |-------------------|--------------------------------------------------|----------------------|
-| Definite-length   | The array length (2) is encoded at the beginning | 0x82 0x01 0x02       |
-| Indefinite-length | The array is terminated by the break byte (0xff) | 0x9f  0x01 0x02 0xff |
+| Definite-length   | The array length, 2, is encoded at the beginning | 0x82 0x01 0x02       |
+| Indefinite-length | The array is terminated by the break byte (0xff) | 0x9f 0x01 0x02 0xff |
 {: #tab-array-ser title="[1, 2] definite-length and indefinite-length serializations"}
 
-Similar variation exists for most other CBOR data types.
+Similar flexibility exists for most other CBOR data types.
 
-This variability is deliberate.
-CBOR is designed to allow encodings to be selected according to the constraints and requirements of a particular environment.
-The flexibility is a core design feature.
-(CBOR is not unique in this regard; compare ASN.1's BER encoding rules).
-
+This flexibility is deliberate: CBOR is designed to allow encodings to be selected according to the constraints and requirements of a particular environment.
 For example, indefinite-length serialization is suited for streaming large arrays in constrained environments, where the total length is not known in advance.
 Conversely, definite-length serialization makes it easier to decode small arrays in constrained environments.
+(CBOR is not unique in this regard; compare ASN.1's BER encoding rules.)
 
-As a result, CBOR libraries and protocol implementations commonly support only the serialization forms required for their intended use cases.
-This behavior is expected and aligns with CBOR’s design goals.
+Crucially, CBOR allows &mdash; and even expects &mdash; that some implementations will not support all serialization variants.
+JSON also permits variation (1, 1.0, and 0.1e1 represent the same number), but expects every parser to handle all of it, since the variation is there for human readability rather than for ease of implementation in constrained environments.
 
-However, this flexibility introduces two challenges: interoperability and determinism.
+However, CBOR's flexibility introduces two challenges: interoperability and determinism.
 
 
 ## Interoperability
@@ -615,36 +634,6 @@ This document requests IANA to register the ".serial" control operator into the 
 IANA is requested to add a reference to {{TagDataModelRule}} to the CBOR tag registry {{IANA.cbor-tags}}.
 
 --- back
-
-# Information Model, Data Model and Serialization {#models}
-
-To understand CBOR serialization and determinism, it's helpful to distinguish between the general concepts of an information model, a data model, and serialization.
-These are broad concepts that can be applied to other serialization schemes like JSON and ASN.1
-
- |  | Information Model | Data Model | Serialization |
- | Abstraction Level | Top level; conceptual | Realization of information in data structures and data types | Actual bytes encoded for transmission |
- | Example | The temperature of something | A floating-point number representing the temperature | Encoded CBOR of a floating-point number |
- | Standards | {{UML}} | CDDL | CBOR |
- | Implementation Representation | n/a | API Input to CBOR encoder library, output from CBOR decoder library | Encoded CBOR in memory or for transmission |
- {: #tab-models title="Information Model, Data Model and Serialization"}
-
-
-CBOR doesn't provide facilities for information models.
-They are mentioned here for completeness and to provide some context.
-
-CBOR defines a palette of basic types that are the usual integers, floating-point numbers, strings, arrays, maps and other.
-Extended types may be constructed from these basic types.
-These basic and extended types are used to construct the data model of a CBOR protocol.
-While not required, {{-cddl}} may be used to describe the data model of a protocol.
-The types in the data model are serialized per {{-cbor}} to create encoded CBOR.
-
-CBOR allows certain data types to be serialized in multiple ways to facilitate easier implementation in constrained environments.
-For example, indefinite-length encoding enables strings, arrays, and maps to be streamed without knowing their length upfront.
-
-Crucially, CBOR allows — and even expects — that some implementations will not support all serialization variants.
-In contrast, JSON permits variations (e.g., representing 1 as 1, 1.0, or 0.1e1), but expects all parsers to handle them.
-That is, the variation in JSON is for human readability, not to facilitate easier implementation in constrained environments.
-
 
 # General Protocol Considerations for Determinism {#DeterministicConsiderations}
 
