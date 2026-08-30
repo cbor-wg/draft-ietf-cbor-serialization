@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-30T02:21:15.093775+00:00",
+  "timestamp": "2026-08-30T03:51:39.148005+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -3853,6 +3853,32 @@
       "mergeCommit": {
         "oid": "69a7c80b7ea44dd568f0ffadfdb77ddfd3d03626"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 79,
+      "id": "PR_kwDOQYX63c8AAAABBXfQfA",
+      "title": "Promote Appedix A to intro; improve intro",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/79",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is to address comments by Joe and Martine.\r\n\r\nI think this is substantial improvement in the intro.",
+      "createdAt": "2026-08-28T17:23:21Z",
+      "updatedAt": "2026-08-28T17:23:21Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "b24871b5a6a66464ef6d2fc414be456fe8e2339c",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "elevate-appx-a",
+      "headRefOid": "0ebafb2ca6e88da38ee20a60f0bded52f3267c98",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
