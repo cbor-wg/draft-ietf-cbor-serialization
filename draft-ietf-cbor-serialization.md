@@ -50,9 +50,7 @@ contributor:
 normative:
   RFC2119:
 
-  STD94:
-   -: cbor
-   =: RFC8949
+  RFC8949: cbor
 
   RFC8610: cddl
 
@@ -797,7 +795,7 @@ It suggests, for example, that all NaNs may be encoded as a half-precision quiet
 This section is distinct from the Core Deterministic Encoding Requirements and represents an optional alternative for handling NaNs.
 
 
-## Divergence from {{-cbor}} {#NaNCompatibility}
+## Divergence from RFC 8949 {#NaNCompatibility}
 
 Non-trivial NaNs are not permitted in either preferred-plus or deterministic serializations.
 This is in contrast to preferred serialization and {{Section 4.2.1 of -cbor}}.
