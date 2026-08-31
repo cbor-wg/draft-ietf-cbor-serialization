@@ -109,17 +109,7 @@ informative:
      date: December, 2017
      target: https://www.omg.org/spec/UML/2.5.1/PDF
 
-   LAM73:
-      title: A Note on the Confinement Problem
-      author:
-        -
-          fullname: Butler W. Lampson
-      date: 1973-10
-      seriesinfo:
-        - name: Communications of the ACM
-          value: "16(10)"
-        - name: DOI
-          value: 10.1145/362375.362389
+   LAM73: DOI.10.1145/362375.362389
 
 
 --- abstract
@@ -275,7 +265,7 @@ A CBOR library MAY also choose to support some or all aspects of general seriali
 
 ### Libraries for Framework Protocols
 
-When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that it implement preferred-plus serialization.
+When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that a CBOR library implements preferred-plus serialization.
 For example, it is recommended that a library implementing CWT or COSE implement preferred-plus serialization.
 
 However, a library MAY choose to support only deterministic serialization if this aligns with its deployment environment and design goals.
@@ -331,7 +321,7 @@ at the cost of requiring decoders &mdash; assumed to be unconstrained &mdash; to
 When general serialization is required by a protocol, this SHOULD be stated explicitly.
 Although it is the default for CBOR in theory, it has not been widely implemented as such in practice.
 
-See also special serialization ({{SpecialSerializations}}), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
+See also special serializations ({{SpecialSerializations}}), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
 
 CBOR libraries may nonetheless wish to support general serialization, as a complete set of other serialization forms, to be useful across a broader range of protocols.
 
@@ -342,8 +332,8 @@ This section defines a serialization named "preferred-plus serialization."
 
 ## Encoder Requirements {#PreferredPlusEncoding}
 
-1. The shortest-form of the CBOR argument must be used for all major types.
-   The shortest-form encoding for any argument that is not a floating  point value is:
+1. The shortest form of the CBOR argument must be used for all major types.
+   The shortest form encoding for any argument that is not a floating  point value is:
 
    * 0 to 23 and -1 to -24 MUST be encoded in the same byte as the major type.
    * 24 to 255 and -25 to -256 MUST be encoded only with an additional byte (ai = 0x18).
@@ -375,7 +365,7 @@ This section defines a serialization named "preferred-plus serialization."
 
 ## Decoder Requirements {#PreferredPlusDecoding}
 
-1. Decoders MUST accept shortest-form encoded arguments.
+1. Decoders MUST accept shortest form encoded arguments.
 
 1. If arrays or maps are supported, definite-length arrays or maps MUST be accepted.
 
@@ -409,7 +399,7 @@ Note that preferred-plus is deterministic when maps are not in use.
 
 ## Relation To Preferred Serialization {#RelationToPreferred}
 
-Preferred-plus serialization is defined to be the long-term replacement for preferred serialization.
+Preferred-plus serialization is defined to be the long-term replacement for preferred serialization ({{Section 4.1 of -cbor}}).
 
 The differences are:
 
@@ -720,7 +710,7 @@ Some key points:
 
 - Programming languages:
 
-  - The programming languages C, C++, Java, Python and Rust do no provide APIs to set or extract NaN payloads.
+  - The programming languages C, C++, Java, Python and Rust do not provide APIs to set or extract NaN payloads.
   - IEEE 754 is over thirty years old, enough time for support to be added if there was need.
 
 - CPU hardware:
