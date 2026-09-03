@@ -304,6 +304,7 @@ General serialization permits any and all of these:
 * CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, or 0x190000 and so on).
 * Floating-point values encoded at any length (for example, 0.00 can be 0xf90000, 0xfa00000000, and so on).
 * Both definite or indefinite-length strings, arrays, and maps.
+* Unordered maps.
 * Big number representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the big number 0xc34100).
 
 A decoder claiming to support general serialization MUST accept and decode all the encodings for the data types it supports.
