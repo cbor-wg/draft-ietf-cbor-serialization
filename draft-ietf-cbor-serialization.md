@@ -5,6 +5,8 @@ title: CBOR Serialization and Determinism
 abbrev: CBOR Serialization
 docname: draft-ietf-cbor-serialization-latest
 cat: std
+updates: 8949
+
 
 date:
 consensus: true
@@ -132,6 +134,17 @@ These serializations are largely compatible with those widely implemented by the
 --- middle
 
 # Introduction {#Introduction}
+
+CBOR is a data serialization standard.
+It specifies how to encode data values of various types as bytes for transmission over a network or for storage in a file or in memory.
+
+This document extends {{-cbor}} by formally and normatively defining two additional serializations, "preferred-plus serialization" and "deterministic serialization", and gives extensive recommendations for their use.
+These are new serializations that sit alongside those defined in {{-cbor}}; they do not modify them.
+
+This document also updates {{-cbor}} with a new rule prohibiting new tag definitions from affecting the CBOR data model.
+This rule is related to serialization only indirectly, through the way bignums were specified, but it is important, and this document is a suitable vehicle for its publication.
+
+
 
 Background material on serialization and determinism concepts is provided in {{models}}.
 Readers may wish to review this background information first.
