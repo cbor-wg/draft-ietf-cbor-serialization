@@ -394,6 +394,8 @@ Table of Contents
 
    *  Both definite or indefinite-length strings, arrays, and maps.
 
+   *  Unordered maps.
+
    *  Big number representation of values that are also representable
       using major types 0 and 1 (for example, 0 can be encoded as the
       big number 0xc34100).
