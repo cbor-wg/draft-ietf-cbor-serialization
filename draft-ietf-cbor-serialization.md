@@ -221,11 +221,10 @@ It is RECOMMENDED that CBOR-based framework protocols not state serialization re
 CBOR-based framework protocols MAY impose serialization requirements.
 For example, if a protocol is never expected to be deployed in constrained environments where map sorting is too expensive, it may mandate deterministic serialization for all implementations in order to eliminate all serialization variability.
 
-There is one situation in which a framework protocol MUST require deterministic serialization, though typically limited to a specific subset of the protocol.
-This requirement arises when the protocol design requires the involved parties to independently construct and serialize data to be hashed or signed, rather than transmitting the exact serialized bytes that were hashed or signed.
+One scenario in particular calls for deterministic serialization in a framework protocol: a design in which the parties independently construct and serialize the data to be hashed or signed, rather than transmitting those exact bytes.
 See {{WhenDeterministic}}.
-
-See {{COSESerialization}} for a COSE-based example.
+For such a design to function correctly, the framework protocol must require deterministic serialization.
+COSE is an example, elaborated upon in {{COSESerialization}}.
 
 
 ### End-to-End Protocols {#EndToEndProtocols}
