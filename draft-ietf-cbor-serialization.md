@@ -844,7 +844,9 @@ If the input is already a single, only pref_plus_single_to_half() need be called
 (The two functions have identical structure.
 Because the constants are difficult to compute and verify, both are provided.)
 
-Both functions return an integer with the bit pattern for the resulting floating-point value, or -1 if the conversion can't be performed because the input is out of range or precision would be lost.
+Both functions return an integer with the bit pattern for the resulting floating-point value, or a negative value on failure.
+-1 indicates the conversion can't be performed because the input is out of range or precision would be lost.
+-2 indicates a non-trivial NaN was given for encoding which should either be rejected or output as a half-precision quiet NaN.
 
 ~~~ c
 {::include prefp-float-encode.c}
