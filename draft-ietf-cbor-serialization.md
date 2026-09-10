@@ -549,14 +549,14 @@ For example, the following specifies that a message or protocol described by "st
 
 ~~~
 stuff = ...
-deterministic-stuff = stuff .serial dtrm
+deterministic-stuff = stuff .serial "dtrm"
 wrapped-deterministic-stuff = #6.24(bytes .cbor deterministic-stuff)
 ~~~
 
 For another example, the first lines of a CDDL document as follows specify that "my-protocol" be serialized with preferred-plus.
 
 ~~~
-my-prefp-protocol = my-protocol .serial prefp
+my-prefp-protocol = my-protocol .serial "prefp"
 my-protocol = ...
 ~~~
 
