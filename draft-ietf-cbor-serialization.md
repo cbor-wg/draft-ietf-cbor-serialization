@@ -346,7 +346,7 @@ An implementation is free to support as much or as little of CBOR as its protoco
 For example, a very small CBOR library might support only the integers 0 to 10 and arrays of length 0 to 10.
 Preferred-plus allows this, but requires that those arrays be definite-length and that, over this range, the integer value and the array length each be encoded in the initial byte.
 
-Similarly, preferred-plus places no requirement on the range or precision of floating-point values, but requires that each value it does encode be encoded in exactly one way — for example, 5.9604644775390625E-8 must be encoded as a half-precision subnormal.
+Similarly, preferred-plus 1places no requirement on the range or precision of floating-point values, but requires that each value it does encode be encoded in exactly one way — for example, 5.9604644775390625E-8 must be encoded as a half-precision subnormal.
 
 Many protocols use neither all the data types nor a type's full range, so a partial implementation is often appropriate.
 Implementers need to ensure that the library they use supports the data types, ranges and precision their protocol requires, and that its encoding and decoding meet the requirements in this section.
@@ -384,10 +384,9 @@ A library intended for general use will typically support most or all data types
      Specifically, if the numbers presented for encoding are double-precision, then conversion single and half-precision is required.
      If the numbers presented for encoding are only single-precision, then conversion to half-precision is required.
 
-1. If big numbers (tags 2 and 3) are encoded, the following apply:
+1. Big numbers (tags 2 and 3):
 
    * Leading zeros MUST NOT be encoded.
-
    * If a value can be encoded using major type 0 or 1, then it MUST be encoded with major type 0 or 1, never as a big number.
 
 
@@ -409,7 +408,7 @@ A decoder SHOULD support the same types and ranges as its corresponding encoder,
    * If the range of double-precision is supported, finite double-, single- and half-precision values MUST be accepted.
    * If the range of single-precision is supported, finite single- and half-precision values MUST be accepted.
    * Half-precision NaN (0xf97e00), Infinity (0xf97c00) and -Infinity (0xf9fc00) MUST be accepted.
-     These are the only forms of these values a preferred-plus encoder can produce, so support for their single- and double-precision forms is not required.
+     These are the only forms of these values a preferred-plus encoder can produce, so accepting their single- and double-precision forms is allowed, but not required.
    * No requirement is made on how a decoded floating-point value is represented to the layer(s) above the decoder; conversion from double, single, or half-precision into that representation may be necessary.
 
 1. If big numbers (tags 2 and 3) are accepted, the following apply:
