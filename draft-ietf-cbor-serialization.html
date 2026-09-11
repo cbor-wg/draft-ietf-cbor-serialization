@@ -1482,13 +1482,13 @@ For example, the array [1, 2] can be serialized in more than one way:<a href="#s
           <tbody>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Definite-length</td>
-              <td class="text-left" rowspan="1" colspan="1">The array length, 2, is encoded at the beginning</td>
-              <td class="text-left" rowspan="1" colspan="1">0x82 0x01 0x02</td>
+              <td class="text-left" rowspan="1" colspan="1">The array length (2) is encoded at the beginning</td>
+              <td class="text-left" rowspan="1" colspan="1">0x820102</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Indefinite-length</td>
               <td class="text-left" rowspan="1" colspan="1">The array is terminated by the break byte (0xff)</td>
-              <td class="text-left" rowspan="1" colspan="1">0x9f 0x01 0x02 0xff</td>
+              <td class="text-left" rowspan="1" colspan="1">0x9f0102ff</td>
             </tr>
           </tbody>
         </table>
@@ -1756,8 +1756,8 @@ For another example, 0.1 would lose precision if not encoded as double-precision
 Subnormal numbers MUST be supported in this shortest-length encoding.<a href="#section-4.1-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.4.2.3">
-                <p id="section-4.1-1.4.2.3.1">Encoders MUST NOT output any NaN other than the half-precision NaN 0xf9 0x7e 0x00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
-When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf9 0x7e 0x00.
+                <p id="section-4.1-1.4.2.3.1">Encoders MUST NOT output any NaN other than the half-precision NaN 0xf97e00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
+When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf97e00.
 Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and a single NaN.<a href="#section-4.1-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.4.2.4">
