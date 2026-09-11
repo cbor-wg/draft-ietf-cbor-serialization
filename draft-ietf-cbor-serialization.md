@@ -163,8 +163,8 @@ For example, the array \[1, 2\] can be serialized in more than one way:
 
 | Type              | Description                                      | Encoded Bytes        |
 |-------------------|--------------------------------------------------|----------------------|
-| Definite-length   | The array length, 2, is encoded at the beginning | 0x82 0x01 0x02       |
-| Indefinite-length | The array is terminated by the break byte (0xff) | 0x9f 0x01 0x02 0xff |
+| Definite-length   | The array length (2) is encoded at the beginning | 0x820102             |
+| Indefinite-length | The array is terminated by the break byte (0xff) | 0x9f0102ff           |
 {: #tab-array-ser title="[1, 2] definite-length and indefinite-length serializations"}
 
 Similar flexibility exists for most other CBOR data types.
@@ -379,8 +379,8 @@ This section defines a serialization named "preferred-plus serialization."
       For example, 0.0 can always be reduced to half-precision so it MUST be encoded as 0xf90000.
       For another example, 0.1 would lose precision if not encoded as double-precision so it MUST be encoded as 0xfb3fb999999999999a.
       Subnormal numbers MUST be supported in this shortest-length encoding.
-   * Encoders MUST NOT output any NaN other than the half-precision NaN 0xf9 0x7e 0x00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
-     When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf9 0x7e 0x00.
+   * Encoders MUST NOT output any NaN other than the half-precision NaN 0xf97e00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
+     When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf97e00.
      Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and a single NaN.
    * Aside from the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as {{Section 4.1 of -cbor}} and also as {{Section 4.2.1 of -cbor}}.
 
