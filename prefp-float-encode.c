@@ -81,7 +81,7 @@ long pref_plus_single_to_half(unsigned long single) {
     } else if (mant == SGL_QUIET_NAN && sign == 0) {
        return HLF_QUIET_NAN + HLF_NAN_INF_EXP_BITS; /* trivial NaN */
     } else {
-       return -1; /* non-trivial NaN */
+       return -2; /* non-trivial NaN */
     }
   } else {
      return -1; /* large exponent -- out of range for half */
@@ -123,7 +123,7 @@ long long pref_plus_double_to_single(unsigned long long dbl) {
     } else if (mant == DBL_QUIET_NAN && sign == 0) {
        return SGL_QUIET_NAN + SGL_NAN_INF_EXP_BITS; /* quiet NaN */
     } else {
-       return -1; /* non-trivial NaN */
+       return -2; /* non-trivial NaN */
     }
   } else {
      return -1; /* large exponent -- out of range for single */
