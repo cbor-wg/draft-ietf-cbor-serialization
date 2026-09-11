@@ -107,17 +107,7 @@ informative:
      date: December, 2017
      target: https://www.omg.org/spec/UML/2.5.1/PDF
 
-   LAM73:
-      title: A Note on the Confinement Problem
-      author:
-        -
-          fullname: Butler W. Lampson
-      date: 1973-10
-      seriesinfo:
-        - name: Communications of the ACM
-          value: "16(10)"
-        - name: DOI
-          value: 10.1145/362375.362389
+   LAM73: DOI.10.1145/362375.362389
 
 
 --- abstract
@@ -251,7 +241,7 @@ See {{COSESerialization}} for a COSE-based example.
 
 End-to-end protocols are specified such that interoperability is assured when they are implemented in accordance with their specification.
 When such a protocol includes optional features, they are typically selected through real-time negotiation.
-Such protocols often have formal interoperability compliance programs or organize interoperability testing events (for example, "bake-offs").
+Such protocols often have formal interoperability compliance programs or organize multi-vendor interop testing events.
 TLS, HTTP, and FIDO are examples of end-to-end protocols.
 
 End-to-end protocols MUST define a serialization strategy that ensures the sender and receiver use interoperable serialization.
@@ -292,7 +282,7 @@ A CBOR library MAY also choose to support some or all aspects of general seriali
 
 ### Libraries for Framework Protocols
 
-When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that it implement preferred-plus serialization.
+When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that a CBOR library implements preferred-plus serialization.
 For example, it is recommended that a library implementing CWT or COSE implement preferred-plus serialization.
 
 However, a library MAY choose to support only deterministic serialization if this aligns with its deployment environment and design goals.
@@ -349,7 +339,7 @@ at the cost of requiring decoders &mdash; assumed to be unconstrained &mdash; to
 When general serialization is required by a protocol, this SHOULD be stated explicitly.
 Although it is the default for CBOR in theory, it has not been widely implemented as such in practice.
 
-See also special serialization ({{SpecialSerializations}}), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
+See also special serializations ({{SpecialSerializations}}), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
 
 CBOR libraries may nonetheless wish to support general serialization, as a complete set of other serialization forms, to be useful across a broader range of protocols.
 
@@ -360,8 +350,8 @@ This section defines a serialization named "preferred-plus serialization."
 
 ## Encoder Requirements {#PreferredPlusEncoding}
 
-1. The shortest-form of the CBOR argument must be used for all major types.
-   The shortest-form encoding for any argument that is not a floating  point value is:
+1. The shortest form of the CBOR argument must be used for all major types.
+   The shortest form encoding for any argument that is not a floating  point value is:
 
    * 0 to 23 and -1 to -24 MUST be encoded in the same byte as the major type.
    * 24 to 255 and -25 to -256 MUST be encoded only with an additional byte (ai = 0x18).
@@ -393,7 +383,7 @@ This section defines a serialization named "preferred-plus serialization."
 
 ## Decoder Requirements {#PreferredPlusDecoding}
 
-1. Decoders MUST accept shortest-form encoded arguments.
+1. Decoders MUST accept shortest form encoded arguments.
 
 1. If arrays or maps are supported, definite-length arrays or maps MUST be accepted.
 
@@ -427,7 +417,7 @@ Note that preferred-plus is deterministic when maps are not in use.
 
 ## Relation To Preferred Serialization {#RelationToPreferred}
 
-Preferred-plus serialization is defined to be the long-term replacement for preferred serialization.
+Preferred-plus serialization is defined to be the long-term replacement for preferred serialization ({{Section 4.1 of -cbor}}).
 
 The differences are:
 
@@ -523,7 +513,7 @@ When needed, protocols may define special serializations beyond the three descri
 The main capabilities they enable are:
 
 
-* Streaming encoding of strings, arrays, and maps using indefinite lengths, for use when the encoded item(s) exceeds the memory available on the encoding device.
+* Streaming encoding of text strings, byte strings, arrays, and maps using indefinite lengths, for use when the encoded item(s) exceeds the memory available on the encoding device.
 
 * Fixed-size integer encoding, allowing values to be copied directly to and from hardware registers.
 CBOR is simple enough that encoders and decoders for some protocols can be implemented entirely in hardware.
@@ -577,14 +567,14 @@ For example, the following specifies that a message or protocol described by "st
 
 ~~~
 stuff = ...
-deterministic-stuff = stuff .serial dtrm
+deterministic-stuff = stuff .serial "dtrm"
 wrapped-deterministic-stuff = #6.24(bytes .cbor deterministic-stuff)
 ~~~
 
 For another example, the first lines of a CDDL document as follows specify that "my-protocol" be serialized with preferred-plus.
 
 ~~~
-my-prefp-protocol = my-protocol .serial prefp
+my-prefp-protocol = my-protocol .serial "prefp"
 my-protocol = ...
 ~~~
 
@@ -708,7 +698,7 @@ Some key points:
 
 - Programming languages:
 
-  - The programming languages C, C++, Java, Python and Rust do no provide APIs to set or extract NaN payloads.
+  - The programming languages C, C++, Java, JavaScript, Python and Rust do not provide APIs to set or extract NaN payloads.
   - IEEE 754 is over thirty years old, enough time for support to be added if there was need.
 
 - CPU hardware:
@@ -890,7 +880,7 @@ The following CDDL can be used:
 {{BigNumbersDataModel}} describes how CBOR defines a single integer number space, in which big numbers are not distinct from values encoded using major types 0 and 1.
 This appendix discusses approaches for implementers to support that model.
 
-Some programming environments provide strong native support for big numbers (e.g., Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
+Some programming environments provide strong native support for big numbers (e.g., JavaScript, Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
 Even in environments that support big numbers, operations on native-sized integers (e.g., 64-bit integers) are typically much more efficient.
 It is therefore reasonable for a CBOR library to expose separate APIs for native-sized integers and for big numbers.
 
