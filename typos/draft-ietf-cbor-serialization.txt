@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                       10 September 2026
-Expires: 14 March 2027
+Intended status: Standards Track                       11 September 2026
+Expires: 15 March 2027
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 March 2027.
+   This Internet-Draft will expire on 15 March 2027.
 
 Copyright Notice
 
@@ -291,8 +291,8 @@ Table of Contents
    specification.  When such a protocol includes optional features, they
    are typically selected through real-time negotiation.  Such protocols
    often have formal interoperability compliance programs or organize
-   interoperability testing events (for example, "bake-offs").  TLS,
-   HTTP, and FIDO are examples of end-to-end protocols.
+   multi-vendor interop testing events.  TLS, HTTP, and FIDO are
+   examples of end-to-end protocols.
 
    End-to-end protocols MUST define a serialization strategy that
    ensures the sender and receiver use interoperable serialization.
@@ -705,9 +705,9 @@ Table of Contents
    When needed, protocols may define special serializations beyond the
    three described above.  The main capabilities they enable are:
 
-   *  Streaming encoding of strings, arrays, and maps using indefinite
-      lengths, for use when the encoded item(s) exceeds the memory
-      available on the encoding device.
+   *  Streaming encoding of text strings, byte strings, arrays, and maps
+      using indefinite lengths, for use when the encoded item(s) exceeds
+      the memory available on the encoding device.
 
    *  Fixed-size integer encoding, allowing values to be copied directly
       to and from hardware registers.  CBOR is simple enough that
@@ -1110,8 +1110,8 @@ C.2.  Implementation Support for Non-Trivial NaNs
 
    *  Programming languages:
 
-      -  The programming languages C, C++, Java, Python and Rust do not
-         provide APIs to set or extract NaN payloads.
+      -  The programming languages C, C++, Java, JavaScript, Python and
+         Rust do not provide APIs to set or extract NaN payloads.
 
       -  IEEE 754 is over thirty years old, enough time for support to
          be added if there was need.
@@ -1528,12 +1528,12 @@ Appendix G.  Big Number Implementation Strategies
    to support that model.
 
    Some programming environments provide strong native support for big
-   numbers (e.g., Python, Ruby, and Go), while others do not (e.g., C,
-   C++, and Rust).  Even in environments that support big numbers,
-   operations on native-sized integers (e.g., 64-bit integers) are
-   typically much more efficient.  It is therefore reasonable for a CBOR
-   library to expose separate APIs for native-sized integers and for big
-   numbers.
+   numbers (e.g., JavaScript, Python, Ruby, and Go), while others do not
+   (e.g., C, C++, and Rust).  Even in environments that support big
+   numbers, operations on native-sized integers (e.g., 64-bit integers)
+   are typically much more efficient.  It is therefore reasonable for a
+   CBOR library to expose separate APIs for native-sized integers and
+   for big numbers.
 
    When a CBOR library provides a big number API, values that fall
    within the range of major types 0 and 1 must be encoded using those

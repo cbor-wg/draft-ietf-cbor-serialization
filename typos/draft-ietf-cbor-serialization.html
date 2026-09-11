@@ -1048,7 +1048,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 14 March 2027</td>
+<td class="center">Expires 15 March 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,12 +1061,12 @@ svg {
 <dd class="internet-draft">draft-ietf-cbor-serialization-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-09-10" class="published">10 September 2026</time>
+<time datetime="2026-09-11" class="published">11 September 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-03-14">14 March 2027</time></dd>
+<dd class="expires"><time datetime="2027-03-15">15 March 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1118,7 +1118,7 @@ Together, these three form a set of serializations that cover the majority of CB
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 15 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1517,7 +1517,7 @@ See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a h
           </h4>
 <p id="section-2.1.2-1">End-to-end protocols are specified such that interoperability is assured when they are implemented in accordance with their specification.
 When such a protocol includes optional features, they are typically selected through real-time negotiation.
-Such protocols often have formal interoperability compliance programs or organize interoperability testing events (for example, "bake-offs").
+Such protocols often have formal interoperability compliance programs or organize multi-vendor interop testing events.
 TLS, HTTP, and FIDO are examples of end-to-end protocols.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-2">End-to-end protocols MUST define a serialization strategy that ensures the sender and receiver use interoperable serialization.<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-3">The strategy most highly RECOMMENDED is to normatively require preferred-plus serialization.
@@ -1904,7 +1904,7 @@ If an application requires a map to be ordered, it is responsible for applying i
 The main capabilities they enable are:<a href="#section-6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6-2.1">
-          <p id="section-6-2.1.1">Streaming encoding of strings, arrays, and maps using indefinite lengths, for use when the encoded item(s) exceeds the memory available on the encoding device.<a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
+          <p id="section-6-2.1.1">Streaming encoding of text strings, byte strings, arrays, and maps using indefinite lengths, for use when the encoded item(s) exceeds the memory available on the encoding device.<a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-2.2">
           <p id="section-6-2.2.1">Fixed-size integer encoding, allowing values to be copied directly to and from hardware registers.
@@ -2283,7 +2283,7 @@ Some key points:<a href="#appendix-C.2-2" class="pilcrow">¶</a></p>
             <p id="appendix-C.2-3.1.1">Programming languages:<a href="#appendix-C.2-3.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C.2-3.1.2.1">
-                <p id="appendix-C.2-3.1.2.1.1">The programming languages C, C++, Java, Python and Rust do not provide APIs to set or extract NaN payloads.<a href="#appendix-C.2-3.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="appendix-C.2-3.1.2.1.1">The programming languages C, C++, Java, JavaScript, Python and Rust do not provide APIs to set or extract NaN payloads.<a href="#appendix-C.2-3.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="appendix-C.2-3.1.2.2">
                 <p id="appendix-C.2-3.1.2.2.1">IEEE 754 is over thirty years old, enough time for support to be added if there was need.<a href="#appendix-C.2-3.1.2.2.1" class="pilcrow">¶</a></p>
@@ -2654,7 +2654,7 @@ pplus-bigint = pplus-biguint / pplus-bignint
       </h2>
 <p id="appendix-G-1"><a href="#BigNumbersDataModel" class="auto internal xref">Appendix E</a> describes how CBOR defines a single integer number space, in which big numbers are not distinct from values encoded using major types 0 and 1.
 This appendix discusses approaches for implementers to support that model.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
-<p id="appendix-G-2">Some programming environments provide strong native support for big numbers (e.g., Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
+<p id="appendix-G-2">Some programming environments provide strong native support for big numbers (e.g., JavaScript, Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
 Even in environments that support big numbers, operations on native-sized integers (e.g., 64-bit integers) are typically much more efficient.
 It is therefore reasonable for a CBOR library to expose separate APIs for native-sized integers and for big numbers.<a href="#appendix-G-2" class="pilcrow">¶</a></p>
 <p id="appendix-G-3">When a CBOR library provides a big number API, values that fall within the range of major types 0 and 1 must be encoded using those major types rather than tags 2 or 3.
