@@ -1304,9 +1304,11 @@ Appendix C.  Code for Encoding Preferred-Plus Floating-Point Values
    are difficult to compute and verify, both are provided.)
 
    Both functions return an integer with the bit pattern for the
-   resulting floating-point value, or -1 if the conversion can't be
-   performed because the input is out of range or precision would be
-   lost.
+   resulting floating-point value, or a negative value on failure. -1
+   indicates the conversion can't be performed because the input is out
+   of range or precision would be lost. -2 indicates a non-trivial NaN
+   was given for encoding which should either be rejected or output as a
+   half-precision quiet NaN.
 
    /* Constants based on IEEE 754; _LEN is in bits */
 
@@ -1391,7 +1393,7 @@ Appendix C.  Code for Encoding Preferred-Plus Floating-Point Values
        } else if (mant == SGL_QUIET_NAN && sign == 0) {
           return HLF_QUIET_NAN + HLF_NAN_INF_EXP_BITS; /* trivial NaN */
        } else {
-          return -1; /* non-trivial NaN */
+          return -2; /* non-trivial NaN */
        }
      } else {
         return -1; /* large exponent -- out of range for half */
@@ -1433,7 +1435,7 @@ Appendix C.  Code for Encoding Preferred-Plus Floating-Point Values
        } else if (mant == DBL_QUIET_NAN && sign == 0) {
           return SGL_QUIET_NAN + SGL_NAN_INF_EXP_BITS; /* quiet NaN */
        } else {
-          return -1; /* non-trivial NaN */
+          return -2; /* non-trivial NaN */
        }
      } else {
         return -1; /* large exponent -- out of range for single */

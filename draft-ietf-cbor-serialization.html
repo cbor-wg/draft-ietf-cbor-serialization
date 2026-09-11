@@ -2452,7 +2452,9 @@ if it succeeds, pref_plus_single_to_half() is then called to complete the conver
 If the input is already a single, only pref_plus_single_to_half() need be called.<a href="#appendix-C-2" class="pilcrow">¶</a></p>
 <p id="appendix-C-3">(The two functions have identical structure.
 Because the constants are difficult to compute and verify, both are provided.)<a href="#appendix-C-3" class="pilcrow">¶</a></p>
-<p id="appendix-C-4">Both functions return an integer with the bit pattern for the resulting floating-point value, or -1 if the conversion can't be performed because the input is out of range or precision would be lost.<a href="#appendix-C-4" class="pilcrow">¶</a></p>
+<p id="appendix-C-4">Both functions return an integer with the bit pattern for the resulting floating-point value, or a negative value on failure.
+-1 indicates the conversion can't be performed because the input is out of range or precision would be lost.
+-2 indicates a non-trivial NaN was given for encoding which should either be rejected or output as a half-precision quiet NaN.<a href="#appendix-C-4" class="pilcrow">¶</a></p>
 <span id="name-example-c-code-for-preferre"></span><div id="half-encode">
 <figure id="figure-1">
         <div class="breakable lang-c sourcecode" id="appendix-C-5.1">
@@ -2540,7 +2542,7 @@ long pref_plus_single_to_half(unsigned long single) {
     } else if (mant == SGL_QUIET_NAN &amp;&amp; sign == 0) {
        return HLF_QUIET_NAN + HLF_NAN_INF_EXP_BITS; /* trivial NaN */
     } else {
-       return -1; /* non-trivial NaN */
+       return -2; /* non-trivial NaN */
     }
   } else {
      return -1; /* large exponent -- out of range for half */
@@ -2582,7 +2584,7 @@ long long pref_plus_double_to_single(unsigned long long dbl) {
     } else if (mant == DBL_QUIET_NAN &amp;&amp; sign == 0) {
        return SGL_QUIET_NAN + SGL_NAN_INF_EXP_BITS; /* quiet NaN */
     } else {
-       return -1; /* non-trivial NaN */
+       return -2; /* non-trivial NaN */
     }
   } else {
      return -1; /* large exponent -- out of range for single */
