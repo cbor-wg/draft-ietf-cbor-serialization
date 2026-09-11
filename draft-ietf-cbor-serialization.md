@@ -346,7 +346,7 @@ An implementation is free to support as much or as little of CBOR as its protoco
 For example, a very small CBOR library might support only the integers 0 to 10 and arrays of length 0 to 10.
 Preferred-plus allows this, but requires that those arrays be definite-length and that, over this range, the integer value and the array length each be encoded in the initial byte.
 
-Similarly, preferred-plus 1places no requirement on the range or precision of floating-point values, but requires that each value it does encode be encoded in exactly one way — for example, 5.9604644775390625E-8 must be encoded as a half-precision subnormal.
+Similarly, preferred-plus 1places no requirement on the range or precision of floating-point values, but requires that each value it does encode be encoded in exactly one way &mdash; for example, 5.9604644775390625E-8 must be encoded as a half-precision subnormal.
 
 Many protocols use neither all the data types nor a type's full range, so a partial implementation is often appropriate.
 Implementers need to ensure that the library they use supports the data types, ranges and precision their protocol requires, and that its encoding and decoding meet the requirements in this section.
@@ -378,10 +378,10 @@ A library intended for general use will typically support most or all data types
      Subnormal numbers MUST be used in this shortest-length encoding.
    * Encoders MUST NOT output any NaN other than the half-precision NaN 0xf97e00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
      When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf97e00.
-     Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and a single NaN.
+     Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and a one NaN.
    * Aside from the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as {{Section 4.1 of -cbor}} and also as {{Section 4.2.1 of -cbor}}.
    * Note that this implies that most preferred-plus implementations have to support encoding as single and half-precision.
-     Specifically, if the numbers presented for encoding are double-precision, then conversion single and half-precision is required.
+     Specifically, if the numbers presented for encoding are double-precision, then conversion to single and half-precision is required.
      If the numbers presented for encoding are only single-precision, then conversion to half-precision is required.
 
 1. Big numbers (tags 2 and 3):
@@ -424,7 +424,7 @@ See {{BigNumbersCDDL}} for specification in CDDL.
 ## When to use preferred-plus serialization
 
 Preferred-plus is the recommended default.
-It supports all CBOR data types and value ranges (except non-trivial NaNs), encodes compactly, is straightforward to implement, and is widely supported by CBOR libraries.
+It can serialize all CBOR data types and value ranges (except non-trivial NaNs), encodes compactly, is straightforward to implement, and is widely supported by CBOR libraries.
 It provides strong serialization interoperability because (1) decoders are required to accept all encodings that a preferred-plus encoder is permitted to produce, and (2) the requirements are formally specified.
 
 Choose a different serialization only when you have a specific need: deterministic serialization when determinism is required, a special serialization with indefinite lengths when streaming is required,
