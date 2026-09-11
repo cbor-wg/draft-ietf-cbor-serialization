@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                       10 September 2026
-Expires: 14 March 2027
+Intended status: Standards Track                       11 September 2026
+Expires: 15 March 2027
 
 
                    CBOR Serialization and Determinism
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 March 2027.
+   This Internet-Draft will expire on 15 March 2027.
 
 Copyright Notice
 
@@ -519,7 +519,7 @@ Table of Contents
           the encoder MUST either reject it or encode it as 0xf97e00.
           Consequently, the floating-point values that can be encoded
           are the finite numbers, positive and negative infinity, and a
-          single NaN.
+          one NaN.
 
        *  Aside from the requirement allowing only the half-precision
           quiet NaN, these are the same floating-point requirements as
@@ -529,7 +529,7 @@ Table of Contents
        *  Note that this implies that most preferred-plus
           implementations have to support encoding as single and half-
           precision.  Specifically, if the numbers presented for
-          encoding are double-precision, then conversion single and
+          encoding are double-precision, then conversion to single and
           half-precision is required.  If the numbers presented for
           encoding are only single-precision, then conversion to half-
           precision is required.
@@ -591,13 +591,13 @@ Table of Contents
 
 4.3.  When to use preferred-plus serialization
 
-   Preferred-plus is the recommended default.  It supports all CBOR data
-   types and value ranges (except non-trivial NaNs), encodes compactly,
-   is straightforward to implement, and is widely supported by CBOR
-   libraries.  It provides strong serialization interoperability because
-   (1) decoders are required to accept all encodings that a preferred-
-   plus encoder is permitted to produce, and (2) the requirements are
-   formally specified.
+   Preferred-plus is the recommended default.  It can serialize all CBOR
+   data types and value ranges (except non-trivial NaNs), encodes
+   compactly, is straightforward to implement, and is widely supported
+   by CBOR libraries.  It provides strong serialization interoperability
+   because (1) decoders are required to accept all encodings that a
+   preferred-plus encoder is permitted to produce, and (2) the
+   requirements are formally specified.
 
    Choose a different serialization only when you have a specific need:
    deterministic serialization when determinism is required, a special
