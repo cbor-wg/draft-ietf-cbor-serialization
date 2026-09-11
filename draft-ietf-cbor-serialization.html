@@ -1584,7 +1584,7 @@ See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a h
           </h4>
 <p id="section-2.1.2-1">End-to-end protocols are specified such that interoperability is assured when they are implemented in accordance with their specification.
 When such a protocol includes optional features, they are typically selected through real-time negotiation.
-Such protocols often have formal interoperability compliance programs or organize interoperability testing events (for example, "bake-offs").
+Such protocols often have formal interoperability compliance programs or organize multi-vendor interop testing events.
 TLS, HTTP, and FIDO are examples of end-to-end protocols.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-2">End-to-end protocols MUST define a serialization strategy that ensures the sender and receiver use interoperable serialization.<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-3">The strategy most highly RECOMMENDED is to normatively require preferred-plus serialization.
@@ -1628,7 +1628,7 @@ Deterministic serialization is a superset of preferred-plus serialization; there
           <h4 id="name-libraries-for-framework-pro">
 <a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-libraries-for-framework-pro" class="section-name selfRef">Libraries for Framework Protocols</a>
           </h4>
-<p id="section-2.2.2-1">When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that it implement preferred-plus serialization.
+<p id="section-2.2.2-1">When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that a CBOR library implements preferred-plus serialization.
 For example, it is recommended that a library implementing CWT or COSE implement preferred-plus serialization.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-2.2.2-2">However, a library MAY choose to support only deterministic serialization if this aligns with its deployment environment and design goals.<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.2.2-3">When a framework protocol mandates serialization requirements, libraries must of course conform.
@@ -1701,7 +1701,7 @@ Full general serialization is rarely necessary, and support for it is not widesp
 at the cost of requiring decoders — assumed to be unconstrained — to support every possible serialization option.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 <p id="section-3.2-3">When general serialization is required by a protocol, this SHOULD be stated explicitly.
 Although it is the default for CBOR in theory, it has not been widely implemented as such in practice.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">See also special serialization (<a href="#SpecialSerializations" class="auto internal xref">Section 6</a>), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">See also special serializations (<a href="#SpecialSerializations" class="auto internal xref">Section 6</a>), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <p id="section-3.2-5">CBOR libraries may nonetheless wish to support general serialization, as a complete set of other serialization forms, to be useful across a broader range of protocols.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1720,8 +1720,8 @@ Although it is the default for CBOR in theory, it has not been widely implemente
         </h3>
 <ol start="1" type="1" class="normal type-1" id="section-4.1-1">
 <li id="section-4.1-1.1">
-            <p id="section-4.1-1.1.1">The shortest-form of the CBOR argument must be used for all major types.
-The shortest-form encoding for any argument that is not a floating  point value is:<a href="#section-4.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-1.1.1">The shortest form of the CBOR argument must be used for all major types.
+The shortest form encoding for any argument that is not a floating  point value is:<a href="#section-4.1-1.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-1.1.2.1">
                 <p id="section-4.1-1.1.2.1.1">0 to 23 and -1 to -24 MUST be encoded in the same byte as the major type.<a href="#section-4.1-1.1.2.1.1" class="pilcrow">¶</a></p>
@@ -1786,7 +1786,7 @@ Consequently, the floating-point values that can be encoded are the finite numbe
         </h3>
 <ol start="1" type="1" class="normal type-1" id="section-4.2-1">
 <li id="section-4.2-1.1">
-            <p id="section-4.2-1.1.1">Decoders MUST accept shortest-form encoded arguments.<a href="#section-4.2-1.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.2-1.1.1">Decoders MUST accept shortest form encoded arguments.<a href="#section-4.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-4.2-1.2">
             <p id="section-4.2-1.2.1">If arrays or maps are supported, definite-length arrays or maps MUST be accepted.<a href="#section-4.2-1.2.1" class="pilcrow">¶</a></p>
@@ -1845,7 +1845,7 @@ Note that preferred-plus is deterministic when maps are not in use.<a href="#sec
         <h3 id="name-relation-to-preferred-seria">
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-relation-to-preferred-seria" class="section-name selfRef">Relation To Preferred Serialization</a>
         </h3>
-<p id="section-4.4-1">Preferred-plus serialization is defined to be the long-term replacement for preferred serialization.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-1">Preferred-plus serialization is defined to be the long-term replacement for preferred serialization (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>).<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">The differences are:<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-3.1">
@@ -1974,7 +1974,7 @@ If an application requires a map to be ordered, it is responsible for applying i
 The main capabilities they enable are:<a href="#section-6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6-2.1">
-          <p id="section-6-2.1.1">Streaming encoding of strings, arrays, and maps using indefinite lengths, for use when the encoded item(s) exceeds the memory available on the encoding device.<a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
+          <p id="section-6-2.1.1">Streaming encoding of text strings, byte strings, arrays, and maps using indefinite lengths, for use when the encoded item(s) exceeds the memory available on the encoding device.<a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-2.2">
           <p id="section-6-2.2.1">Fixed-size integer encoding, allowing values to be copied directly to and from hardware registers.
@@ -2038,14 +2038,14 @@ See also <a href="#ByteStringWrapping" class="auto internal xref">Appendix H</a>
 <div class="alignLeft art-text artwork" id="section-8-5">
 <pre>
 stuff = ...
-deterministic-stuff = stuff .serial dtrm
+deterministic-stuff = stuff .serial "dtrm"
 wrapped-deterministic-stuff = #6.24(bytes .cbor deterministic-stuff)
 </pre><a href="#section-8-5" class="pilcrow">¶</a>
 </div>
 <p id="section-8-6">For another example, the first lines of a CDDL document as follows specify that "my-protocol" be serialized with preferred-plus.<a href="#section-8-6" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8-7">
 <pre>
-my-prefp-protocol = my-protocol .serial prefp
+my-prefp-protocol = my-protocol .serial "prefp"
 my-protocol = ...
 </pre><a href="#section-8-7" class="pilcrow">¶</a>
 </div>
@@ -2163,7 +2163,7 @@ number of this RFC and remove this note.</span><a href="#section-10-1" class="pi
 <dd class="break"></dd>
 <dt id="LAM73">[LAM73]</dt>
         <dd>
-<span class="refAuthor">Lampson, B. W.</span>, <span class="refTitle">"A Note on the Confinement Problem"</span>, <span class="seriesInfo">{"name" =&gt; "Communications of the ACM", "value" =&gt; "16(10)"} </span>, <span class="seriesInfo">{"name" =&gt; "DOI", "value" =&gt; "10.1145/362375.362389"} </span>, <time datetime="1973-10" class="refDate">October 1973</time>. </dd>
+<span class="refAuthor">Lampson, B.</span>, <span class="refTitle">"A note on the confinement problem"</span>, <span class="refContent">Association for Computing Machinery (ACM)</span>, <span class="seriesInfo">Communications of the ACM vol. 16, no. 10, pp. 613-615</span>, <span class="seriesInfo">DOI 10.1145/362375.362389</span>, <time datetime="1973-10" class="refDate">October 1973</time>, <span>&lt;<a href="https://doi.org/10.1145/362375.362389">https://doi.org/10.1145/362375.362389</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="NaNBoxing">[NaNBoxing]</dt>
         <dd>
@@ -2288,7 +2288,7 @@ Some key points:<a href="#appendix-B.2-2" class="pilcrow">¶</a></p>
             <p id="appendix-B.2-3.1.1">Programming languages:<a href="#appendix-B.2-3.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.2-3.1.2.1">
-                <p id="appendix-B.2-3.1.2.1.1">The programming languages C, C++, Java, Python and Rust do no provide APIs to set or extract NaN payloads.<a href="#appendix-B.2-3.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="appendix-B.2-3.1.2.1.1">The programming languages C, C++, Java, JavaScript, Python and Rust do not provide APIs to set or extract NaN payloads.<a href="#appendix-B.2-3.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="appendix-B.2-3.1.2.2">
                 <p id="appendix-B.2-3.1.2.2.1">IEEE 754 is over thirty years old, enough time for support to be added if there was need.<a href="#appendix-B.2-3.1.2.2.1" class="pilcrow">¶</a></p>
@@ -2659,7 +2659,7 @@ pplus-bigint = pplus-biguint / pplus-bignint
       </h2>
 <p id="appendix-F-1"><a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a> describes how CBOR defines a single integer number space, in which big numbers are not distinct from values encoded using major types 0 and 1.
 This appendix discusses approaches for implementers to support that model.<a href="#appendix-F-1" class="pilcrow">¶</a></p>
-<p id="appendix-F-2">Some programming environments provide strong native support for big numbers (e.g., Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
+<p id="appendix-F-2">Some programming environments provide strong native support for big numbers (e.g., JavaScript, Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
 Even in environments that support big numbers, operations on native-sized integers (e.g., 64-bit integers) are typically much more efficient.
 It is therefore reasonable for a CBOR library to expose separate APIs for native-sized integers and for big numbers.<a href="#appendix-F-2" class="pilcrow">¶</a></p>
 <p id="appendix-F-3">When a CBOR library provides a big number API, values that fall within the range of major types 0 and 1 must be encoded using those major types rather than tags 2 or 3.
