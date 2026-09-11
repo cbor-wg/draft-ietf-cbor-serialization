@@ -224,7 +224,7 @@ See {{COSESerialization}} for a COSE-based example.
 
 End-to-end protocols are specified such that interoperability is assured when they are implemented in accordance with their specification.
 When such a protocol includes optional features, they are typically selected through real-time negotiation.
-Such protocols often have formal interoperability compliance programs or organize interoperability testing events (for example, "bake-offs").
+Such protocols often have formal interoperability compliance programs or organize multi-vendor interop testing events.
 TLS, HTTP, and FIDO are examples of end-to-end protocols.
 
 End-to-end protocols MUST define a serialization strategy that ensures the sender and receiver use interoperable serialization.
@@ -495,7 +495,7 @@ When needed, protocols may define special serializations beyond the three descri
 The main capabilities they enable are:
 
 
-* Streaming encoding of strings, arrays, and maps using indefinite lengths, for use when the encoded item(s) exceeds the memory available on the encoding device.
+* Streaming encoding of text strings, byte strings, arrays, and maps using indefinite lengths, for use when the encoded item(s) exceeds the memory available on the encoding device.
 
 * Fixed-size integer encoding, allowing values to be copied directly to and from hardware registers.
 CBOR is simple enough that encoders and decoders for some protocols can be implemented entirely in hardware.
@@ -710,7 +710,7 @@ Some key points:
 
 - Programming languages:
 
-  - The programming languages C, C++, Java, Python and Rust do not provide APIs to set or extract NaN payloads.
+  - The programming languages C, C++, Java, JavaScript, Python and Rust do not provide APIs to set or extract NaN payloads.
   - IEEE 754 is over thirty years old, enough time for support to be added if there was need.
 
 - CPU hardware:
@@ -892,7 +892,7 @@ The following CDDL can be used:
 {{BigNumbersDataModel}} describes how CBOR defines a single integer number space, in which big numbers are not distinct from values encoded using major types 0 and 1.
 This appendix discusses approaches for implementers to support that model.
 
-Some programming environments provide strong native support for big numbers (e.g., Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
+Some programming environments provide strong native support for big numbers (e.g., JavaScript, Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
 Even in environments that support big numbers, operations on native-sized integers (e.g., 64-bit integers) are typically much more efficient.
 It is therefore reasonable for a CBOR library to expose separate APIs for native-sized integers and for big numbers.
 
