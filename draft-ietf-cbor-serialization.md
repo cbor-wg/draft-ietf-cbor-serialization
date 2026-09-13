@@ -121,7 +121,7 @@ These serializations are largely compatible with those widely implemented by the
 
 This document updates RFC 8949 with a new rule that limits how new tag definitions can affect the CBOR data model.
 
-This document provides clarifications to RFC 8949 regarding big numbers and NaN handling, along with general background information on serialization, determinism, and CBOR byte-string wrapping.
+This document provides clarifications to RFC 8949 regarding big numbers and floating-point NaN handling, along with general background information on serialization, determinism, and CBOR byte-string wrapping.
 
 
 --- middle
