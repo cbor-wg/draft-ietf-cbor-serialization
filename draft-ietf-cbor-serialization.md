@@ -112,11 +112,16 @@ informative:
 
 --- abstract
 
-This document defines two CBOR serializations: "preferred-plus serialization" and "deterministic serialization."
-It also introduces the term "general serialization" to name the complete set of all serializations defined in RFC 8949.
-Together, these three form a set of serializations that cover the majority of CBOR serialization use cases.
-
+RFC 8949 defines CBOR, a standard for serializing data types such as integers, strings, and arrays into encoded bytes.
+CBOR serialization is flexible, allowing data types to be encoded in multiple ways to accommodate deployment in constrained environments.
+This document normatively defines one particular serialization, called "preferred-plus serialization," that is suitable for the majority of CBOR-based protocols.
+Protocol designers and implementers who choose it need not understand or specify serialization details themselves.
+This document also normatively defines a deterministic serialization.
 These serializations are largely compatible with those widely implemented by the CBOR community.
+
+This document updates RFC 8949 with a new rule that limits how new tag definitions can affect the CBOR data model.
+
+This document provides clarifications to RFC 8949 regarding big numbers and floating-point NaN handling, along with general background information on serialization, determinism, and CBOR byte-string wrapping.
 
 
 --- middle
