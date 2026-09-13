@@ -29,8 +29,9 @@ Abstract
    tag definitions can affect the CBOR data model.
 
    This document provides clarifications to RFC 8949 regarding big
-   numbers and NaN handling, along with general background information
-   on serialization, determinism, and CBOR byte-string wrapping.
+   numbers and floating-point NaN handling, along with general
+   background information on serialization, determinism, and CBOR byte-
+   string wrapping.
 
 About This Document
 
