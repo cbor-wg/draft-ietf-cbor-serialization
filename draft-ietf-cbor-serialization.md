@@ -5,6 +5,8 @@ title: CBOR Serialization and Determinism
 abbrev: CBOR Serialization
 docname: draft-ietf-cbor-serialization-latest
 cat: std
+updates: 8949
+
 
 date:
 consensus: true
@@ -209,6 +211,8 @@ This document defines that serialization: deterministic serialization.
 
 ## Relation to RFC 8949
 
+### Serialization
+
 This document defines new serializations rather than updating those in {{-cbor}}.
 This approach enables the serialization requirements to be expressed directly in normative {{RFC2119}} language and to be defined entirely in this document.
 This approach provides clarity and simplicity for implementers and the CBOR community over the long term.
@@ -218,6 +222,12 @@ The serializations defined herein are formally new but largely interchangeable w
 For example, preferred serialization ({{Section 4.1 of -cbor}}) is commonly implemented without support for indefinite lengths.
 Preferred-plus serialization is effectively the same as preferred serialization without indefinite lengths, so it is largely interchangeable with what is commonly implemented.
 
+
+### Tags and Data Models
+
+This document updates {{-cbor}} in one way: it limits how new tag definitions can affect data models.
+The definitions of tags 2 and 3 (big numbers) in {{Section 3.4.3 of -cbor}} modifies the integer type in the CBOR basic generic data model; this is allowed as a one-time exception.
+The new rule preserves data model definitions against later modification by unrelated tag definitions, which might undermine their semantics and upset their previous use.
 
 # Recommendations Summary {#Recommendations}
 
