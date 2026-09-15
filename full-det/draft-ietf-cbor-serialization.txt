@@ -4,8 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                        4 September 2026
-Expires: 8 March 2027
+Updates: 8949 (if approved)                            15 September 2026
+Intended status: Standards Track                                        
+Expires: 19 March 2027
 
 
                    CBOR Serialization and Determinism
@@ -13,15 +14,25 @@ Expires: 8 March 2027
 
 Abstract
 
-   This document defines two CBOR serializations: "preferred-plus
-   serialization" and "deterministic serialization."  It also introduces
-   the term "general serialization" to name the complete set of all
-   serializations defined in RFC 8949.  Together, these three form a set
-   of serializations that cover the majority of CBOR serialization use
-   cases.
-
+   RFC 8949 defines CBOR, a standard for serializing data types such as
+   integers, strings, and arrays into encoded bytes.  CBOR serialization
+   is flexible, allowing data types to be encoded in multiple ways to
+   accommodate deployment in constrained environments.  This document
+   normatively defines one particular serialization, called "preferred-
+   plus serialization," that is suitable for the majority of CBOR-based
+   protocols.  Protocol designers and implementers who choose it need
+   not understand or specify serialization details themselves.  This
+   document also normatively defines a deterministic serialization.
    These serializations are largely compatible with those widely
    implemented by the CBOR community.
+
+   This document updates RFC 8949 with a new rule that limits how new
+   tag definitions can affect the CBOR data model.
+
+   This document provides clarifications to RFC 8949 regarding big
+   numbers and floating-point NaN handling, along with general
+   background information on serialization, determinism, and CBOR byte-
+   string wrapping.
 
 About This Document
 
@@ -53,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 March 2027.
+   This Internet-Draft will expire on 19 March 2027.
 
 Copyright Notice
 
@@ -72,9 +83,13 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-     1.1.  Interoperability
-     1.2.  Determinism
-     1.3.  Relation to RFC 8949
+     1.1.  Information Model, Data Model and Serialization
+     1.2.  Flexible Serialization
+     1.3.  Interoperability
+     1.4.  Determinism
+     1.5.  Relation to RFC 8949
+       1.5.1.  Serialization
+       1.5.2.  Tags and Data Models
    2.  Recommendations Summary
      2.1.  Protocol Specifications
        2.1.1.  Framework Protocols
@@ -108,88 +123,130 @@ Table of Contents
    11. References
      11.1.  Normative References
      11.2.  Informative References
-   Appendix A.  Information Model, Data Model and Serialization
-   Appendix B.  A Fully Deterministic Protocol
-     B.1.  Data Model
-     B.2.  Text Strings and Unicode
-     B.3.  CBOR Tags
-   Appendix C.  IEEE 754 NaN
-     C.1.  Basics
-     C.2.  Implementation Support for Non-Trivial NaNs
-     C.3.  Use and Non-use for Non-Trivial NaNs
-     C.4.  Clarification of RFC 8949
-     C.5.  Divergence from RFC 8949
-     C.6.  Recommendations for Use of Non-Trivial NaNs
-   Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
-   Appendix E.  Big Numbers and the CBOR Data Model
-   Appendix F.  CDDL for Big Numbers
-   Appendix G.  Big Number Implementation Strategies
-   Appendix H.  Serialization Checking
-     H.1.  Serialization Checking Use Cases
-   Appendix I.  CBOR Byte String Wrapping
-     I.1.  Purpose
-     I.2.  Wrapping Recommendations
-     I.3.  CBOR Library Implementation Suggestion
-   Appendix J.  Signing and Hashing Encoded CBOR
-   Appendix K.  Serialization for COSE
-     K.1.  COSE Payload Serialization
-     K.2.  COSE Sig_structure
-     K.3.  The Encoded Message
-   Appendix L.  Examples
-     L.1.  Use for Testing
-       L.1.1.  Encode Test
-       L.1.2.  Decode Test
-       L.1.3.  Checking Decoder Test
-       L.1.4.  Non-Checking Decoder Test
-     L.2.  Example Data Items
+   Appendix A.  Specifying a Fully Deterministic Protocol
+     A.1.  Protocol Data Definition
+     A.2.  Text Strings and Unicode
+     A.3.  CBOR Tags
+   Appendix B.  IEEE 754 NaN
+     B.1.  Basics
+     B.2.  Implementation Support for Non-Trivial NaNs
+     B.3.  Use and Non-use for Non-Trivial NaNs
+     B.4.  Clarification of RFC 8949
+     B.5.  Divergence from RFC 8949
+     B.6.  Recommendations for Use of Non-Trivial NaNs
+   Appendix C.  Code for Encoding Preferred-Plus Floating-Point Values
+   Appendix D.  Big Numbers and the CBOR Data Model
+   Appendix E.  CDDL for Big Numbers
+   Appendix F.  Big Number Implementation Strategies
+   Appendix G.  Serialization Checking
+     G.1.  Serialization Checking Use Cases
+   Appendix H.  CBOR Byte String Wrapping
+     H.1.  Purpose
+     H.2.  Wrapping Recommendations
+     H.3.  CBOR Library Implementation Suggestion
+   Appendix I.  Signing and Hashing Encoded CBOR
+   Appendix J.  Serialization for COSE
+     J.1.  COSE Payload Serialization
+     J.2.  COSE Sig_structure
+     J.3.  The Encoded Message
+   Appendix K.  Examples
+     K.1.  Use for Testing
+       K.1.1.  Encode Test
+       K.1.2.  Decode Test
+       K.1.3.  Checking Decoder Test
+       K.1.4.  Non-Checking Decoder Test
+     K.2.  Example Data Items
    Contributors
    Author's Address
 
 1.  Introduction
 
-   Background material on serialization and determinism concepts is
-   provided in Appendix A.  Readers may wish to review this background
-   information first.
+1.1.  Information Model, Data Model and Serialization
+
+   To understand CBOR serialization and determinism, it's helpful to
+   distinguish between the general concepts of an information model, a
+   data model, and serialization.  These are broad concepts that can be
+   applied to other serialization schemes like JSON and ASN.1.
+
+   +================+=============+===================+================+
+   |                | Information | Data Model        | Serialization  |
+   |                | Model       |                   |                |
+   +================+=============+===================+================+
+   | Abstraction    | Top level;  | Realization of    | Actual bytes   |
+   | Level          | conceptual  | information in    | encoded for    |
+   |                |             | data structures   | transmission   |
+   |                |             | and data types    |                |
+   +----------------+-------------+-------------------+----------------+
+   | Example        | The         | A floating-       | Encoded CBOR   |
+   |                | temperature | point number      | of a floating- |
+   |                | of          | representing      | point number   |
+   |                | something   | the temperature   |                |
+   +----------------+-------------+-------------------+----------------+
+   | Standards      | e.g., [UML] | CDDL [RFC8610]    | CBOR [RFC8949] |
+   +----------------+-------------+-------------------+----------------+
+   | Implementation | n/a         | API input to      | Encoded CBOR   |
+   | Representation |             | CBOR encoder      | in memory or   |
+   |                |             | library, output   | for            |
+   |                |             | from CBOR         | transmission   |
+   |                |             | decoder library   |                |
+   +----------------+-------------+-------------------+----------------+
+
+          Table 1: Information Model, Data Model and Serialization
+
+   CBOR doesn't provide facilities for information models.  They are
+   mentioned here for completeness and context.
+
+   CBOR defines a palette of basic types, including the usual integers,
+   floating-point numbers, strings, arrays, and maps.  Extended types
+   may be constructed from these basic types.  These basic and extended
+   types are used to construct the data model of a CBOR protocol.  While
+   not required, CDDL may be used to describe the data model of a
+   protocol.
+
+   The types in the data model are serialized per [RFC8949] to create
+   encoded CBOR.
+
+1.2.  Flexible Serialization
 
    CBOR intentionally allows multiple valid serializations of the same
    data item.  For example, the array [1, 2] can be serialized in more
    than one way:
 
-       +===================+==========================+===========+
-       | Type              | Description              | Bytes     |
-       +===================+==========================+===========+
-       | Definite-length   | The array length (2) is  | 0x82 0x01 |
-       |                   | encoded at the beginning | 0x02      |
-       +-------------------+--------------------------+-----------+
-       | Indefinite-length | The array is terminated  | 0x9f 0x01 |
-       |                   | by the break byte (0xff) | 0x02 0xff |
-       +-------------------+--------------------------+-----------+
+     +===================+==========================+===============+
+     | Type              | Description              | Encoded Bytes |
+     +===================+==========================+===============+
+     | Definite-length   | The array length (2) is  | 0x820102      |
+     |                   | encoded at the beginning |               |
+     +-------------------+--------------------------+---------------+
+     | Indefinite-length | The array is terminated  | 0x9f0102ff    |
+     |                   | by the break byte (0xff) |               |
+     +-------------------+--------------------------+---------------+
 
-          Table 1: [1, 2] definite-length and indefinite-length
+          Table 2: [1, 2] definite-length and indefinite-length
                               serializations
 
-   Similar variation exists for most other CBOR data types.
+   Similar flexibility exists for most other CBOR data types.
 
-   This variability is deliberate.  CBOR is designed to allow encodings
+   This flexibility is deliberate: CBOR is designed to allow encodings
    to be selected according to the constraints and requirements of a
-   particular environment.  The flexibility is a core design feature.
-   (CBOR is not unique in this regard; compare ASN.1's BER encoding
-   rules).
+   particular environment.  For example, indefinite-length serialization
+   is suited for streaming large arrays in constrained environments,
+   where the total length is not known in advance.  Conversely,
+   definite-length serialization makes it easier to decode small arrays
+   in constrained environments.  (CBOR is not unique in this regard;
+   compare ASN.1's BER encoding rules.)
 
-   For example, indefinite-length serialization is suited for streaming
-   large arrays in constrained environments, where the total length is
-   not known in advance.  Conversely, definite-length serialization
-   makes it easier to decode small arrays in constrained environments.
+   Crucially, CBOR allows — and even expects — that some implementations
+   will not support all serialization variants.  JSON also permits
+   variation (1, 1.0, and 0.1e1 represent the same number), but expects
+   every parser to handle all of it, since the variation is there for
+   human readability rather than for ease of implementation in
+   constrained environments.
 
-   As a result, CBOR libraries and protocol implementations commonly
-   support only the serialization forms required for their intended use
-   cases.  This behavior is expected and aligns with CBOR’s design
-   goals.
+   However, CBOR's flexibility introduces two challenges:
+   interoperability and determinism.
 
-   However, this flexibility introduces two challenges: interoperability
-   and determinism.
-
-1.1.  Interoperability
+1.3.  Interoperability
 
    The interoperability challenge arises because partial implementations
    are both permitted and expected.  For example, an encoder may produce
@@ -213,7 +270,7 @@ Table of Contents
    This document defines that serialization: preferred-plus
    serialization.
 
-1.2.  Determinism
+1.4.  Determinism
 
    The determinism challenge arises because there are multiple ways to
    serialize the same data item.  The example serialization of the array
@@ -234,7 +291,9 @@ Table of Contents
    This document defines that serialization: deterministic
    serialization.
 
-1.3.  Relation to RFC 8949
+1.5.  Relation to RFC 8949
+
+1.5.1.  Serialization
 
    This document defines new serializations rather than updating those
    in [RFC8949].  This approach enables the serialization requirements
@@ -252,6 +311,16 @@ Table of Contents
    Preferred-plus serialization is effectively the same as preferred
    serialization without indefinite lengths, so it is largely
    interchangeable with what is commonly implemented.
+
+1.5.2.  Tags and Data Models
+
+   This document updates [RFC8949] in one way: it limits how new tag
+   definitions can affect data models.  The definitions of tags 2 and 3
+   (big numbers) in Section 3.4.3 of [RFC8949] modifies the integer type
+   in the CBOR basic generic data model; this is allowed as a one-time
+   exception.  The new rule preserves data model definitions against
+   later modification by unrelated tag definitions, which might
+   undermine their semantics and upset their previous use.
 
 2.  Recommendations Summary
 
@@ -278,14 +347,13 @@ Table of Contents
    mandate deterministic serialization for all implementations in order
    to eliminate all serialization variability.
 
-   There is one situation in which a framework protocol MUST require
-   deterministic serialization, though typically limited to a specific
-   subset of the protocol.  This requirement arises when the protocol
-   design requires the involved parties to independently construct and
-   serialize data to be hashed or signed, rather than transmitting the
-   exact serialized bytes that were hashed or signed.  See Section 5.3.
-
-   See Appendix K for a COSE-based example.
+   One scenario in particular calls for deterministic serialization in a
+   framework protocol: a design in which the parties independently
+   construct and serialize the data to be hashed or signed, rather than
+   transmitting those exact bytes.  See Section 5.3.  For such a design
+   to function correctly, the framework protocol must require
+   deterministic serialization.  COSE is an example, elaborated upon in
+   Appendix J.
 
 2.1.2.  End-to-End Protocols
 
@@ -294,8 +362,8 @@ Table of Contents
    specification.  When such a protocol includes optional features, they
    are typically selected through real-time negotiation.  Such protocols
    often have formal interoperability compliance programs or organize
-   interoperability testing events (for example, "bake-offs").  TLS,
-   HTTP, and FIDO are examples of end-to-end protocols.
+   multi-vendor interop testing events.  TLS, HTTP, and FIDO are
+   examples of end-to-end protocols.
 
    End-to-end protocols MUST define a serialization strategy that
    ensures the sender and receiver use interoperable serialization.
@@ -357,9 +425,10 @@ Table of Contents
 2.2.2.  Libraries for Framework Protocols
 
    When a framework protocol specification does not mandate a specific
-   serialization, it is RECOMMENDED that it implement preferred-plus
-   serialization.  For example, it is recommended that a library
-   implementing CWT or COSE implement preferred-plus serialization.
+   serialization, it is RECOMMENDED that a CBOR library implements
+   preferred-plus serialization.  For example, it is recommended that a
+   library implementing CWT or COSE implement preferred-plus
+   serialization.
 
    However, a library MAY choose to support only deterministic
    serialization if this aligns with its deployment environment and
@@ -367,7 +436,7 @@ Table of Contents
 
    When a framework protocol mandates serialization requirements,
    libraries must of course conform.  For instance, certain parts of
-   COSE mandate deterministic serialization.  See Appendix K for a COSE-
+   COSE mandate deterministic serialization.  See Appendix J for a COSE-
    based example.
 
 2.2.3.  Libraries for End-to-End Protocols
@@ -426,7 +495,7 @@ Table of Contents
 3.2.  When To Use General Serialization
 
    Preferred-plus serialization (Section 4) is efficient and supports
-   the full CBOR data model (except non-trivial NaNs; see Appendix C.1),
+   the full CBOR data model (except non-trivial NaNs; see Appendix B.1),
    satisfying the vast majority of CBOR use cases.  Full general
    serialization is rarely necessary, and support for it is not
    widespread.
@@ -440,7 +509,7 @@ Table of Contents
    stated explicitly.  Although it is the default for CBOR in theory, it
    has not been widely implemented as such in practice.
 
-   See also special serialization (Section 6), which enables special
+   See also special serializations (Section 6), which enables special
    optimization and efficiency for specific use cases without requiring
    full general serialization support in the decoder.
 
@@ -455,8 +524,8 @@ Table of Contents
 
 4.1.  Encoder Requirements
 
-   1.  The shortest-form of the CBOR argument must be used for all major
-       types.  The shortest-form encoding for any argument that is not a
+   1.  The shortest form of the CBOR argument must be used for all major
+       types.  The shortest form encoding for any argument that is not a
        floating point value is:
 
        *  0 to 23 and -1 to -24 MUST be encoded in the same byte as the
@@ -490,14 +559,14 @@ Table of Contents
           this shortest-length encoding.
 
        *  Encoders MUST NOT output any NaN other than the half-precision
-          NaN 0xf9 0x7e 0x00 (sign bit clear, most significant
-          significand bit set, all remaining significand bits clear).
-          When a signaling NaN, a NaN with a non-zero payload, or a NaN
-          with the sign bit set is presented to an application or
-          library for encoding, the encoder MUST either reject it or
-          encode it as 0xf9 0x7e 0x00.  Consequently, the floating-point
-          values that can be encoded are the finite numbers, positive
-          and negative infinity, and a single NaN.
+          NaN 0xf97e00 (sign bit clear, most significant significand bit
+          set, all remaining significand bits clear).  When a signaling
+          NaN, a NaN with a non-zero payload, or a NaN with the sign bit
+          set is presented to an application or library for encoding,
+          the encoder MUST either reject it or encode it as 0xf97e00.
+          Consequently, the floating-point values that can be encoded
+          are the finite numbers, positive and negative infinity, and a
+          single NaN.
 
        *  Aside from the requirement allowing only the half-precision
           quiet NaN, these are the same floating-point requirements as
@@ -513,7 +582,7 @@ Table of Contents
 
 4.2.  Decoder Requirements
 
-   1.  Decoders MUST accept shortest-form encoded arguments.
+   1.  Decoders MUST accept shortest form encoded arguments.
 
    2.  If arrays or maps are supported, definite-length arrays or maps
        MUST be accepted.
@@ -542,8 +611,8 @@ Table of Contents
        *  An empty byte string MUST be accepted and treated as the value
           zero.
 
-   See also Appendix E and Appendix G for further background on big
-   numbers.  See Appendix F for specification in CDDL.
+   See also Appendix D and Appendix F for further background on big
+   numbers.  See Appendix E for specification in CDDL.
 
 4.3.  When to use preferred-plus serialization
 
@@ -565,7 +634,7 @@ Table of Contents
 4.4.  Relation To Preferred Serialization
 
    Preferred-plus serialization is defined to be the long-term
-   replacement for preferred serialization.
+   replacement for preferred serialization (Section 4.1 of [RFC8949]).
 
    The differences are:
 
@@ -600,7 +669,7 @@ Table of Contents
    Briefly stated, the reason that the divergence on NaNs is not of
    consequence in the real world, is that their non-trivial forms are
    used extremely rarely and support for them in programming
-   environments and CBOR libraries is unreliable.  See Appendix C.5 for
+   environments and CBOR libraries is unreliable.  See Appendix B.5 for
    a detailed discussion.
 
    Thus preferred-plus serialization is largely interchangeable with
@@ -613,7 +682,7 @@ Table of Contents
 
    Deterministic serialization is the same as described in Section 4.2.1
    of [RFC8949] except for the encoding of floating-point NaNs.  See
-   Section 4 and Appendix C for details on, and the rationale for NaN
+   Section 4 and Appendix B for details on, and the rationale for NaN
    encoding.
 
    Note that in deterministic serialization, any big number that can be
@@ -622,7 +691,7 @@ Table of Contents
    Section 4.2.1 of [RFC8949] inherits this requirement from preferred
    serialization.
 
-   See also Appendix B for considerations involved in designing a
+   See also Appendix A for considerations involved in designing a
    deterministic protocol that extend beyond serialization.
 
 5.1.  Encoder Requirements
@@ -664,7 +733,7 @@ Table of Contents
    often chosen to reduce data size, preserve privacy, or meet other
    design constraints.
 
-   See the more detailed, COSE-based example in Appendix K.
+   See the more detailed, COSE-based example in Appendix J.
 
 5.3.2.  Decoding Deterministic Serialization and Relation to Preferred-
         Plus Serialization
@@ -710,9 +779,9 @@ Table of Contents
    When needed, protocols may define special serializations beyond the
    three described above.  The main capabilities they enable are:
 
-   *  Streaming encoding of strings, arrays, and maps using indefinite
-      lengths, for use when the encoded item(s) exceeds the memory
-      available on the encoding device.
+   *  Streaming encoding of text strings, byte strings, arrays, and maps
+      using indefinite lengths, for use when the encoded item(s) exceeds
+      the memory available on the encoding device.
 
    *  Fixed-size integer encoding, allowing values to be copied directly
       to and from hardware registers.  CBOR is simple enough that
@@ -730,7 +799,7 @@ Table of Contents
       than shifting all 2^16 bytes of content.
 
    *  Transmission of non-trivial NaN floating-point values (see
-      Appendix C).
+      Appendix B).
 
    *  Deterministic serialization with any or all of the above.
 
@@ -761,7 +830,7 @@ Table of Contents
    do not introduce a separate data type; instead, they attach directly
    to the integer type and extend its numeric range.  As a result, the
    generic data model’s integer type is modified rather than augmented
-   with a new, independent type (see Appendix E).
+   with a new, independent type (see Appendix D).
 
    This document establishes a new rule that prohibits future tag
    definitions from having such effects:
@@ -788,20 +857,20 @@ Table of Contents
    maps, but does not extend into byte strings or other data items that
    happen to contain encoded CBOR.  Every instance of embedded CBOR that
    requires specific serialization must specify it explicitly.  See also
-   Appendix I.
+   Appendix H.
 
    For example, the following specifies that a message or protocol
    described by "stuff" is deterministically serialized and wrapped in a
    byte string:
 
    stuff = ...
-   deterministic-stuff = stuff .serial dtrm
+   deterministic-stuff = stuff .serial "dtrm"
    wrapped-deterministic-stuff = #6.24(bytes .cbor deterministic-stuff)
 
    For another example, the first lines of a CDDL document as follows
    specify that "my-protocol" be serialized with preferred-plus.
 
-   my-prefp-protocol = my-protocol .serial prefp
+   my-prefp-protocol = my-protocol .serial "prefp"
    my-protocol = ...
 
    New controller values for new serializations are possible but are
@@ -847,7 +916,7 @@ Table of Contents
 
    Another option is to require preferred-plus or deterministic
    serialization and to have decoders issue a warning if not compliant.
-   See Appendix H.
+   See Appendix G.
 
 10.  IANA Considerations
 
@@ -913,10 +982,11 @@ Table of Contents
               2026, <https://datatracker.ietf.org/doc/html/draft-
               mcnally-deterministic-cbor-18>.
 
-   [LAM73]    Lampson, B. W., "A Note on the Confinement Problem",
-              {"name" => "Communications of the ACM", "value" =>
-              "16(10)"} , {"name" => "DOI", "value" =>
-              "10.1145/362375.362389"} , October 1973.
+   [LAM73]    Lampson, B., "A note on the confinement problem",
+              Association for Computing Machinery (ACM), Communications
+              of the ACM vol. 16, no. 10, pp. 613-615,
+              DOI 10.1145/362375.362389, October 1973,
+              <https://doi.org/10.1145/362375.362389>.
 
    [NaNBoxing]
               Nystrom, R., "Crafting Interpreters", July 2021,
@@ -943,99 +1013,44 @@ Table of Contents
    [UML]      "OMG Unified Modeling Language (OMG UML) Version 2.5.1",
               December 2017, <https://www.omg.org/spec/UML/2.5.1/PDF>.
 
-Appendix A.  Information Model, Data Model and Serialization
+   [UNICODE-NORM]
+              Whistler, K., "Unicode Normalization Forms", Unicode
+              Standard Annex #15, 30 July 2025,
+              <https://www.unicode.org/reports/tr15/>.
 
-   To understand CBOR serialization and determinism, it's helpful to
-   distinguish between the general concepts of an information model, a
-   data model, and serialization.  These are broad concepts that can be
-   applied to other serialization schemes like JSON and ASN.1
+Appendix A.  Specifying a Fully Deterministic Protocol
 
-   +================+=============+===================+================+
-   |                | Information | Data Model        | Serialization  |
-   |                | Model       |                   |                |
-   +================+=============+===================+================+
-   | Abstraction    | Top level;  | Realization of    | Actual bytes   |
-   | Level          | conceptual  | information in    | encoded for    |
-   |                |             | data structures   | transmission   |
-   |                |             | and data types    |                |
-   +----------------+-------------+-------------------+----------------+
-   | Example        | The         | A floating-       | Encoded CBOR   |
-   |                | temperature | point number      | of a floating- |
-   |                | of          | representing      | point number   |
-   |                | something   | the temperature   |                |
-   +----------------+-------------+-------------------+----------------+
-   | Standards      | [UML]       | CDDL              | CBOR           |
-   +----------------+-------------+-------------------+----------------+
-   | Implementation | n/a         | API Input to      | Encoded CBOR   |
-   | Representation |             | CBOR encoder      | in memory or   |
-   |                |             | library, output   | for            |
-   |                |             | from CBOR         | transmission   |
-   |                |             | decoder library   |                |
-   +----------------+-------------+-------------------+----------------+
-
-          Table 2: Information Model, Data Model and Serialization
-
-   CBOR doesn't provide facilities for information models.  They are
-   mentioned here for completeness and to provide some context.
-
-   CBOR defines a palette of basic types that are the usual integers,
-   floating-point numbers, strings, arrays, maps and other.  Extended
-   types may be constructed from these basic types.  These basic and
-   extended types are used to construct the data model of a CBOR
-   protocol.  While not required, [RFC8610] may be used to describe the
-   data model of a protocol.  The types in the data model are serialized
-   per [RFC8949] to create encoded CBOR.
-
-   CBOR allows certain data types to be serialized in multiple ways to
-   facilitate easier implementation in constrained environments.  For
-   example, indefinite-length encoding enables strings, arrays, and maps
-   to be streamed without knowing their length upfront.
-
-   Crucially, CBOR allows — and even expects — that some implementations
-   will not support all serialization variants.  In contrast, JSON
-   permits variations (e.g., representing 1 as 1, 1.0, or 0.1e1), but
-   expects all parsers to handle them.  That is, the variation in JSON
-   is for human readability, not to facilitate easier implementation in
-   constrained environments.
-
-Appendix B.  A Fully Deterministic Protocol
-
-   Deterministic serialization, Section 5, is a minimum requirement for
-   a fully deterministic protocol, but other requirements may be
-   necessary as well.  This appendix lists some of these issues.  They
-   are applicable depending on the protocol, and many protocols will
-   have no such issues.
-
-   In particular these are only required for parts of a protocol that
-   are reconstructed independently by the sender and receiver.  They are
-   not necessary for encoded and transmitted parts of the protocol.  See
+   While deterministic serialization (Section 5) is sufficient to make
+   most protocols fully deterministic, it is not sufficient for all.
+   This appendix describes some issues that may need further
+   requirements.  Note that these issues occur for parts of the protocol
+   that the sender and receiver construct independently.  See
    Section 5.3.
 
-B.1.  Data Model
+A.1.  Protocol Data Definition
 
-   For a protocol to be deterministic, the data model (application)
+   For a protocol to be deterministic, its definition at the data model
    layer must be deterministic.
 
-   Here’s an example application layer specification:
+   Here’s an example definition:
 
       At the sender’s convenience, the birth date MAY be encoded
          either as an integer epoch date or string date.  The receiver
          MUST decode both formats.
 
-   While this specification is interoperable, it lacks determinism.
-   There is variability in the data model layer akin to variability in
-   the CBOR encoding layer when deterministic serialization is not
-   required.
+   While this definition is interoperable, it lacks determinism.  The
+   definition leaves a choice open, just as CBOR leaves encoding choices
+   open when deterministic serialization is not required.
 
-   To make this example application layer specification deterministic,
-   specify one date format and prohibit the other.
+   To make this example definition deterministic, specify one date
+   format and prohibit the other.
 
-   A more interesting source of application layer variability comes from
-   CBOR’s variety of number types.  For instance, the number 2 can be
-   represented as an integer, float, big number, decimal fraction and
-   others.  Most protocol designs will just specify one number type to
-   use, and that will give determinism, but here’s an example
-   specification that doesn’t:
+   A more interesting source of variability is CBOR's variety of number
+   types.  For instance, the number 2 can be represented as an integer,
+   float, big number, decimal fraction and others defined by tags in the
+   CBOR tag registry.  Most protocol designs will just specify one
+   number type to use, and that will give determinism, but here’s an
+   example specification that doesn’t:
 
       At the sender’s convenience, the fluid level measurement MAY be
          encoded as an integer or a floating-point number.  This allows
@@ -1049,37 +1064,37 @@ B.1.  Data Model
    that doesn’t minimize encoding size.
 
    A better solution requires the fluid level always be encoded using
-   the smallest representation for every particular value.  For example,
-   a fluid level of 2 is always encoded as an integer, never as a
-   floating-point number. 2.000001 is always encoded as a floating-point
-   number so as not to lose precision.  See the numeric reduction
-   defined by [I-D.mcnally-deterministic-cbor].
+   the smallest representation.  For example, a fluid level of 2 is
+   always encoded as an integer, never as a floating-point number; and a
+   level of 2.000001 is always encoded as a floating-point number so as
+   not to lose precision.  See the numeric reduction defined by
+   [I-D.mcnally-deterministic-cbor].
 
-B.2.  Text Strings and Unicode
+A.2.  Text Strings and Unicode
 
    CBOR's text string type (major type 3) carries UTF-8, which is itself
    unambiguous.  Unicode is not: the same text may be written as
    different sequences of code points, since a character with a
    diacritic can appear either precomposed or as a base character plus
-   combining marks. "é" is either U+00E9 or U+0065 U+0301.  As with the
-   number types above, a deterministic protocol must choose one
-   representation — typically by requiring a Unicode normalization form.
+   combining marks. "é" is either U+00E9 or U+0065 plus U+0301.  As with
+   the number types above, a deterministic protocol must choose one
+   representation — typically by requiring a Unicode normalization form
+   like Unicode Normalization Form C (NFC) [UNICODE-NORM].
 
-B.3.  CBOR Tags
+A.3.  CBOR Tags
 
-   Some tags are defined such that they allow multiple representations.
-   For example, big floats and decimal fractions may or may not have
-   trailing zeros in the mantissa.  The epoch date (tag 1) allows either
-   integer or floating-point representation.  A deterministic protocol
-   using such tags must specify some means to deterministically select
-   among the multiple representations.
+   Some tags allow their content to be represented in more than one way.
+   For example, the epoch date (tag 1) allows either integer or
+   floating-point representation.  A deterministic protocol using tags
+   should examine each tag's definition for such variability and define
+   a deterministic rule for selecting among the alternatives it finds.
 
-Appendix C.  IEEE 754 NaN
+Appendix B.  IEEE 754 NaN
 
    This section provides background information on [IEEE754] NaN (Not a
    Number) and its use in CBOR.
 
-C.1.  Basics
+B.1.  Basics
 
    [IEEE754] defines the most widely used representation for floating-
    point numbers.  It includes special values for infinity and NaN (Not
@@ -1120,7 +1135,7 @@ C.1.  Basics
    represents it.  A trivial NaN is one that passively indicates that
    the value is not a number, and nothing more.
 
-C.2.  Implementation Support for Non-Trivial NaNs
+B.2.  Implementation Support for Non-Trivial NaNs
 
    This section discusses the extent of programming language and CPU
    support for NaN payloads.
@@ -1131,8 +1146,8 @@ C.2.  Implementation Support for Non-Trivial NaNs
 
    *  Programming languages:
 
-      -  The programming languages C, C++, Java, Python and Rust do no
-         provide APIs to set or extract NaN payloads.
+      -  The programming languages C, C++, Java, JavaScript, Python and
+         Rust do not provide APIs to set or extract NaN payloads.
 
       -  IEEE 754 is over thirty years old, enough time for support to
          be added if there was need.
@@ -1154,7 +1169,7 @@ C.2.  Implementation Support for Non-Trivial NaNs
    software implementation of IEEE 754 to encode and decode the full bit
    patterns to reliably process non-trivial NaNs.
 
-C.3.  Use and Non-use for Non-Trivial NaNs
+B.3.  Use and Non-use for Non-Trivial NaNs
 
    Non-trivial NaNs, excluding signaling NaNs, are not produced by
    standard floating-point operations.  They are typically created at
@@ -1197,7 +1212,7 @@ C.3.  Use and Non-use for Non-Trivial NaNs
    *  Values cannot be translated directly to JSON, which does not
       support NaNs of any kind.
 
-C.4.  Clarification of RFC 8949
+B.4.  Clarification of RFC 8949
 
    This is a clarifying restatement of how NaNs are to be treated
    according to [RFC8949].
@@ -1259,7 +1274,7 @@ C.4.  Clarification of RFC 8949
    distinct from the Core Deterministic Encoding Requirements and
    represents an optional alternative for handling NaNs.
 
-C.5.  Divergence from RFC 8949
+B.5.  Divergence from RFC 8949
 
    Non-trivial NaNs are not permitted in either preferred-plus or
    deterministic serializations.  This is in contrast to preferred
@@ -1297,7 +1312,7 @@ C.5.  Divergence from RFC 8949
    *  A new CBOR tag can be defined in the future to explicitly support
       them.
 
-C.6.  Recommendations for Use of Non-Trivial NaNs
+B.6.  Recommendations for Use of Non-Trivial NaNs
 
    While non-trivial NaNs are excluded from preferred-plus and
    deterministic serialization, they are supported by Section 3.
@@ -1313,7 +1328,7 @@ C.6.  Recommendations for Use of Non-Trivial NaNs
    NaNs internally may need to serialize its data to run across machines
    connected by a network.
 
-Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
+Appendix C.  Code for Encoding Preferred-Plus Floating-Point Values
 
    Preferred-plus (Section 4.1) and deterministic serialization require
    that floating-point values fitting in single-precision and half-
@@ -1334,9 +1349,11 @@ Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
    are difficult to compute and verify, both are provided.)
 
    Both functions return an integer with the bit pattern for the
-   resulting floating-point value, or -1 if the conversion can't be
-   performed because the input is out of range or precision would be
-   lost.
+   resulting floating-point value, or a negative value on failure. -1
+   indicates the conversion can't be performed because the input is out
+   of range or precision would be lost. -2 indicates a non-trivial NaN
+   was given for encoding which should either be rejected or output as a
+   half-precision quiet NaN.
 
    /* Constants based on IEEE 754; _LEN is in bits */
 
@@ -1421,7 +1438,7 @@ Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
        } else if (mant == SGL_QUIET_NAN && sign == 0) {
           return HLF_QUIET_NAN + HLF_NAN_INF_EXP_BITS; /* trivial NaN */
        } else {
-          return -1; /* non-trivial NaN */
+          return -2; /* non-trivial NaN */
        }
      } else {
         return -1; /* large exponent -- out of range for half */
@@ -1463,7 +1480,7 @@ Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
        } else if (mant == DBL_QUIET_NAN && sign == 0) {
           return SGL_QUIET_NAN + SGL_NAN_INF_EXP_BITS; /* quiet NaN */
        } else {
-          return -1; /* non-trivial NaN */
+          return -2; /* non-trivial NaN */
        }
      } else {
         return -1; /* large exponent -- out of range for single */
@@ -1472,7 +1489,7 @@ Appendix D.  Code for Encoding Preferred-Plus Floating-Point Values
 
     Figure 1: Example C Code for Preferred-Plus Floating-Point Encoding
 
-Appendix E.  Big Numbers and the CBOR Data Model
+Appendix D.  Big Numbers and the CBOR Data Model
 
    The primary purpose of this document is to define preferred-plus and
    deterministic serialization.  Accordingly, Section 4 describes CBOR’s
@@ -1483,7 +1500,7 @@ Appendix E.  Big Numbers and the CBOR Data Model
 
    From a conceptual perspective, however, additional discussion is
    warranted regarding the CBOR data model itself.  That discussion is
-   provided in this appendix.  (Please review Appendix A for background
+   provided in this appendix.  (Please review Section 1.1 for background
    on the difference between serialization and the data model).
 
    In the basic, generic CBOR data model, each tag represents a distinct
@@ -1514,7 +1531,7 @@ Appendix E.  Big Numbers and the CBOR Data Model
    This document does create a new rule for future tag definitions.  See
    Section 7.
 
-Appendix F.  CDDL for Big Numbers
+Appendix E.  CDDL for Big Numbers
 
    The types bigint and biguint in the CDDL Standard Prelude (Appendix D
    of [RFC8610]) do NOT describe the big numbers described in this
@@ -1524,7 +1541,7 @@ Appendix F.  CDDL for Big Numbers
    between major types 0 and 1 and the big number tags.  CDDL-described
    protocols SHOULD use integer and unsigned and in prose state that
    these values correspond to either Section 4 of this document or
-   Section 3.4.3 of [RFC8949].  Appendix E explains the reasons for
+   Section 3.4.3 of [RFC8949].  Appendix D explains the reasons for
    this.
 
    The following CDDL can be used:
@@ -1542,20 +1559,20 @@ Appendix F.  CDDL for Big Numbers
 
    pplus-bigint = pplus-biguint / pplus-bignint
 
-Appendix G.  Big Number Implementation Strategies
+Appendix F.  Big Number Implementation Strategies
 
-   Appendix E describes how CBOR defines a single integer number space,
+   Appendix D describes how CBOR defines a single integer number space,
    in which big numbers are not distinct from values encoded using major
    types 0 and 1.  This appendix discusses approaches for implementers
    to support that model.
 
    Some programming environments provide strong native support for big
-   numbers (e.g., Python, Ruby, and Go), while others do not (e.g., C,
-   C++, and Rust).  Even in environments that support big numbers,
-   operations on native-sized integers (e.g., 64-bit integers) are
-   typically much more efficient.  It is therefore reasonable for a CBOR
-   library to expose separate APIs for native-sized integers and for big
-   numbers.
+   numbers (e.g., JavaScript, Python, Ruby, and Go), while others do not
+   (e.g., C, C++, and Rust).  Even in environments that support big
+   numbers, operations on native-sized integers (e.g., 64-bit integers)
+   are typically much more efficient.  It is therefore reasonable for a
+   CBOR library to expose separate APIs for native-sized integers and
+   for big numbers.
 
    When a CBOR library provides a big number API, values that fall
    within the range of major types 0 and 1 must be encoded using those
@@ -1583,7 +1600,7 @@ Appendix G.  Big Number Implementation Strategies
    Finally, note that big numbers are not a widely used feature of CBOR.
    Some CBOR libraries may entirely omit support for tags 2 and 3.
 
-Appendix H.  Serialization Checking
+Appendix G.  Serialization Checking
 
    Serialization checking rejects input which, while well-formed CBOR,
    does not conform to a particular serialization rule set it is
@@ -1598,7 +1615,7 @@ Appendix H.  Serialization Checking
    checking is well-formed; it is rejected because it violates
    additional serialization constraints.
 
-H.1.  Serialization Checking Use Cases
+G.1.  Serialization Checking Use Cases
 
    Some applications that rely on deterministic serialization may choose
    serialization checking in order to ensure that the data they consume
@@ -1624,16 +1641,16 @@ H.1.  Serialization Checking Use Cases
    appropriate remedy is to fix their input validation, not to add the
    serialization checking described here.
 
-Appendix I.  CBOR Byte String Wrapping
+Appendix H.  CBOR Byte String Wrapping
 
    This appendix provides non-normative guidance on byte-string wrapping
    of CBOR.  It applies primarily to tag 24 and the CDDL .cbor and
    .cborseq control operators, but also to the serialization-specifying
    control operators described in Section 8.  It also applies when prose
    states the byte-string wrapping requirement, such as for the COSE
-   protected headers.  See also Appendix K.1.
+   protected headers.  See also Appendix J.1.
 
-I.1.  Purpose
+H.1.  Purpose
 
    Error isolation:  Wrapping CBOR in a byte string prevents encoding
       errors in the wrapped data from causing the enclosing CBOR to fail
@@ -1656,7 +1673,7 @@ I.1.  Purpose
       data types like arrays and maps as map keys, they can be wrapped
       in a byte string.
 
-I.2.  Wrapping Recommendations
+H.2.  Wrapping Recommendations
 
    The serialization requirements for the wrapping CBOR may differ from
    those for the wrapped CBOR.  CBOR itself imposes no universal rule
@@ -1679,7 +1696,7 @@ I.2.  Wrapping Recommendations
    other data representation formats such as JSON.  See the discussion
    in Section 5.3.
 
-I.3.  CBOR Library Implementation Suggestion
+H.3.  CBOR Library Implementation Suggestion
 
    A straightforward implementation strategy is to instantiate a second
    CBOR encoder or decoder for the wrapped message.  However, this may
@@ -1694,7 +1711,7 @@ I.3.  CBOR Library Implementation Suggestion
    encoded CBOR can be treated as a container that always contains
    exactly one item.
 
-Appendix J.  Signing and Hashing Encoded CBOR
+Appendix I.  Signing and Hashing Encoded CBOR
 
    CBOR protocols are generally described as a collection of data items,
    often using CDDL.  Signing or hashing is performed over some range of
@@ -1740,7 +1757,7 @@ Appendix J.  Signing and Hashing Encoded CBOR
    Byte-string wrapping is guaranteed to work with even simple, basic
    libraries, although it will probably require two instances of the
    encoder or decoder: one for the wrapped (signed/hashed) CBOR and one
-   for the wrapping CBOR.  See Appendix I.
+   for the wrapping CBOR.  See Appendix H.
 
    If byte-string wrapping is not used, the CBOR library must provide an
    additional feature that gives access to the undecoded CBOR.  For
@@ -1758,7 +1775,7 @@ Appendix J.  Signing and Hashing Encoded CBOR
    because it clearly delineates what is signed or hashed and works with
    every decoder, but the other designs can also be made to work.
 
-Appendix K.  Serialization for COSE
+Appendix J.  Serialization for COSE
 
    This appendix highlights how the topics in this document apply to
    CBOR Object Signing and Encryption (COSE [RFC9052]).
@@ -1775,7 +1792,7 @@ Appendix K.  Serialization for COSE
    *  The encoded message (the header parameters and the array of four
       that is the COSE_Sign1)
 
-K.1.  COSE Payload Serialization
+J.1.  COSE Payload Serialization
 
    The signed payload may or may not be CBOR, but assume that it is,
    perhaps a CWT or EAT.  The payload is transmitted from the signer/
@@ -1797,9 +1814,9 @@ K.1.  COSE Payload Serialization
    processing by the verification algorithms.  Most CBOR libraries
    decoders do not provide access to any arbitrary chunk of encoded CBOR
    in the middle of a message.  This is an example of byte string
-   wrapping described in Appendix I.
+   wrapping described in Appendix H.
 
-K.2.  COSE Sig_structure
+J.2.  COSE Sig_structure
 
    The Sig_structure Section 4.4 of [RFC9052] is used to aggregate all
    the items that are input to the signature algorithm — the payload,
@@ -1831,7 +1848,7 @@ K.2.  COSE Sig_structure
    when signed data is reconstructed rather than transmitted in the
    exact form that was signed.  See Section 5.3.
 
-K.3.  The Encoded Message
+J.3.  The Encoded Message
 
    A COSE_Sign1 message is an array of four elements containing two
    header parameter chunks, the payload, and the signature.  The two
@@ -1860,7 +1877,7 @@ K.3.  The Encoded Message
    more robust for an end-to-end protocol to state its serialization
    requirements explicitly.
 
-Appendix L.  Examples
+Appendix K.  Examples
 
    This appendix provides examples of the serializations described in
    this document.  Each example is a single data item.  Collectively,
@@ -1887,7 +1904,7 @@ Appendix L.  Examples
 
                      Table 3: Example Data Item Fields
 
-L.1.  Use for Testing
+K.1.  Use for Testing
 
    These examples are designed to support testing of CBOR libraries.
    They cover only what is defined in this document and therefore do not
@@ -1906,7 +1923,7 @@ L.1.  Use for Testing
    skipped, or used to verify that an appropriate “unsupported” error is
    returned.
 
-L.1.1.  Encode Test
+K.1.1.  Encode Test
 
    To test encoding, invoke the encoder for each example data item.  The
    encoder input is the item's EDN representations.  If an example
@@ -1920,7 +1937,7 @@ L.1.1.  Encode Test
    If an encoder supports multiple serialization types, each type can be
    tested in turn.
 
-L.1.2.  Decode Test
+K.1.2.  Decode Test
 
    To test decoding, invoke the decoder for each example data.
 
@@ -1933,9 +1950,9 @@ L.1.2.  Decode Test
    If a decoder supports multiple serialization types, each type can be
    tested in turn.
 
-L.1.3.  Checking Decoder Test
+K.1.3.  Checking Decoder Test
 
-   Checking decoders are described in Appendix H.
+   Checking decoders are described in Appendix G.
 
    This test verifies that a checking decoder rejects encodings allowed
    by general serialization but non-conforming for the target
@@ -1951,7 +1968,7 @@ L.1.3.  Checking Decoder Test
    General-serialization decoders are not tested in this way, since they
    must accept all valid serialization forms.
 
-L.1.4.  Non-Checking Decoder Test
+K.1.4.  Non-Checking Decoder Test
 
    A non-checking decoder may accept encodings beyond what is required
    for the target serialization type.  For example, a preferred-plus
@@ -1980,7 +1997,7 @@ L.1.4.  Non-Checking Decoder Test
       types described in this document require support for decoding
       half-precision representations and subnormals.
 
-L.2.  Example Data Items
+K.2.  Example Data Items
 
    These are available as individual files at [Examples-Repo].
 
@@ -1991,7 +2008,7 @@ L.2.  Example Data Items
    the rest of general serialization.  For the purpose of classification
    by this document they are preferred-plus libraries with extra
    decoding features.  The extra decoding features can be tested as
-   described in Appendix L.1.4.
+   described in Appendix K.1.4.
 
    File: zero.edn
 
