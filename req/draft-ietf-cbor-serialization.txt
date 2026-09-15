@@ -4,8 +4,8 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Intended status: Standards Track                       11 September 2026
-Expires: 15 March 2027
+Intended status: Standards Track                       15 September 2026
+Expires: 19 March 2027
 
 
                    CBOR Serialization and Determinism
@@ -13,15 +13,25 @@ Expires: 15 March 2027
 
 Abstract
 
-   This document defines two CBOR serializations: "preferred-plus
-   serialization" and "deterministic serialization."  It also introduces
-   the term "general serialization" to name the complete set of all
-   serializations defined in RFC 8949.  Together, these three form a set
-   of serializations that cover the majority of CBOR serialization use
-   cases.
-
+   RFC 8949 defines CBOR, a standard for serializing data types such as
+   integers, strings, and arrays into encoded bytes.  CBOR serialization
+   is flexible, allowing data types to be encoded in multiple ways to
+   accommodate deployment in constrained environments.  This document
+   normatively defines one particular serialization, called "preferred-
+   plus serialization," that is suitable for the majority of CBOR-based
+   protocols.  Protocol designers and implementers who choose it need
+   not understand or specify serialization details themselves.  This
+   document also normatively defines a deterministic serialization.
    These serializations are largely compatible with those widely
    implemented by the CBOR community.
+
+   This document updates RFC 8949 with a new rule that limits how new
+   tag definitions can affect the CBOR data model.
+
+   This document provides clarifications to RFC 8949 regarding big
+   numbers and floating-point NaN handling, along with general
+   background information on serialization, determinism, and CBOR byte-
+   string wrapping.
 
 About This Document
 
@@ -53,7 +63,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 March 2027.
+   This Internet-Draft will expire on 19 March 2027.
 
 Copyright Notice
 
@@ -365,13 +375,12 @@ Table of Contents
 
 2.2.  Libraries
 
-   In the following sections, implementing preferred-plus serialization
-   means conforming to the decoding requirements in Section 4.2 and
-   making the encoding behavior defined in Section 4.1 the default or
-   primary encoding.  Similarly, implementing deterministic
-   serialization means conforming to the decoding requirements in
-   Section 5.2 and making the encoding behavior defined in Section 5.1
-   the default or primary encoding.
+   For the following sections on libraries, implementing preferred-plus
+   serialization means making Section 4.1 the default or primary
+   behavior for encoding and fulfilling Section 4.2 for decoding.
+   Similarly, implementing deterministic serialization means making
+   Section 5.1 the default or primary behavior for encoding and
+   fulfilling Section 5.2 for decoding.
 
 2.2.1.  CBOR Libraries
 
@@ -379,22 +388,22 @@ Table of Contents
    serialization.
 
    Preferred-plus serialization is recommended because it is suitable
-   for the majority of CBOR-based protocols.  In practice, preferred-
-   plus serialization is equivalent to preferred serialization
+   for the majority of CBOR-based protocols.  Also, in practice,
+   preferred-plus serialization is equivalent to preferred serialization
    Section 4.1 of [RFC8949] for most use cases.
 
-   It is also RECOMMENDED that CBOR libraries implement deterministic
-   serialization, as some protocols (for example, COSE) require it.
-   Relative to preferred-plus serialization, the only additional
-   requirement for deterministic serialization is that encoded maps be
-   sorted.  This recommendation is stronger for environments in which
-   map sorting is easy to implement (for example, Python, Go, and Ruby).
+   It is also RECOMMENDED that CBOR libraries offer deterministic
+   serialization either as a selectable option or as the default, as
+   some protocols (for example, COSE) require it.  Relative to
+   preferred-plus serialization, the only additional requirement for
+   deterministic serialization is that encoded maps be sorted.  This
+   recommendation is stronger for environments in which map sorting is
+   easy to implement (for example, Python, Go, and Ruby).
 
    Deterministic serialization requirements are a superset of those for
-   preferred-plus; therefore, if deterministic serialization is
-   supported, explicit support for preferred-plus is not needed.  A CBOR
-   library that implements deterministic serialization thus satisfies
-   the recommendation for preferred-plus serialization.
+   preferred-plus; a CBOR library that implements only deterministic
+   serialization therefore satisfies the recommendation for preferred-
+   plus serialization.
 
    A CBOR library MAY also implement some or all aspects of general
    serialization (see Section 3) thereby enabling support for protocols
@@ -403,27 +412,30 @@ Table of Contents
 2.2.2.  Libraries for Framework Protocols
 
    When a framework protocol specification does not mandate a specific
-   serialization, it is RECOMMENDED that a library implement preferred-
-   plus serialization.  For example, it is recommended that a library
-   implementing CWT or COSE implement preferred-plus serialization.
-
-   However, a library may implement only deterministic serialization if
-   this aligns with its deployment environment and design goals.
+   serialization, it is RECOMMENDED that a library for it implement
+   preferred-plus serialization.  For example, CWT and COSE do not
+   mandate a serialization, so it is recommended that libraries
+   implementing them use preferred-plus serialization.  Alternatively, a
+   framework protocol library may implement only deterministic
+   serialization if this aligns with its deployment environment and
+   design goals.
 
    When a framework protocol mandates serialization requirements,
-   libraries must of course conform.  For instance, certain parts of
-   COSE mandate deterministic serialization.  See Appendix J for a COSE-
-   based example.
+   conforming libraries follow them.  For instance, small parts of COSE
+   require deterministic serialization to function correctly.  See
+   Appendix J, which shows how COSE requires deterministic serialization
+   for some parts and, as a framework protocol should, leaves others
+   unconstrained.
 
 2.2.3.  Libraries for End-to-End Protocols
 
-   End-to-end protocols are expected to have explicit serialization
-   requirements to ensure interoperability.  Libraries for end-to-end
-   protocols should fulfill them.
+   End-to-end protocols are expected to state serialization requirements
+   to ensure interoperability.  Libraries for end-to-end protocols are
+   expected to adhere to them.
 
    If an end-to-end protocol specification does not state serialization
-   requirements, the library is free to choose, but it is RECOMMENDED
-   that it implement preferred-plus serialization.
+   requirements, it is RECOMMENDED that the library implement preferred-
+   plus serialization.
 
 3.  General Serialization
 
