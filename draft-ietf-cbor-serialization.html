@@ -1760,6 +1760,15 @@ Although it is the default for CBOR in theory, it has not been widely implemente
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-preferred-plus-serializatio" class="section-name selfRef">Preferred-Plus Serialization</a>
       </h2>
 <p id="section-4-1">This section defines a serialization named "preferred-plus serialization."<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">Preferred-plus serialization specifies how each data type is encoded.
+Like the rest of CBOR, it does not specify which data types an implementation supports, nor which range of values it supports for a given type.
+An implementation is free to support as much or as little of CBOR as its protocol requires; preferred-plus constrains only the encoding of what it does support.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">For example, a very small CBOR library might support only the integers 0 to 10 and arrays of length 0 to 10.
+Preferred-plus allows this, but requires that those arrays be definite-length and that, over this range, the integer value and the array length each be encoded in the initial byte.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">Similarly, preferred-plus places no requirement on the range or precision of floating-point values, but requires that each value it does encode be encoded in exactly one way — for example, 5.9604644775390625E-8 is always encoded as a half-precision subnormal.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">Many protocols use only some data types, and only part of the range of those they use.
+Implementers need to ensure that the library they use supports the data types, ranges, and precision their protocol requires, and that its encoding and decoding meet the requirements in this section.
+A library intended for general use will typically support most or all data types and values.<a href="#section-4-5" class="pilcrow">¶</a></p>
 <div id="PreferredPlusEncoding">
 <section id="section-4.1">
         <h3 id="name-encoder-requirements">
@@ -1767,53 +1776,60 @@ Although it is the default for CBOR in theory, it has not been widely implemente
         </h3>
 <ol start="1" type="1" class="normal type-1" id="section-4.1-1">
 <li id="section-4.1-1.1">
-            <p id="section-4.1-1.1.1">The shortest form of the CBOR argument must be used for all major types.
-The shortest form encoding for any argument that is not a floating  point value is:<a href="#section-4.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-1.1.1">The shortest form of the CBOR argument (see <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3" class="relref">Section 3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>) MUST be used.
+This does not apply when the CBOR item is a floating-point value.
+The following describes how an argument in each range is encoded.
+"ai" is the additional information, the low-order 5 bits of the initial byte.<a href="#section-4.1-1.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-1.1.2.1">
-                <p id="section-4.1-1.1.2.1.1">0 to 23 and -1 to -24 MUST be encoded in the same byte as the major type.<a href="#section-4.1-1.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-1.1.2.1.1">0..23 is encoded in the same byte as the major type.<a href="#section-4.1-1.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.1.2.2">
-                <p id="section-4.1-1.1.2.2.1">24 to 255 and -25 to -256 MUST be encoded only with an additional byte (ai = 0x18).<a href="#section-4.1-1.1.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-1.1.2.2.1">24..255 is encoded with one additional byte (ai = 0x18).<a href="#section-4.1-1.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.1.2.3">
-                <p id="section-4.1-1.1.2.3.1">256 to 65535 and -257 to -65536 MUST be encoded only with an additional two bytes (ai = 0x19).<a href="#section-4.1-1.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-1.1.2.3.1">256..65535 is encoded with two additional bytes (ai = 0x19).<a href="#section-4.1-1.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.1.2.4">
-                <p id="section-4.1-1.1.2.4.1">65536 to 4294967295 and -65537 to -4294967296 MUST be encoded only with an additional four bytes (ai = 0x1a).<a href="#section-4.1-1.1.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-1.1.2.4.1">65536..4294967295 is encoded with four additional bytes (ai = 0x1a).<a href="#section-4.1-1.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.1-1.1.2.5">
+                <p id="section-4.1-1.1.2.5.1">4294967296..18446744073709551615 is encoded with eight additional bytes (ai = 0x1b).<a href="#section-4.1-1.1.2.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
           <li id="section-4.1-1.2">
-            <p id="section-4.1-1.2.1">If maps or arrays are encoded, they MUST use definite-length encoding (never indefinite-length).<a href="#section-4.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-1.2.1">Definite-length encoding MUST be used for text and byte strings.<a href="#section-4.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-4.1-1.3">
-            <p id="section-4.1-1.3.1">If text or byte strings are encoded, they MUST use definite-length encoding (never indefinite-length).<a href="#section-4.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-1.3.1">Definite-length encoding MUST be used for maps and arrays.<a href="#section-4.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-4.1-1.4">
-            <p id="section-4.1-1.4.1">If floating-point numbers are encoded, the following apply:<a href="#section-4.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-1.4.1">Floating-point:<a href="#section-4.1-1.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-1.4.2.1">
-                <p id="section-4.1-1.4.2.1.1">Half-precision MUST be supported<a href="#section-4.1-1.4.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-4.1-1.4.2.2">
-                <p id="section-4.1-1.4.2.2.1">Values MUST be encoded in the shortest of double, single or half-precision that preserves precision.
+                <p id="section-4.1-1.4.2.1.1">Values MUST be encoded in the shortest of double, single, or half-precision that represents the value exactly.
 For example, 0.0 can always be reduced to half-precision so it MUST be encoded as 0xf90000.
 For another example, 0.1 would lose precision if not encoded as double-precision so it MUST be encoded as 0xfb3fb999999999999a.
-Subnormal numbers MUST be supported in this shortest-length encoding.<a href="#section-4.1-1.4.2.2.1" class="pilcrow">¶</a></p>
+Subnormal numbers MUST be used where they give the shortest exact encoding.<a href="#section-4.1-1.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.1-1.4.2.2">
+                <p id="section-4.1-1.4.2.2.1">Encoders MUST NOT output any NaN other than the half-precision NaN 0xf97e00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
+When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf97e00.
+Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and one NaN.<a href="#section-4.1-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.4.2.3">
-                <p id="section-4.1-1.4.2.3.1">Encoders MUST NOT output any NaN other than the half-precision NaN 0xf97e00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
-When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf97e00.
-Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and a single NaN.<a href="#section-4.1-1.4.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-1.4.2.3.1">Aside from the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and also as <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-4.1-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.4.2.4">
-                <p id="section-4.1-1.4.2.4.1">Aside from the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and also as <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-4.1-1.4.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-1.4.2.4.1">Note that this implies that most preferred-plus implementations have to support encoding as single and half-precision.
+Specifically, if the numbers presented for encoding are double-precision, then conversion to single and half-precision is required.
+If the numbers presented for encoding are only single-precision, then conversion to half-precision is required.<a href="#section-4.1-1.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
           <li id="section-4.1-1.5">
-            <p id="section-4.1-1.5.1">If big numbers (tags 2 and 3) are encoded, the following apply:<a href="#section-4.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-1.5.1">Big numbers (tags 2 and 3):<a href="#section-4.1-1.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-1.5.2.1">
                 <p id="section-4.1-1.5.2.1.1">Leading zeros MUST NOT be encoded.<a href="#section-4.1-1.5.2.1.1" class="pilcrow">¶</a></p>
@@ -1831,47 +1847,55 @@ Consequently, the floating-point values that can be encoded are the finite numbe
         <h3 id="name-decoder-requirements">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-decoder-requirements" class="section-name selfRef">Decoder Requirements</a>
         </h3>
-<ol start="1" type="1" class="normal type-1" id="section-4.2-1">
-<li id="section-4.2-1.1">
-            <p id="section-4.2-1.1.1">Decoders MUST accept shortest form encoded arguments.<a href="#section-4.2-1.1.1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">If a decoder claims to support preferred-plus serialization it MUST meet these requirements for the data types and ranges it has chosen to support.
+A preferred-plus decoder MAY accept non-preferred-plus input.
+See <a href="#CheckingDecoder" class="auto internal xref">Appendix G</a>.
+A decoder SHOULD support the same types and ranges as its corresponding encoder, if it has one.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.2-2">
+<li id="section-4.2-2.1">
+            <p id="section-4.2-2.1.1">The shortest-form argument MUST be accepted for all major types.<a href="#section-4.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-4.2-1.2">
-            <p id="section-4.2-1.2.1">If arrays or maps are supported, definite-length arrays or maps MUST be accepted.<a href="#section-4.2-1.2.1" class="pilcrow">¶</a></p>
+          <li id="section-4.2-2.2">
+            <p id="section-4.2-2.2.1">If arrays or maps are accepted, definite-length arrays or maps MUST be accepted.<a href="#section-4.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-4.2-1.3">
-            <p id="section-4.2-1.3.1">If text or byte strings are supported, definite-length text or byte strings MUST be accepted.<a href="#section-4.2-1.3.1" class="pilcrow">¶</a></p>
+          <li id="section-4.2-2.3">
+            <p id="section-4.2-2.3.1">If text or byte strings are accepted, definite-length text or byte strings MUST be accepted.<a href="#section-4.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-4.2-1.4">
-            <p id="section-4.2-1.4.1">If floating-point numbers are supported, the following apply:<a href="#section-4.2-1.4.1" class="pilcrow">¶</a></p>
+          <li id="section-4.2-2.4">
+            <p id="section-4.2-2.4.1">If floating-point numbers are accepted, the following apply:<a href="#section-4.2-2.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2-1.4.2.1">
-                <p id="section-4.2-1.4.2.1.1">Half-precision values MUST be accepted.<a href="#section-4.2-1.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2-2.4.2.1">
+                <p id="section-4.2-2.4.2.1.1">If the range of double-precision is supported, finite double-, single-, and half-precision values MUST be accepted.<a href="#section-4.2-2.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-4.2-1.4.2.2">
-                <p id="section-4.2-1.4.2.2.1">Double- and single-precision values SHOULD be accepted; leaving these out is only foreseen for decoders that need to work in exceptionally constrained environments.<a href="#section-4.2-1.4.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-4.2-2.4.2.2">
+                <p id="section-4.2-2.4.2.2.1">If the range of single-precision is supported, finite single- and half-precision values MUST be accepted.<a href="#section-4.2-2.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-4.2-1.4.2.3">
-                <p id="section-4.2-1.4.2.3.1">If double-precision values are accepted, single-precision values MUST be accepted.<a href="#section-4.2-1.4.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-4.2-2.4.2.3">
+                <p id="section-4.2-2.4.2.3.1">Half-precision NaN (0xf97e00), Infinity (0xf97c00), and -Infinity (0xf9fc00) MUST be accepted.
+These are the only forms of these values a preferred-plus encoder can produce, so accepting their single- and double-precision forms is allowed, but not required.<a href="#section-4.2-2.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.2-2.4.2.4">
+                <p id="section-4.2-2.4.2.4.1">No requirement is made on how a decoded floating-point value is represented to the layer(s) above the decoder; conversion from double, single, or half-precision into that representation may be necessary.<a href="#section-4.2-2.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li id="section-4.2-1.5">
-            <p id="section-4.2-1.5.1">If big numbers (tags 2 and 3) are accepted, the following apply:<a href="#section-4.2-1.5.1" class="pilcrow">¶</a></p>
+          <li id="section-4.2-2.5">
+            <p id="section-4.2-2.5.1">If big numbers (tags 2 and 3) are accepted, the following apply:<a href="#section-4.2-2.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2-1.5.2.1">
-                <p id="section-4.2-1.5.2.1.1">Big numbers described in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> MUST be accepted.<a href="#section-4.2-1.5.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2-2.5.2.1">
+                <p id="section-4.2-2.5.2.1.1">Big numbers described in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> MUST be accepted.<a href="#section-4.2-2.5.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-4.2-1.5.2.2">
-                <p id="section-4.2-1.5.2.2.1">Leading zeros MUST be ignored.<a href="#section-4.2-1.5.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-4.2-2.5.2.2">
+                <p id="section-4.2-2.5.2.2.1">Leading zeros MUST be ignored.<a href="#section-4.2-2.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-4.2-1.5.2.3">
-                <p id="section-4.2-1.5.2.3.1">An empty byte string MUST be accepted and treated as the value zero.<a href="#section-4.2-1.5.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-4.2-2.5.2.3">
+                <p id="section-4.2-2.5.2.3.1">An empty byte string MUST be accepted and treated as the value zero.<a href="#section-4.2-2.5.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
         </ol>
-<p id="section-4.2-2">See also <a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a> and <a href="#BigNumberStrategies" class="auto internal xref">Appendix F</a> for further background on big numbers.
-See <a href="#BigNumbersCDDL" class="auto internal xref">Appendix E</a> for specification in CDDL.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">See also <a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a> and <a href="#BigNumberStrategies" class="auto internal xref">Appendix F</a> for further background on big numbers.
+See <a href="#BigNumbersCDDL" class="auto internal xref">Appendix E</a> for specification in CDDL.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="when-to-use-preferred-plus-serialization">
@@ -1880,11 +1904,11 @@ See <a href="#BigNumbersCDDL" class="auto internal xref">Appendix E</a> for spec
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-when-to-use-preferred-plus-" class="section-name selfRef">When to use preferred-plus serialization</a>
         </h3>
 <p id="section-4.3-1">Preferred-plus is the recommended default.
-It supports all CBOR data types and value ranges (except non-trivial NaNs), typically produces the most compact encoding, is straightforward to implement, and is widely supported by CBOR libraries.
-It provides strong interoperability because (1) decoders are required to accept all encodings that a preferred-plus encoder is permitted to produce, and (2) the requirements are formally specified.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+It can serialize all CBOR data types and value ranges (except non-trivial NaNs), encodes compactly, is straightforward to implement, and is widely supported by CBOR libraries.
+It provides strong serialization interoperability because (1) decoders are required to accept all encodings that a preferred-plus encoder is permitted to produce, and (2) the requirements are formally specified.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">Choose a different serialization only when you have a specific need: deterministic serialization when determinism is required, a special serialization with indefinite lengths when streaming is required,
 or another special serialization for capabilities beyond what preferred-plus provides (see <a href="#SpecialSerializations" class="auto internal xref">Section 6</a>).
-Note that preferred-plus is deterministic when maps are not in use.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+Note that preferred-plus is equivalent to the deterministic serialization of <a href="#DeterministicSerialization" class="auto internal xref">Section 5</a> when maps are not in use.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="RelationToPreferred">
