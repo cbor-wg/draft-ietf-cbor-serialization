@@ -269,8 +269,8 @@ TLS, HTTP, and FIDO are examples of end-to-end protocols.
 
 End-to-end protocols MUST define a serialization strategy that ensures the sender and receiver use interoperable serialization.
 
-The strategy most highly RECOMMENDED is to normatively require preferred-plus serialization.
-If a protocol does not need to be deployed where map sorting is too expensive, requiring deterministic serialization is also RECOMMENDED.
+The strategy most highly RECOMMENDED is to normatively require preferred-plus serialization &mdash; conformance with {{PreferredPlusEncoding}} and {{PreferredPlusDecoding}}.
+If a protocol does not need to be deployed where map sorting is too expensive, requiring deterministic serialization &mdash; conformance with {{DeterministicEncoding}} and {{DeterministicDecoding}} &mdash; is also RECOMMENDED.
 
 An end-to-end protocol MAY instead define its own specialized serialization (see {{SpecialSerializations}}).
 In such cases, it MUST explicitly specify the permitted serialization behaviors necessary to ensure interoperability.
@@ -286,41 +286,42 @@ Defaulting to general serialization is NOT RECOMMENDED, because some serializati
 
 ## Libraries
 
+For the following sections on libraries, implementing preferred-plus serialization means making {{PreferredPlusEncoding}} the default or primary behavior for encoding and fulfilling {{PreferredPlusDecoding}} for decoding.
+Similarly, implementing deterministic serialization means making {{DeterministicEncoding}} the default or primary behavior for encoding and fulfilling {{DeterministicDecoding}} for decoding.
+
+
 ### CBOR Libraries
 
-It is RECOMMENDED that CBOR libraries support preferred-plus serialization.
-This can be achieved by conforming to the decoding requirements in {{PreferredPlusDecoding}} and by making the encoding behavior defined in {{PreferredPlusEncoding}} the default or primary encoding API.
+It is RECOMMENDED that CBOR libraries implement preferred-plus serialization.
 
 Preferred-plus serialization is recommended because it is suitable for the majority of CBOR-based protocols.
-In practice, preferred-plus serialization is equivalent to preferred serialization {{Section 4.1 of -cbor}} for most use cases.
+Also, in practice, preferred-plus serialization is equivalent to preferred serialization {{Section 4.1 of -cbor}} for most use cases.
 
-It is also RECOMMENDED that CBOR libraries support deterministic serialization, as some protocols (for example, COSE) require it.
+It is also RECOMMENDED that CBOR libraries offer deterministic serialization either as a selectable option or as the default, as some protocols (for example, COSE) require it.
 Relative to preferred-plus serialization, the only additional requirement for deterministic serialization is that encoded maps be sorted.
-This recommendation is particularly strong for environments in which map sorting is easy to implement (for example, Python, Go, and Ruby).
+This recommendation is stronger for environments in which map sorting is easy to implement (for example, Python, Go, and Ruby).
 
-A CBOR library may choose to implement only deterministic serialization and make it the default.
-Deterministic serialization is a superset of preferred-plus serialization; therefore, if deterministic serialization is fully supported, explicit support for preferred-plus serialization may be omitted.
+Deterministic serialization requirements are a superset of those for preferred-plus; a CBOR library that implements only deterministic serialization therefore satisfies the recommendation for preferred-plus serialization.
 
-A CBOR library MAY also choose to support some or all aspects of general serialization (see {{GeneralSerialization}}) thereby enabling support for protocols that use specialized serializations (see {{SpecialSerializations}}).
+A CBOR library MAY also implement some or all aspects of general serialization (see {{GeneralSerialization}}) thereby enabling support for protocols that use specialized serializations (see {{SpecialSerializations}}).
 
 ### Libraries for Framework Protocols
 
-When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that a CBOR library implements preferred-plus serialization.
-For example, it is recommended that a library implementing CWT or COSE implement preferred-plus serialization.
+When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that a library for it implement preferred-plus serialization.
+For example, CWT and COSE do not mandate a serialization, so it is recommended that libraries implementing them use preferred-plus serialization.
+Alternatively, a framework protocol library may implement only deterministic serialization if this aligns with its deployment environment and design goals.
 
-However, a library MAY choose to support only deterministic serialization if this aligns with its deployment environment and design goals.
-
-When a framework protocol mandates serialization requirements, libraries must of course conform.
-For instance, certain parts of COSE mandate deterministic serialization.
-See {{COSESerialization}} for a COSE-based example.
+When a framework protocol mandates serialization requirements, conforming libraries follow them.
+For instance, small parts of COSE require deterministic serialization to function correctly.
+See {{COSESerialization}}, which shows how COSE requires deterministic serialization for some parts and, as a framework protocol should, leaves others unconstrained.
 
 
 ### Libraries for End-to-End Protocols
 
-End-to-end protocols should have explicit serialization requirements to ensure interoperability.
-Libraries for end-to-end protocols should fulfill them.
+End-to-end protocols are expected to state serialization requirements to ensure interoperability.
+Libraries for end-to-end protocols are expected to adhere to them.
 
-If an end-to-end protocol specification does not state serialization requirements, the library is free to choose, but it is RECOMMENDED that they implement preferred-plus serialization.
+If an end-to-end protocol specification does not state serialization requirements, it is RECOMMENDED that the library implement preferred-plus serialization.
 
 
 # General Serialization {#GeneralSerialization}
