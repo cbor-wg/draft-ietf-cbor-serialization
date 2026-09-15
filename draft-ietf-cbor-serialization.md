@@ -371,52 +371,77 @@ CBOR libraries may nonetheless wish to support general serialization, as a compl
 
 This section defines a serialization named "preferred-plus serialization."
 
+Preferred-plus serialization specifies how each data type is encoded.
+Like the rest of CBOR, it does not specify which data types an implementation supports, nor which range of values it supports for a given type.
+An implementation is free to support as much or as little of CBOR as its protocol requires; preferred-plus constrains only the encoding of what it does support.
+
+For example, a very small CBOR library might support only the integers 0 to 10 and arrays of length 0 to 10.
+Preferred-plus allows this, but requires that those arrays be definite-length and that, over this range, the integer value and the array length each be encoded in the initial byte.
+
+Similarly, preferred-plus places no requirement on the range or precision of floating-point values, but requires that each value it does encode be encoded in exactly one way &mdash; for example, 5.9604644775390625E-8 is always encoded as a half-precision subnormal.
+
+Many protocols use only some data types, and only part of the range of those they use.
+Implementers need to ensure that the library they use supports the data types, ranges, and precision their protocol requires, and that its encoding and decoding meet the requirements in this section.
+A library intended for general use will typically support most or all data types and values.
+
+
 ## Encoder Requirements {#PreferredPlusEncoding}
 
-1. The shortest form of the CBOR argument must be used for all major types.
-   The shortest form encoding for any argument that is not a floating  point value is:
+1. The shortest form of the CBOR argument (see {{Section 3 of -cbor}}) MUST be used.
+   This does not apply when the CBOR item is a floating-point value.
+   The following describes how an argument in each range is encoded.
+   "ai" is the additional information, the low-order 5 bits of the initial byte.
 
-   * 0 to 23 and -1 to -24 MUST be encoded in the same byte as the major type.
-   * 24 to 255 and -25 to -256 MUST be encoded only with an additional byte (ai = 0x18).
-   * 256 to 65535 and -257 to -65536 MUST be encoded only with an additional two bytes (ai = 0x19).
-   * 65536 to 4294967295 and -65537 to -4294967296 MUST be encoded only with an additional four bytes (ai = 0x1a).
+   * 0..23 is encoded in the same byte as the major type.
+   * 24..255 is encoded with one additional byte (ai = 0x18).
+   * 256..65535 is encoded with two additional bytes (ai = 0x19).
+   * 65536..4294967295 is encoded with four additional bytes (ai = 0x1a).
+   * 4294967296..18446744073709551615 is encoded with eight additional bytes (ai = 0x1b).
 
-1. If maps or arrays are encoded, they MUST use definite-length encoding (never indefinite-length).
+1. Definite-length encoding MUST be used for text and byte strings.
 
-1. If text or byte strings are encoded, they MUST use definite-length encoding (never indefinite-length).
+1. Definite-length encoding MUST be used for maps and arrays.
 
-1. If floating-point numbers are encoded, the following apply:
+1. Floating-point:
 
-    * Half-precision MUST be supported
-    * Values MUST be encoded in the shortest of double, single or half-precision that preserves precision.
-      For example, 0.0 can always be reduced to half-precision so it MUST be encoded as 0xf90000.
-      For another example, 0.1 would lose precision if not encoded as double-precision so it MUST be encoded as 0xfb3fb999999999999a.
-      Subnormal numbers MUST be supported in this shortest-length encoding.
+   * Values MUST be encoded in the shortest of double, single, or half-precision that represents the value exactly.
+     For example, 0.0 can always be reduced to half-precision so it MUST be encoded as 0xf90000.
+     For another example, 0.1 would lose precision if not encoded as double-precision so it MUST be encoded as 0xfb3fb999999999999a.
+     Subnormal numbers MUST be used where they give the shortest exact encoding.
    * Encoders MUST NOT output any NaN other than the half-precision NaN 0xf97e00 (sign bit clear, most significant significand bit set, all remaining significand bits clear).
      When a signaling NaN, a NaN with a non-zero payload, or a NaN with the sign bit set is presented to an application or library for encoding, the encoder MUST either reject it or encode it as 0xf97e00.
-     Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and a single NaN.
+     Consequently, the floating-point values that can be encoded are the finite numbers, positive and negative infinity, and one NaN.
    * Aside from the requirement allowing only the half-precision quiet NaN, these are the same floating-point requirements as {{Section 4.1 of -cbor}} and also as {{Section 4.2.1 of -cbor}}.
+   * Note that this implies that most preferred-plus implementations have to support encoding as single and half-precision.
+     Specifically, if the numbers presented for encoding are double-precision, then conversion to single and half-precision is required.
+     If the numbers presented for encoding are only single-precision, then conversion to half-precision is required.
 
-1. If big numbers (tags 2 and 3) are encoded, the following apply:
+1. Big numbers (tags 2 and 3):
 
    * Leading zeros MUST NOT be encoded.
-
    * If a value can be encoded using major type 0 or 1, then it MUST be encoded with major type 0 or 1, never as a big number.
 
 
 ## Decoder Requirements {#PreferredPlusDecoding}
 
-1. Decoders MUST accept shortest form encoded arguments.
+If a decoder claims to support preferred-plus serialization it MUST meet these requirements for the data types and ranges it has chosen to support.
+A preferred-plus decoder MAY accept non-preferred-plus input.
+See {{CheckingDecoder}}.
+A decoder SHOULD support the same types and ranges as its corresponding encoder, if it has one.
 
-1. If arrays or maps are supported, definite-length arrays or maps MUST be accepted.
+1. The shortest-form argument MUST be accepted for all major types.
 
-1. If text or byte strings are supported, definite-length text or byte strings MUST be accepted.
+1. If arrays or maps are accepted, definite-length arrays or maps MUST be accepted.
 
-1. If floating-point numbers are supported, the following apply:
+1. If text or byte strings are accepted, definite-length text or byte strings MUST be accepted.
 
-   * Half-precision values MUST be accepted.
-   * Double- and single-precision values SHOULD be accepted; leaving these out is only foreseen for decoders that need to work in exceptionally constrained environments.
-   * If double-precision values are accepted, single-precision values MUST be accepted.
+1. If floating-point numbers are accepted, the following apply:
+
+   * If the range of double-precision is supported, finite double-, single-, and half-precision values MUST be accepted.
+   * If the range of single-precision is supported, finite single- and half-precision values MUST be accepted.
+   * Half-precision NaN (0xf97e00), Infinity (0xf97c00), and -Infinity (0xf9fc00) MUST be accepted.
+     These are the only forms of these values a preferred-plus encoder can produce, so accepting their single- and double-precision forms is allowed, but not required.
+   * No requirement is made on how a decoded floating-point value is represented to the layer(s) above the decoder; conversion from double, single, or half-precision into that representation may be necessary.
 
 1. If big numbers (tags 2 and 3) are accepted, the following apply:
 
@@ -431,12 +456,13 @@ See {{BigNumbersCDDL}} for specification in CDDL.
 ## When to use preferred-plus serialization
 
 Preferred-plus is the recommended default.
-It supports all CBOR data types and value ranges (except non-trivial NaNs), typically produces the most compact encoding, is straightforward to implement, and is widely supported by CBOR libraries.
-It provides strong interoperability because (1) decoders are required to accept all encodings that a preferred-plus encoder is permitted to produce, and (2) the requirements are formally specified.
+It can serialize all CBOR data types and value ranges (except non-trivial NaNs), encodes compactly, is straightforward to implement, and is widely supported by CBOR libraries.
+It provides strong serialization interoperability because (1) decoders are required to accept all encodings that a preferred-plus encoder is permitted to produce, and (2) the requirements are formally specified.
 
 Choose a different serialization only when you have a specific need: deterministic serialization when determinism is required, a special serialization with indefinite lengths when streaming is required,
 or another special serialization for capabilities beyond what preferred-plus provides (see {{SpecialSerializations}}).
-Note that preferred-plus is deterministic when maps are not in use.
+Note that preferred-plus is equivalent to the deterministic serialization of {{DeterministicSerialization}} when maps are not in use.
+
 
 ## Relation To Preferred Serialization {#RelationToPreferred}
 
