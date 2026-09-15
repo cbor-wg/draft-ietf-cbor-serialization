@@ -4,9 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Updates: 8949 (if approved)                            14 September 2026
+Updates: 8949 (if approved)                            15 September 2026
 Intended status: Standards Track                                        
-Expires: 18 March 2027
+Expires: 19 March 2027
 
 
                    CBOR Serialization and Determinism
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 March 2027.
+   This Internet-Draft will expire on 19 March 2027.
 
 Copyright Notice
 
@@ -123,7 +123,10 @@ Table of Contents
    11. References
      11.1.  Normative References
      11.2.  Informative References
-   Appendix A.  General Protocol Considerations for Determinism
+   Appendix A.  Specifying a Fully Deterministic Protocol
+     A.1.  Protocol Data Definition
+     A.2.  Text Strings and Unicode
+     A.3.  CBOR Tags
    Appendix B.  IEEE 754 NaN
      B.1.  Basics
      B.2.  Implementation Support for Non-Trivial NaNs
@@ -1010,37 +1013,44 @@ Table of Contents
    [UML]      "OMG Unified Modeling Language (OMG UML) Version 2.5.1",
               December 2017, <https://www.omg.org/spec/UML/2.5.1/PDF>.
 
-Appendix A.  General Protocol Considerations for Determinism
+   [UNICODE-NORM]
+              Whistler, K., "Unicode Normalization Forms", Unicode
+              Standard Annex #15, 30 July 2025,
+              <https://www.unicode.org/reports/tr15/>.
 
-   In addition to Section 5, there are considerations in the design of
-   any deterministic protocol.
+Appendix A.  Specifying a Fully Deterministic Protocol
 
-   For a protocol to be deterministic, both the encoding (serialization)
-   and data model (application) layer must be deterministic.  While
-   deterministic serialization, Section 5, ensures determinism at the
-   encoding layer, requirements at the application layer may also be
-   necessary.
+   While deterministic serialization (Section 5) is sufficient to make
+   most protocols fully deterministic, it is not sufficient for all.
+   This appendix describes some issues that may need further
+   requirements.  Note that these issues occur for parts of the protocol
+   that the sender and receiver construct independently.  See
+   Section 5.3.
 
-   Here’s an example application layer specification:
+A.1.  Protocol Data Definition
 
-      At the sender’s convenience, the birth date MAY be sent either
-         as an integer epoch date or string date.  The receiver MUST
-         decode both formats.
+   For a protocol to be deterministic, its definition at the data model
+   layer must be deterministic.
 
-   While this specification is interoperable, it lacks determinism.
-   There is variability in the data model layer akin to variability in
-   the CBOR encoding layer when deterministic serialization is not
-   required.
+   Here’s an example definition:
 
-   To make this example application layer specification deterministic,
-   specify one date format and prohibit the other.
+      At the sender’s convenience, the birth date MAY be encoded
+         either as an integer epoch date or string date.  The receiver
+         MUST decode both formats.
 
-   A more interesting source of application layer variability comes from
-   CBOR’s variety of number types.  For instance, the number 2 can be
-   represented as an integer, float, big number, decimal fraction and
-   other.  Most protocols designs will just specify one number type to
-   use, and that will give determinism, but here’s an example
-   specification that doesn’t:
+   While this definition is interoperable, it lacks determinism.  The
+   definition leaves a choice open, just as CBOR leaves encoding choices
+   open when deterministic serialization is not required.
+
+   To make this example definition deterministic, specify one date
+   format and prohibit the other.
+
+   A more interesting source of variability is CBOR's variety of number
+   types.  For instance, the number 2 can be represented as an integer,
+   float, big number, decimal fraction and others defined by tags in the
+   CBOR tag registry.  Most protocol designs will just specify one
+   number type to use, and that will give determinism, but here’s an
+   example specification that doesn’t:
 
       At the sender’s convenience, the fluid level measurement MAY be
          encoded as an integer or a floating-point number.  This allows
@@ -1054,20 +1064,30 @@ Appendix A.  General Protocol Considerations for Determinism
    that doesn’t minimize encoding size.
 
    A better solution requires the fluid level always be encoded using
-   the smallest representation for every particular value.  For example,
-   a fluid level of 2 is always encoded as an integer, never as a
-   floating-point number. 2.000001 is always encoded as a floating-point
-   number so as to not lose precision.  See the numeric reduction
-   defined by [I-D.mcnally-deterministic-cbor].
+   the smallest representation.  For example, a fluid level of 2 is
+   always encoded as an integer, never as a floating-point number; and a
+   level of 2.000001 is always encoded as a floating-point number so as
+   not to lose precision.  See the numeric reduction defined by
+   [I-D.mcnally-deterministic-cbor].
 
-   Although this is not strictly a CBOR issue, deterministic CBOR
-   protocol designers should be mindful of variability in Unicode text,
-   as some characters can be encoded in multiple ways.
+A.2.  Text Strings and Unicode
 
-   While this is not an exhaustive list of application-layer
-   considerations for deterministic CBOR protocols, it highlights the
-   nature of variability in the data model layer and some sources of
-   variability in the CBOR data model (i.e., in the application layer).
+   CBOR's text string type (major type 3) carries UTF-8, which is itself
+   unambiguous.  Unicode is not: the same text may be written as
+   different sequences of code points, since a character with a
+   diacritic can appear either precomposed or as a base character plus
+   combining marks. "é" is either U+00E9 or U+0065 plus U+0301.  As with
+   the number types above, a deterministic protocol must choose one
+   representation — typically by requiring a Unicode normalization form
+   like Unicode Normalization Form C (NFC) [UNICODE-NORM].
+
+A.3.  CBOR Tags
+
+   Some tags allow their content to be represented in more than one way.
+   For example, the epoch date (tag 1) allows either integer or
+   floating-point representation.  A deterministic protocol using tags
+   should examine each tag's definition for such variability and define
+   a deterministic rule for selecting among the alternatives it finds.
 
 Appendix B.  IEEE 754 NaN
 
