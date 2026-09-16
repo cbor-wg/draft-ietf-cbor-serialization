@@ -981,13 +981,16 @@ The data rejected by serialization checking is well-formed; it is rejected only 
 
 ## Serialization Checking Use Cases
 
-Applications that rely on deterministic serialization may use serialization checking to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.
-
 Some protocol environments may use serialization checking to minimize representational variants as a strategy to improve interoperability.
 Discouraging variants early prevents them from compounding.
 See {{RFC9413}} on maintaining robust protocols.
 
 Serialization checking helps defend against covert channels described in {{CovertChannels}}.
+
+Applications that rely on deterministic serialization may use serialization checking to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.
+
+A protocol that depends on deterministic serialization may recommend or require its decoders to perform serialization checking.
+CBOR libraries may offer serialization checking as a selectable option, at some cost in code size and processing.
 
 Serialization checking may enhance security in certain contexts, but such checking is never a substitute for complete well-formedness checking.
 All CBOR decoders &mdash; regardless of their capabilities, modes, or optional features &mdash; must perform full well-formedness checking.
