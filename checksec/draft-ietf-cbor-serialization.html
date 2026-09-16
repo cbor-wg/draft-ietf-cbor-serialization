@@ -2795,17 +2795,19 @@ The data rejected by serialization checking is well-formed; it is rejected only 
         <h3 id="name-serialization-checking-use-">
 <a href="#appendix-G.1" class="section-number selfRef">G.1. </a><a href="#name-serialization-checking-use-" class="section-name selfRef">Serialization Checking Use Cases</a>
         </h3>
-<p id="appendix-G.1-1">Applications that rely on deterministic serialization may use serialization checking to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.<a href="#appendix-G.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-2">Some protocol environments may use serialization checking to minimize representational variants as a strategy to improve interoperability.
+<p id="appendix-G.1-1">Some protocol environments may use serialization checking to minimize representational variants as a strategy to improve interoperability.
 Discouraging variants early prevents them from compounding.
-See <span>[<a href="#RFC9413" class="cite xref">RFC9413</a>]</span> on maintaining robust protocols.<a href="#appendix-G.1-2" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-3">Serialization checking helps defend against covert channels described in <a href="#CovertChannels" class="auto internal xref">Section 9.1</a>.<a href="#appendix-G.1-3" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-4">Serialization checking may enhance security in certain contexts, but such checking is never a substitute for complete well-formedness checking.
+See <span>[<a href="#RFC9413" class="cite xref">RFC9413</a>]</span> on maintaining robust protocols.<a href="#appendix-G.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-2">Serialization checking helps defend against covert channels described in <a href="#CovertChannels" class="auto internal xref">Section 9.1</a>.<a href="#appendix-G.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-3">Applications that rely on deterministic serialization may use serialization checking to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.<a href="#appendix-G.1-3" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-4">A protocol that depends on deterministic serialization may recommend or require its decoders to perform serialization checking.
+CBOR libraries may offer serialization checking as a selectable option, at some cost in code size and processing.<a href="#appendix-G.1-4" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-5">Serialization checking may enhance security in certain contexts, but such checking is never a substitute for complete well-formedness checking.
 All CBOR decoders — regardless of their capabilities, modes, or optional features — must perform full well-formedness checking.
 They must also reject well-formed input that uses features they do not support.
-For example, a decoder that does not support indefinite-length items rejects them because they are unsupported, not because it is acting as a checking decoder.<a href="#appendix-G.1-4" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-5">A decoder that fails to perform well-formedness checking is unsafe, whatever else it does.
-The appropriate remedy is to fix it, not to add the serialization checking described here.<a href="#appendix-G.1-5" class="pilcrow">¶</a></p>
+For example, a decoder that does not support indefinite-length items rejects them because they are unsupported, not because it is acting as a checking decoder.<a href="#appendix-G.1-5" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-6">A decoder that fails to perform well-formedness checking is unsafe, whatever else it does.
+The appropriate remedy is to fix it, not to add the serialization checking described here.<a href="#appendix-G.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

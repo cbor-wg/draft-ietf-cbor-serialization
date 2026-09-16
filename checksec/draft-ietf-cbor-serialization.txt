@@ -1671,11 +1671,6 @@ Appendix G.  Serialization Checking
 
 G.1.  Serialization Checking Use Cases
 
-   Applications that rely on deterministic serialization may use
-   serialization checking to ensure that the data they consume is truly
-   deterministic and that the assumptions their logic makes about
-   determinism hold.
-
    Some protocol environments may use serialization checking to minimize
    representational variants as a strategy to improve interoperability.
    Discouraging variants early prevents them from compounding.  See
@@ -1683,6 +1678,16 @@ G.1.  Serialization Checking Use Cases
 
    Serialization checking helps defend against covert channels described
    in Section 9.1.
+
+   Applications that rely on deterministic serialization may use
+   serialization checking to ensure that the data they consume is truly
+   deterministic and that the assumptions their logic makes about
+   determinism hold.
+
+   A protocol that depends on deterministic serialization may recommend
+   or require its decoders to perform serialization checking.  CBOR
+   libraries may offer serialization checking as a selectable option, at
+   some cost in code size and processing.
 
    Serialization checking may enhance security in certain contexts, but
    such checking is never a substitute for complete well-formedness
