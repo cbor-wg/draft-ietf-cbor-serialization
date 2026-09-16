@@ -636,7 +636,7 @@ Standards action is required to add them.
 
 The security considerations in {{Section 10 of -cbor}} apply.
 
-## Covert Channel
+## Covert Channel {#CovertChannels}
 
 
 CBOR’s serialization variants can be used as a covert channel {{LAM73}} to steganographically exfiltrate data.
@@ -970,27 +970,32 @@ Some CBOR libraries may entirely omit support for tags 2 and 3.
 
 # Serialization Checking {#CheckingDecoder}
 
-Serialization checking rejects input which, while well-formed CBOR, does not conform to a particular serialization rule set it is enforcing.
+Serialization checking rejects input that, while well-formed CBOR, does not conform to a serialization rule set it is enforcing.
 For example, a decoder checking for deterministic serialization will error out if map keys are not in the required sorted order.
-Likewise, a decoder checking for preferred-plus serialization will reject any CBOR data item that is not encoded in its shortest form.
+Likewise, a decoder checking for preferred-plus serialization will reject, for instance, any CBOR data item that is not encoded in its shortest form.
 
-This type of checking goes beyond the basic requirement of verifying that input is well-formed CBOR.
-The data rejected by serialization checking is well-formed; it is rejected because it violates additional serialization constraints.
+To align with long-settled security practice and defend against malformed input attacks, every CBOR decoder must reject all input that is not well-formed.
+Serialization checking goes beyond that.
+The data rejected by serialization checking is well-formed; it is rejected only because of additional serialization constraints.
+
 
 ## Serialization Checking Use Cases
 
-Some applications that rely on deterministic serialization may choose serialization checking in order to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.
+Applications that rely on deterministic serialization may use serialization checking to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.
 
 Some protocol environments may use serialization checking to minimize representational variants as a strategy to improve interoperability.
 Discouraging variants early prevents them from compounding.
 See {{RFC9413}} on maintaining robust protocols.
 
-Serialization checking may enhance security in certain contexts, but such checking is never a substitute for correct and complete CBOR input validation.
-All CBOR decoders &mdash; regardless of their capabilities, modes, or optional features &mdash; must always perform full input validation. This includes rejecting CBOR features the decoder does not support.
-For example, a decoder that does not support indefinite-length items must reject them because they are unsupported, not because it is acting as a checking decoder.
+Serialization checking helps defend against covert channels described in {{CovertChannels}}.
 
-Decoders that fail to perform this essential input validation are fundamentally inadequate and represent a security risk.
-The appropriate remedy is to fix their input validation, not to add the serialization checking described here.
+Serialization checking may enhance security in certain contexts, but such checking is never a substitute for complete well-formedness checking.
+All CBOR decoders &mdash; regardless of their capabilities, modes, or optional features &mdash; must perform full well-formedness checking.
+They must also reject well-formed input that uses features they do not support.
+For example, a decoder that does not support indefinite-length items rejects them because they are unsupported, not because it is acting as a checking decoder.
+
+A decoder that fails to perform well-formedness checking is unsafe, whatever else it does.
+The appropriate remedy is to fix it, not to add the serialization checking described here.
 
 
 # CBOR Byte String Wrapping {#ByteStringWrapping}
