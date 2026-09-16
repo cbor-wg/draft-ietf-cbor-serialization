@@ -326,9 +326,11 @@ If an end-to-end protocol specification does not state serialization requirement
 
 # General Serialization {#GeneralSerialization}
 
-This section assigns the name "general serialization" to the complete set of all encodings standardized in {{Section 3 of -cbor}}.
-The term itself was not explicitly defined in {{-cbor}}.
-Preferred-plus and deterministic serialization are subsets of it.
+{{Section 3 of -cbor}} standardizes the encodings that CBOR permits, but does not give that set a name.
+This document calls it "general serialization."
+
+Any serialization, whether defined in this document or elsewhere, permits only encodings drawn from this set.
+General serialization is therefore a superset of them all.
 
 General serialization permits any and all of these:
 
