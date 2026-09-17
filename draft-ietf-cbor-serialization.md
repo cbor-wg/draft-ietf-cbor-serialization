@@ -444,14 +444,12 @@ A decoder SHOULD support the same types and ranges as its corresponding encoder,
      These are the only forms of these values a preferred-plus encoder can produce, so accepting their single- and double-precision forms is allowed, but not required.
    * No requirement is made on how a decoded floating-point value is represented to the layer(s) above the decoder; conversion from double, single, or half-precision into that representation may be necessary.
 
-1. If big numbers (tags 2 and 3) are accepted, the following apply:
+1. If big numbers (tags 2 and 3) are accepted, the following apply. (This is a maximally permissive acceptance mode, adopted to compensate for ambiguity in {{Section 3.4.3 of -cbor}}.)
+   * Big numbers described in {{Section 3.4.3 of -cbor}} MUST be accepted. This includes:
+       * Leading zeros MUST be ignored.
+   * For full interoperability, an empty byte string MUST be accepted and treated as the value zero.
 
-   * Big numbers described in {{Section 3.4.3 of -cbor}} MUST be accepted.
-   * Leading zeros MUST be ignored.
-   * An empty byte string MUST be accepted and treated as the value zero.
-
-See also {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further background on big numbers.
-See {{BigNumbersCDDL}} for specification in CDDL.
+See  {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further background on big numbers, {{BigNumbersCDDL}} for the CDDL specification, and {{CheckingDecoder}} for overrides to the above decoding rules for serialization-checking decoders.
 
 
 ## When to use preferred-plus serialization
@@ -991,6 +989,17 @@ For example, a decoder that does not support indefinite-length items must reject
 
 Decoders that fail to perform this essential input validation are fundamentally inadequate and represent a security risk.
 The appropriate remedy is to fix their input validation, not to add the serialization checking described here.
+
+## Big Number Leading Zero Exception
+
+{{Section 3.4.3 of -cbor}} requires that decoders supporting tags 2 and 3 be able to decode bignums that have leading zeros, even though preferred serialization never produces them.
+This conflicts with the goal of a decoder that checks for preferred or deterministic serialization: such a decoder needs to reject a bignum with leading zeros as non-conformant.
+
+This document recommends that decoders performing serialization checking reject bignums containing leading zeros, notwithstanding the MUST in {{Section 3.4.3 of -cbor}}.
+Serialization checking is optional.
+When a protocol selects it &mdash; for example, because it depends on deterministic encoding &mdash; decoders are expected to perform the check, including rejecting non-preferred bignum encodings such as those with leading zeros.
+
+Note that serialization-checking decoders always reject the empty byte string, because it represents the value zero, which is encoded as major type 0.
 
 
 # CBOR Byte String Wrapping {#ByteStringWrapping}
