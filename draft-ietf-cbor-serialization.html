@@ -2134,7 +2134,7 @@ Standards action is required to add them.<a href="#section-8-8" class="pilcrow">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-9-1">The security considerations in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-10" class="relref">Section 10</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> apply.<a href="#section-9-1" class="pilcrow">¶</a></p>
-<div id="covert-channel">
+<div id="CovertChannels">
 <section id="section-9.1">
         <h3 id="name-covert-channel">
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-covert-channel" class="section-name selfRef">Covert Channel</a>
@@ -2788,25 +2788,30 @@ Some CBOR libraries may entirely omit support for tags 2 and 3.<a href="#appendi
       <h2 id="name-serialization-checking">
 <a href="#appendix-G" class="section-number selfRef">Appendix G. </a><a href="#name-serialization-checking" class="section-name selfRef">Serialization Checking</a>
       </h2>
-<p id="appendix-G-1">Serialization checking rejects input which, while well-formed CBOR, does not conform to a particular serialization rule set it is enforcing.
+<p id="appendix-G-1">Serialization checking rejects input that, while well-formed CBOR, does not conform to a serialization rule set it is enforcing.
 For example, a decoder checking for deterministic serialization will error out if map keys are not in the required sorted order.
-Likewise, a decoder checking for preferred-plus serialization will reject any CBOR data item that is not encoded in its shortest form.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
-<p id="appendix-G-2">This type of checking goes beyond the basic requirement of verifying that input is well-formed CBOR.
-The data rejected by serialization checking is well-formed; it is rejected because it violates additional serialization constraints.<a href="#appendix-G-2" class="pilcrow">¶</a></p>
+Likewise, a decoder checking for preferred-plus serialization will reject, for instance, any CBOR data item that is not encoded in its shortest form.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
+<p id="appendix-G-2">To align with long-settled security practice and defend against malformed input attacks, every CBOR decoder must reject all input that is not well-formed.
+Serialization checking goes beyond that.
+The data rejected by serialization checking is well-formed; it is rejected only because of additional serialization constraints.<a href="#appendix-G-2" class="pilcrow">¶</a></p>
 <div id="serialization-checking-use-cases">
 <section id="appendix-G.1">
         <h3 id="name-serialization-checking-use-">
 <a href="#appendix-G.1" class="section-number selfRef">G.1. </a><a href="#name-serialization-checking-use-" class="section-name selfRef">Serialization Checking Use Cases</a>
         </h3>
-<p id="appendix-G.1-1">Some applications that rely on deterministic serialization may choose serialization checking in order to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.<a href="#appendix-G.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-2">Some protocol environments may use serialization checking to minimize representational variants as a strategy to improve interoperability.
+<p id="appendix-G.1-1">Some protocol environments may use serialization checking to minimize representational variants as a strategy to improve interoperability.
 Discouraging variants early prevents them from compounding.
-See <span>[<a href="#RFC9413" class="cite xref">RFC9413</a>]</span> on maintaining robust protocols.<a href="#appendix-G.1-2" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-3">Serialization checking may enhance security in certain contexts, but such checking is never a substitute for correct and complete CBOR input validation.
-All CBOR decoders — regardless of their capabilities, modes, or optional features — must always perform full input validation. This includes rejecting CBOR features the decoder does not support.
-For example, a decoder that does not support indefinite-length items must reject them because they are unsupported, not because it is acting as a checking decoder.<a href="#appendix-G.1-3" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-4">Decoders that fail to perform this essential input validation are fundamentally inadequate and represent a security risk.
-The appropriate remedy is to fix their input validation, not to add the serialization checking described here.<a href="#appendix-G.1-4" class="pilcrow">¶</a></p>
+See <span>[<a href="#RFC9413" class="cite xref">RFC9413</a>]</span> on maintaining robust protocols.<a href="#appendix-G.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-2">Serialization checking helps defend against covert channels described in <a href="#CovertChannels" class="auto internal xref">Section 9.1</a>.<a href="#appendix-G.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-3">Applications that rely on deterministic serialization may use serialization checking to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.<a href="#appendix-G.1-3" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-4">A protocol that depends on deterministic serialization may recommend or require its decoders to perform serialization checking.
+CBOR libraries may offer serialization checking as a selectable option, at some cost in code size and processing.<a href="#appendix-G.1-4" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-5">Serialization checking may enhance security in certain contexts, but such checking is never a substitute for complete well-formedness checking.
+All CBOR decoders — regardless of their capabilities, modes, or optional features — must perform full well-formedness checking.
+They must also reject well-formed input that uses features they do not support.
+For example, a decoder that does not support indefinite-length items rejects them because they are unsupported, not because it is acting as a checking decoder.<a href="#appendix-G.1-5" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-6">A decoder that fails to perform well-formedness checking is unsafe, whatever else it does.
+The appropriate remedy is to fix it, not to add the serialization checking described here.<a href="#appendix-G.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="big-number-leading-zero-exception">
