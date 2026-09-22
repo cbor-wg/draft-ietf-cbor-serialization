@@ -1580,8 +1580,8 @@ It is therefore practical to define a single deterministic serialization suitabl
 <p id="section-1.3-1">Many CBOR-based protocols, such as CWT <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>, state no serialization requirements, which leaves open what an implementation needs to support.
 Is a CWT decoder required to accept indefinite-length items, for example?<a href="#section-1.3-1" class="pilcrow">¶</a></p>
 <p id="section-1.3-2">One interpretation of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> is that, absent any specification, a decoder is expected to accept every serialization variant, so that it can decode anything it receives.
-<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> defines this full set of variants without naming it; this document calls it general serialization (<a href="#GeneralSerialization" class="auto internal xref">Section 3</a>).<a href="#section-1.3-2" class="pilcrow">¶</a></p>
-<p id="section-1.3-3">In practice, however, CWT decoders often omit support for indefinite lengths (and some other variations) because of the added complexity, and encoders accordingly avoid them.
+<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> defines this full set of variants without naming it; this document introduces the name "general serialization" for it in <a href="#GeneralSerialization" class="auto internal xref">Section 3</a>.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
+<p id="section-1.3-3">In practice, however, CWT decoders often omit support for indefinite lengths and other variations because of the added complexity, and encoders accordingly avoid them.
 An encoder emitting indefinite lengths would still be fully conforming, yet could fail against such a decoder.
 This has rarely caused problems, but it means interoperability rests on convention rather than on the specifications themselves.
 <a href="#Recommendations" class="auto internal xref">Section 2</a> addresses this.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
@@ -1726,19 +1726,19 @@ Libraries for end-to-end protocols are expected to adhere to them.<a href="#sect
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-general-serialization" class="section-name selfRef">General Serialization</a>
       </h2>
 <p id="section-3-1">This section assigns the name "general serialization" to the complete set of encodings standardized in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3" class="relref">Section 3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
-The term itself was not explicitly defined in <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>, though it does refer to it as "variant-tolerant decoding" in passing.
+<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> does not name this set, though it alludes to it in passing as "variant-tolerant decoding".
 Any serialization, whether defined in this document or elsewhere, permits only encodings drawn from this set.
 General serialization is therefore a superset of them all.
 It is described as follows:<a href="#section-3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3-2.1">
-          <p id="section-3-2.1.1">CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, or 0x190000 and so on).<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.1.1">CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, 0x190000, and so on).<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.2">
           <p id="section-3-2.2.1">Floating-point values encoded at any length (for example, 0.0 can be encoded as half-, single-, or double-precision).<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.3">
-          <p id="section-3-2.3.1">Both definite- or indefinite-length strings, arrays, and maps.<a href="#section-3-2.3.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.3.1">Both definite- and indefinite-length strings, arrays, and maps.<a href="#section-3-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.4">
           <p id="section-3-2.4.1">Maps with keys in any order.<a href="#section-3-2.4.1" class="pilcrow">¶</a></p>
@@ -1755,7 +1755,7 @@ It is described as follows:<a href="#section-3-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-3.1-1"><span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> does not explicitly specify default encoding or decoding requirements.
 Nothing in it says what a CBOR library needs to support, or what an implementation of a protocol that gives no serialization requirements, such as CWT, needs to do.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Some readers take <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> to imply that a decoder must support general serialization and that an encoder may use any variant.
+<p id="section-3.1-2">Some readers take <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> to imply that a decoder has to support general serialization and that an encoder is free to use any variant.
 This is a possible interpretation, but many implementers have not adopted it.
 For example, CWT and COSE decoders typically do not support indefinite lengths, and their encoders do not produce them.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1-3">It is therefore safer not to treat general serialization as the default, particularly when encoding, since a decoder may not accept every variant.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
@@ -1766,13 +1766,13 @@ For example, CWT and COSE decoders typically do not support indefinite lengths, 
         <h3 id="name-when-to-use-general-seriali">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-when-to-use-general-seriali" class="section-name selfRef">When To Use General Serialization</a>
         </h3>
-<p id="section-3.2-1">General serialization is rarely necessary, and support for it is not widespread.
+<p id="section-3.2-1">General serialization is rarely necessary, and support for it is not universal.
 Preferred-plus serialization (<a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>) is efficient and supports the full CBOR data model (except non-trivial NaNs; see <a href="#NaNBasics" class="auto internal xref">Appendix B.1</a>), satisfying the vast majority of CBOR use cases.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">The main scenario where general serialization is warranted is a protocol that must accommodate highly constrained encoders,
+<p id="section-3.2-2">The main scenario where general serialization is warranted is a protocol that has to accommodate highly constrained encoders,
 at the cost of requiring decoders — assumed to be unconstrained — to support every possible serialization option.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.2-3">When general serialization is required by a protocol, this SHOULD be stated explicitly.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">A protocol that requires general serialization SHOULD state so explicitly.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.2-4">See also special serializations (<a href="#SpecialSerializations" class="auto internal xref">Section 6</a>), which enable optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
-<p id="section-3.2-5">CBOR libraries may nonetheless wish to support general serialization, as a complete set of serialization forms, to be useful to the broader range of protocols.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-5">CBOR libraries may nonetheless wish to support general serialization, as a complete set of serialization forms, to be useful to a broader range of protocols.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

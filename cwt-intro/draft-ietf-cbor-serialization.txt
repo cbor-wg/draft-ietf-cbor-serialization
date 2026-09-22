@@ -301,12 +301,12 @@ Table of Contents
    One interpretation of [RFC8949] is that, absent any specification, a
    decoder is expected to accept every serialization variant, so that it
    can decode anything it receives.  [RFC8949] defines this full set of
-   variants without naming it; this document calls it general
-   serialization (Section 3).
+   variants without naming it; this document introduces the name
+   "general serialization" for it in Section 3.
 
    In practice, however, CWT decoders often omit support for indefinite
-   lengths (and some other variations) because of the added complexity,
-   and encoders accordingly avoid them.  An encoder emitting indefinite
+   lengths and other variations because of the added complexity, and
+   encoders accordingly avoid them.  An encoder emitting indefinite
    lengths would still be fully conforming, yet could fail against such
    a decoder.  This has rarely caused problems, but it means
    interoperability rests on convention rather than on the
@@ -479,20 +479,20 @@ Table of Contents
 3.  General Serialization
 
    This section assigns the name "general serialization" to the complete
-   set of encodings standardized in Section 3 of [RFC8949].  The term
-   itself was not explicitly defined in [RFC8949], though it does refer
-   to it as "variant-tolerant decoding" in passing.  Any serialization,
-   whether defined in this document or elsewhere, permits only encodings
-   drawn from this set.  General serialization is therefore a superset
-   of them all.  It is described as follows:
+   set of encodings standardized in Section 3 of [RFC8949].  [RFC8949]
+   does not name this set, though it alludes to it in passing as
+   "variant-tolerant decoding".  Any serialization, whether defined in
+   this document or elsewhere, permits only encodings drawn from this
+   set.  General serialization is therefore a superset of them all.  It
+   is described as follows:
 
    *  CBOR arguments of any length (for example, the integer 0 may be
-      encoded as 0x00, 0x1800, or 0x190000 and so on).
+      encoded as 0x00, 0x1800, 0x190000, and so on).
 
    *  Floating-point values encoded at any length (for example, 0.0 can
       be encoded as half-, single-, or double-precision).
 
-   *  Both definite- or indefinite-length strings, arrays, and maps.
+   *  Both definite- and indefinite-length strings, arrays, and maps.
 
    *  Maps with keys in any order.
 
@@ -510,11 +510,11 @@ Table of Contents
    support, or what an implementation of a protocol that gives no
    serialization requirements, such as CWT, needs to do.
 
-   Some readers take [RFC8949] to imply that a decoder must support
-   general serialization and that an encoder may use any variant.  This
-   is a possible interpretation, but many implementers have not adopted
-   it.  For example, CWT and COSE decoders typically do not support
-   indefinite lengths, and their encoders do not produce them.
+   Some readers take [RFC8949] to imply that a decoder has to support
+   general serialization and that an encoder is free to use any variant.
+   This is a possible interpretation, but many implementers have not
+   adopted it.  For example, CWT and COSE decoders typically do not
+   support indefinite lengths, and their encoders do not produce them.
 
    It is therefore safer not to treat general serialization as the
    default, particularly when encoding, since a decoder may not accept
@@ -523,24 +523,24 @@ Table of Contents
 3.2.  When To Use General Serialization
 
    General serialization is rarely necessary, and support for it is not
-   widespread.  Preferred-plus serialization (Section 4) is efficient
-   and supports the full CBOR data model (except non-trivial NaNs; see
+   universal.  Preferred-plus serialization (Section 4) is efficient and
+   supports the full CBOR data model (except non-trivial NaNs; see
    Appendix B.1), satisfying the vast majority of CBOR use cases.
 
    The main scenario where general serialization is warranted is a
-   protocol that must accommodate highly constrained encoders, at the
+   protocol that has to accommodate highly constrained encoders, at the
    cost of requiring decoders — assumed to be unconstrained — to support
    every possible serialization option.
 
-   When general serialization is required by a protocol, this SHOULD be
-   stated explicitly.
+   A protocol that requires general serialization SHOULD state so
+   explicitly.
 
    See also special serializations (Section 6), which enable
    optimization and efficiency for specific use cases without requiring
    full general serialization support in the decoder.
 
    CBOR libraries may nonetheless wish to support general serialization,
-   as a complete set of serialization forms, to be useful to the broader
+   as a complete set of serialization forms, to be useful to a broader
    range of protocols.
 
 4.  Preferred-Plus Serialization
