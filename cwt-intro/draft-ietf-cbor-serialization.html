@@ -1581,9 +1581,9 @@ It is therefore practical to define a single deterministic serialization suitabl
 Is a CWT decoder required to accept indefinite-length items, for example?<a href="#section-1.3-1" class="pilcrow">¶</a></p>
 <p id="section-1.3-2">One interpretation of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> is that, absent any specification, a decoder is expected to accept every serialization variant, so that it can decode anything it receives.
 <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> defines this full set of variants without naming it; this document introduces the name "general serialization" for it in <a href="#GeneralSerialization" class="auto internal xref">Section 3</a>.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
-<p id="section-1.3-3">In practice, however, CWT decoders often omit support for indefinite lengths and other variations because of the added complexity, and encoders accordingly avoid them.
+<p id="section-1.3-3">In practice, however, decoders for CWT and other CBOR-based protocols often omit support for indefinite lengths and other variations because of the added complexity, and encoders accordingly avoid them.
 An encoder emitting indefinite lengths would still be fully conforming, yet could fail against such a decoder.
-This has rarely caused problems, but it means interoperability rests on convention rather than on the specifications themselves.
+This practice has rarely caused problems, but it means interoperability rests on convention rather than on the specifications themselves.
 <a href="#Recommendations" class="auto internal xref">Section 2</a> addresses this.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
