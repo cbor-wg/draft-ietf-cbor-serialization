@@ -226,9 +226,9 @@ Is a CWT decoder required to accept indefinite-length items, for example?
 One interpretation of {{-cbor}} is that, absent any specification, a decoder is expected to accept every serialization variant, so that it can decode anything it receives.
 {{-cbor}} defines this full set of variants without naming it; this document introduces the name "general serialization" for it in {{GeneralSerialization}}.
 
-In practice, however, CWT decoders often omit support for indefinite lengths and other variations because of the added complexity, and encoders accordingly avoid them.
+In practice, however, decoders for CWT and other CBOR-based protocols often omit support for indefinite lengths and other variations because of the added complexity, and encoders accordingly avoid them.
 An encoder emitting indefinite lengths would still be fully conforming, yet could fail against such a decoder.
-This has rarely caused problems, but it means interoperability rests on convention rather than on the specifications themselves.
+This practice has rarely caused problems, but it means interoperability rests on convention rather than on the specifications themselves.
 {{Recommendations}} addresses this.
 
 
