@@ -224,9 +224,9 @@ Many CBOR-based protocols, such as CWT {{-CWT}}, state no serialization requirem
 Is a CWT decoder required to accept indefinite-length items, for example?
 
 One interpretation of {{-cbor}} is that, absent any specification, a decoder is expected to accept every serialization variant, so that it can decode anything it receives.
-{{-cbor}} defines this full set of variants without naming it; this document calls it general serialization ({{GeneralSerialization}}).
+{{-cbor}} defines this full set of variants without naming it; this document introduces the name "general serialization" for it in {{GeneralSerialization}}.
 
-In practice, however, CWT decoders often omit support for indefinite lengths (and some other variations) because of the added complexity, and encoders accordingly avoid them.
+In practice, however, CWT decoders often omit support for indefinite lengths and other variations because of the added complexity, and encoders accordingly avoid them.
 An encoder emitting indefinite lengths would still be fully conforming, yet could fail against such a decoder.
 This has rarely caused problems, but it means interoperability rests on convention rather than on the specifications themselves.
 {{Recommendations}} addresses this.
@@ -341,14 +341,14 @@ If an end-to-end protocol specification does not state serialization requirement
 # General Serialization {#GeneralSerialization}
 
 This section assigns the name "general serialization" to the complete set of encodings standardized in {{Section 3 of -cbor}}.
-The term itself was not explicitly defined in {{-cbor}}, though it does refer to it as "variant-tolerant decoding" in passing.
+{{-cbor}} does not name this set, though it alludes to it in passing as "variant-tolerant decoding".
 Any serialization, whether defined in this document or elsewhere, permits only encodings drawn from this set.
 General serialization is therefore a superset of them all.
 It is described as follows:
 
-* CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, or 0x190000 and so on).
+* CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, 0x190000, and so on).
 * Floating-point values encoded at any length (for example, 0.0 can be encoded as half-, single-, or double-precision).
-* Both definite- or indefinite-length strings, arrays, and maps.
+* Both definite- and indefinite-length strings, arrays, and maps.
 * Maps with keys in any order.
 * Big number representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the big number 0xc24100).
 
@@ -360,7 +360,7 @@ A decoder claiming to support general serialization MUST accept and decode all t
 {{-cbor}} does not explicitly specify default encoding or decoding requirements.
 Nothing in it says what a CBOR library needs to support, or what an implementation of a protocol that gives no serialization requirements, such as CWT, needs to do.
 
-Some readers take {{-cbor}} to imply that a decoder must support general serialization and that an encoder may use any variant.
+Some readers take {{-cbor}} to imply that a decoder has to support general serialization and that an encoder is free to use any variant.
 This is a possible interpretation, but many implementers have not adopted it.
 For example, CWT and COSE decoders typically do not support indefinite lengths, and their encoders do not produce them.
 
@@ -369,17 +369,17 @@ It is therefore safer not to treat general serialization as the default, particu
 
 ## When To Use General Serialization {#WhenGeneral}
 
-General serialization is rarely necessary, and support for it is not widespread.
+General serialization is rarely necessary, and support for it is not universal.
 Preferred-plus serialization ({{PreferredPlusSerialization}}) is efficient and supports the full CBOR data model (except non-trivial NaNs; see {{NaNBasics}}), satisfying the vast majority of CBOR use cases.
 
-The main scenario where general serialization is warranted is a protocol that must accommodate highly constrained encoders,
+The main scenario where general serialization is warranted is a protocol that has to accommodate highly constrained encoders,
 at the cost of requiring decoders &mdash; assumed to be unconstrained &mdash; to support every possible serialization option.
 
-When general serialization is required by a protocol, this SHOULD be stated explicitly.
+A protocol that requires general serialization SHOULD state so explicitly.
 
 See also special serializations ({{SpecialSerializations}}), which enable optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
 
-CBOR libraries may nonetheless wish to support general serialization, as a complete set of serialization forms, to be useful to the broader range of protocols.
+CBOR libraries may nonetheless wish to support general serialization, as a complete set of serialization forms, to be useful to a broader range of protocols.
 
 
 # Preferred-Plus Serialization {#PreferredPlusSerialization}
