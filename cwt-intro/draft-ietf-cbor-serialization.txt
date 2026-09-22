@@ -4,9 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Updates: 8949 (if approved)                            21 September 2026
+Updates: 8949 (if approved)                            22 September 2026
 Intended status: Standards Track                                        
-Expires: 25 March 2027
+Expires: 26 March 2027
 
 
                    CBOR Serialization and Determinism
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 March 2027.
+   This Internet-Draft will expire on 26 March 2027.
 
 Copyright Notice
 
@@ -141,6 +141,7 @@ Table of Contents
    Appendix F.  Big Number Implementation Strategies
    Appendix G.  Serialization Checking
      G.1.  Serialization Checking Use Cases
+     G.2.  Big Number Leading Zero Exception
    Appendix H.  CBOR Byte String Wrapping
      H.1.  Purpose
      H.2.  Wrapping Recommendations
@@ -672,18 +673,21 @@ Table of Contents
           from double, single, or half-precision into that
           representation may be necessary.
 
-   5.  If big numbers (tags 2 and 3) are accepted, the following apply:
+   5.  If big numbers (tags 2 and 3) are accepted, the following apply.
+       (This is a maximally permissive acceptance mode, adopted to
+       compensate for ambiguity in Section 3.4.3 of [RFC8949].)
 
        *  Big numbers described in Section 3.4.3 of [RFC8949] MUST be
-          accepted.
+          accepted.  This includes:
 
-       *  Leading zeros MUST be ignored.
+          -  Leading zeros MUST be ignored.
 
-       *  An empty byte string MUST be accepted and treated as the value
-          zero.
+       *  For full interoperability, an empty byte string MUST be
+          accepted and treated as the value zero.
 
-   See also Appendix D and Appendix F for further background on big
-   numbers.  See Appendix E for specification in CDDL.
+   See Appendix D and Appendix F for further background on big numbers,
+   Appendix E for the CDDL specification, and Appendix G for overrides
+   to the above decoding rules for serialization-checking decoders.
 
 4.3.  When to use preferred-plus serialization
 
@@ -1720,6 +1724,27 @@ G.1.  Serialization Checking Use Cases
    A decoder that fails to perform well-formedness checking is unsafe,
    whatever else it does.  The appropriate remedy is to fix it, not to
    add the serialization checking described here.
+
+G.2.  Big Number Leading Zero Exception
+
+   Section 3.4.3 of [RFC8949] requires that decoders supporting tags 2
+   and 3 be able to decode bignums that have leading zeros, even though
+   preferred serialization never produces them.  This conflicts with the
+   goal of a decoder that checks for preferred or deterministic
+   serialization: such a decoder needs to reject a bignum with leading
+   zeros as non-conformant.
+
+   This document recommends that decoders performing serialization
+   checking reject bignums containing leading zeros, notwithstanding the
+   MUST in Section 3.4.3 of [RFC8949].  Serialization checking is
+   optional.  When a protocol selects it — for example, because it
+   depends on deterministic encoding — decoders are expected to perform
+   the check, including rejecting non-preferred bignum encodings such as
+   those with leading zeros.
+
+   Note that serialization-checking decoders always reject the empty
+   byte string, because it represents the value zero, which is encoded
+   as major type 0.
 
 Appendix H.  CBOR Byte String Wrapping
 
