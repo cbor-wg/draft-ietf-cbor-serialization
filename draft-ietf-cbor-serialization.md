@@ -186,7 +186,7 @@ JSON also permits variation (1, 1.0, and 0.1e1 represent the same number), but e
 However, CBOR's flexibility introduces two challenges: interoperability and determinism.
 
 
-## Interoperability
+### Interoperability
 
 The interoperability challenge arises because partial implementations are both permitted and expected.
 For example, an encoder may produce an indefinite-length array that is sent to a decoder that supports only definite-length arrays.
@@ -200,10 +200,10 @@ This makes it both feasible and beneficial to define a common serialization suit
 
 Protocol specifications can reference this serialization; library implementations can prioritize support for it.
 
-This document defines that serialization: preferred-plus serialization.
+{{PreferredPlusSerialization}} defines that serialization: preferred-plus serialization.
 
 
-## Determinism
+### Determinism
 
 The determinism challenge arises because there are multiple ways to serialize the same data item.
 The example serialization of the array \[1,2\] above shows this.
@@ -215,7 +215,21 @@ It is therefore practical to define a single deterministic serialization suitabl
 
 Protocol specifications can reference this serialization instead of defining their own deterministic encoding rules; library implementations can prioritize support for it.
 
-This document defines that serialization: deterministic serialization.
+{{DeterministicSerialization}} defines that serialization: deterministic serialization.
+
+
+## Unspecified Serialization
+
+Many CBOR-based protocols, such as CWT {{-CWT}}, state no serialization requirements, which leaves open what an implementation needs to support.
+Is a CWT decoder required to accept indefinite-length items, for example?
+
+One interpretation of {{-cbor}} is that, absent any specification, a decoder is expected to accept every serialization variant, so that it can decode anything it receives.
+{{-cbor}} defines this full set of variants without naming it; this document introduces the name "general serialization" for it in {{GeneralSerialization}}.
+
+In practice, however, decoders for CWT and other CBOR-based protocols often omit support for indefinite lengths and other variations because of the added complexity, and encoders accordingly avoid them.
+An encoder emitting indefinite lengths would still be fully conforming, yet could fail against such a decoder.
+This practice has rarely caused problems, but it means interoperability rests on convention rather than on the specifications themselves.
+{{Recommendations}} addresses this.
 
 
 ## Relation to RFC 8949
@@ -326,46 +340,46 @@ If an end-to-end protocol specification does not state serialization requirement
 
 # General Serialization {#GeneralSerialization}
 
-This section assigns the name "general serialization" to the complete set of all encodings standardized in {{Section 3 of -cbor}}.
-The term itself was not explicitly defined in {{-cbor}}.
-Preferred-plus and deterministic serialization are subsets of it.
+This section assigns the name "general serialization" to the complete set of encodings standardized in {{Section 3 of -cbor}}.
+{{-cbor}} does not name this set, though it alludes to it in passing as "variant-tolerant decoding".
+Any serialization, whether defined in this document or elsewhere, permits only encodings drawn from this set.
+General serialization is therefore a superset of them all.
+It is described as follows:
 
-General serialization permits any and all of these:
+* CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, 0x190000, and so on).
+* Floating-point values encoded at any length (for example, 0.0 can be encoded as half-, single-, or double-precision).
+* Both definite- and indefinite-length strings, arrays, and maps.
+* Maps with keys in any order.
+* Big number representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the big number 0xc24100).
 
-* CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, or 0x190000 and so on).
-* Floating-point values encoded at any length (for example, 0.00 can be 0xf90000, 0xfa00000000, and so on).
-* Both definite or indefinite-length strings, arrays, and maps.
-* Unordered maps.
-* Big number representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the big number 0xc34100).
-
-A decoder claiming to support general serialization MUST accept and decode all the encodings for the data types it supports.
+A decoder claiming to support general serialization MUST accept and decode all the various encodings for the data types it supports.
 
 
-## General Serialization is the Default
+## Default Serialization
 
-When a CBOR-based protocol specification does not explicitly specify serialization, general serialization is the implied requirement &mdash;
-meaning a compliant decoder must accept and decode any and all encodings it permits, including both definite and indefinite lengths.
+{{-cbor}} does not explicitly specify default encoding or decoding requirements.
+Nothing in it says what a CBOR library needs to support, or what an implementation of a protocol that gives no serialization requirements, such as CWT, needs to do.
 
-CBOR Web Token {{-CWT}}, for example, does not specify serialization, so a fully compliant CWT decoder must handle general serialization, including indefinite-length strings, arrays, and maps.
-In practice, however, many CWT decoders cannot process the full range of general serialization &mdash; indefinite lengths in particular.
-Encoders have adapted accordingly, typically restricting their output to the subset of serializations that decoders can reliably handle, most notably by avoiding indefinite lengths altogether.
-The same pattern holds for other protocols, such as COSE [RFC9052].
+Some readers take {{-cbor}} to imply that a decoder has to support general serialization and that an encoder is free to use any variant.
+This is a possible interpretation, but many implementers have not adopted it.
+For example, CWT and COSE decoders typically do not support indefinite lengths, and their encoders do not produce them.
+
+It is therefore safer not to treat general serialization as the default, particularly when encoding, since a decoder may not accept every variant.
 
 
 ## When To Use General Serialization {#WhenGeneral}
 
+General serialization is rarely necessary, and support for it is not universal.
 Preferred-plus serialization ({{PreferredPlusSerialization}}) is efficient and supports the full CBOR data model (except non-trivial NaNs; see {{NaNBasics}}), satisfying the vast majority of CBOR use cases.
-Full general serialization is rarely necessary, and support for it is not widespread.
 
-The main scenario where general serialization is warranted is a protocol that must accommodate highly constrained encoders,
+The main scenario where general serialization is warranted is a protocol that has to accommodate highly constrained encoders,
 at the cost of requiring decoders &mdash; assumed to be unconstrained &mdash; to support every possible serialization option.
 
-When general serialization is required by a protocol, this SHOULD be stated explicitly.
-Although it is the default for CBOR in theory, it has not been widely implemented as such in practice.
+A protocol that requires general serialization SHOULD state so explicitly.
 
-See also special serializations ({{SpecialSerializations}}), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
+See also special serializations ({{SpecialSerializations}}), which enable optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
 
-CBOR libraries may nonetheless wish to support general serialization, as a complete set of other serialization forms, to be useful across a broader range of protocols.
+CBOR libraries may nonetheless wish to support general serialization, as a complete set of serialization forms, to be useful to a broader range of protocols.
 
 
 # Preferred-Plus Serialization {#PreferredPlusSerialization}
@@ -997,6 +1011,7 @@ For example, a decoder that does not support indefinite-length items rejects the
 
 A decoder that fails to perform well-formedness checking is unsafe, whatever else it does.
 The appropriate remedy is to fix it, not to add the serialization checking described here.
+
 
 ## Big Number Leading Zero Exception
 
