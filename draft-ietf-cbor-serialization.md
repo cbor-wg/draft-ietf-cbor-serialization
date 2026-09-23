@@ -669,7 +669,7 @@ These channels are covert because some CBOR decoders accept all such representat
 
 The primary safeguard is to ensure the CBOR encoding library used is trustworthy and does not exfiltrate data.
 
-Checking for preferred-plus or deterministic serialization ({{CheckingDecoder}}) can reveal unexpected variation, and so expose an attack, but cannot prevent one.
+Checking for preferred-plus or deterministic serialization as described in {{CheckingDecoder}} can reveal unexpected variation, and so expose an attack, but cannot prevent one.
 
 
 # IANA Considerations
