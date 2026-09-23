@@ -994,9 +994,9 @@ Table of Contents
    The primary safeguard is to ensure the CBOR encoding library used is
    trustworthy and does not exfiltrate data.
 
-   Checking for preferred-plus or deterministic serialization
-   (Appendix G) can reveal unexpected variation, and so expose an
-   attack, but cannot prevent one.
+   Checking for preferred-plus or deterministic serialization as
+   described in Appendix G can reveal unexpected variation, and so
+   expose an attack, but cannot prevent one.
 
 10.  IANA Considerations
 
