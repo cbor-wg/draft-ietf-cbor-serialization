@@ -132,7 +132,7 @@ These serializations are largely compatible with those widely implemented by the
 
 This document updates RFC 8949 with a new rule that limits how new tag definitions can affect the CBOR data model.
 
-This document provides clarifications to RFC 8949 regarding big numbers and floating-point NaN handling, along with general background information on serialization, determinism, and CBOR byte-string wrapping.
+This document provides clarifications to RFC 8949 regarding bignums and floating-point NaN handling, along with general background information on serialization, determinism, and CBOR byte-string wrapping.
 
 
 --- middle
@@ -186,7 +186,7 @@ JSON also permits variation (1, 1.0, and 0.1e1 represent the same number), but e
 However, CBOR's flexibility introduces two challenges: interoperability and determinism.
 
 
-## Interoperability
+### Interoperability
 
 The interoperability challenge arises because partial implementations are both permitted and expected.
 For example, an encoder may produce an indefinite-length array that is sent to a decoder that supports only definite-length arrays.
@@ -200,10 +200,10 @@ This makes it both feasible and beneficial to define a common serialization suit
 
 Protocol specifications can reference this serialization; library implementations can prioritize support for it.
 
-This document defines that serialization: preferred-plus serialization.
+{{PreferredPlusSerialization}} defines that serialization: preferred-plus serialization.
 
 
-## Determinism
+### Determinism
 
 The determinism challenge arises because there are multiple ways to serialize the same data item.
 The example serialization of the array \[1,2\] above shows this.
@@ -215,7 +215,21 @@ It is therefore practical to define a single deterministic serialization suitabl
 
 Protocol specifications can reference this serialization instead of defining their own deterministic encoding rules; library implementations can prioritize support for it.
 
-This document defines that serialization: deterministic serialization.
+{{DeterministicSerialization}} defines that serialization: deterministic serialization.
+
+
+## Unspecified Serialization
+
+Many CBOR-based protocols, such as CWT {{-CWT}}, state no serialization requirements, which leaves open what an implementation needs to support.
+Is a CWT decoder required to accept indefinite-length items, for example?
+
+One interpretation of {{-cbor}} is that, absent any specification, a decoder is expected to accept every serialization variant, so that it can decode anything it receives.
+{{-cbor}} defines this full set of variants without naming it; this document introduces the name "general serialization" for it in {{GeneralSerialization}}.
+
+In practice, however, decoders for CWT and other CBOR-based protocols often omit support for indefinite lengths and other variations because of the added complexity, and encoders accordingly avoid them.
+An encoder emitting indefinite lengths would still be fully conforming, yet could fail against such a decoder.
+This practice has rarely caused problems, but it means interoperability rests on convention rather than on the specifications themselves.
+{{Recommendations}} addresses this.
 
 
 ## Relation to RFC 8949
@@ -235,7 +249,7 @@ Preferred-plus serialization is effectively the same as preferred serialization 
 ### Tags and Data Models
 
 This document updates {{-cbor}} in one way: it limits how new tag definitions can affect data models.
-The definitions of tags 2 and 3 (big numbers) in {{Section 3.4.3 of -cbor}} modifies the integer type in the CBOR basic generic data model; this is allowed as a one-time exception.
+The definitions of tags 2 and 3 (bignums) in {{Section 3.4.3 of -cbor}} modifies the integer type in the CBOR basic generic data model; this is allowed as a one-time exception.
 The new rule preserves data model definitions against later modification by unrelated tag definitions, which might undermine their semantics and upset their previous use.
 
 # Recommendations Summary {#Recommendations}
@@ -326,46 +340,46 @@ If an end-to-end protocol specification does not state serialization requirement
 
 # General Serialization {#GeneralSerialization}
 
-This section assigns the name "general serialization" to the complete set of all encodings standardized in {{Section 3 of -cbor}}.
-The term itself was not explicitly defined in {{-cbor}}.
-Preferred-plus and deterministic serialization are subsets of it.
+This section assigns the name "general serialization" to the complete set of encodings standardized in {{Section 3 of -cbor}}.
+{{-cbor}} does not name this set, though it alludes to it in passing as "variant-tolerant decoding".
+Any serialization, whether defined in this document or elsewhere, permits only encodings drawn from this set.
+General serialization is therefore a superset of them all.
+It is described as follows:
 
-General serialization permits any and all of these:
+* CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, 0x190000, and so on).
+* Floating-point values encoded at any length (for example, 0.0 can be encoded as half-, single-, or double-precision).
+* Both definite- and indefinite-length strings, arrays, and maps.
+* Maps with keys in any order.
+* Bignum representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the bignum 0xc24100).
 
-* CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, or 0x190000 and so on).
-* Floating-point values encoded at any length (for example, 0.00 can be 0xf90000, 0xfa00000000, and so on).
-* Both definite or indefinite-length strings, arrays, and maps.
-* Unordered maps.
-* Big number representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the big number 0xc34100).
-
-A decoder claiming to support general serialization MUST accept and decode all the encodings for the data types it supports.
+A decoder claiming to support general serialization MUST accept and decode all the various encodings for the data types it supports.
 
 
-## General Serialization is the Default
+## Default Serialization
 
-When a CBOR-based protocol specification does not explicitly specify serialization, general serialization is the implied requirement &mdash;
-meaning a compliant decoder must accept and decode any and all encodings it permits, including both definite and indefinite lengths.
+{{-cbor}} does not explicitly specify default encoding or decoding requirements.
+Nothing in it says what a CBOR library needs to support, or what an implementation of a protocol that gives no serialization requirements, such as CWT, needs to do.
 
-CBOR Web Token {{-CWT}}, for example, does not specify serialization, so a fully compliant CWT decoder must handle general serialization, including indefinite-length strings, arrays, and maps.
-In practice, however, many CWT decoders cannot process the full range of general serialization &mdash; indefinite lengths in particular.
-Encoders have adapted accordingly, typically restricting their output to the subset of serializations that decoders can reliably handle, most notably by avoiding indefinite lengths altogether.
-The same pattern holds for other protocols, such as COSE [RFC9052].
+Some readers take {{-cbor}} to imply that a decoder has to support general serialization and that an encoder is free to use any variant.
+This is a possible interpretation, but many implementers have not adopted it.
+For example, CWT and COSE decoders typically do not support indefinite lengths, and their encoders do not produce them.
+
+It is therefore safer not to treat general serialization as the default, particularly when encoding, since a decoder may not accept every variant.
 
 
 ## When To Use General Serialization {#WhenGeneral}
 
+General serialization is rarely necessary, and support for it is not universal.
 Preferred-plus serialization ({{PreferredPlusSerialization}}) is efficient and supports the full CBOR data model (except non-trivial NaNs; see {{NaNBasics}}), satisfying the vast majority of CBOR use cases.
-Full general serialization is rarely necessary, and support for it is not widespread.
 
-The main scenario where general serialization is warranted is a protocol that must accommodate highly constrained encoders,
+The main scenario where general serialization is warranted is a protocol that has to accommodate highly constrained encoders,
 at the cost of requiring decoders &mdash; assumed to be unconstrained &mdash; to support every possible serialization option.
 
-When general serialization is required by a protocol, this SHOULD be stated explicitly.
-Although it is the default for CBOR in theory, it has not been widely implemented as such in practice.
+A protocol that requires general serialization SHOULD state so explicitly.
 
-See also special serializations ({{SpecialSerializations}}), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
+See also special serializations ({{SpecialSerializations}}), which enable optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
 
-CBOR libraries may nonetheless wish to support general serialization, as a complete set of other serialization forms, to be useful across a broader range of protocols.
+CBOR libraries may nonetheless wish to support general serialization, as a complete set of serialization forms, to be useful to a broader range of protocols.
 
 
 # Preferred-Plus Serialization {#PreferredPlusSerialization}
@@ -417,10 +431,10 @@ A library intended for general use will typically support most or all data types
      Specifically, if the numbers presented for encoding are double-precision, then conversion to single and half-precision is required.
      If the numbers presented for encoding are only single-precision, then conversion to half-precision is required.
 
-1. Big numbers (tags 2 and 3):
+1. Bignums (tags 2 and 3):
 
    * Leading zeros MUST NOT be encoded.
-   * If a value can be encoded using major type 0 or 1, then it MUST be encoded with major type 0 or 1, never as a big number.
+   * If a value can be encoded using major type 0 or 1, then it MUST be encoded with major type 0 or 1, never as a bignum.
 
 
 ## Decoder Requirements {#PreferredPlusDecoding}
@@ -444,14 +458,12 @@ A decoder SHOULD support the same types and ranges as its corresponding encoder,
      These are the only forms of these values a preferred-plus encoder can produce, so accepting their single- and double-precision forms is allowed, but not required.
    * No requirement is made on how a decoded floating-point value is represented to the layer(s) above the decoder; conversion from double, single, or half-precision into that representation may be necessary.
 
-1. If big numbers (tags 2 and 3) are accepted, the following apply:
+1. If bignums (tags 2 and 3) are accepted, the following apply. (This is a maximally permissive acceptance mode, adopted to compensate for ambiguity in {{Section 3.4.3 of -cbor}}.)
+   * Bignums described in {{Section 3.4.3 of -cbor}} MUST be accepted. This includes:
+       * Leading zeros MUST be ignored.
+   * For full interoperability, an empty byte string MUST be accepted and treated as the value zero.
 
-   * Big numbers described in {{Section 3.4.3 of -cbor}} MUST be accepted.
-   * Leading zeros MUST be ignored.
-   * An empty byte string MUST be accepted and treated as the value zero.
-
-See also {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further background on big numbers.
-See {{BigNumbersCDDL}} for specification in CDDL.
+See  {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further background on bignums, {{BigNumbersCDDL}} for the CDDL specification, and {{CheckingDecoder}} for overrides to the above decoding rules for serialization-checking decoders.
 
 
 ## When to use preferred-plus serialization
@@ -473,7 +485,7 @@ The differences are:
 
 * Definite lengths are a requirement, not a preference.
 * The only NaN allowed in encoded output is the half-precision quiet NaN.
-* For big numbers, leading zeros must be ignored and the empty string must be accepted as zero.
+* For bignums, leading zeros must be ignored and the empty string must be accepted as zero.
 
 These differences are not of significance in real-world implementations, so preferred-plus serialization is already largely supported.
 
@@ -499,7 +511,7 @@ This section defines a serialization named "deterministic serialization"
 Deterministic serialization is the same as described in {{Section 4.2.1 of -cbor}} except for the encoding of floating-point NaNs.
 See {{PreferredPlusSerialization}} and {{NaN}} for details on, and the rationale for NaN encoding.
 
-Note that in deterministic serialization, any big number that can be represented as an integer must be encoded as an integer.
+Note that in deterministic serialization, any bignum that can be represented as an integer must be encoded as an integer.
 This rule is inherited from preferred-plus serialization ({{PreferredPlusSerialization}}), just as {{Section 4.2.1 of -cbor}} inherits this requirement from preferred serialization.
 
 See also {{DeterministicConsiderations}} for considerations involved in designing a deterministic protocol that extend beyond serialization.
@@ -545,7 +557,7 @@ Because of this property, deterministic serialization can always be used in plac
 In environments where map sorting is not costly, it is both acceptable and beneficial to always use deterministic serialization.
 In such environments, a CBOR encoder may produce deterministic encoding by default and may even omit support for preferred-plus encoding entirely.
 
-However, note that deterministic serialization is never a substitute for general serialization where use cases may require indefinite lengths, separate big numbers from integers in the data model, or need non-trivial NaNs.
+However, note that deterministic serialization is never a substitute for general serialization where use cases may require indefinite lengths, separate bignums from integers in the data model, or need non-trivial NaNs.
 
 
 ### No Map Ordering Semantics
@@ -695,7 +707,7 @@ The definition leaves a choice open, just as CBOR leaves encoding choices open w
 To make this example definition deterministic, specify one date format and prohibit the other.
 
 A more interesting source of variability is CBOR's variety of number types.
-For instance, the number 2 can be represented as an integer, float, big number, decimal fraction and others defined by tags in the CBOR tag registry.
+For instance, the number 2 can be represented as an integer, float, bignum, decimal fraction and others defined by tags in the CBOR tag registry.
 Most protocol designs will just specify one number type to use, and that will give determinism, but here’s an example specification that doesn’t:
 
 >> At the sender’s convenience, the fluid level measurement MAY be encoded as an integer or a floating-point number. This allows for minimal encoding size while supporting a large range. The receiver MUST be able to accept both integers and floating-point numbers for the measurement.
@@ -898,7 +910,7 @@ Both functions return an integer with the bit pattern for the resulting floating
 {: #half-encode title="Example C Code for Preferred-Plus Floating-Point Encoding"}
 
 
-# Big Numbers and the CBOR Data Model {#BigNumbersDataModel}
+# Bignums and the CBOR Data Model {#BigNumbersDataModel}
 
 The primary purpose of this document is to define preferred-plus and deterministic serialization.
 Accordingly, {{PreferredPlusSerialization}} describes CBOR’s unified integer space in terms of serialization behavior.
@@ -928,10 +940,10 @@ This document does create a new rule for future tag definitions.
 See {{TagDataModelRule}}.
 
 
-# CDDL for Big Numbers {#BigNumbersCDDL}
+# CDDL for Bignums {#BigNumbersCDDL}
 
-The types bigint and biguint in the CDDL Standard Prelude ({{Appendix D of -cddl}}) do NOT describe the big numbers described in this document or in {{Section 3.4.3 of -cbor}}, not even for general serialization.
-The types integer and unsigned can be used, but note that they do not fully express the rules that govern the choice between major types 0 and 1 and the big number tags.
+The types bigint and biguint in the CDDL Standard Prelude ({{Appendix D of -cddl}}) do NOT describe the bignums described in this document or in {{Section 3.4.3 of -cbor}}, not even for general serialization.
+The types integer and unsigned can be used, but note that they do not fully express the rules that govern the choice between major types 0 and 1 and the bignum tags.
 CDDL-described protocols SHOULD use integer and unsigned and in prose state that these values correspond to either {{PreferredPlusSerialization}} of this document or {{Section 3.4.3 of -cbor}}.
 {{BigNumbersDataModel}} explains the reasons for this.
 
@@ -942,28 +954,28 @@ The following CDDL can be used:
 ~~~~
 
 
-# Big Number Implementation Strategies {#BigNumberStrategies}
+# Bignum Implementation Strategies {#BigNumberStrategies}
 
-{{BigNumbersDataModel}} describes how CBOR defines a single integer number space, in which big numbers are not distinct from values encoded using major types 0 and 1.
+{{BigNumbersDataModel}} describes how CBOR defines a single integer number space, in which bignums are not distinct from values encoded using major types 0 and 1.
 This appendix discusses approaches for implementers to support that model.
 
-Some programming environments provide strong native support for big numbers (e.g., JavaScript, Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
-Even in environments that support big numbers, operations on native-sized integers (e.g., 64-bit integers) are typically much more efficient.
-It is therefore reasonable for a CBOR library to expose separate APIs for native-sized integers and for big numbers.
+Some programming environments provide strong native support for bignums (e.g., JavaScript, Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
+Even in environments that support bignums, operations on native-sized integers (e.g., 64-bit integers) are typically much more efficient.
+It is therefore reasonable for a CBOR library to expose separate APIs for native-sized integers and for bignums.
 
-When a CBOR library provides a big number API, values that fall within the range of major types 0 and 1 must be encoded using those major types rather than tags 2 or 3.
-Similarly, decoding facilities that return big numbers must accept values encoded using major types 0 and 1, even though the returned representation is a big number.
+When a CBOR library provides a bignum API, values that fall within the range of major types 0 and 1 must be encoded using those major types rather than tags 2 or 3.
+Similarly, decoding facilities that return bignums must accept values encoded using major types 0 and 1, even though the returned representation is a bignum.
 
-Alternatively, some CBOR libraries may choose to return tags 2 and 3 as raw byte strings, as this approach is simpler than implementing full big number support.
+Alternatively, some CBOR libraries may choose to return tags 2 and 3 as raw byte strings, as this approach is simpler than implementing full bignum support.
 When a library adopts this approach, it should clearly document that the application layer is responsible for performing the integer unification.
 The application is also responsible for handling CBOR’s offset-by-one encoding of negative values and the extended negative integer range permitted by major type 1.
 
-In most cases, these additional processing steps are straightforward when the application already uses a big number library.
+In most cases, these additional processing steps are straightforward when the application already uses a bignum library.
 
 Another acceptable approach is for a CBOR library to provide a generic mechanism that allows applications to register handlers for specific tags.
 In this case, handlers for tags 2 and 3 MUST perform the required unification with major types 0 and 1.
 
-Finally, note that big numbers are not a widely used feature of CBOR.
+Finally, note that bignums are not a widely used feature of CBOR.
 Some CBOR libraries may entirely omit support for tags 2 and 3.
 
 
@@ -998,6 +1010,18 @@ For example, a decoder that does not support indefinite-length items rejects the
 
 A decoder that fails to perform well-formedness checking is unsafe, whatever else it does.
 The appropriate remedy is to fix it, not to add the serialization checking described here.
+
+
+## Bignum Leading Zero Exception
+
+{{Section 3.4.3 of -cbor}} requires that decoders supporting tags 2 and 3 be able to decode bignums that have leading zeros, even though preferred serialization never produces them.
+This conflicts with the goal of a decoder that checks for preferred or deterministic serialization: such a decoder needs to reject a bignum with leading zeros as non-conformant.
+
+This document recommends that decoders performing serialization checking reject bignums containing leading zeros, notwithstanding the MUST in {{Section 3.4.3 of -cbor}}.
+Serialization checking is optional.
+When a protocol selects it &mdash; for example, because it depends on deterministic encoding &mdash; decoders are expected to perform the check, including rejecting non-preferred bignum encodings such as those with leading zeros.
+
+Note that serialization-checking decoders always reject the empty byte string, because it represents the value zero, which is encoded as major type 0.
 
 
 # CBOR Byte String Wrapping {#ByteStringWrapping}
@@ -1311,7 +1335,7 @@ File: map_strings.edn
 
 File: positive_bignum.edn
 
-Note that big numbers are included in the test data because preferred-plus serialization requires their unification with integers.
+Note that bignums are included in the test data because preferred-plus serialization requires their unification with integers.
 
 ~~~~
 {::include examples/positive_bignum.edn}
@@ -1319,7 +1343,7 @@ Note that big numbers are included in the test data because preferred-plus seria
 
 File: negative_bignum.edn
 
-Note that this is the value closest that can be represented as a big number, not a type 1 integer for preferred-plus serialization.
+Note that this is the value closest that can be represented as a bignum, not a type 1 integer for preferred-plus serialization.
 
 ~~~~
 {::include examples/negative_bignum.edn}
