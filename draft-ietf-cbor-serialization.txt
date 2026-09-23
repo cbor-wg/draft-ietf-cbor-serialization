@@ -4,9 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Updates: 8949 (if approved)                            22 September 2026
+Updates: 8949 (if approved)                            23 September 2026
 Intended status: Standards Track                                        
-Expires: 26 March 2027
+Expires: 27 March 2027
 
 
                    CBOR Serialization and Determinism
@@ -29,10 +29,10 @@ Abstract
    This document updates RFC 8949 with a new rule that limits how new
    tag definitions can affect the CBOR data model.
 
-   This document provides clarifications to RFC 8949 regarding big
-   numbers and floating-point NaN handling, along with general
-   background information on serialization, determinism, and CBOR byte-
-   string wrapping.
+   This document provides clarifications to RFC 8949 regarding bignums
+   and floating-point NaN handling, along with general background
+   information on serialization, determinism, and CBOR byte-string
+   wrapping.
 
 About This Document
 
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 March 2027.
+   This Internet-Draft will expire on 27 March 2027.
 
 Copyright Notice
 
@@ -136,12 +136,12 @@ Table of Contents
      B.5.  Divergence from RFC 8949
      B.6.  Recommendations for Use of Non-Trivial NaNs
    Appendix C.  Code for Encoding Preferred-Plus Floating-Point Values
-   Appendix D.  Big Numbers and the CBOR Data Model
-   Appendix E.  CDDL for Big Numbers
-   Appendix F.  Big Number Implementation Strategies
+   Appendix D.  Bignums and the CBOR Data Model
+   Appendix E.  CDDL for Bignums
+   Appendix F.  Bignum Implementation Strategies
    Appendix G.  Serialization Checking
      G.1.  Serialization Checking Use Cases
-     G.2.  Big Number Leading Zero Exception
+     G.2.  Bignum Leading Zero Exception
    Appendix H.  CBOR Byte String Wrapping
      H.1.  Purpose
      H.2.  Wrapping Recommendations
@@ -338,8 +338,8 @@ Table of Contents
 
    This document updates [RFC8949] in one way: it limits how new tag
    definitions can affect data models.  The definitions of tags 2 and 3
-   (big numbers) in Section 3.4.3 of [RFC8949] modifies the integer type
-   in the CBOR basic generic data model; this is allowed as a one-time
+   (bignums) in Section 3.4.3 of [RFC8949] modifies the integer type in
+   the CBOR basic generic data model; this is allowed as a one-time
    exception.  The new rule preserves data model definitions against
    later modification by unrelated tag definitions, which might
    undermine their semantics and upset their previous use.
@@ -497,9 +497,9 @@ Table of Contents
 
    *  Maps with keys in any order.
 
-   *  Big number representation of values that are also representable
-      using major types 0 and 1 (for example, 0 can be encoded as the
-      big number 0xc24100).
+   *  Bignum representation of values that are also representable using
+      major types 0 and 1 (for example, 0 can be encoded as the bignum
+      0xc24100).
 
    A decoder claiming to support general serialization MUST accept and
    decode all the various encodings for the data types it supports.
@@ -632,12 +632,12 @@ Table of Contents
           encoding are only single-precision, then conversion to half-
           precision is required.
 
-   5.  Big numbers (tags 2 and 3):
+   5.  Bignums (tags 2 and 3):
 
        *  Leading zeros MUST NOT be encoded.
 
        *  If a value can be encoded using major type 0 or 1, then it
-          MUST be encoded with major type 0 or 1, never as a big number.
+          MUST be encoded with major type 0 or 1, never as a bignum.
 
 4.2.  Decoder Requirements
 
@@ -674,11 +674,11 @@ Table of Contents
           from double, single, or half-precision into that
           representation may be necessary.
 
-   5.  If big numbers (tags 2 and 3) are accepted, the following apply.
+   5.  If bignums (tags 2 and 3) are accepted, the following apply.
        (This is a maximally permissive acceptance mode, adopted to
        compensate for ambiguity in Section 3.4.3 of [RFC8949].)
 
-       *  Big numbers described in Section 3.4.3 of [RFC8949] MUST be
+       *  Bignums described in Section 3.4.3 of [RFC8949] MUST be
           accepted.  This includes:
 
           -  Leading zeros MUST be ignored.
@@ -686,7 +686,7 @@ Table of Contents
        *  For full interoperability, an empty byte string MUST be
           accepted and treated as the value zero.
 
-   See Appendix D and Appendix F for further background on big numbers,
+   See Appendix D and Appendix F for further background on bignums,
    Appendix E for the CDDL specification, and Appendix G for overrides
    to the above decoding rules for serialization-checking decoders.
 
@@ -720,8 +720,8 @@ Table of Contents
    *  The only NaN allowed in encoded output is the half-precision quiet
       NaN.
 
-   *  For big numbers, leading zeros must be ignored and the empty
-      string must be accepted as zero.
+   *  For bignums, leading zeros must be ignored and the empty string
+      must be accepted as zero.
 
    These differences are not of significance in real-world
    implementations, so preferred-plus serialization is already largely
@@ -762,7 +762,7 @@ Table of Contents
    Section 4 and Appendix B for details on, and the rationale for NaN
    encoding.
 
-   Note that in deterministic serialization, any big number that can be
+   Note that in deterministic serialization, any bignum that can be
    represented as an integer must be encoded as an integer.  This rule
    is inherited from preferred-plus serialization (Section 4), just as
    Section 4.2.1 of [RFC8949] inherits this requirement from preferred
@@ -834,8 +834,8 @@ Table of Contents
 
    However, note that deterministic serialization is never a substitute
    for general serialization where use cases may require indefinite
-   lengths, separate big numbers from integers in the data model, or
-   need non-trivial NaNs.
+   lengths, separate bignums from integers in the data model, or need
+   non-trivial NaNs.
 
 5.3.3.  No Map Ordering Semantics
 
@@ -1124,7 +1124,7 @@ A.1.  Protocol Data Definition
 
    A more interesting source of variability is CBOR's variety of number
    types.  For instance, the number 2 can be represented as an integer,
-   float, big number, decimal fraction and others defined by tags in the
+   float, bignum, decimal fraction and others defined by tags in the
    CBOR tag registry.  Most protocol designs will just specify one
    number type to use, and that will give determinism, but here’s an
    example specification that doesn’t:
@@ -1566,7 +1566,7 @@ Appendix C.  Code for Encoding Preferred-Plus Floating-Point Values
 
     Figure 1: Example C Code for Preferred-Plus Floating-Point Encoding
 
-Appendix D.  Big Numbers and the CBOR Data Model
+Appendix D.  Bignums and the CBOR Data Model
 
    The primary purpose of this document is to define preferred-plus and
    deterministic serialization.  Accordingly, Section 4 describes CBOR’s
@@ -1608,22 +1608,21 @@ Appendix D.  Big Numbers and the CBOR Data Model
    This document does create a new rule for future tag definitions.  See
    Section 7.
 
-Appendix E.  CDDL for Big Numbers
+Appendix E.  CDDL for Bignums
 
    The types bigint and biguint in the CDDL Standard Prelude (Appendix D
-   of [RFC8610]) do NOT describe the big numbers described in this
-   document or in Section 3.4.3 of [RFC8949], not even for general
-   serialization.  The types integer and unsigned can be used, but note
-   that they do not fully express the rules that govern the choice
-   between major types 0 and 1 and the big number tags.  CDDL-described
-   protocols SHOULD use integer and unsigned and in prose state that
-   these values correspond to either Section 4 of this document or
-   Section 3.4.3 of [RFC8949].  Appendix D explains the reasons for
-   this.
+   of [RFC8610]) do NOT describe the bignums described in this document
+   or in Section 3.4.3 of [RFC8949], not even for general serialization.
+   The types integer and unsigned can be used, but note that they do not
+   fully express the rules that govern the choice between major types 0
+   and 1 and the bignum tags.  CDDL-described protocols SHOULD use
+   integer and unsigned and in prose state that these values correspond
+   to either Section 4 of this document or Section 3.4.3 of [RFC8949].
+   Appendix D explains the reasons for this.
 
    The following CDDL can be used:
 
-   ; big number byte strings are of unlimited size, but that
+   ; bignum byte strings are of unlimited size, but that
    ; can't be expressed in CDDL, so a limit of 1,000
    bnmax = 1000
    bnbstr = bstr .size (8..bnmax)
@@ -1636,45 +1635,45 @@ Appendix E.  CDDL for Big Numbers
 
    pplus-bigint = pplus-biguint / pplus-bignint
 
-Appendix F.  Big Number Implementation Strategies
+Appendix F.  Bignum Implementation Strategies
 
    Appendix D describes how CBOR defines a single integer number space,
-   in which big numbers are not distinct from values encoded using major
+   in which bignums are not distinct from values encoded using major
    types 0 and 1.  This appendix discusses approaches for implementers
    to support that model.
 
-   Some programming environments provide strong native support for big
-   numbers (e.g., JavaScript, Python, Ruby, and Go), while others do not
-   (e.g., C, C++, and Rust).  Even in environments that support big
-   numbers, operations on native-sized integers (e.g., 64-bit integers)
-   are typically much more efficient.  It is therefore reasonable for a
-   CBOR library to expose separate APIs for native-sized integers and
-   for big numbers.
+   Some programming environments provide strong native support for
+   bignums (e.g., JavaScript, Python, Ruby, and Go), while others do not
+   (e.g., C, C++, and Rust).  Even in environments that support bignums,
+   operations on native-sized integers (e.g., 64-bit integers) are
+   typically much more efficient.  It is therefore reasonable for a CBOR
+   library to expose separate APIs for native-sized integers and for
+   bignums.
 
-   When a CBOR library provides a big number API, values that fall
-   within the range of major types 0 and 1 must be encoded using those
-   major types rather than tags 2 or 3.  Similarly, decoding facilities
-   that return big numbers must accept values encoded using major types
-   0 and 1, even though the returned representation is a big number.
+   When a CBOR library provides a bignum API, values that fall within
+   the range of major types 0 and 1 must be encoded using those major
+   types rather than tags 2 or 3.  Similarly, decoding facilities that
+   return bignums must accept values encoded using major types 0 and 1,
+   even though the returned representation is a bignum.
 
    Alternatively, some CBOR libraries may choose to return tags 2 and 3
    as raw byte strings, as this approach is simpler than implementing
-   full big number support.  When a library adopts this approach, it
-   should clearly document that the application layer is responsible for
+   full bignum support.  When a library adopts this approach, it should
+   clearly document that the application layer is responsible for
    performing the integer unification.  The application is also
    responsible for handling CBOR’s offset-by-one encoding of negative
    values and the extended negative integer range permitted by major
    type 1.
 
    In most cases, these additional processing steps are straightforward
-   when the application already uses a big number library.
+   when the application already uses a bignum library.
 
    Another acceptable approach is for a CBOR library to provide a
    generic mechanism that allows applications to register handlers for
    specific tags.  In this case, handlers for tags 2 and 3 MUST perform
    the required unification with major types 0 and 1.
 
-   Finally, note that big numbers are not a widely used feature of CBOR.
+   Finally, note that bignums are not a widely used feature of CBOR.
    Some CBOR libraries may entirely omit support for tags 2 and 3.
 
 Appendix G.  Serialization Checking
@@ -1726,7 +1725,7 @@ G.1.  Serialization Checking Use Cases
    whatever else it does.  The appropriate remedy is to fix it, not to
    add the serialization checking described here.
 
-G.2.  Big Number Leading Zero Exception
+G.2.  Bignum Leading Zero Exception
 
    Section 3.4.3 of [RFC8949] requires that decoders supporting tags 2
    and 3 be able to decode bignums that have leading zeros, even though
@@ -2278,12 +2277,11 @@ K.2.  Example Data Items
 
    File: positive_bignum.edn
 
-   Note that big numbers are included in the test data because
-   preferred-plus serialization requires their unification with
-   integers.
+   Note that bignums are included in the test data because preferred-
+   plus serialization requires their unification with integers.
 
    {
-     "description": "A positive big num",
+     "description": "A positive bignum",
      "edn-representations" : ["79228162514264337593543950335"],
      "general-serializations": [h'c24cffffffffffffffffffffffff',
                                 h'c24e0000ffffffffffffffffffffffff' ],
@@ -2293,8 +2291,8 @@ K.2.  Example Data Items
 
    File: negative_bignum.edn
 
-   Note that this is the value closest that can be represented as a big
-   number, not a type 1 integer for preferred-plus serialization.
+   Note that this is the value closest that can be represented as a
+   bignum, not a type 1 integer for preferred-plus serialization.
 
    {
       "description": "Negative bignum on boundary with type 1 integer",
