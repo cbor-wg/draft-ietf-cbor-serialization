@@ -551,22 +551,42 @@ See the more detailed, COSE-based example in {{COSESerialization}}.
 The only difference between preferred-plus and deterministic serialization is that in deterministic serialization, maps are required to be sorted by their keys.
 Preferred-plus serialization exists as a separate mode solely because map sorting can be too expensive in some constrained environments.
 
-Map decoding must never depend on the sort order of a map, even when maps are required to be sorted.
-As a result, deterministic serialization ({{DeterministicSerialization}}) can always be decoded by a decoder that supports preferred-plus serialization ({{PreferredPlusSerialization}}).
-Because of this property, deterministic serialization can always be used in place of preferred-plus serialization.
-In environments where map sorting is not costly, it is both acceptable and beneficial to always use deterministic serialization.
-In such environments, a CBOR encoder may produce deterministic encoding by default and may even omit support for preferred-plus encoding entirely.
+Preferred-plus is deterministic if no maps are encoded.
+
+The decoders are identical (except for a checking decoder for deterministic serialization).
 
 However, note that deterministic serialization is never a substitute for general serialization where use cases may require indefinite lengths, separate bignums from integers in the data model, or need non-trivial NaNs.
 
 
-### No Map Ordering Semantics
+## Map Ordering
 
-In the basic generic data model, maps are unordered (See {{Section 5.6 of -cbor}}).
-Applications MUST NOT rely on any particular map ordering, even if deterministic serialization was used.
-A CBOR library is not required to preserve the order of keys when decoding a map, and the underlying programming language may not preserve map order either &mdash; for example, the Go programming language provides no ordering guarantees for maps.
-The sole purpose of map sorting in deterministic serialization is to ensure reproducibility of the encoded byte stream, not to provide any semantic ordering of map entries.
-If an application requires a map to be ordered, it is responsible for applying its own sorting.
+Map ordering in the serialization layer is only to provide determinism and is entirely orthogonal to map ordering at the data model and application layer.
+
+### Ordering at the Serialization Layer
+
+For maps to be encoded deterministically, two independent entities must encode them exactly the same.
+The only way to do this for maps is to sort each map's key-value pairs by key.
+Thus, for deterministic encoding, maps are sorted.
+
+CBOR map decoders do not depend on received maps in any order.
+They are expected to decode a map regardless of its order.
+
+There is one exception to this: checking decoders (see {{CheckingDecoder}}) for deterministic or other serializations that order maps.
+Their purpose is to make sure the received CBOR is encoded exactly as specified.
+A checking decoder for deterministic serialization therefore rejects unordered maps.
+
+### Ordering at the Data Model Layer
+
+Essentially there is no map ordering at the data model layer; applications and implementations can not rely on it.
+
+The CBOR data model for maps clearly indicates that they are not ordered (see {{Section 5.6 of -cbor}}).
+This is the same as for JSON objects.
+
+Some programming environments, like the Go programming language, provide no ordering guarantees for maps.
+A CBOR decoder is under no obligation to present a map in the order it was received.
+Even if a map is deterministically encoded, it may not be presented at the application layer in map key order.
+
+A particular CBOR library or a particular programming environment may present sorted maps to the CBOR application if it wishes, but this is a feature of the library or programming environment only; protocols or system designs can not expect it at the application layer, even when deterministic serialization is required.
 
 
 # Special Serializations {#SpecialSerializations}
