@@ -1,5 +1,5 @@
 {
-  "description": "A positive big num",
+  "description": "A positive bignum",
   "edn-representations" : ["79228162514264337593543950335"],
   "general-serializations": [h'c24cffffffffffffffffffffffff',
                              h'c24e0000ffffffffffffffffffffffff' ],

@@ -1,4 +1,4 @@
-; big number byte strings are of unlimited size, but that 
+; bignum byte strings are of unlimited size, but that 
 ; can't be expressed in CDDL, so a limit of 1,000
 bnmax = 1000
 bnbstr = bstr .size (8..bnmax)
