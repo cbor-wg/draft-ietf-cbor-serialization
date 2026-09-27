@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-09-24T03:20:48.758912+00:00",
+  "timestamp": "2026-09-27T03:53:22.034766+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -4363,6 +4363,32 @@
       "mergeCommit": {
         "oid": "a6d46d5067500654883d20660cc438a31bdf3a29"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 97,
+      "id": "PR_kwDOQYX63c8AAAABE_KMfw",
+      "title": "Rework sections on map ordering",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/97",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-09-24T18:34:37Z",
+      "updatedAt": "2026-09-24T18:36:08Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "766e9ff1080f00d8a857ce8c55a44a5f30f03f25",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "sorted",
+      "headRefOid": "1929675d9c826311f953e3585674e45518bc8f3e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
