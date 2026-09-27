@@ -195,7 +195,7 @@ Both this encoder and decoder are allowed by {{-cbor}}.
 Decoders in particular often support only a subset of serialization forms &mdash; whether because they operate in constrained environments,
 or because a full general-purpose decoder is substantially more work to implement, especially in languages like C and Rust that lack built-in dynamic arrays, maps, and strings.
 
-In practice, most CBOR usage occurs outside highly constrained environments.
+From many years of CBOR deployment, we know that some serialization variants like indefinite-lengths are not commonly used.
 This makes it both feasible and beneficial to define a common serialization suitable for general use.
 
 Protocol specifications can reference this serialization; library implementations can prioritize support for it.
@@ -210,7 +210,7 @@ The example serialization of the array \[1,2\] above shows this.
 This is a problem in some protocols that hash or sign encoded CBOR.
 
 Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
-However, as noted earlier, the majority of CBOR usage occurs outside constrained environments.
+However, as noted above, some serialization variants like indefinite-lengths are not commonly used.
 It is therefore practical to define a single deterministic serialization suitable for general use.
 
 Protocol specifications can reference this serialization instead of defining their own deterministic encoding rules; library implementations can prioritize support for it.
@@ -240,10 +240,9 @@ This document defines new serializations rather than updating those in {{-cbor}}
 This approach enables the serialization requirements to be expressed directly in normative {{RFC2119}} language and to be defined entirely in this document.
 This approach provides clarity and simplicity for implementers and the CBOR community over the long term.
 
-The serializations defined herein are formally new but largely interchangeable with the way the serializations described in {{-cbor}} are implemented.
-
-For example, preferred serialization ({{Section 4.1 of -cbor}}) is commonly implemented without support for indefinite lengths.
-Preferred-plus serialization is effectively the same as preferred serialization without indefinite lengths, so it is largely interchangeable with what is commonly implemented.
+The serializations defined here are formally new, but they differ little in practice from what CBOR libraries already implement
+For example, the shortest-length argument encoding described in {{Section 4.1 of -cbor}} is widely implemented for both encoding and decoding, and is the same as that required by the serializations defined here.
+See {{RelationToPreferred}}.
 
 
 ### Tags and Data Models
@@ -370,7 +369,7 @@ It is therefore safer not to treat general serialization as the default, particu
 ## When To Use General Serialization {#WhenGeneral}
 
 General serialization is rarely necessary, and support for it is not universal.
-Preferred-plus serialization ({{PreferredPlusSerialization}}) is efficient and supports the full CBOR data model (except non-trivial NaNs; see {{NaNBasics}}), satisfying the vast majority of CBOR use cases.
+Preferred-plus serialization ({{PreferredPlusSerialization}}) is compact and supports the full CBOR data model (except non-trivial NaNs; see {{NaNBasics}}), satisfying the vast majority of CBOR use cases.
 
 The main scenario where general serialization is warranted is a protocol that has to accommodate highly constrained encoders,
 at the cost of requiring decoders &mdash; assumed to be unconstrained &mdash; to support every possible serialization option.
@@ -483,11 +482,11 @@ Preferred-plus serialization is defined to be the long-term replacement for pref
 
 The differences are:
 
-* Definite lengths are a requirement, not a preference.
-* The only NaN allowed in encoded output is the half-precision quiet NaN.
-* For bignums, leading zeros must be ignored and the empty string must be accepted as zero.
+* Encoders use only definite lengths; this is a requirement, not a preference.
+* Encoders emit only the half-precision quiet NaN.
+* Decoders ignore leading zeros in bignums and accept the empty byte string as zero.
 
-These differences are not of significance in real-world implementations, so preferred-plus serialization is already largely supported.
+These differences are unlikely to affect real-world implementations and many implementations are already close to conforming.
 
 {{Section 3 of -cbor}} states that in preferred serialization the use of definite-length encoding is a "preference", not a requirement.
 Technically that means preferred serialization decoders must support indefinite lengths, but in reality many do not.
