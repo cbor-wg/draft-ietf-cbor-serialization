@@ -606,6 +606,8 @@ For example, if a string length is always encoded in 32 bits, increasing its len
 
 * Transmission of non-trivial NaN floating-point values (see {{NaN}}).
 
+* Use of a bignum for shorter encoding of 33- to 56-bit integers (a 40-bit value with implied tag takes 6 bytes rather than 9).
+
 * Deterministic serialization with any or all of the above.
 
 All of these except determinism are also available with general serialization, but a targeted special serialization will usually be substantially easier to implement.
