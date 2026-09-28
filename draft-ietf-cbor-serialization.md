@@ -568,8 +568,8 @@ For maps to be encoded deterministically, two independent entities must encode t
 The only way to do this for maps is to sort each map's key-value pairs by key.
 Thus, for deterministic encoding, maps are sorted.
 
-CBOR map decoders do not depend on received maps in any order.
-They are expected to decode a map regardless of its order.
+While not stated explcitly in {{-cbor}}, it does imply that map decoding must never depend on map ordering.
+All CBOR map decoding must succeed regardless of the map order.
 
 There is one exception to this: checking decoders (see {{CheckingDecoder}}) for deterministic or other serializations that order maps.
 Their purpose is to make sure the received CBOR is encoded exactly as specified.
