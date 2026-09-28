@@ -4,9 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Updates: 8949 (if approved)                            24 September 2026
+Updates: 8949 (if approved)                            28 September 2026
 Intended status: Standards Track                                        
-Expires: 28 March 2027
+Expires: 1 April 2027
 
 
                    CBOR Serialization and Determinism
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 March 2027.
+   This Internet-Draft will expire on 1 April 2027.
 
 Copyright Notice
 
@@ -846,8 +846,9 @@ Table of Contents
    is to sort each map's key-value pairs by key.  Thus, for
    deterministic encoding, maps are sorted.
 
-   CBOR map decoders do not depend on received maps in any order.  They
-   are expected to decode a map regardless of its order.
+   While not stated explcitly in [RFC8949], it does imply that map
+   decoding must never depend on map ordering.  All CBOR map decoding
+   must succeed regardless of the map order.
 
    There is one exception to this: checking decoders (see Appendix G)
    for deterministic or other serializations that order maps.  Their
