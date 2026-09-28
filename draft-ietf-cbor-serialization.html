@@ -1052,7 +1052,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 27 March 2027</td>
+<td class="center">Expires 1 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc8949" class="eref">8949</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-09-23" class="published">23 September 2026</time>
+<time datetime="2026-09-28" class="published">28 September 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-03-27">27 March 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-01">1 April 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1129,7 +1129,7 @@ These serializations are largely compatible with those widely implemented by the
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 27 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1267,8 +1267,16 @@ These serializations are largely compatible with those widely implemented by the
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.2">
                     <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="auto internal xref">5.3.2</a>.  <a href="#name-decoding-deterministic-seri" class="internal xref">Decoding Deterministic Serialization and Relation to Preferred-Plus Serialization</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.3">
-                    <p id="section-toc.1-1.5.2.3.2.3.1"><a href="#section-5.3.3" class="auto internal xref">5.3.3</a>.  <a href="#name-no-map-ordering-semantics" class="internal xref">No Map Ordering Semantics</a></p>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-map-ordering" class="internal xref">Map Ordering</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.1">
+                    <p id="section-toc.1-1.5.2.4.2.1.1"><a href="#section-5.4.1" class="auto internal xref">5.4.1</a>.  <a href="#name-ordering-at-the-serializati" class="internal xref">Ordering at the Serialization Layer</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.2">
+                    <p id="section-toc.1-1.5.2.4.2.2.1"><a href="#section-5.4.2" class="auto internal xref">5.4.2</a>.  <a href="#name-ordering-at-the-data-model-" class="internal xref">Ordering at the Data Model Layer</a></p>
 </li>
                 </ul>
 </li>
@@ -2036,24 +2044,46 @@ Such designs are often chosen to reduce data size, preserve privacy, or meet oth
           </h4>
 <p id="section-5.3.2-1">The only difference between preferred-plus and deterministic serialization is that in deterministic serialization, maps are required to be sorted by their keys.
 Preferred-plus serialization exists as a separate mode solely because map sorting can be too expensive in some constrained environments.<a href="#section-5.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.3.2-2">Map decoding must never depend on the sort order of a map, even when maps are required to be sorted.
-As a result, deterministic serialization (<a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>) can always be decoded by a decoder that supports preferred-plus serialization (<a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>).
-Because of this property, deterministic serialization can always be used in place of preferred-plus serialization.
-In environments where map sorting is not costly, it is both acceptable and beneficial to always use deterministic serialization.
-In such environments, a CBOR encoder may produce deterministic encoding by default and may even omit support for preferred-plus encoding entirely.<a href="#section-5.3.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.3.2-3">However, note that deterministic serialization is never a substitute for general serialization where use cases may require indefinite lengths, separate bignums from integers in the data model, or need non-trivial NaNs.<a href="#section-5.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.3.2-2">Preferred-plus is deterministic if no maps are encoded.<a href="#section-5.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.3.2-3">The decoders are identical (except for a checking decoder for deterministic serialization).<a href="#section-5.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.3.2-4">However, note that deterministic serialization is never a substitute for general serialization where use cases may require indefinite lengths, separate bignums from integers in the data model, or need non-trivial NaNs.<a href="#section-5.3.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="no-map-ordering-semantics">
-<section id="section-5.3.3">
-          <h4 id="name-no-map-ordering-semantics">
-<a href="#section-5.3.3" class="section-number selfRef">5.3.3. </a><a href="#name-no-map-ordering-semantics" class="section-name selfRef">No Map Ordering Semantics</a>
+</section>
+</div>
+<div id="map-ordering">
+<section id="section-5.4">
+        <h3 id="name-map-ordering">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-map-ordering" class="section-name selfRef">Map Ordering</a>
+        </h3>
+<p id="section-5.4-1">Map ordering in the serialization layer is only to provide determinism and is entirely orthogonal to map ordering at the data model and application layer.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<div id="ordering-at-the-serialization-layer">
+<section id="section-5.4.1">
+          <h4 id="name-ordering-at-the-serializati">
+<a href="#section-5.4.1" class="section-number selfRef">5.4.1. </a><a href="#name-ordering-at-the-serializati" class="section-name selfRef">Ordering at the Serialization Layer</a>
           </h4>
-<p id="section-5.3.3-1">In the basic generic data model, maps are unordered (See <span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.6" class="relref">Section 5.6</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>).
-Applications MUST NOT rely on any particular map ordering, even if deterministic serialization was used.
-A CBOR library is not required to preserve the order of keys when decoding a map, and the underlying programming language may not preserve map order either — for example, the Go programming language provides no ordering guarantees for maps.
-The sole purpose of map sorting in deterministic serialization is to ensure reproducibility of the encoded byte stream, not to provide any semantic ordering of map entries.
-If an application requires a map to be ordered, it is responsible for applying its own sorting.<a href="#section-5.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.4.1-1">For maps to be encoded deterministically, two independent entities must encode them exactly the same.
+The only way to do this for maps is to sort each map's key-value pairs by key.
+Thus, for deterministic encoding, maps are sorted.<a href="#section-5.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.4.1-2">While not stated explcitly in <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>, it does imply that map decoding must never depend on map ordering.
+All CBOR map decoding must succeed regardless of the map order.<a href="#section-5.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.1-3">There is one exception to this: checking decoders (see <a href="#CheckingDecoder" class="auto internal xref">Appendix G</a>) for deterministic or other serializations that order maps.
+Their purpose is to make sure the received CBOR is encoded exactly as specified.
+A checking decoder for deterministic serialization therefore rejects unordered maps.<a href="#section-5.4.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ordering-at-the-data-model-layer">
+<section id="section-5.4.2">
+          <h4 id="name-ordering-at-the-data-model-">
+<a href="#section-5.4.2" class="section-number selfRef">5.4.2. </a><a href="#name-ordering-at-the-data-model-" class="section-name selfRef">Ordering at the Data Model Layer</a>
+          </h4>
+<p id="section-5.4.2-1">Essentially there is no map ordering at the data model layer; applications and implementations can not rely on it.<a href="#section-5.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-2">The CBOR data model for maps clearly indicates that they are not ordered (see <span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.6" class="relref">Section 5.6</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>).
+This is the same as for JSON objects.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-3">Some programming environments, like the Go programming language, provide no ordering guarantees for maps.
+A CBOR decoder is under no obligation to present a map in the order it was received.
+Even if a map is deterministically encoded, it may not be presented at the application layer in map key order.<a href="#section-5.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-4">A particular CBOR library or a particular programming environment may present sorted maps to the CBOR application if it wishes, but this is a feature of the library or programming environment only; protocols or system designs can not expect it at the application layer, even when deterministic serialization is required.<a href="#section-5.4.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
