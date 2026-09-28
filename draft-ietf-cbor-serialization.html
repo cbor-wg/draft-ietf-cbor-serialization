@@ -2116,7 +2116,10 @@ For example, if a string length is always encoded in 32 bits, increasing its len
           <p id="section-6-2.5.1">Transmission of non-trivial NaN floating-point values (see <a href="#NaN" class="auto internal xref">Appendix B</a>).<a href="#section-6-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-2.6">
-          <p id="section-6-2.6.1">Deterministic serialization with any or all of the above.<a href="#section-6-2.6.1" class="pilcrow">¶</a></p>
+          <p id="section-6-2.6.1">Use of a bignum for shorter encoding of 33- to 56-bit integers (a 40-bit value with implied tag takes 6 bytes rather than 9).<a href="#section-6-2.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-6-2.7">
+          <p id="section-6-2.7.1">Deterministic serialization with any or all of the above.<a href="#section-6-2.7.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-6-3">All of these except determinism are also available with general serialization, but a targeted special serialization will usually be substantially easier to implement.<a href="#section-6-3" class="pilcrow">¶</a></p>
