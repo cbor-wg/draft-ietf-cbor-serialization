@@ -621,10 +621,6 @@ For example, a protocol requiring deterministic streaming of maps and arrays cou
 
 # New Tag Data Model Rule {#TagDataModelRule}
 
-[^to-be-removed4]
-
-[^to-be-removed4]: This section is new in draft-03. The author thinks it may be out of place in this document, but there's no other good place for it yet.
-
 {{Section 2 of -cbor}} states that each new CBOR tag definition introduces a new and distinct data type.
 In contrast, the definitions of Tags 2 and 3 (bignums) in {{Section 3.4.3 of -cbor}} do not introduce a separate data type; instead, they attach directly to the integer type and extend its numeric range.
 As a result, the generic data model’s integer type is modified rather than augmented with a new, independent type (see {{BigNumbersDataModel}}).
