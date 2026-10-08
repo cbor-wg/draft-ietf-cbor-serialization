@@ -34,7 +34,7 @@
 #define S2H_SIGN_SHIFT       16
 #define S2H_BIAS_DIFF_EXP   (127 - 15)
 #define S2H_MIN_NORM_EXP     113
-#define S2H_MIN_SUBNORM_EXP  102
+#define S2H_MIN_SUBNORM_EXP  103
 #define S2H_SUBNORM_SHIFT    126
 #define S2H_MAX_NORM_EXP     142
 #define S2H_LOST_BITS        0x1fffUL /* 23 - 10 bits */
