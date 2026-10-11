@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-09-29T04:27:16.610215+00:00",
+  "timestamp": "2026-10-11T04:14:36.127405+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -4475,6 +4475,58 @@
       "mergeCommit": {
         "oid": "585e0c7fc319a6803c40970a1648a3175df18cbe"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 101,
+      "id": "PR_kwDOQYX63c8AAAABHZJunA",
+      "title": "empty string for tag 3 is -1",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/101",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-10-08T18:24:54Z",
+      "updatedAt": "2026-10-08T18:24:54Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "585e0c7fc319a6803c40970a1648a3175df18cbe",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "negbignumbstr",
+      "headRefOid": "b19c9301e426b3e7509177d4045a4b1d7b90b57b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 102,
+      "id": "PR_kwDOQYX63c8AAAABHZSTRQ",
+      "title": "Bug fix for conversion of float 0x33000000 to half",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/102",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-10-08T18:37:50Z",
+      "updatedAt": "2026-10-08T18:37:50Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "585e0c7fc319a6803c40970a1648a3175df18cbe",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "103",
+      "headRefOid": "2fe232d2f3d7e41145ea4162e0838308e3fc76ac",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
