@@ -14,25 +14,25 @@ Protocol designers and implementers who choose it need not understand or specify
 This document also normatively defines a deterministic serialization.
 These serializations are largely compatible with those widely implemented by the CBOR community. 
        This document updates RFC 8949 with a new rule that limits how new tag definitions can affect the CBOR data model. 
-       This document provides clarifications to RFC 8949 regarding big numbers and floating-point NaN handling, along with general background information on serialization, determinism, and CBOR byte-string wrapping. 
+       This document provides clarifications to RFC 8949 regarding bignums and floating-point NaN handling, along with general background information on serialization, determinism, and CBOR byte-string wrapping. 
     ' name="description">
-<meta content="xml2rfc 3.34.0" name="generator">
+<meta content="xml2rfc 3.34.1" name="generator">
 <meta content="cbor" name="keyword">
 <meta content="draft-ietf-cbor-serialization-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.34.0
-    Python 3.14.7
-    ConfigArgParse 1.7.5
+  xml2rfc 3.34.1
+    Python 3.14.8
+    ConfigArgParse 1.8.0
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.11.7
+    platformdirs 4.12.2
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.3
+    wcwidth 0.9.1
 -->
 <link href="draft-ietf-cbor-serialization.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1048,11 +1048,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">CBOR Serialization</td>
-<td class="right">September 2026</td>
+<td class="right">October 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundblade</td>
-<td class="center">Expires 19 March 2027</td>
+<td class="center">Expires 18 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc8949" class="eref">8949</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-09-15" class="published">15 September 2026</time>
+<time datetime="2026-10-15" class="published">15 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-03-19">19 March 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-18">18 April 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1093,7 +1093,7 @@ Protocol designers and implementers who choose it need not understand or specify
 This document also normatively defines a deterministic serialization.
 These serializations are largely compatible with those widely implemented by the CBOR community.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">This document updates RFC 8949 with a new rule that limits how new tag definitions can affect the CBOR data model.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
-<p id="section-abstract-3">This document provides clarifications to RFC 8949 regarding big numbers and floating-point NaN handling, along with general background information on serialization, determinism, and CBOR byte-string wrapping.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document provides clarifications to RFC 8949 regarding bignums and floating-point NaN handling, along with general background information on serialization, determinism, and CBOR byte-string wrapping.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1129,7 +1129,7 @@ These serializations are largely compatible with those widely implemented by the
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 18 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1165,22 +1165,27 @@ These serializations are largely compatible with those widely implemented by the
                 <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-information-model-data-mode" class="internal xref">Information Model, Data Model and Serialization</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
-                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-flexible-serialization" class="internal xref">Flexible Serialization</a></p>
+                <p id="section-toc.1-1.1.2.2.1"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-flexible-serialization" class="internal xref">Flexible Serialization</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2.2.1">
+                    <p id="section-toc.1-1.1.2.2.2.1.1" class="keepWithNext"><a href="#section-1.2.1" class="auto internal xref">1.2.1</a>.  <a href="#name-interoperability" class="internal xref">Interoperability</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2.2.2">
+                    <p id="section-toc.1-1.1.2.2.2.2.1" class="keepWithNext"><a href="#section-1.2.2" class="auto internal xref">1.2.2</a>.  <a href="#name-determinism" class="internal xref">Determinism</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.3">
-                <p id="section-toc.1-1.1.2.3.1" class="keepWithNext"><a href="#section-1.3" class="auto internal xref">1.3</a>.  <a href="#name-interoperability" class="internal xref">Interoperability</a></p>
+                <p id="section-toc.1-1.1.2.3.1"><a href="#section-1.3" class="auto internal xref">1.3</a>.  <a href="#name-unspecified-serialization" class="internal xref">Unspecified Serialization</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.4">
-                <p id="section-toc.1-1.1.2.4.1"><a href="#section-1.4" class="auto internal xref">1.4</a>.  <a href="#name-determinism" class="internal xref">Determinism</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.5">
-                <p id="section-toc.1-1.1.2.5.1"><a href="#section-1.5" class="auto internal xref">1.5</a>.  <a href="#name-relation-to-rfc-8949" class="internal xref">Relation to RFC 8949</a></p>
+                <p id="section-toc.1-1.1.2.4.1"><a href="#section-1.4" class="auto internal xref">1.4</a>.  <a href="#name-relation-to-rfc-8949" class="internal xref">Relation to RFC 8949</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.5.2.1">
-                    <p id="section-toc.1-1.1.2.5.2.1.1"><a href="#section-1.5.1" class="auto internal xref">1.5.1</a>.  <a href="#name-serialization" class="internal xref">Serialization</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.4.2.1">
+                    <p id="section-toc.1-1.1.2.4.2.1.1"><a href="#section-1.4.1" class="auto internal xref">1.4.1</a>.  <a href="#name-serialization" class="internal xref">Serialization</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.5.2.2">
-                    <p id="section-toc.1-1.1.2.5.2.2.1"><a href="#section-1.5.2" class="auto internal xref">1.5.2</a>.  <a href="#name-tags-and-data-models" class="internal xref">Tags and Data Models</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.4.2.2">
+                    <p id="section-toc.1-1.1.2.4.2.2.1"><a href="#section-1.4.2" class="auto internal xref">1.4.2</a>.  <a href="#name-tags-and-data-models" class="internal xref">Tags and Data Models</a></p>
 </li>
                 </ul>
 </li>
@@ -1220,7 +1225,7 @@ These serializations are largely compatible with those widely implemented by the
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-general-serialization" class="internal xref">General Serialization</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-general-serialization-is-th" class="internal xref">General Serialization is the Default</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-default-serialization" class="internal xref">Default Serialization</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-when-to-use-general-seriali" class="internal xref">When To Use General Serialization</a></p>
@@ -1262,8 +1267,16 @@ These serializations are largely compatible with those widely implemented by the
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.2">
                     <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="auto internal xref">5.3.2</a>.  <a href="#name-decoding-deterministic-seri" class="internal xref">Decoding Deterministic Serialization and Relation to Preferred-Plus Serialization</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.3">
-                    <p id="section-toc.1-1.5.2.3.2.3.1"><a href="#section-5.3.3" class="auto internal xref">5.3.3</a>.  <a href="#name-no-map-ordering-semantics" class="internal xref">No Map Ordering Semantics</a></p>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-map-ordering" class="internal xref">Map Ordering</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.1">
+                    <p id="section-toc.1-1.5.2.4.2.1.1"><a href="#section-5.4.1" class="auto internal xref">5.4.1</a>.  <a href="#name-ordering-at-the-serializati" class="internal xref">Ordering at the Serialization Layer</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.2">
+                    <p id="section-toc.1-1.5.2.4.2.2.1"><a href="#section-5.4.2" class="auto internal xref">5.4.2</a>.  <a href="#name-ordering-at-the-data-model-" class="internal xref">Ordering at the Data Model Layer</a></p>
 </li>
                 </ul>
 </li>
@@ -1341,19 +1354,22 @@ These serializations are largely compatible with those widely implemented by the
             <p id="section-toc.1-1.14.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-code-for-encoding-preferred" class="internal xref">Code for Encoding Preferred-Plus Floating-Point Values</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-big-numbers-and-the-cbor-da" class="internal xref">Big Numbers and the CBOR Data Model</a></p>
+            <p id="section-toc.1-1.15.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-bignums-and-the-cbor-data-m" class="internal xref">Bignums and the CBOR Data Model</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-cddl-for-big-numbers" class="internal xref">CDDL for Big Numbers</a></p>
+            <p id="section-toc.1-1.16.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-cddl-for-bignums" class="internal xref">CDDL for Bignums</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1"><a href="#appendix-F" class="auto internal xref">Appendix F</a>.  <a href="#name-big-number-implementation-s" class="internal xref">Big Number Implementation Strategies</a></p>
+            <p id="section-toc.1-1.17.1"><a href="#appendix-F" class="auto internal xref">Appendix F</a>.  <a href="#name-bignum-implementation-strat" class="internal xref">Bignum Implementation Strategies</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18">
             <p id="section-toc.1-1.18.1"><a href="#appendix-G" class="auto internal xref">Appendix G</a>.  <a href="#name-serialization-checking" class="internal xref">Serialization Checking</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.1">
                 <p id="section-toc.1-1.18.2.1.1"><a href="#appendix-G.1" class="auto internal xref">G.1</a>.  <a href="#name-serialization-checking-use-" class="internal xref">Serialization Checking Use Cases</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.2">
+                <p id="section-toc.1-1.18.2.2.1"><a href="#appendix-G.2" class="auto internal xref">G.2</a>.  <a href="#name-bignum-leading-zero-excepti" class="internal xref">Bignum Leading Zero Exception</a></p>
 </li>
             </ul>
 </li>
@@ -1378,13 +1394,21 @@ These serializations are largely compatible with those widely implemented by the
             <p id="section-toc.1-1.21.1"><a href="#appendix-J" class="auto internal xref">Appendix J</a>.  <a href="#name-serialization-for-cose" class="internal xref">Serialization for COSE</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.1">
-                <p id="section-toc.1-1.21.2.1.1"><a href="#appendix-J.1" class="auto internal xref">J.1</a>.  <a href="#name-cose-payload-serialization" class="internal xref">COSE Payload Serialization</a></p>
+                <p id="section-toc.1-1.21.2.1.1"><a href="#appendix-J.1" class="auto internal xref">J.1</a>.  <a href="#name-serialization-topics-applie" class="internal xref">Serialization Topics Applies to COSE</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.1.2.1">
+                    <p id="section-toc.1-1.21.2.1.2.1.1"><a href="#appendix-J.1.1" class="auto internal xref">J.1.1</a>.  <a href="#name-cose-payload-serialization" class="internal xref">COSE Payload Serialization</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.1.2.2">
+                    <p id="section-toc.1-1.21.2.1.2.2.1"><a href="#appendix-J.1.2" class="auto internal xref">J.1.2</a>.  <a href="#name-cose-sig_structure" class="internal xref">COSE Sig_structure</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.1.2.3">
+                    <p id="section-toc.1-1.21.2.1.2.3.1"><a href="#appendix-J.1.3" class="auto internal xref">J.1.3</a>.  <a href="#name-the-encoded-message" class="internal xref">The Encoded Message</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.2">
-                <p id="section-toc.1-1.21.2.2.1"><a href="#appendix-J.2" class="auto internal xref">J.2</a>.  <a href="#name-cose-sig_structure" class="internal xref">COSE Sig_structure</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.3">
-                <p id="section-toc.1-1.21.2.3.1"><a href="#appendix-J.3" class="auto internal xref">J.3</a>.  <a href="#name-the-encoded-message" class="internal xref">The Encoded Message</a></p>
+                <p id="section-toc.1-1.21.2.2.1"><a href="#appendix-J.2" class="auto internal xref">J.2</a>.  <a href="#name-cose-serialization-recommen" class="internal xref">COSE Serialization Recommendation</a></p>
 </li>
             </ul>
 </li>
@@ -1531,65 +1555,80 @@ Conversely, definite-length serialization makes it easier to decode small arrays
 <p id="section-1.2-5">Crucially, CBOR allows — and even expects — that some implementations will not support all serialization variants.
 JSON also permits variation (1, 1.0, and 0.1e1 represent the same number), but expects every parser to handle all of it, since the variation is there for human readability rather than for ease of implementation in constrained environments.<a href="#section-1.2-5" class="pilcrow">¶</a></p>
 <p id="section-1.2-6">However, CBOR's flexibility introduces two challenges: interoperability and determinism.<a href="#section-1.2-6" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="interoperability">
-<section id="section-1.3">
-        <h3 id="name-interoperability">
-<a href="#section-1.3" class="section-number selfRef">1.3. </a><a href="#name-interoperability" class="section-name selfRef">Interoperability</a>
-        </h3>
-<p id="section-1.3-1">The interoperability challenge arises because partial implementations are both permitted and expected.
+<section id="section-1.2.1">
+          <h4 id="name-interoperability">
+<a href="#section-1.2.1" class="section-number selfRef">1.2.1. </a><a href="#name-interoperability" class="section-name selfRef">Interoperability</a>
+          </h4>
+<p id="section-1.2.1-1">The interoperability challenge arises because partial implementations are both permitted and expected.
 For example, an encoder may produce an indefinite-length array that is sent to a decoder that supports only definite-length arrays.
-Both this encoder and decoder are allowed by <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-1.3-1" class="pilcrow">¶</a></p>
-<p id="section-1.3-2">Decoders in particular often support only a subset of serialization forms — whether because they operate in constrained environments,
-or because a full general-purpose decoder is substantially more work to implement, especially in languages like C and Rust that lack built-in dynamic arrays, maps, and strings.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
-<p id="section-1.3-3">In practice, most CBOR usage occurs outside highly constrained environments.
-This makes it both feasible and beneficial to define a common serialization suitable for general use.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
-<p id="section-1.3-4">Protocol specifications can reference this serialization; library implementations can prioritize support for it.<a href="#section-1.3-4" class="pilcrow">¶</a></p>
-<p id="section-1.3-5">This document defines that serialization: preferred-plus serialization.<a href="#section-1.3-5" class="pilcrow">¶</a></p>
+Both this encoder and decoder are allowed by <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-1.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-2">Decoders in particular often support only a subset of serialization forms — whether because they operate in constrained environments,
+or because a full general-purpose decoder is substantially more work to implement, especially in languages like C and Rust that lack built-in dynamic arrays, maps, and strings.<a href="#section-1.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-3">From many years of CBOR deployment, we know that some serialization variants like indefinite-lengths are not commonly used.
+This makes it both feasible and beneficial to define a common serialization suitable for general use.<a href="#section-1.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-4">Protocol specifications can reference this serialization; library implementations can prioritize support for it.<a href="#section-1.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-5"><a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a> defines that serialization: preferred-plus serialization.<a href="#section-1.2.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="determinism">
-<section id="section-1.4">
-        <h3 id="name-determinism">
-<a href="#section-1.4" class="section-number selfRef">1.4. </a><a href="#name-determinism" class="section-name selfRef">Determinism</a>
-        </h3>
-<p id="section-1.4-1">The determinism challenge arises because there are multiple ways to serialize the same data item.
+<section id="section-1.2.2">
+          <h4 id="name-determinism">
+<a href="#section-1.2.2" class="section-number selfRef">1.2.2. </a><a href="#name-determinism" class="section-name selfRef">Determinism</a>
+          </h4>
+<p id="section-1.2.2-1">The determinism challenge arises because there are multiple ways to serialize the same data item.
 The example serialization of the array [1,2] above shows this.
-This is a problem in some protocols that hash or sign encoded CBOR.<a href="#section-1.4-1" class="pilcrow">¶</a></p>
-<p id="section-1.4-2">Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
-However, as noted earlier, the majority of CBOR usage occurs outside constrained environments.
-It is therefore practical to define a single deterministic serialization suitable for general use.<a href="#section-1.4-2" class="pilcrow">¶</a></p>
-<p id="section-1.4-3">Protocol specifications can reference this serialization instead of defining their own deterministic encoding rules; library implementations can prioritize support for it.<a href="#section-1.4-3" class="pilcrow">¶</a></p>
-<p id="section-1.4-4">This document defines that serialization: deterministic serialization.<a href="#section-1.4-4" class="pilcrow">¶</a></p>
+This is a problem in some protocols that hash or sign encoded CBOR.<a href="#section-1.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-1.2.2-2">Many approaches to deterministic serialization are possible, each optimized for different environmental constraints or application requirements.
+However, as noted above, some serialization variants like indefinite-lengths are not commonly used.
+It is therefore practical to define a single deterministic serialization suitable for general use.<a href="#section-1.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-1.2.2-3">Protocol specifications can reference this serialization instead of defining their own deterministic encoding rules; library implementations can prioritize support for it.<a href="#section-1.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-1.2.2-4"><a href="#DeterministicSerialization" class="auto internal xref">Section 5</a> defines that serialization: deterministic serialization.<a href="#section-1.2.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="unspecified-serialization">
+<section id="section-1.3">
+        <h3 id="name-unspecified-serialization">
+<a href="#section-1.3" class="section-number selfRef">1.3. </a><a href="#name-unspecified-serialization" class="section-name selfRef">Unspecified Serialization</a>
+        </h3>
+<p id="section-1.3-1">Many CBOR-based protocols, such as CWT <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>, state no serialization requirements, which leaves open what an implementation needs to support.
+Is a CWT decoder required to accept indefinite-length items, for example?<a href="#section-1.3-1" class="pilcrow">¶</a></p>
+<p id="section-1.3-2">One interpretation of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> is that, absent any specification, a decoder is expected to accept every serialization variant, so that it can decode anything it receives.
+<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> defines this full set of variants without naming it; this document introduces the name "general serialization" for it in <a href="#GeneralSerialization" class="auto internal xref">Section 3</a>.<a href="#section-1.3-2" class="pilcrow">¶</a></p>
+<p id="section-1.3-3">In practice, however, decoders for CWT and other CBOR-based protocols often omit support for indefinite lengths and other variations because of the added complexity, and encoders accordingly avoid them.
+An encoder emitting indefinite lengths would still be fully conforming, yet could fail against such a decoder.
+This practice has rarely caused problems, but it means interoperability rests on convention rather than on the specifications themselves.
+<a href="#Recommendations" class="auto internal xref">Section 2</a> addresses this.<a href="#section-1.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="relation-to-rfc-8949">
-<section id="section-1.5">
+<section id="section-1.4">
         <h3 id="name-relation-to-rfc-8949">
-<a href="#section-1.5" class="section-number selfRef">1.5. </a><a href="#name-relation-to-rfc-8949" class="section-name selfRef">Relation to RFC 8949</a>
+<a href="#section-1.4" class="section-number selfRef">1.4. </a><a href="#name-relation-to-rfc-8949" class="section-name selfRef">Relation to RFC 8949</a>
         </h3>
 <div id="serialization">
-<section id="section-1.5.1">
+<section id="section-1.4.1">
           <h4 id="name-serialization">
-<a href="#section-1.5.1" class="section-number selfRef">1.5.1. </a><a href="#name-serialization" class="section-name selfRef">Serialization</a>
+<a href="#section-1.4.1" class="section-number selfRef">1.4.1. </a><a href="#name-serialization" class="section-name selfRef">Serialization</a>
           </h4>
-<p id="section-1.5.1-1">This document defines new serializations rather than updating those in <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
+<p id="section-1.4.1-1">This document defines new serializations rather than updating those in <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
 This approach enables the serialization requirements to be expressed directly in normative <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> language and to be defined entirely in this document.
-This approach provides clarity and simplicity for implementers and the CBOR community over the long term.<a href="#section-1.5.1-1" class="pilcrow">¶</a></p>
-<p id="section-1.5.1-2">The serializations defined herein are formally new but largely interchangeable with the way the serializations described in <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> are implemented.<a href="#section-1.5.1-2" class="pilcrow">¶</a></p>
-<p id="section-1.5.1-3">For example, preferred serialization (<span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>) is commonly implemented without support for indefinite lengths.
-Preferred-plus serialization is effectively the same as preferred serialization without indefinite lengths, so it is largely interchangeable with what is commonly implemented.<a href="#section-1.5.1-3" class="pilcrow">¶</a></p>
+This approach provides clarity and simplicity for implementers and the CBOR community over the long term.<a href="#section-1.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.4.1-2">The serializations defined here are formally new, but they differ little in practice from what CBOR libraries already implement
+For example, the shortest-length argument encoding described in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> is widely implemented for both encoding and decoding, and is the same as that required by the serializations defined here.
+See <a href="#RelationToPreferred" class="auto internal xref">Section 4.4</a>.<a href="#section-1.4.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="tags-and-data-models">
-<section id="section-1.5.2">
+<section id="section-1.4.2">
           <h4 id="name-tags-and-data-models">
-<a href="#section-1.5.2" class="section-number selfRef">1.5.2. </a><a href="#name-tags-and-data-models" class="section-name selfRef">Tags and Data Models</a>
+<a href="#section-1.4.2" class="section-number selfRef">1.4.2. </a><a href="#name-tags-and-data-models" class="section-name selfRef">Tags and Data Models</a>
           </h4>
-<p id="section-1.5.2-1">This document updates <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> in one way: it limits how new tag definitions can affect data models.
-The definitions of tags 2 and 3 (big numbers) in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> modifies the integer type in the CBOR basic generic data model; this is allowed as a one-time exception.
-The new rule preserves data model definitions against later modification by unrelated tag definitions, which might undermine their semantics and upset their previous use.<a href="#section-1.5.2-1" class="pilcrow">¶</a></p>
+<p id="section-1.4.2-1">This document updates <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> in one way: it limits how new tag definitions can affect data models.
+The definitions of tags 2 and 3 (bignums) in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> modifies the integer type in the CBOR basic generic data model; this is allowed as a one-time exception.
+The new rule preserves data model definitions against later modification by unrelated tag definitions, which might undermine their semantics and upset their previous use.<a href="#section-1.4.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1634,8 +1673,8 @@ When such a protocol includes optional features, they are typically selected thr
 Such protocols often have formal interoperability compliance programs or organize multi-vendor interop testing events.
 TLS, HTTP, and FIDO are examples of end-to-end protocols.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-2">End-to-end protocols MUST define a serialization strategy that ensures the sender and receiver use interoperable serialization.<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-3">The strategy most highly RECOMMENDED is to normatively require preferred-plus serialization.
-If a protocol does not need to be deployed where map sorting is too expensive, requiring deterministic serialization is also RECOMMENDED.<a href="#section-2.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-3">The strategy most highly RECOMMENDED is to normatively require preferred-plus serialization — conformance with <a href="#PreferredPlusEncoding" class="auto internal xref">Section 4.1</a> and <a href="#PreferredPlusDecoding" class="auto internal xref">Section 4.2</a>.
+If a protocol does not need to be deployed where map sorting is too expensive, requiring deterministic serialization — conformance with <a href="#DeterministicEncoding" class="auto internal xref">Section 5.1</a> and <a href="#DeterministicDecoding" class="auto internal xref">Section 5.2</a> — is also RECOMMENDED.<a href="#section-2.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-4">An end-to-end protocol MAY instead define its own specialized serialization (see <a href="#SpecialSerializations" class="auto internal xref">Section 6</a>).
 In such cases, it MUST explicitly specify the permitted serialization behaviors necessary to ensure interoperability.
 For example, if a sender is permitted to use indefinite-length serialization, the protocol MUST require that receivers be capable of decoding indefinite-length items.<a href="#section-2.1.2-4" class="pilcrow">¶</a></p>
@@ -1653,21 +1692,21 @@ Defaulting to general serialization is NOT RECOMMENDED, because some serializati
         <h3 id="name-libraries">
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-libraries" class="section-name selfRef">Libraries</a>
         </h3>
+<p id="section-2.2-1">For the following sections on libraries, implementing preferred-plus serialization means making <a href="#PreferredPlusEncoding" class="auto internal xref">Section 4.1</a> the default or primary behavior for encoding and fulfilling <a href="#PreferredPlusDecoding" class="auto internal xref">Section 4.2</a> for decoding.
+Similarly, implementing deterministic serialization means making <a href="#DeterministicEncoding" class="auto internal xref">Section 5.1</a> the default or primary behavior for encoding and fulfilling <a href="#DeterministicDecoding" class="auto internal xref">Section 5.2</a> for decoding.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <div id="cbor-libraries">
 <section id="section-2.2.1">
           <h4 id="name-cbor-libraries">
 <a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-cbor-libraries" class="section-name selfRef">CBOR Libraries</a>
           </h4>
-<p id="section-2.2.1-1">It is RECOMMENDED that CBOR libraries support preferred-plus serialization.
-This can be achieved by conforming to the decoding requirements in <a href="#PreferredPlusDecoding" class="auto internal xref">Section 4.2</a> and by making the encoding behavior defined in <a href="#PreferredPlusEncoding" class="auto internal xref">Section 4.1</a> the default or primary encoding API.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-1">It is RECOMMENDED that CBOR libraries implement preferred-plus serialization.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.2.1-2">Preferred-plus serialization is recommended because it is suitable for the majority of CBOR-based protocols.
-In practice, preferred-plus serialization is equivalent to preferred serialization <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> for most use cases.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-3">It is also RECOMMENDED that CBOR libraries support deterministic serialization, as some protocols (for example, COSE) require it.
+Also, in practice, preferred-plus serialization is equivalent to preferred serialization <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> for most use cases.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-3">It is also RECOMMENDED that CBOR libraries offer deterministic serialization either as a selectable option or as the default, as some protocols (for example, COSE) require it.
 Relative to preferred-plus serialization, the only additional requirement for deterministic serialization is that encoded maps be sorted.
-This recommendation is particularly strong for environments in which map sorting is easy to implement (for example, Python, Go, and Ruby).<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-4">A CBOR library may choose to implement only deterministic serialization and make it the default.
-Deterministic serialization is a superset of preferred-plus serialization; therefore, if deterministic serialization is fully supported, explicit support for preferred-plus serialization may be omitted.<a href="#section-2.2.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-5">A CBOR library MAY also choose to support some or all aspects of general serialization (see <a href="#GeneralSerialization" class="auto internal xref">Section 3</a>) thereby enabling support for protocols that use specialized serializations (see <a href="#SpecialSerializations" class="auto internal xref">Section 6</a>).<a href="#section-2.2.1-5" class="pilcrow">¶</a></p>
+This recommendation is stronger for environments in which map sorting is easy to implement (for example, Python, Go, and Ruby).<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-4">Deterministic serialization requirements are a superset of those for preferred-plus; a CBOR library that implements only deterministic serialization therefore satisfies the recommendation for preferred-plus serialization.<a href="#section-2.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-5">A CBOR library MAY also implement some or all aspects of general serialization (see <a href="#GeneralSerialization" class="auto internal xref">Section 3</a>) thereby enabling support for protocols that use specialized serializations (see <a href="#SpecialSerializations" class="auto internal xref">Section 6</a>).<a href="#section-2.2.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="libraries-for-framework-protocols">
@@ -1675,12 +1714,12 @@ Deterministic serialization is a superset of preferred-plus serialization; there
           <h4 id="name-libraries-for-framework-pro">
 <a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-libraries-for-framework-pro" class="section-name selfRef">Libraries for Framework Protocols</a>
           </h4>
-<p id="section-2.2.2-1">When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that a CBOR library implements preferred-plus serialization.
-For example, it is recommended that a library implementing CWT or COSE implement preferred-plus serialization.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.2-2">However, a library MAY choose to support only deterministic serialization if this aligns with its deployment environment and design goals.<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-2.2.2-3">When a framework protocol mandates serialization requirements, libraries must of course conform.
-For instance, certain parts of COSE mandate deterministic serialization.
-See <a href="#COSESerialization" class="auto internal xref">Appendix J</a> for a COSE-based example.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-1">When a framework protocol specification does not mandate a specific serialization, it is RECOMMENDED that a library for it implement preferred-plus serialization.
+For example, CWT and COSE do not mandate a serialization, so it is recommended that libraries implementing them use preferred-plus serialization.
+Alternatively, a framework protocol library may implement only deterministic serialization if this aligns with its deployment environment and design goals.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-2">When a framework protocol mandates serialization requirements, conforming libraries follow them.
+For instance, small parts of COSE require deterministic serialization to function correctly.
+See <a href="#COSESerialization" class="auto internal xref">Appendix J</a>, which shows how COSE requires deterministic serialization for some parts and, as a framework protocol should, leaves others unconstrained.<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="libraries-for-end-to-end-protocols">
@@ -1688,9 +1727,9 @@ See <a href="#COSESerialization" class="auto internal xref">Appendix J</a> for a
           <h4 id="name-libraries-for-end-to-end-pr">
 <a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-libraries-for-end-to-end-pr" class="section-name selfRef">Libraries for End-to-End Protocols</a>
           </h4>
-<p id="section-2.2.3-1">End-to-end protocols should have explicit serialization requirements to ensure interoperability.
-Libraries for end-to-end protocols should fulfill them.<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.3-2">If an end-to-end protocol specification does not state serialization requirements, the library is free to choose, but it is RECOMMENDED that they implement preferred-plus serialization.<a href="#section-2.2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-1">End-to-end protocols are expected to state serialization requirements to ensure interoperability.
+Libraries for end-to-end protocols are expected to adhere to them.<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-2">If an end-to-end protocol specification does not state serialization requirements, it is RECOMMENDED that the library implement preferred-plus serialization.<a href="#section-2.2.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1702,39 +1741,40 @@ Libraries for end-to-end protocols should fulfill them.<a href="#section-2.2.3-1
       <h2 id="name-general-serialization">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-general-serialization" class="section-name selfRef">General Serialization</a>
       </h2>
-<p id="section-3-1">This section assigns the name "general serialization" to the complete set of all encodings standardized in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3" class="relref">Section 3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
-The term itself was not explicitly defined in <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
-Preferred-plus and deterministic serialization are subsets of it.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">General serialization permits any and all of these:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-1">This section assigns the name "general serialization" to the complete set of encodings standardized in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3" class="relref">Section 3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
+<span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> does not name this set, though it alludes to it in passing as "variant-tolerant decoding".
+Any serialization, whether defined in this document or elsewhere, permits only encodings drawn from this set.
+General serialization is therefore a superset of them all.
+It is described as follows:<a href="#section-3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-3.1">
-          <p id="section-3-3.1.1">CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, or 0x190000 and so on).<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3-2.1">
+          <p id="section-3-2.1.1">CBOR arguments of any length (for example, the integer 0 may be encoded as 0x00, 0x1800, 0x190000, and so on).<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.2">
-          <p id="section-3-3.2.1">Floating-point values encoded at any length (for example, 0.00 can be 0xf90000, 0xfa00000000, and so on).<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-2.2">
+          <p id="section-3-2.2.1">Floating-point values encoded at any length (for example, 0.0 can be encoded as half-, single-, or double-precision).<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.3">
-          <p id="section-3-3.3.1">Both definite or indefinite-length strings, arrays, and maps.<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-2.3">
+          <p id="section-3-2.3.1">Both definite- and indefinite-length strings, arrays, and maps.<a href="#section-3-2.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.4">
-          <p id="section-3-3.4.1">Unordered maps.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-2.4">
+          <p id="section-3-2.4.1">Maps with keys in any order.<a href="#section-3-2.4.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.5">
-          <p id="section-3-3.5.1">Big number representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the big number 0xc34100).<a href="#section-3-3.5.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-2.5">
+          <p id="section-3-2.5.1">Bignum representation of values that are also representable using major types 0 and 1 (for example, 0 can be encoded as the bignum 0xc24100).<a href="#section-3-2.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-4">A decoder claiming to support general serialization MUST accept and decode all the encodings for the data types it supports.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<div id="general-serialization-is-the-default">
+<p id="section-3-3">A decoder claiming to support general serialization MUST accept and decode all the various encodings for the data types it supports.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<div id="default-serialization">
 <section id="section-3.1">
-        <h3 id="name-general-serialization-is-th">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-general-serialization-is-th" class="section-name selfRef">General Serialization is the Default</a>
+        <h3 id="name-default-serialization">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-default-serialization" class="section-name selfRef">Default Serialization</a>
         </h3>
-<p id="section-3.1-1">When a CBOR-based protocol specification does not explicitly specify serialization, general serialization is the implied requirement —
-meaning a compliant decoder must accept and decode any and all encodings it permits, including both definite and indefinite lengths.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">CBOR Web Token <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>, for example, does not specify serialization, so a fully compliant CWT decoder must handle general serialization, including indefinite-length strings, arrays, and maps.
-In practice, however, many CWT decoders cannot process the full range of general serialization — indefinite lengths in particular.
-Encoders have adapted accordingly, typically restricting their output to the subset of serializations that decoders can reliably handle, most notably by avoiding indefinite lengths altogether.
-The same pattern holds for other protocols, such as COSE <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-1"><span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> does not explicitly specify default encoding or decoding requirements.
+Nothing in it says what a CBOR library needs to support, or what an implementation of a protocol that gives no serialization requirements, such as CWT, needs to do.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">Some readers take <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> to imply that a decoder has to support general serialization and that an encoder is free to use any variant.
+This is a possible interpretation, but many implementers have not adopted it.
+For example, CWT and COSE decoders typically do not support indefinite lengths, and their encoders do not produce them.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">It is therefore safer not to treat general serialization as the default, particularly when encoding, since a decoder may not accept every variant.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="WhenGeneral">
@@ -1742,14 +1782,13 @@ The same pattern holds for other protocols, such as COSE <span>[<a href="#RFC905
         <h3 id="name-when-to-use-general-seriali">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-when-to-use-general-seriali" class="section-name selfRef">When To Use General Serialization</a>
         </h3>
-<p id="section-3.2-1">Preferred-plus serialization (<a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>) is efficient and supports the full CBOR data model (except non-trivial NaNs; see <a href="#NaNBasics" class="auto internal xref">Appendix B.1</a>), satisfying the vast majority of CBOR use cases.
-Full general serialization is rarely necessary, and support for it is not widespread.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">The main scenario where general serialization is warranted is a protocol that must accommodate highly constrained encoders,
+<p id="section-3.2-1">General serialization is rarely necessary, and support for it is not universal.
+Preferred-plus serialization (<a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>) is compact and supports the full CBOR data model (except non-trivial NaNs; see <a href="#NaNBasics" class="auto internal xref">Appendix B.1</a>), satisfying the vast majority of CBOR use cases.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">The main scenario where general serialization is warranted is a protocol that has to accommodate highly constrained encoders,
 at the cost of requiring decoders — assumed to be unconstrained — to support every possible serialization option.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.2-3">When general serialization is required by a protocol, this SHOULD be stated explicitly.
-Although it is the default for CBOR in theory, it has not been widely implemented as such in practice.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">See also special serializations (<a href="#SpecialSerializations" class="auto internal xref">Section 6</a>), which enables special optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
-<p id="section-3.2-5">CBOR libraries may nonetheless wish to support general serialization, as a complete set of other serialization forms, to be useful across a broader range of protocols.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">A protocol that requires general serialization SHOULD state so explicitly.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">See also special serializations (<a href="#SpecialSerializations" class="auto internal xref">Section 6</a>), which enable optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-5">CBOR libraries may nonetheless wish to support general serialization, as a complete set of serialization forms, to be useful to a broader range of protocols.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1829,13 +1868,13 @@ If the numbers presented for encoding are only single-precision, then conversion
             </ul>
 </li>
           <li id="section-4.1-1.5">
-            <p id="section-4.1-1.5.1">Big numbers (tags 2 and 3):<a href="#section-4.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-1.5.1">Bignums (tags 2 and 3):<a href="#section-4.1-1.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-1.5.2.1">
                 <p id="section-4.1-1.5.2.1.1">Leading zeros MUST NOT be encoded.<a href="#section-4.1-1.5.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-1.5.2.2">
-                <p id="section-4.1-1.5.2.2.1">If a value can be encoded using major type 0 or 1, then it MUST be encoded with major type 0 or 1, never as a big number.<a href="#section-4.1-1.5.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-1.5.2.2.1">If a value can be encoded using major type 0 or 1, then it MUST be encoded with major type 0 or 1, never as a bignum.<a href="#section-4.1-1.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1880,22 +1919,23 @@ These are the only forms of these values a preferred-plus encoder can produce, s
             </ul>
 </li>
           <li id="section-4.2-2.5">
-            <p id="section-4.2-2.5.1">If big numbers (tags 2 and 3) are accepted, the following apply:<a href="#section-4.2-2.5.1" class="pilcrow">¶</a></p>
+            <p id="section-4.2-2.5.1">If bignums (tags 2 and 3) are accepted, the following apply. (This is a maximally permissive acceptance mode, adopted to compensate for ambiguity in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.)<a href="#section-4.2-2.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2-2.5.2.1">
-                <p id="section-4.2-2.5.2.1.1">Big numbers described in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> MUST be accepted.<a href="#section-4.2-2.5.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.2-2.5.2.1.1">Bignums described in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> MUST be accepted. This includes:<a href="#section-4.2-2.5.2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.2-2.5.2.1.2.1">
+                    <p id="section-4.2-2.5.2.1.2.1.1">Leading zeros MUST be ignored.<a href="#section-4.2-2.5.2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                </ul>
 </li>
               <li class="normal" id="section-4.2-2.5.2.2">
-                <p id="section-4.2-2.5.2.2.1">Leading zeros MUST be ignored.<a href="#section-4.2-2.5.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-4.2-2.5.2.3">
-                <p id="section-4.2-2.5.2.3.1">An empty byte string MUST be accepted and treated as the value zero.<a href="#section-4.2-2.5.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.2-2.5.2.2.1">For full interoperability, an empty byte string MUST be accepted and treated as the value zero.<a href="#section-4.2-2.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
         </ol>
-<p id="section-4.2-3">See also <a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a> and <a href="#BigNumberStrategies" class="auto internal xref">Appendix F</a> for further background on big numbers.
-See <a href="#BigNumbersCDDL" class="auto internal xref">Appendix E</a> for specification in CDDL.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">See  <a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a> and <a href="#BigNumberStrategies" class="auto internal xref">Appendix F</a> for further background on bignums, <a href="#BigNumbersCDDL" class="auto internal xref">Appendix E</a> for the CDDL specification, and <a href="#CheckingDecoder" class="auto internal xref">Appendix G</a> for overrides to the above decoding rules for serialization-checking decoders.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="when-to-use-preferred-plus-serialization">
@@ -1920,16 +1960,16 @@ Note that preferred-plus is equivalent to the deterministic serialization of <a 
 <p id="section-4.4-2">The differences are:<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-3.1">
-            <p id="section-4.4-3.1.1">Definite lengths are a requirement, not a preference.<a href="#section-4.4-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-3.1.1">Encoders use only definite lengths; this is a requirement, not a preference.<a href="#section-4.4-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.4-3.2">
-            <p id="section-4.4-3.2.1">The only NaN allowed in encoded output is the half-precision quiet NaN.<a href="#section-4.4-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-3.2.1">Encoders emit only the half-precision quiet NaN.<a href="#section-4.4-3.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.4-3.3">
-            <p id="section-4.4-3.3.1">For big numbers, leading zeros must be ignored and the empty string must be accepted as zero.<a href="#section-4.4-3.3.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-3.3.1">Decoders ignore leading zeros in bignums and accept the empty byte string as zero.<a href="#section-4.4-3.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.4-4">These differences are not of significance in real-world implementations, so preferred-plus serialization is already largely supported.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-4">These differences are unlikely to affect real-world implementations and many implementations are already close to conforming.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
 <p id="section-4.4-5"><span><a href="https://rfc-editor.org/rfc/rfc8949#section-3" class="relref">Section 3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> states that in preferred serialization the use of definite-length encoding is a "preference", not a requirement.
 Technically that means preferred serialization decoders must support indefinite lengths, but in reality many do not.
 Indefinite lengths, particularly for strings, are often not supported because they are more complex to implement than other parts of CBOR.
@@ -1952,7 +1992,7 @@ See <a href="#NaNCompatibility" class="auto internal xref">Appendix B.5</a> for 
 <p id="section-5-1">This section defines a serialization named "deterministic serialization"<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">Deterministic serialization is the same as described in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> except for the encoding of floating-point NaNs.
 See <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a> and <a href="#NaN" class="auto internal xref">Appendix B</a> for details on, and the rationale for NaN encoding.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">Note that in deterministic serialization, any big number that can be represented as an integer must be encoded as an integer.
+<p id="section-5-3">Note that in deterministic serialization, any bignum that can be represented as an integer must be encoded as an integer.
 This rule is inherited from preferred-plus serialization (<a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>), just as <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> inherits this requirement from preferred serialization.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">See also <a href="#DeterministicConsiderations" class="auto internal xref">Appendix A</a> for considerations involved in designing a deterministic protocol that extend beyond serialization.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <div id="DeterministicEncoding">
@@ -2012,24 +2052,46 @@ Such designs are often chosen to reduce data size, preserve privacy, or meet oth
           </h4>
 <p id="section-5.3.2-1">The only difference between preferred-plus and deterministic serialization is that in deterministic serialization, maps are required to be sorted by their keys.
 Preferred-plus serialization exists as a separate mode solely because map sorting can be too expensive in some constrained environments.<a href="#section-5.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.3.2-2">Map decoding must never depend on the sort order of a map, even when maps are required to be sorted.
-As a result, deterministic serialization (<a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>) can always be decoded by a decoder that supports preferred-plus serialization (<a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>).
-Because of this property, deterministic serialization can always be used in place of preferred-plus serialization.
-In environments where map sorting is not costly, it is both acceptable and beneficial to always use deterministic serialization.
-In such environments, a CBOR encoder may produce deterministic encoding by default and may even omit support for preferred-plus encoding entirely.<a href="#section-5.3.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.3.2-3">However, note that deterministic serialization is never a substitute for general serialization where use cases may require indefinite lengths, separate big numbers from integers in the data model, or need non-trivial NaNs.<a href="#section-5.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.3.2-2">Preferred-plus is deterministic if no maps are encoded.<a href="#section-5.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.3.2-3">The decoders are identical (except for a checking decoder for deterministic serialization).<a href="#section-5.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.3.2-4">However, note that deterministic serialization is never a substitute for general serialization where use cases may require indefinite lengths, separate bignums from integers in the data model, or need non-trivial NaNs.<a href="#section-5.3.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="no-map-ordering-semantics">
-<section id="section-5.3.3">
-          <h4 id="name-no-map-ordering-semantics">
-<a href="#section-5.3.3" class="section-number selfRef">5.3.3. </a><a href="#name-no-map-ordering-semantics" class="section-name selfRef">No Map Ordering Semantics</a>
+</section>
+</div>
+<div id="map-ordering">
+<section id="section-5.4">
+        <h3 id="name-map-ordering">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-map-ordering" class="section-name selfRef">Map Ordering</a>
+        </h3>
+<p id="section-5.4-1">Map ordering in the serialization layer is only to provide determinism and is entirely orthogonal to map ordering at the data model and application layer.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<div id="ordering-at-the-serialization-layer">
+<section id="section-5.4.1">
+          <h4 id="name-ordering-at-the-serializati">
+<a href="#section-5.4.1" class="section-number selfRef">5.4.1. </a><a href="#name-ordering-at-the-serializati" class="section-name selfRef">Ordering at the Serialization Layer</a>
           </h4>
-<p id="section-5.3.3-1">In the basic generic data model, maps are unordered (See <span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.6" class="relref">Section 5.6</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>).
-Applications MUST NOT rely on any particular map ordering, even if deterministic serialization was used.
-A CBOR library is not required to preserve the order of keys when decoding a map, and the underlying programming language may not preserve map order either — for example, the Go programming language provides no ordering guarantees for maps.
-The sole purpose of map sorting in deterministic serialization is to ensure reproducibility of the encoded byte stream, not to provide any semantic ordering of map entries.
-If an application requires a map to be ordered, it is responsible for applying its own sorting.<a href="#section-5.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.4.1-1">For maps to be encoded deterministically, two independent entities must encode them exactly the same.
+The only way to do this for maps is to sort each map's key-value pairs by key.
+Thus, for deterministic encoding, maps are sorted.<a href="#section-5.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.4.1-2">While not stated explcitly in <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>, it does imply that map decoding must never depend on map ordering.
+All CBOR map decoding must succeed regardless of the map order.<a href="#section-5.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.1-3">There is one exception to this: checking decoders (see <a href="#CheckingDecoder" class="auto internal xref">Appendix G</a>) for deterministic or other serializations that order maps.
+Their purpose is to make sure the received CBOR is encoded exactly as specified.
+A checking decoder for deterministic serialization therefore rejects unordered maps.<a href="#section-5.4.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ordering-at-the-data-model-layer">
+<section id="section-5.4.2">
+          <h4 id="name-ordering-at-the-data-model-">
+<a href="#section-5.4.2" class="section-number selfRef">5.4.2. </a><a href="#name-ordering-at-the-data-model-" class="section-name selfRef">Ordering at the Data Model Layer</a>
+          </h4>
+<p id="section-5.4.2-1">Essentially there is no map ordering at the data model layer; applications and implementations can not rely on it.<a href="#section-5.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-2">The CBOR data model for maps clearly indicates that they are not ordered (see <span><a href="https://rfc-editor.org/rfc/rfc8949#section-5.6" class="relref">Section 5.6</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>).
+This is the same as for JSON objects.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-3">Some programming environments, like the Go programming language, provide no ordering guarantees for maps.
+A CBOR decoder is under no obligation to present a map in the order it was received.
+Even if a map is deterministically encoded, it may not be presented at the application layer in map key order.<a href="#section-5.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.4.2-4">A particular CBOR library or a particular programming environment may present sorted maps to the CBOR application if it wishes, but this is a feature of the library or programming environment only; protocols or system designs can not expect it at the application layer, even when deterministic serialization is required.<a href="#section-5.4.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2062,7 +2124,10 @@ For example, if a string length is always encoded in 32 bits, increasing its len
           <p id="section-6-2.5.1">Transmission of non-trivial NaN floating-point values (see <a href="#NaN" class="auto internal xref">Appendix B</a>).<a href="#section-6-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-2.6">
-          <p id="section-6-2.6.1">Deterministic serialization with any or all of the above.<a href="#section-6-2.6.1" class="pilcrow">¶</a></p>
+          <p id="section-6-2.6.1">Use of a bignum for shorter encoding of 33- to 56-bit integers (a 40-bit value with implied tag takes 6 bytes rather than 9).<a href="#section-6-2.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-6-2.7">
+          <p id="section-6-2.7.1">Deterministic serialization with any or all of the above.<a href="#section-6-2.7.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-6-3">All of these except determinism are also available with general serialization, but a targeted special serialization will usually be substantially easier to implement.<a href="#section-6-3" class="pilcrow">¶</a></p>
@@ -2085,14 +2150,13 @@ Strings retain definite-length encoding, and map ordering MUST follow the rules 
       <h2 id="name-new-tag-data-model-rule">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-new-tag-data-model-rule" class="section-name selfRef">New Tag Data Model Rule</a>
       </h2>
-<p id="section-7-1"><span class="cref" id="to-be-removed4">This section is new in draft-03. The author thinks it may be out of place in this document, but there's no other good place for it yet.</span><a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2"><span><a href="https://rfc-editor.org/rfc/rfc8949#section-2" class="relref">Section 2</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> states that each new CBOR tag definition introduces a new and distinct data type.
+<p id="section-7-1"><span><a href="https://rfc-editor.org/rfc/rfc8949#section-2" class="relref">Section 2</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> states that each new CBOR tag definition introduces a new and distinct data type.
 In contrast, the definitions of Tags 2 and 3 (bignums) in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> do not introduce a separate data type; instead, they attach directly to the integer type and extend its numeric range.
-As a result, the generic data model’s integer type is modified rather than augmented with a new, independent type (see <a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a>).<a href="#section-7-2" class="pilcrow">¶</a></p>
-<p id="section-7-3">This document establishes a new rule that prohibits future tag definitions from having such effects:<a href="#section-7-3" class="pilcrow">¶</a></p>
-<p id="section-7-4">All future CBOR tag definitions MUST NOT incorporate, modify, or otherwise affect any data types other than the type defined by the tag itself.
-A set of tags MAY affect each other, provided that all defining authorities for those tags explicitly agree.<a href="#section-7-4" class="pilcrow">¶</a></p>
-<p id="section-7-5">Tags 2 and 3 are exempt from this rule, as they were defined prior to the establishment of this requirement.<a href="#section-7-5" class="pilcrow">¶</a></p>
+As a result, the generic data model’s integer type is modified rather than augmented with a new, independent type (see <a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a>).<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">This document establishes a new rule that prohibits future tag definitions from having such effects:<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">All future CBOR tag definitions MUST NOT incorporate, modify, or otherwise affect any data types other than the type defined by the tag itself.
+A set of tags MAY affect each other, provided that all defining authorities for those tags explicitly agree.<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-4">Tags 2 and 3 are exempt from this rule, as they were defined prior to the establishment of this requirement.<a href="#section-7-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="CDDL-Operators">
@@ -2130,37 +2194,39 @@ Standards action is required to add them.<a href="#section-8-8" class="pilcrow">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-9-1">The security considerations in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-10" class="relref">Section 10</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> apply.<a href="#section-9-1" class="pilcrow">¶</a></p>
-<div id="covert-channel">
+<div id="CovertChannels">
 <section id="section-9.1">
         <h3 id="name-covert-channel">
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-covert-channel" class="section-name selfRef">Covert Channel</a>
         </h3>
 <p id="section-9.1-1">CBOR’s serialization variants can be used as a covert channel <span>[<a href="#LAM73" class="cite xref">LAM73</a>]</span> to steganographically exfiltrate data.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
-<p id="section-9.1-2">For example, a CBOR argument (such as an integer encoding or a string length) can be encoded up to five different ways (e.g. the value 1 can be encoded as 0x01, 0x1801, 0x190001, 0x1A00000001, or 0x1B0000000000000001).
-This variability can be used to encode ~2 hidden bits per argument.
+<p id="section-9.1-2">For example, a CBOR argument (such as an integer encoding or a string length) can be encoded in up to five different ways (e.g., the value 1 can be encoded as 0x01, 0x1801, 0x190001, 0x1A00000001, or 0x1B0000000000000001).
+This variability can be used to encode about 2 hidden bits per argument.
 Since every CBOR item carries an argument, even moderately complex protocols may accumulate sufficient bits to exfiltrate sensitive material (e.g., cryptographic keys) or to generate persistent identifiers for tracking users or devices.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
-<p id="section-9.1-3">The following techniques may be used to establish a covert channel:<a href="#section-9.1-3" class="pilcrow">¶</a></p>
+<p id="section-9.1-3">Techniques that may be used to establish a covert channel include:<a href="#section-9.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.1-4.1">
             <p id="section-9.1-4.1.1">Varying the encoding of CBOR arguments (as above)<a href="#section-9.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.1-4.2">
-            <p id="section-9.1-4.2.1">Representing text or byte strings as indefinite-length encodings, and encoding information in the segmentation structure (e.g., segment lengths or insertion of empty segments)<a href="#section-9.1-4.2.1" class="pilcrow">¶</a></p>
+            <p id="section-9.1-4.2.1">Varying the encoding of floating-point values (half-, single-, or double-precision)<a href="#section-9.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.1-4.3">
-            <p id="section-9.1-4.3.1">Encoding data within NaN payloads<a href="#section-9.1-4.3.1" class="pilcrow">¶</a></p>
+            <p id="section-9.1-4.3.1">Representing text or byte strings as indefinite-length encodings, and encoding information in the segmentation structure (e.g., segment lengths or insertion of empty segments)<a href="#section-9.1-4.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.1-4.4">
-            <p id="section-9.1-4.4.1">Manipulating the ordering of map entries<a href="#section-9.1-4.4.1" class="pilcrow">¶</a></p>
+            <p id="section-9.1-4.4.1">Encoding data within NaN payloads<a href="#section-9.1-4.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.1-4.5">
-            <p id="section-9.1-4.5.1">Varying the Unicode representation of text strings<a href="#section-9.1-4.5.1" class="pilcrow">¶</a></p>
+            <p id="section-9.1-4.5.1">Manipulating the ordering of map entries<a href="#section-9.1-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.1-4.6">
+            <p id="section-9.1-4.6.1">Varying the Unicode representation of text strings<a href="#section-9.1-4.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-9.1-5">These channels are covert because most CBOR decoders accept all such representations without raising errors or warnings.¶<a href="#section-9.1-5" class="pilcrow">¶</a></p>
+<p id="section-9.1-5">These channels are covert because some CBOR decoders accept all such representations without raising errors or warnings.<a href="#section-9.1-5" class="pilcrow">¶</a></p>
 <p id="section-9.1-6">The primary safeguard is to ensure the CBOR encoding library used is trustworthy and does not exfiltrate data.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
-<p id="section-9.1-7">Another option is to require preferred-plus or deterministic serialization and to have decoders issue a warning if not compliant.
-See <a href="#CheckingDecoder" class="auto internal xref">Appendix G</a>.<a href="#section-9.1-7" class="pilcrow">¶</a></p>
+<p id="section-9.1-7">Checking for preferred-plus or deterministic serialization as described in <a href="#CheckingDecoder" class="auto internal xref">Appendix G</a> can reveal unexpected variation, and so expose an attack, but cannot prevent one.<a href="#section-9.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2298,7 +2364,7 @@ See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a h
 The definition leaves a choice open, just as CBOR leaves encoding choices open when deterministic serialization is not required.<a href="#appendix-A.1-4" class="pilcrow">¶</a></p>
 <p id="appendix-A.1-5">To make this example definition deterministic, specify one date format and prohibit the other.<a href="#appendix-A.1-5" class="pilcrow">¶</a></p>
 <p id="appendix-A.1-6">A more interesting source of variability is CBOR's variety of number types.
-For instance, the number 2 can be represented as an integer, float, big number, decimal fraction and others defined by tags in the CBOR tag registry.
+For instance, the number 2 can be represented as an integer, float, bignum, decimal fraction and others defined by tags in the CBOR tag registry.
 Most protocol designs will just specify one number type to use, and that will give determinism, but here’s an example specification that doesn’t:<a href="#appendix-A.1-6" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="appendix-A.1-7.1">
@@ -2703,8 +2769,8 @@ long long pref_plus_double_to_single(unsigned long long dbl) {
 </div>
 <div id="BigNumbersDataModel">
 <section id="appendix-D">
-      <h2 id="name-big-numbers-and-the-cbor-da">
-<a href="#appendix-D" class="section-number selfRef">Appendix D. </a><a href="#name-big-numbers-and-the-cbor-da" class="section-name selfRef">Big Numbers and the CBOR Data Model</a>
+      <h2 id="name-bignums-and-the-cbor-data-m">
+<a href="#appendix-D" class="section-number selfRef">Appendix D. </a><a href="#name-bignums-and-the-cbor-data-m" class="section-name selfRef">Bignums and the CBOR Data Model</a>
       </h2>
 <p id="appendix-D-1">The primary purpose of this document is to define preferred-plus and deterministic serialization.
 Accordingly, <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a> describes CBOR’s unified integer space in terms of serialization behavior.
@@ -2730,17 +2796,17 @@ See <a href="#TagDataModelRule" class="auto internal xref">Section 7</a>.<a href
 </div>
 <div id="BigNumbersCDDL">
 <section id="appendix-E">
-      <h2 id="name-cddl-for-big-numbers">
-<a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-cddl-for-big-numbers" class="section-name selfRef">CDDL for Big Numbers</a>
+      <h2 id="name-cddl-for-bignums">
+<a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-cddl-for-bignums" class="section-name selfRef">CDDL for Bignums</a>
       </h2>
-<p id="appendix-E-1">The types bigint and biguint in the CDDL Standard Prelude (<span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-D" class="relref">Appendix D</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>) do NOT describe the big numbers described in this document or in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>, not even for general serialization.
-The types integer and unsigned can be used, but note that they do not fully express the rules that govern the choice between major types 0 and 1 and the big number tags.
+<p id="appendix-E-1">The types bigint and biguint in the CDDL Standard Prelude (<span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-D" class="relref">Appendix D</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>) do NOT describe the bignums described in this document or in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>, not even for general serialization.
+The types integer and unsigned can be used, but note that they do not fully express the rules that govern the choice between major types 0 and 1 and the bignum tags.
 CDDL-described protocols SHOULD use integer and unsigned and in prose state that these values correspond to either <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a> of this document or <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
 <a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a> explains the reasons for this.<a href="#appendix-E-1" class="pilcrow">¶</a></p>
 <p id="appendix-E-2">The following CDDL can be used:<a href="#appendix-E-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E-3">
 <pre>
-; big number byte strings are of unlimited size, but that
+; bignum byte strings are of unlimited size, but that
 ; can't be expressed in CDDL, so a limit of 1,000
 bnmax = 1000
 bnbstr = bstr .size (8..bnmax)
@@ -2759,23 +2825,23 @@ pplus-bigint = pplus-biguint / pplus-bignint
 </div>
 <div id="BigNumberStrategies">
 <section id="appendix-F">
-      <h2 id="name-big-number-implementation-s">
-<a href="#appendix-F" class="section-number selfRef">Appendix F. </a><a href="#name-big-number-implementation-s" class="section-name selfRef">Big Number Implementation Strategies</a>
+      <h2 id="name-bignum-implementation-strat">
+<a href="#appendix-F" class="section-number selfRef">Appendix F. </a><a href="#name-bignum-implementation-strat" class="section-name selfRef">Bignum Implementation Strategies</a>
       </h2>
-<p id="appendix-F-1"><a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a> describes how CBOR defines a single integer number space, in which big numbers are not distinct from values encoded using major types 0 and 1.
+<p id="appendix-F-1"><a href="#BigNumbersDataModel" class="auto internal xref">Appendix D</a> describes how CBOR defines a single integer number space, in which bignums are not distinct from values encoded using major types 0 and 1.
 This appendix discusses approaches for implementers to support that model.<a href="#appendix-F-1" class="pilcrow">¶</a></p>
-<p id="appendix-F-2">Some programming environments provide strong native support for big numbers (e.g., JavaScript, Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
-Even in environments that support big numbers, operations on native-sized integers (e.g., 64-bit integers) are typically much more efficient.
-It is therefore reasonable for a CBOR library to expose separate APIs for native-sized integers and for big numbers.<a href="#appendix-F-2" class="pilcrow">¶</a></p>
-<p id="appendix-F-3">When a CBOR library provides a big number API, values that fall within the range of major types 0 and 1 must be encoded using those major types rather than tags 2 or 3.
-Similarly, decoding facilities that return big numbers must accept values encoded using major types 0 and 1, even though the returned representation is a big number.<a href="#appendix-F-3" class="pilcrow">¶</a></p>
-<p id="appendix-F-4">Alternatively, some CBOR libraries may choose to return tags 2 and 3 as raw byte strings, as this approach is simpler than implementing full big number support.
+<p id="appendix-F-2">Some programming environments provide strong native support for bignums (e.g., JavaScript, Python, Ruby, and Go), while others do not (e.g., C, C++, and Rust).
+Even in environments that support bignums, operations on native-sized integers (e.g., 64-bit integers) are typically much more efficient.
+It is therefore reasonable for a CBOR library to expose separate APIs for native-sized integers and for bignums.<a href="#appendix-F-2" class="pilcrow">¶</a></p>
+<p id="appendix-F-3">When a CBOR library provides a bignum API, values that fall within the range of major types 0 and 1 must be encoded using those major types rather than tags 2 or 3.
+Similarly, decoding facilities that return bignums must accept values encoded using major types 0 and 1, even though the returned representation is a bignum.<a href="#appendix-F-3" class="pilcrow">¶</a></p>
+<p id="appendix-F-4">Alternatively, some CBOR libraries may choose to return tags 2 and 3 as raw byte strings, as this approach is simpler than implementing full bignum support.
 When a library adopts this approach, it should clearly document that the application layer is responsible for performing the integer unification.
 The application is also responsible for handling CBOR’s offset-by-one encoding of negative values and the extended negative integer range permitted by major type 1.<a href="#appendix-F-4" class="pilcrow">¶</a></p>
-<p id="appendix-F-5">In most cases, these additional processing steps are straightforward when the application already uses a big number library.<a href="#appendix-F-5" class="pilcrow">¶</a></p>
+<p id="appendix-F-5">In most cases, these additional processing steps are straightforward when the application already uses a bignum library.<a href="#appendix-F-5" class="pilcrow">¶</a></p>
 <p id="appendix-F-6">Another acceptable approach is for a CBOR library to provide a generic mechanism that allows applications to register handlers for specific tags.
 In this case, handlers for tags 2 and 3 MUST perform the required unification with major types 0 and 1.<a href="#appendix-F-6" class="pilcrow">¶</a></p>
-<p id="appendix-F-7">Finally, note that big numbers are not a widely used feature of CBOR.
+<p id="appendix-F-7">Finally, note that bignums are not a widely used feature of CBOR.
 Some CBOR libraries may entirely omit support for tags 2 and 3.<a href="#appendix-F-7" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2784,25 +2850,43 @@ Some CBOR libraries may entirely omit support for tags 2 and 3.<a href="#appendi
       <h2 id="name-serialization-checking">
 <a href="#appendix-G" class="section-number selfRef">Appendix G. </a><a href="#name-serialization-checking" class="section-name selfRef">Serialization Checking</a>
       </h2>
-<p id="appendix-G-1">Serialization checking rejects input which, while well-formed CBOR, does not conform to a particular serialization rule set it is enforcing.
+<p id="appendix-G-1">Serialization checking rejects input that, while well-formed CBOR, does not conform to a serialization rule set it is enforcing.
 For example, a decoder checking for deterministic serialization will error out if map keys are not in the required sorted order.
-Likewise, a decoder checking for preferred-plus serialization will reject any CBOR data item that is not encoded in its shortest form.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
-<p id="appendix-G-2">This type of checking goes beyond the basic requirement of verifying that input is well-formed CBOR.
-The data rejected by serialization checking is well-formed; it is rejected because it violates additional serialization constraints.<a href="#appendix-G-2" class="pilcrow">¶</a></p>
+Likewise, a decoder checking for preferred-plus serialization will reject, for instance, any CBOR data item that is not encoded in its shortest form.<a href="#appendix-G-1" class="pilcrow">¶</a></p>
+<p id="appendix-G-2">To align with long-settled security practice and defend against malformed input attacks, every CBOR decoder must reject all input that is not well-formed.
+Serialization checking goes beyond that.
+The data rejected by serialization checking is well-formed; it is rejected only because of additional serialization constraints.<a href="#appendix-G-2" class="pilcrow">¶</a></p>
 <div id="serialization-checking-use-cases">
 <section id="appendix-G.1">
         <h3 id="name-serialization-checking-use-">
 <a href="#appendix-G.1" class="section-number selfRef">G.1. </a><a href="#name-serialization-checking-use-" class="section-name selfRef">Serialization Checking Use Cases</a>
         </h3>
-<p id="appendix-G.1-1">Some applications that rely on deterministic serialization may choose serialization checking in order to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.<a href="#appendix-G.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-2">Some protocol environments may use serialization checking to minimize representational variants as a strategy to improve interoperability.
+<p id="appendix-G.1-1">Some protocol environments may use serialization checking to minimize representational variants as a strategy to improve interoperability.
 Discouraging variants early prevents them from compounding.
-See <span>[<a href="#RFC9413" class="cite xref">RFC9413</a>]</span> on maintaining robust protocols.<a href="#appendix-G.1-2" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-3">Serialization checking may enhance security in certain contexts, but such checking is never a substitute for correct and complete CBOR input validation.
-All CBOR decoders — regardless of their capabilities, modes, or optional features — must always perform full input validation. This includes rejecting CBOR features the decoder does not support.
-For example, a decoder that does not support indefinite-length items must reject them because they are unsupported, not because it is acting as a checking decoder.<a href="#appendix-G.1-3" class="pilcrow">¶</a></p>
-<p id="appendix-G.1-4">Decoders that fail to perform this essential input validation are fundamentally inadequate and represent a security risk.
-The appropriate remedy is to fix their input validation, not to add the serialization checking described here.<a href="#appendix-G.1-4" class="pilcrow">¶</a></p>
+See <span>[<a href="#RFC9413" class="cite xref">RFC9413</a>]</span> on maintaining robust protocols.<a href="#appendix-G.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-2">Serialization checking helps defend against covert channels described in <a href="#CovertChannels" class="auto internal xref">Section 9.1</a>.<a href="#appendix-G.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-3">Applications that rely on deterministic serialization may use serialization checking to ensure that the data they consume is truly deterministic and that the assumptions their logic makes about determinism hold.<a href="#appendix-G.1-3" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-4">A protocol that depends on deterministic serialization may recommend or require its decoders to perform serialization checking.
+CBOR libraries may offer serialization checking as a selectable option, at some cost in code size and processing.<a href="#appendix-G.1-4" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-5">Serialization checking may enhance security in certain contexts, but such checking is never a substitute for complete well-formedness checking.
+All CBOR decoders — regardless of their capabilities, modes, or optional features — must perform full well-formedness checking.
+They must also reject well-formed input that uses features they do not support.
+For example, a decoder that does not support indefinite-length items rejects them because they are unsupported, not because it is acting as a checking decoder.<a href="#appendix-G.1-5" class="pilcrow">¶</a></p>
+<p id="appendix-G.1-6">A decoder that fails to perform well-formedness checking is unsafe, whatever else it does.
+The appropriate remedy is to fix it, not to add the serialization checking described here.<a href="#appendix-G.1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="bignum-leading-zero-exception">
+<section id="appendix-G.2">
+        <h3 id="name-bignum-leading-zero-excepti">
+<a href="#appendix-G.2" class="section-number selfRef">G.2. </a><a href="#name-bignum-leading-zero-excepti" class="section-name selfRef">Bignum Leading Zero Exception</a>
+        </h3>
+<p id="appendix-G.2-1"><span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> requires that decoders supporting tags 2 and 3 be able to decode bignums that have leading zeros, even though preferred serialization never produces them.
+This conflicts with the goal of a decoder that checks for preferred or deterministic serialization: such a decoder needs to reject a bignum with leading zeros as non-conformant.<a href="#appendix-G.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-G.2-2">This document recommends that decoders performing serialization checking reject bignums containing leading zeros, notwithstanding the MUST in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.3" class="relref">Section 3.4.3</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
+Serialization checking is optional.
+When a protocol selects it — for example, because it depends on deterministic encoding — decoders are expected to perform the check, including rejecting non-preferred bignum encodings such as those with leading zeros.<a href="#appendix-G.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-G.2-3">Note that serialization-checking decoders always reject the empty byte string, because it represents the value zero, which is encoded as major type 0.<a href="#appendix-G.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2815,7 +2899,7 @@ The appropriate remedy is to fix their input validation, not to add the serializ
 <p id="appendix-H-1">This appendix provides non-normative guidance on byte-string wrapping of CBOR.
 It applies primarily to tag 24 and the CDDL .cbor and .cborseq control operators, but also to the serialization-specifying control operators described in <a href="#CDDL-Operators" class="auto internal xref">Section 8</a>.
 It also applies when prose states the byte-string wrapping requirement, such as for the COSE protected headers.
-See also <a href="#COSEPayload" class="auto internal xref">Appendix J.1</a>.<a href="#appendix-H-1" class="pilcrow">¶</a></p>
+See also <a href="#COSEPayload" class="auto internal xref">Appendix J.1.1</a>.<a href="#appendix-H-1" class="pilcrow">¶</a></p>
 <div id="purpose">
 <section id="appendix-H.1">
         <h3 id="name-purpose">
@@ -2924,75 +3008,97 @@ The receiver then reconstructs the signed/hashed bytes from the decoded data ite
       <h2 id="name-serialization-for-cose">
 <a href="#appendix-J" class="section-number selfRef">Appendix J. </a><a href="#name-serialization-for-cose" class="section-name selfRef">Serialization for COSE</a>
       </h2>
-<p id="appendix-J-1">This appendix highlights how the topics in this document apply to CBOR Object Signing and Encryption  (COSE <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>).<a href="#appendix-J-1" class="pilcrow">¶</a></p>
-<p id="appendix-J-2">It focuses on the COSE_Sign1 message (<span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.2" class="relref">Section 4.2</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>), which is sufficient for illustrating the relevant considerations.
-COSE_Sign1 is a simple structure for signing a payload.
-Its serialization can be described in three parts:<a href="#appendix-J-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-J-3.1">
-          <p id="appendix-J-3.1.1">The payload<a href="#appendix-J-3.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-J-3.2">
-          <p id="appendix-J-3.2.1">The Sig_structure<a href="#appendix-J-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-J-3.3">
-          <p id="appendix-J-3.3.1">The encoded message (the header parameters and the array of four that is the COSE_Sign1)<a href="#appendix-J-3.3.1" class="pilcrow">¶</a></p>
-</li>
-      </ul>
-<div id="COSEPayload">
+<div id="serialization-topics-applies-to-cose">
 <section id="appendix-J.1">
-        <h3 id="name-cose-payload-serialization">
-<a href="#appendix-J.1" class="section-number selfRef">J.1. </a><a href="#name-cose-payload-serialization" class="section-name selfRef">COSE Payload Serialization</a>
+        <h3 id="name-serialization-topics-applie">
+<a href="#appendix-J.1" class="section-number selfRef">J.1. </a><a href="#name-serialization-topics-applie" class="section-name selfRef">Serialization Topics Applies to COSE</a>
         </h3>
-<p id="appendix-J.1-1">The signed payload may or may not be CBOR, but assume that it is, perhaps a CWT or EAT.
+<p id="appendix-J.1-1">This appendix highlights how the topics in this document apply to CBOR Object Signing and Encryption  (COSE <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>).<a href="#appendix-J.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-J.1-2">It focuses on the COSE_Sign1 message (<span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.2" class="relref">Section 4.2</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>), which is sufficient for illustrating the relevant considerations.
+COSE_Sign1 is a simple structure for signing a payload.
+Its serialization can be described in three parts:<a href="#appendix-J.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-J.1-3.1">
+            <p id="appendix-J.1-3.1.1">The payload<a href="#appendix-J.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-J.1-3.2">
+            <p id="appendix-J.1-3.2.1">The Sig_structure<a href="#appendix-J.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-J.1-3.3">
+            <p id="appendix-J.1-3.3.1">The encoded message (the header parameters and the array of four that is the COSE_Sign1)<a href="#appendix-J.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<div id="COSEPayload">
+<section id="appendix-J.1.1">
+          <h4 id="name-cose-payload-serialization">
+<a href="#appendix-J.1.1" class="section-number selfRef">J.1.1. </a><a href="#name-cose-payload-serialization" class="section-name selfRef">COSE Payload Serialization</a>
+          </h4>
+<p id="appendix-J.1.1-1">The signed payload may or may not be CBOR, but assume that it is, perhaps a CWT or EAT.
 The payload is transmitted from the signer/sender fully intact all the way to the verifier/receiver.
 Because it is transmitted fully intact, CBOR is a binary protocol and intermediaries do not do things like wrap long lines or add base 64 encoding or such, it is not special in any way and COSE imposes no serialization restrictions on it at all.
 That is, it can use any serialization it wants.
-The serialization is selected by the protocol that defines the payload, not by COSE.<a href="#appendix-J.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-J.1-2">This highlights the principle that determinism is often NOT needed for signing and hashing described in <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a href="#appendix-J.1-2" class="pilcrow">¶</a></p>
-<p id="appendix-J.1-3">It is also worth noting that the payload is a byte string wrapped.
+The serialization is selected by the protocol that defines the payload, not by COSE.<a href="#appendix-J.1.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.1-2">This highlights the principle that determinism is often NOT needed for signing and hashing described in <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a href="#appendix-J.1.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.1-3">It is also worth noting that the payload is a byte string wrapped.
 This is not for determinism, armoring or canonicalization.
 It is so that the payload can be any data format, including not CBOR.
 It is also so CBOR libraries can return the CBOR-encoded payload for processing by the verification algorithms.
 Most CBOR libraries decoders do not provide access to any arbitrary chunk of encoded CBOR in the middle of a message.
-This is an example of byte string wrapping described in <a href="#ByteStringWrapping" class="auto internal xref">Appendix H</a>.<a href="#appendix-J.1-3" class="pilcrow">¶</a></p>
+This is an example of byte string wrapping described in <a href="#ByteStringWrapping" class="auto internal xref">Appendix H</a>.<a href="#appendix-J.1.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="COSESigStructure">
-<section id="appendix-J.2">
-        <h3 id="name-cose-sig_structure">
-<a href="#appendix-J.2" class="section-number selfRef">J.2. </a><a href="#name-cose-sig_structure" class="section-name selfRef">COSE Sig_structure</a>
-        </h3>
-<p id="appendix-J.2-1">The Sig_structure <span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> is used to aggregate all the items that are input to the signature algorithm — the payload, protected headers and other.<a href="#appendix-J.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-J.2-2">The Sig_structure is not transmitted from the sender to the receiver; instead, it is constructed independently by both parties.
+<section id="appendix-J.1.2">
+          <h4 id="name-cose-sig_structure">
+<a href="#appendix-J.1.2" class="section-number selfRef">J.1.2. </a><a href="#name-cose-sig_structure" class="section-name selfRef">COSE Sig_structure</a>
+          </h4>
+<p id="appendix-J.1.2-1">The Sig_structure <span><a href="https://rfc-editor.org/rfc/rfc9052#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> is used to aggregate all the items that are input to the signature algorithm — the payload, protected headers and other.<a href="#appendix-J.1.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.2-2">The Sig_structure is not transmitted from the sender to the receiver; instead, it is constructed independently by both parties.
 COSE therefore explicitly requires deterministic encoding so that both the sender and receiver produce identical encoded CBOR representations.
-This requirement is specified in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-9" class="relref">Section 9</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.<a href="#appendix-J.2-2" class="pilcrow">¶</a></p>
-<p id="appendix-J.2-3">This COSE requirement is effectively equivalent to the deterministic serialization defined in <a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>, since no floating-point NaNs are involved.
-It is also effectively equivalent to preferred-plus serialization as defined in <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>, because the Sig_structure contains no maps.<a href="#appendix-J.2-3" class="pilcrow">¶</a></p>
-<p id="appendix-J.2-4">The determinism requirement does not apply to the protected headers incorporated into the Sig_structure.
-Deterministic encoding of the headers is unnecessary because they are transmitted in the exact encoded form in which they are included in the Sig_structure.<a href="#appendix-J.2-4" class="pilcrow">¶</a></p>
-<p id="appendix-J.2-5">Furthermore, determinism requirements do not extend into CBOR inside of byte strings.
-Once CBOR data is wrapped in a byte string, its internal encoding is treated as opaque and is not subject to surrounding serialization constraints.<a href="#appendix-J.2-5" class="pilcrow">¶</a></p>
-<p id="appendix-J.2-6">This illustrates the general need for deterministic serialization when signed data is reconstructed rather than transmitted in the exact form that was signed.
-See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a href="#appendix-J.2-6" class="pilcrow">¶</a></p>
+This requirement is specified in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-9" class="relref">Section 9</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.<a href="#appendix-J.1.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.2-3">This COSE requirement is effectively equivalent to the deterministic serialization defined in <a href="#DeterministicSerialization" class="auto internal xref">Section 5</a>, since no floating-point NaNs are involved.
+It is also effectively equivalent to preferred-plus serialization as defined in <a href="#PreferredPlusSerialization" class="auto internal xref">Section 4</a>, because the Sig_structure contains no maps.<a href="#appendix-J.1.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.2-4">The determinism requirement does not apply to the protected headers incorporated into the Sig_structure.
+Deterministic encoding of the headers is unnecessary because they are transmitted in the exact encoded form in which they are included in the Sig_structure.<a href="#appendix-J.1.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.2-5">Furthermore, determinism requirements do not extend into CBOR inside of byte strings.
+Once CBOR data is wrapped in a byte string, its internal encoding is treated as opaque and is not subject to surrounding serialization constraints.<a href="#appendix-J.1.2-5" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.2-6">This illustrates the general need for deterministic serialization when signed data is reconstructed rather than transmitted in the exact form that was signed.
+See <a href="#WhenDeterministic" class="auto internal xref">Section 5.3</a>.<a href="#appendix-J.1.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="COSEMessage">
-<section id="appendix-J.3">
-        <h3 id="name-the-encoded-message">
-<a href="#appendix-J.3" class="section-number selfRef">J.3. </a><a href="#name-the-encoded-message" class="section-name selfRef">The Encoded Message</a>
-        </h3>
-<p id="appendix-J.3-1">A COSE_Sign1 message is an array of four elements containing two header parameter chunks, the payload, and the signature.
+<section id="appendix-J.1.3">
+          <h4 id="name-the-encoded-message">
+<a href="#appendix-J.1.3" class="section-number selfRef">J.1.3. </a><a href="#name-the-encoded-message" class="section-name selfRef">The Encoded Message</a>
+          </h4>
+<p id="appendix-J.1.3-1">A COSE_Sign1 message is an array of four elements containing two header parameter chunks, the payload, and the signature.
 The two header parameter chunks are maps that hold the various header parameters.
 COSE places no serialization requirements on these elements.
-The COSE protocol functions correctly regardless of the CBOR serialization used, as long as the decoder can decode what the encoder sends.<a href="#appendix-J.3-1" class="pilcrow">¶</a></p>
-<p id="appendix-J.3-2">In this respect, the serialization of the COSE_Sign1 message is no different from that of any other CBOR-based protocol message.
+The COSE protocol functions correctly regardless of the CBOR serialization used, as long as the decoder can decode what the encoder sends.<a href="#appendix-J.1.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.3-2">In this respect, the serialization of the COSE_Sign1 message is no different from that of any other CBOR-based protocol message.
 Indefinite-length items may be used, and non-shortest CBOR arguments are permitted.
-The only requirement is that the serialization used by the encoder be decodable by the receiver.<a href="#appendix-J.3-2" class="pilcrow">¶</a></p>
-<p id="appendix-J.3-3">Strictly speaking, COSE is a framework protocol intended for incorporation into an end-to-end protocol, which should explicitly define its serialization requirements.
-See <a href="#FrameworkProtocols" class="auto internal xref">Section 2.1.1</a> and <a href="#EndToEndProtocols" class="auto internal xref">Section 2.1.2</a>.<a href="#appendix-J.3-3" class="pilcrow">¶</a></p>
-<p id="appendix-J.3-4">In practice, some COSE libraries have implicitly implemented only the preferred (or preferred-plus) serialization, and end-to-end protocols have often defaulted to whatever behavior the underlying COSE library provides.
-While this generally works — particularly because the preferred serialization aligns with the recommendations here — it is more robust for an end-to-end protocol to state its serialization requirements explicitly.<a href="#appendix-J.3-4" class="pilcrow">¶</a></p>
+The only requirement is that the serialization used by the encoder be decodable by the receiver.<a href="#appendix-J.1.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.3-3">Strictly speaking, COSE is a framework protocol intended for incorporation into an end-to-end protocol, which should explicitly define its serialization requirements.
+See <a href="#FrameworkProtocols" class="auto internal xref">Section 2.1.1</a> and <a href="#EndToEndProtocols" class="auto internal xref">Section 2.1.2</a>.<a href="#appendix-J.1.3-3" class="pilcrow">¶</a></p>
+<p id="appendix-J.1.3-4">In practice, some COSE libraries have implicitly implemented only the preferred (or preferred-plus) serialization, and end-to-end protocols have often defaulted to whatever behavior the underlying COSE library provides.
+While this generally works — particularly because the preferred serialization aligns with the recommendations here — it is more robust for an end-to-end protocol to state its serialization requirements explicitly.<a href="#appendix-J.1.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="COSERecommendations">
+<section id="appendix-J.2">
+        <h3 id="name-cose-serialization-recommen">
+<a href="#appendix-J.2" class="section-number selfRef">J.2. </a><a href="#name-cose-serialization-recommen" class="section-name selfRef">COSE Serialization Recommendation</a>
+        </h3>
+<p id="appendix-J.2-1"><span><a href="https://rfc-editor.org/rfc/rfc9052#section-9" class="relref">Section 9</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> gives deterministic encoding requirements for the Sig_structure, Enc_structure, and MAC_structure, which the sender and receiver construct independently (see <a href="#COSESigStructure" class="auto internal xref">Appendix J.1.2</a>).
+These requirements apply as specified.
+Note that both deterministic and preferred-plus serialization fulfill these requirements.<a href="#appendix-J.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-J.2-2">For the remaining COSE structures (the messages themselves, their header parameter maps, and COSE_Key), COSE gives no serialization requirements (see <a href="#COSEMessage" class="auto internal xref">Appendix J.1.3</a>).
+As described in <a href="#FrameworkProtocols" class="auto internal xref">Section 2.1.1</a>, the end-to-end protocol using COSE is expected to specify serialization for them.
+Where it does not, preferred-plus is recommended.
+In support of this, it is recommended that COSE libraries support preferred-plus serialization.<a href="#appendix-J.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-J.2-3">The serialization of the payload is determined by the protocol that defines the payload, not by COSE, and the payload need not be CBOR at all (see <a href="#COSEPayload" class="auto internal xref">Appendix J.1.1</a>).<a href="#appendix-J.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3305,11 +3411,11 @@ Maps are only sorted to provide deterministic encoding.<a href="#appendix-K.2-18
 </pre><a href="#appendix-K.2-21" class="pilcrow">¶</a>
 </div>
 <p id="appendix-K.2-22">File: positive_bignum.edn<a href="#appendix-K.2-22" class="pilcrow">¶</a></p>
-<p id="appendix-K.2-23">Note that big numbers are included in the test data because preferred-plus serialization requires their unification with integers.<a href="#appendix-K.2-23" class="pilcrow">¶</a></p>
+<p id="appendix-K.2-23">Note that bignums are included in the test data because preferred-plus serialization requires their unification with integers.<a href="#appendix-K.2-23" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-K.2-24">
 <pre>
 {
-  "description": "A positive big num",
+  "description": "A positive bignum",
   "edn-representations" : ["79228162514264337593543950335"],
   "general-serializations": [h'c24cffffffffffffffffffffffff',
                              h'c24e0000ffffffffffffffffffffffff' ],
@@ -3319,7 +3425,7 @@ Maps are only sorted to provide deterministic encoding.<a href="#appendix-K.2-18
 </pre><a href="#appendix-K.2-24" class="pilcrow">¶</a>
 </div>
 <p id="appendix-K.2-25">File: negative_bignum.edn<a href="#appendix-K.2-25" class="pilcrow">¶</a></p>
-<p id="appendix-K.2-26">Note that this is the value closest that can be represented as a big number, not a type 1 integer for preferred-plus serialization.<a href="#appendix-K.2-26" class="pilcrow">¶</a></p>
+<p id="appendix-K.2-26">Note that this is the value closest that can be represented as a bignum, not a type 1 integer for preferred-plus serialization.<a href="#appendix-K.2-26" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-K.2-27">
 <pre>
 {
