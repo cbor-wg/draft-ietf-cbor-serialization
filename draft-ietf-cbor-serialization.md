@@ -460,7 +460,7 @@ A decoder SHOULD support the same types and ranges as its corresponding encoder,
 1. If bignums (tags 2 and 3) are accepted, the following apply. (This is a maximally permissive acceptance mode, adopted to compensate for ambiguity in {{Section 3.4.3 of -cbor}}.)
    * Bignums described in {{Section 3.4.3 of -cbor}} MUST be accepted. This includes:
        * Leading zeros MUST be ignored.
-   * For full interoperability, an empty byte string MUST be accepted and treated as the value zero.
+   * For full interoperability, an empty byte string MUST be accepted and treated as the value 0 for a positive bignum and the value -1 for a negative bignum.
 
 See  {{BigNumbersDataModel}} and {{BigNumberStrategies}} for further background on bignums, {{BigNumbersCDDL}} for the CDDL specification, and {{CheckingDecoder}} for overrides to the above decoding rules for serialization-checking decoders.
 
@@ -1038,7 +1038,7 @@ This document recommends that decoders performing serialization checking reject 
 Serialization checking is optional.
 When a protocol selects it &mdash; for example, because it depends on deterministic encoding &mdash; decoders are expected to perform the check, including rejecting non-preferred bignum encodings such as those with leading zeros.
 
-Note that serialization-checking decoders always reject the empty byte string, because it represents the value zero, which is encoded as major type 0.
+Note that serialization-checking decoders always reject the empty byte string, because it always represents a value (0 for tag 2, -1 for tag 3) that can be encoded directly using major type 0 or 1.
 
 
 # CBOR Byte String Wrapping {#ByteStringWrapping}
