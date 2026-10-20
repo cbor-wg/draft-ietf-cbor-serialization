@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-10-18T03:12:33.780437+00:00",
+  "timestamp": "2026-10-20T03:35:19.994515+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -4542,7 +4542,7 @@
       "labels": [],
       "body": "Recommend that new framework protocols include specific text to say they are leaving serialization specification blank.\n\nClearly take the stand that there is no default serialization.",
       "createdAt": "2026-10-13T19:28:55Z",
-      "updatedAt": "2026-10-13T19:28:55Z",
+      "updatedAt": "2026-10-19T06:43:58Z",
       "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
       "baseRefName": "main",
       "baseRefOid": "585e0c7fc319a6803c40970a1648a3175df18cbe",
@@ -4554,7 +4554,88 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOQYX63c8AAAABS90xiw",
+          "commit": {
+            "abbreviatedOid": "17c26da"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-10-19T06:40:25Z",
+          "updatedAt": "2026-10-19T06:40:25Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "I wouldn't expect this if the specific protocol does not need additional serialization constraints.",
+              "createdAt": "2026-10-19T06:40:25Z",
+              "updatedAt": "2026-10-19T06:40:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABS91hOQ",
+          "commit": {
+            "abbreviatedOid": "17c26da"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-10-19T06:42:07Z",
+          "updatedAt": "2026-10-19T06:42:08Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "More likely, the reason is that no additional serialization constraints are needed at all. There is no need to say this in this case.  (Imagine that every JSON-based protocol did this.)",
+              "createdAt": "2026-10-19T06:42:07Z",
+              "updatedAt": "2026-10-19T06:42:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABS91zKA",
+          "commit": {
+            "abbreviatedOid": "17c26da"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-10-19T06:42:36Z",
+          "updatedAt": "2026-10-19T06:42:36Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "If the protocol needs deterministic encoding, this is not a valid recommendation.\n",
+              "createdAt": "2026-10-19T06:42:36Z",
+              "updatedAt": "2026-10-19T06:42:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOQYX63c8AAAABS92qvQ",
+          "commit": {
+            "abbreviatedOid": "17c26da"
+          },
+          "author": "cabo",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-10-19T06:43:58Z",
+          "updatedAt": "2026-10-19T06:43:58Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "The serializations are not new, they all are described in RFC 8949.  I think you mean the specific sets of serialization constraints and other library configurations.",
+              "createdAt": "2026-10-19T06:43:58Z",
+              "updatedAt": "2026-10-19T06:43:58Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 104,
