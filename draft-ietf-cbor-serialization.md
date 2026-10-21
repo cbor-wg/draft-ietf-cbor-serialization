@@ -632,13 +632,14 @@ A set of tags MAY affect each other, provided that all defining authorities for 
 
 Tags 2 and 3 are exempt from this rule, as they were defined prior to the establishment of this requirement.
 
+
 # CDDL Serialization Control Operator {#CDDL-Operators}
 
-The ".serial" control operator specifies the serialization of any type in CDDL, including the serialization of the whole document or byte-string-wrapped sub-parts.
+The ".serial" control operator specifies the serialization of any type in CDDL, including the serialization of the top-level data item or byte-string-wrapped sub-parts.
 
-The controller (the right-hand side) MUST be either "prefp" or "dtrm", specifying preferred-plus ({{PreferredPlusSerialization}}) or deterministic ({{DeterministicSerialization}}) serialization, respectively.
+The controller (the right-hand side) is a text string and MUST be either "prefp" or "dtrm", specifying preferred-plus ({{PreferredPlusSerialization}}) or deterministic ({{DeterministicSerialization}}) serialization, respectively.
 
-The scope of .serial applies recursively through nested arrays and maps, but does not extend into byte strings or other data items that happen to contain encoded CBOR.
+The scope of .serial extends recursively through nested arrays, maps, and tag content, but does not extend into byte strings or other data items that happen to contain encoded CBOR.
 Every instance of embedded CBOR that requires specific serialization must specify it explicitly.
 See also {{ByteStringWrapping}}.
 
@@ -656,6 +657,9 @@ For another example, the first lines of a CDDL document as follows specify that 
 my-prefp-protocol = my-protocol .serial "prefp"
 my-protocol = ...
 ~~~
+
+As with filtering control operators such as .size, .serial constraints intersect when nested, whether through direct nesting or because a type with its own .serial appears within the scope of another.
+Since deterministic serialization is a subset of preferred-plus, wherever both apply the effective requirement is deterministic, regardless of which one is outermost.
 
 New controller values for new serializations are possible but are highly discouraged.
 Standards action is required to add them.
