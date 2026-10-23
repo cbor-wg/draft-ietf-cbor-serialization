@@ -4,9 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Updates: 8949 (if approved)                              13 October 2026
+Updates: 8949 (if approved)                              23 October 2026
 Intended status: Standards Track                                        
-Expires: 16 April 2027
+Expires: 26 April 2027
 
 
                    CBOR Serialization and Determinism
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 April 2027.
+   This Internet-Draft will expire on 26 April 2027.
 
 Copyright Notice
 
@@ -437,7 +437,7 @@ Table of Contents
    Preferred-plus serialization is recommended because it is suitable
    for the majority of CBOR-based protocols.  Also, in practice,
    preferred-plus serialization is equivalent to preferred serialization
-   Section 4.1 of [RFC8949] for most use cases.
+   (Section 4.1 of [RFC8949]) for most use cases.
 
    It is also RECOMMENDED that CBOR libraries offer deterministic
    serialization either as a selectable option or as the default, as
@@ -482,7 +482,7 @@ Table of Contents
    If an end-to-end protocol specification does not state serialization
    requirements, it is RECOMMENDED that the library implement preferred-
    plus serialization, unless existing deployments of that protocol have
-   established a different practice (see {EndToEndProtocols}).
+   established a different practice (see Section 2.1.2).
 
 3.  General Serialization
 
@@ -526,7 +526,7 @@ Table of Contents
    not produce them.
 
    This document therefore does not treat general serialization, or any
-   other serialization, as a default.  Section 2.1.2 describes how
+   other serialization, as a default.  Section 2.1 describes how
    protocol specifications are expected to address serialization,
    including how to interpret framework and end-to-end protocols that
    are silent about it.
