@@ -50,8 +50,6 @@ contributor:
   email: ken.takayama.ietf@gmail.com
 
 normative:
-  RFC2119:
-
   RFC8949: cbor
 
   RFC8610: cddl
@@ -250,6 +248,12 @@ See {{RelationToPreferred}}.
 This document updates {{-cbor}} in one way: it limits how new tag definitions can affect data models.
 The definitions of tags 2 and 3 (bignums) in {{Section 3.4.3 of -cbor}} modifies the integer type in the CBOR basic generic data model; this is allowed as a one-time exception.
 The new rule preserves data model definitions against later modification by unrelated tag definitions, which might undermine their semantics and upset their previous use.
+
+
+## Conventions and Definitions
+
+{::boilerplate bcp14-tagged}
+
 
 # Recommendations Summary {#Recommendations}
 
