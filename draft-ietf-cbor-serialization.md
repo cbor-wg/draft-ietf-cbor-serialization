@@ -1146,6 +1146,8 @@ In summary, byte-string wrapping is the most reliable approach because it clearl
 
 # Serialization for COSE {#COSESerialization}
 
+## Serialization Topics Applies to COSE
+
 This appendix highlights how the topics in this document apply to CBOR Object Signing and Encryption  (COSE {{-COSE}}).
 
 It focuses on the COSE_Sign1 message ({{Section 4.2 of -COSE}}), which is sufficient for illustrating the relevant considerations.
@@ -1156,7 +1158,7 @@ Its serialization can be described in three parts:
 - The Sig_structure
 - The encoded message (the header parameters and the array of four that is the COSE_Sign1)
 
-## COSE Payload Serialization {#COSEPayload}
+### COSE Payload Serialization {#COSEPayload}
 
 The signed payload may or may not be CBOR, but assume that it is, perhaps a CWT or EAT.
 The payload is transmitted from the signer/sender fully intact all the way to the verifier/receiver.
@@ -1173,7 +1175,7 @@ It is also so CBOR libraries can return the CBOR-encoded payload for processing 
 Most CBOR libraries decoders do not provide access to any arbitrary chunk of encoded CBOR in the middle of a message.
 This is an example of byte string wrapping described in {{ByteStringWrapping}}.
 
-## COSE Sig_structure {#COSESigStructure}
+### COSE Sig_structure {#COSESigStructure}
 
 The Sig_structure {{Section 4.4 of -COSE}} is used to aggregate all the items that are input to the signature algorithm &mdash; the payload, protected headers and other.
 
@@ -1194,7 +1196,7 @@ This illustrates the general need for deterministic serialization when signed da
 See {{WhenDeterministic}}.
 
 
-## The Encoded Message {#COSEMessage}
+### The Encoded Message {#COSEMessage}
 
 A COSE_Sign1 message is an array of four elements containing two header parameter chunks, the payload, and the signature.
 The two header parameter chunks are maps that hold the various header parameters.
@@ -1210,6 +1212,20 @@ See {{FrameworkProtocols}} and {{EndToEndProtocols}}.
 
 In practice, some COSE libraries have implicitly implemented only the preferred (or preferred-plus) serialization, and end-to-end protocols have often defaulted to whatever behavior the underlying COSE library provides.
 While this generally works &mdash; particularly because the preferred serialization aligns with the recommendations here &mdash; it is more robust for an end-to-end protocol to state its serialization requirements explicitly.
+
+
+## COSE Serialization Recommendation  {#COSERecommendations}
+
+{{Section 9 of RFC9052}} gives deterministic encoding requirements for the Sig_structure, Enc_structure, and MAC_structure, which the sender and receiver construct independently (see {{COSESigStructure}}).
+These requirements apply as specified.
+Note that both deterministic and preferred-plus serialization fulfill these requirements.
+
+For the remaining COSE structures (the messages themselves, their header parameter maps, and COSE_Key), COSE gives no serialization requirements (see {{COSEMessage}}).
+As described in {{FrameworkProtocols}}, the end-to-end protocol using COSE is expected to specify serialization for them.
+Where it does not, preferred-plus is recommended.
+In support of this, it is recommended that COSE libraries support preferred-plus serialization.
+
+The serialization of the payload is determined by the protocol that defines the payload, not by COSE, and the payload need not be CBOR at all (see {{COSEPayload}}).
 
 
 # Examples
