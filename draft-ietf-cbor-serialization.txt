@@ -328,7 +328,7 @@ Table of Contents
    term.
 
    The serializations defined here are formally new, but they differ
-   little in practice from what CBOR libraries already implement For
+   little in practice from what CBOR libraries already implement.  For
    example, the shortest-length argument encoding described in
    Section 4.1 of [RFC8949] is widely implemented for both encoding and
    decoding, and is the same as that required by the serializations
@@ -350,32 +350,40 @@ Table of Contents
 
 2.1.1.  Framework Protocols
 
-   Framework protocols are those that offer a set of options and
-   alternatives, with interoperability depending on the sender and
-   receiver making compatible choices.  These protocols sometimes make
-   use of profiles to define interoperability requirements for specific
-   uses.  Framework protocols are sometimes described as toolbox or
-   building-block protocols, reflecting their role as collections of
-   reusable mechanisms rather than end-to-end protocols.  CWT, COSE,
-   EAT, and CBOR itself are examples of framework protocols.
+   Framework protocols are those that offer options and alternatives,
+   with interoperability depending on the sender and receiver making
+   compatible choices.  These protocols sometimes make use of profiles
+   to define interoperability requirements for specific uses.  Framework
+   protocols are sometimes described as toolbox or building-block
+   protocols, reflecting their role as collections of reusable
+   mechanisms rather than end-to-end protocols.  CWT, COSE, EAT, and
+   CBOR itself are examples of framework protocols.
 
-   It is RECOMMENDED that CBOR-based framework protocols not state
-   serialization requirements, enabling individual uses and profiles to
-   choose serialization to suit their environments and constraints.
+   It is RECOMMENDED that new CBOR-based framework protocols not impose
+   serialization requirements and include a statement such as:
 
-   CBOR-based framework protocols MAY impose serialization requirements.
-   For example, if a protocol is never expected to be deployed in
-   constrained environments where map sorting is too expensive, it may
-   mandate deterministic serialization for all implementations in order
-   to eliminate all serialization variability.
+      This protocol intentionally specifies no serialization
+      requirements so that serialization can be adapted to individual
+      environments.  End-to-end protocols (or profiles) that use this
+      protocol are expected to specify serialization.
+
+   It is RECOMMENDED that extant framework protocols that are silent
+   about serialization (e.g., CWT) be interpreted as if they contained
+   this statement.
+
+   Alternatively, new CBOR-based framework protocols MAY impose
+   serialization requirements.  For example, if a protocol is never
+   expected to be deployed in constrained environments where map sorting
+   is too expensive, it may mandate deterministic serialization for all
+   implementations in order to eliminate all serialization variability.
 
    One scenario in particular calls for deterministic serialization in a
    framework protocol: a design in which the parties independently
    construct and serialize the data to be hashed or signed, rather than
    transmitting those exact bytes.  See Section 5.3.  For such a design
    to function correctly, the framework protocol must require
-   deterministic serialization.  COSE is an example, elaborated upon in
-   Appendix J.
+   deterministic serialization, possibly only for a subset of the
+   protocol.  COSE is an example, elaborated upon in Appendix J.
 
 2.1.2.  End-to-End Protocols
 
@@ -387,7 +395,7 @@ Table of Contents
    multi-vendor interop testing events.  TLS, HTTP, and FIDO are
    examples of end-to-end protocols.
 
-   End-to-end protocols MUST define a serialization strategy that
+   New end-to-end protocols MUST define a serialization strategy that
    ensures the sender and receiver use interoperable serialization.
 
    The strategy most highly RECOMMENDED is to normatively require
@@ -407,11 +415,10 @@ Table of Contents
    required for parts of the protocol using hashing or signing.  See
    Section 5.3.
 
-   If no specific serialization is required, general serialization (see
-   Section 3) applies by default.  In this case, the sender MAY use any
-   valid serialization, and the receiver MUST be able to decode it.
-   Defaulting to general serialization is NOT RECOMMENDED, because some
-   serializations like indefinite-lengths are not widely supported.
+   An end-to-end protocol that gives no serialization requirements is
+   ambiguous.  For such extant protocols, use of preferred-plus
+   serialization is RECOMMENDED unless existing deployments of that
+   protocol have established a different practice.
 
 2.2.  Libraries
 
@@ -430,7 +437,7 @@ Table of Contents
    Preferred-plus serialization is recommended because it is suitable
    for the majority of CBOR-based protocols.  Also, in practice,
    preferred-plus serialization is equivalent to preferred serialization
-   Section 4.1 of [RFC8949] for most use cases.
+   (Section 4.1 of [RFC8949]) for most use cases.
 
    It is also RECOMMENDED that CBOR libraries offer deterministic
    serialization either as a selectable option or as the default, as
@@ -453,12 +460,11 @@ Table of Contents
 
    When a framework protocol specification does not mandate a specific
    serialization, it is RECOMMENDED that a library for it implement
-   preferred-plus serialization.  For example, CWT and COSE do not
-   mandate a serialization, so it is recommended that libraries
-   implementing them use preferred-plus serialization.  Alternatively, a
-   framework protocol library may implement only deterministic
-   serialization if this aligns with its deployment environment and
-   design goals.
+   preferred-plus serialization.  For example, CWT does not mandate a
+   serialization, so it is recommended that libraries implementing them
+   use preferred-plus serialization.  Alternatively, a framework
+   protocol library may implement only deterministic serialization if
+   this aligns with its deployment environment and design goals.
 
    When a framework protocol mandates serialization requirements,
    conforming libraries follow them.  For instance, small parts of COSE
@@ -475,7 +481,8 @@ Table of Contents
 
    If an end-to-end protocol specification does not state serialization
    requirements, it is RECOMMENDED that the library implement preferred-
-   plus serialization.
+   plus serialization, unless existing deployments of that protocol have
+   established a different practice (see Section 2.1.2).
 
 3.  General Serialization
 
@@ -509,17 +516,20 @@ Table of Contents
    [RFC8949] does not explicitly specify default encoding or decoding
    requirements.  Nothing in it says what a CBOR library needs to
    support, or what an implementation of a protocol that gives no
-   serialization requirements, such as CWT, needs to do.
+   serialization requirements needs to do.
 
    Some readers take [RFC8949] to imply that a decoder has to support
    general serialization and that an encoder is free to use any variant.
-   This is a possible interpretation, but many implementers have not
-   adopted it.  For example, CWT and COSE decoders typically do not
-   support indefinite lengths, and their encoders do not produce them.
+   This document does not adopt that interpretation, and many
+   implementers have not either.  For example, CWT and COSE decoders
+   typically do not support indefinite lengths, and their encoders do
+   not produce them.
 
-   It is therefore safer not to treat general serialization as the
-   default, particularly when encoding, since a decoder may not accept
-   every variant.
+   This document therefore does not treat general serialization, or any
+   other serialization, as a default.  Section 2.1 describes how
+   protocol specifications are expected to address serialization,
+   including how to interpret framework and end-to-end protocols that
+   are silent about it.
 
 3.2.  When To Use General Serialization
 
@@ -533,8 +543,8 @@ Table of Contents
    cost of requiring decoders — assumed to be unconstrained — to support
    every possible serialization option.
 
-   A protocol that requires general serialization SHOULD state so
-   explicitly.
+   A protocol that requires general serialization needs to state so
+   explicitly; see Section {EndToEndProtocols}.
 
    See also special serializations (Section 6), which enable
    optimization and efficiency for specific use cases without requiring
@@ -693,13 +703,13 @@ Table of Contents
 
 4.3.  When to use preferred-plus serialization
 
-   Preferred-plus is the recommended default.  It can serialize all CBOR
-   data types and value ranges (except non-trivial NaNs), encodes
-   compactly, is straightforward to implement, and is widely supported
-   by CBOR libraries.  It provides strong serialization interoperability
-   because (1) decoders are required to accept all encodings that a
-   preferred-plus encoder is permitted to produce, and (2) the
-   requirements are formally specified.
+   Preferred-plus is the recommended choice for most protocols.  It can
+   serialize all CBOR data types and value ranges (except non-trivial
+   NaNs), encodes compactly, is straightforward to implement, and is
+   widely supported by CBOR libraries.  It provides strong serialization
+   interoperability because (1) decoders are required to accept all
+   encodings that a preferred-plus encoder is permitted to produce, and
+   (2) the requirements are formally specified.
 
    Choose a different serialization only when you have a specific need:
    deterministic serialization when determinism is required, a special
@@ -844,7 +854,7 @@ Table of Contents
    is to sort each map's key-value pairs by key.  Thus, for
    deterministic encoding, maps are sorted.
 
-   While not stated explcitly in [RFC8949], it does imply that map
+   While not stated explicitly in [RFC8949], it does imply that map
    decoding must never depend on map ordering.  All CBOR map decoding
    must succeed regardless of the map order.
 
