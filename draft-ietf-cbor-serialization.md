@@ -253,7 +253,7 @@ The new rule preserves data model definitions against later modification by unre
 
 # Recommendations Summary {#Recommendations}
 
-## Protocol Specifications
+## Protocol Specifications {#ProtocolSpecifications}
 
 ### Framework Protocols {#FrameworkProtocols}
 
@@ -312,7 +312,7 @@ Similarly, implementing deterministic serialization means making {{Deterministic
 It is RECOMMENDED that CBOR libraries implement preferred-plus serialization.
 
 Preferred-plus serialization is recommended because it is suitable for the majority of CBOR-based protocols.
-Also, in practice, preferred-plus serialization is equivalent to preferred serialization {{Section 4.1 of -cbor}} for most use cases.
+Also, in practice, preferred-plus serialization is equivalent to preferred serialization ({{Section 4.1 of -cbor}}) for most use cases.
 
 It is also RECOMMENDED that CBOR libraries offer deterministic serialization either as a selectable option or as the default, as some protocols (for example, COSE) require it.
 Relative to preferred-plus serialization, the only additional requirement for deterministic serialization is that encoded maps be sorted.
@@ -338,7 +338,7 @@ See {{COSESerialization}}, which shows how COSE requires deterministic serializa
 End-to-end protocols are expected to state serialization requirements to ensure interoperability.
 Libraries for end-to-end protocols are expected to adhere to them.
 
-If an end-to-end protocol specification does not state serialization requirements, it is RECOMMENDED that the library implement preferred-plus serialization, unless existing deployments of that protocol have established a different practice (see {EndToEndProtocols}).
+If an end-to-end protocol specification does not state serialization requirements, it is RECOMMENDED that the library implement preferred-plus serialization, unless existing deployments of that protocol have established a different practice (see {{EndToEndProtocols}}).
 
 
 # General Serialization {#GeneralSerialization}
@@ -368,7 +368,7 @@ This document does not adopt that interpretation, and many implementers have not
 For example, CWT and COSE decoders typically do not support indefinite lengths, and their encoders do not produce them.
 
 This document therefore does not treat general serialization, or any other serialization, as a default.
-{{EndToEndProtocols}} describes how protocol specifications are expected to address serialization, including how to interpret framework and end-to-end protocols that are silent about it.
+{{ProtocolSpecifications}} describes how protocol specifications are expected to address serialization, including how to interpret framework and end-to-end protocols that are silent about it.
 
 
 ## When To Use General Serialization {#WhenGeneral}
