@@ -4,9 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Updates: 8949 (if approved)                              20 October 2026
+Updates: 8949 (if approved)                              23 October 2026
 Intended status: Standards Track                                        
-Expires: 23 April 2027
+Expires: 26 April 2027
 
 
                    CBOR Serialization and Determinism
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2027.
+   This Internet-Draft will expire on 26 April 2027.
 
 Copyright Notice
 
@@ -945,18 +945,18 @@ Table of Contents
 8.  CDDL Serialization Control Operator
 
    The ".serial" control operator specifies the serialization of any
-   type in CDDL, including the serialization of the whole document or
-   byte-string-wrapped sub-parts.
+   type in CDDL, including the serialization of the top-level data item
+   or byte-string-wrapped sub-parts.
 
-   The controller (the right-hand side) MUST be either "prefp" or
-   "dtrm", specifying preferred-plus (Section 4) or deterministic
-   (Section 5) serialization, respectively.
+   The controller (the right-hand side) is a text string and MUST be
+   either "prefp" or "dtrm", specifying preferred-plus (Section 4) or
+   deterministic (Section 5) serialization, respectively.
 
-   The scope of .serial applies recursively through nested arrays and
-   maps, but does not extend into byte strings or other data items that
-   happen to contain encoded CBOR.  Every instance of embedded CBOR that
-   requires specific serialization must specify it explicitly.  See also
-   Appendix H.
+   The scope of .serial extends recursively through nested arrays, maps,
+   and tag content, but does not extend into byte strings or other data
+   items that happen to contain encoded CBOR.  Every instance of
+   embedded CBOR that requires specific serialization must specify it
+   explicitly.  See also Appendix H.
 
    For example, the following specifies that a message or protocol
    described by "stuff" is deterministically serialized and wrapped in a
@@ -971,6 +971,13 @@ Table of Contents
 
    my-prefp-protocol = my-protocol .serial "prefp"
    my-protocol = ...
+
+   As with filtering control operators such as .size, .serial
+   constraints intersect when nested, whether through direct nesting or
+   because a type with its own .serial appears within the scope of
+   another.  Since deterministic serialization is a subset of preferred-
+   plus, wherever both apply the effective requirement is deterministic,
+   regardless of which one is outermost.
 
    New controller values for new serializations are possible but are
    highly discouraged.  Standards action is required to add them.
