@@ -4,9 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Updates: 8949 (if approved)                              23 October 2026
+Updates: 8949 (if approved)                              30 October 2026
 Intended status: Standards Track                                        
-Expires: 26 April 2027
+Expires: 3 May 2027
 
 
                    CBOR Serialization and Determinism
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 April 2027.
+   This Internet-Draft will expire on 3 May 2027.
 
 Copyright Notice
 
@@ -2551,26 +2551,8 @@ K.2.  Example Data Items
 
 Contributors
 
-   Rohan Mahy
-   Email: rohan.ietf@gmail.com
-
-
    Joe Hildebrand
    Email: hildjj@cursive.net
-
-
-   Wolf McNally
-   Blockchain Commons
-   Email: wolf@wolfmcnally.com
-
-
-   Carsten Bormann
-   Universität Bremen TZI
-   Email: cabo@tzi.org
-
-
-   Anders Rundgren
-   Email: anders.rundgren.net@gmail.com
 
 
    Vadim Goncharov
