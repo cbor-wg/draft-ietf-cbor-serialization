@@ -32,18 +32,8 @@ author:
 
 
 contributor:
-- name: Rohan Mahy
-  email: rohan.ietf@gmail.com
 - name: Joe Hildebrand
   email: hildjj@cursive.net
-- name: Wolf McNally
-  organization: Blockchain Commons
-  email: wolf@wolfmcnally.com
-- name: Carsten Bormann
-  organization: Universität Bremen TZI
-  email: cabo@tzi.org
-- name: Anders Rundgren
-  email: anders.rundgren.net@gmail.com
 - name: Vadim Goncharov
   email: vadimnuclight@gmail.com
 - name: Ken Takayama
