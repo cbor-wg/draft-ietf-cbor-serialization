@@ -113,10 +113,10 @@ informative:
 
 RFC 8949 defines CBOR, a standard for serializing data types such as integers, strings, and arrays into encoded bytes.
 CBOR serialization is flexible, allowing data types to be encoded in multiple ways to accommodate deployment in constrained environments.
-This document normatively defines one particular serialization, called "preferred-plus serialization," that is suitable for the majority of CBOR-based protocols.
-Protocol designers and implementers who choose it need not understand or specify serialization details themselves.
-This document also normatively defines a deterministic serialization.
-These serializations are largely compatible with those widely implemented by the CBOR community.
+
+This document names the full set of encodings defined in RFC 8949 as general serialization, and formally defines two others:
+preferred-plus serialization, which is closely based on preferred serialization and is recommended for broad use;
+and deterministic serialization, which is closely based on the deterministic encoding defined in RFC 8949.
 
 This document updates RFC 8949 with a new rule that limits how new tag definitions can affect the CBOR data model.
 
@@ -136,7 +136,7 @@ These are broad concepts that can be applied to other serialization schemes like
  | Abstraction Level | Top level; conceptual | Realization of information in data structures and data types | Actual bytes encoded for transmission |
  | Example | The temperature of something | A floating-point number representing the temperature | Encoded CBOR of a floating-point number |
  | Standards | e.g., {{UML}} | CDDL {{-cddl}} | CBOR {{-cbor}} |
- | Implementation Representation | n/a | API input to CBOR encoder library, output from CBOR decoder library | Encoded CBOR in memory or for transmission |
+ | Implementation Representation | Application semantics (names, units, constraints) | API input to CBOR encoder library, output from CBOR decoder library | Encoded CBOR in memory or for transmission |
  {: #tab-models title="Information Model, Data Model and Serialization"}
 
 CBOR doesn't provide facilities for information models.
@@ -180,8 +180,8 @@ The interoperability challenge arises because partial implementations are both p
 For example, an encoder may produce an indefinite-length array that is sent to a decoder that supports only definite-length arrays.
 Both this encoder and decoder are allowed by {{-cbor}}.
 
-Decoders in particular often support only a subset of serialization forms &mdash; whether because they operate in constrained environments,
-or because a full general-purpose decoder is substantially more work to implement, especially in languages like C and Rust that lack built-in dynamic arrays, maps, and strings.
+Decoders in particular often support only a subset of serialization forms &mdash; typically because handling indefinite lengths is more complex and usually requires dynamic allocation and copying.
+This is especially true in C and in Rust’s no_std environments, where resizable strings and arrays aren’t readily available.
 
 From many years of CBOR deployment, we know that some serialization variants like indefinite-lengths are not commonly used.
 This makes it both feasible and beneficial to define a common serialization suitable for general use.
@@ -281,8 +281,8 @@ TLS, HTTP, and FIDO are examples of end-to-end protocols.
 
 New end-to-end protocols MUST define a serialization strategy that ensures the sender and receiver use interoperable serialization.
 
-The strategy most highly RECOMMENDED is to normatively require preferred-plus serialization &mdash; conformance with {{PreferredPlusEncoding}} and {{PreferredPlusDecoding}}.
-If a protocol does not need to be deployed where map sorting is too expensive, requiring deterministic serialization &mdash; conformance with {{DeterministicEncoding}} and {{DeterministicDecoding}} &mdash; is also RECOMMENDED.
+The primary RECOMMENDED strategy is to normatively require preferred-plus serialization &mdash; conformance with {{PreferredPlusEncoding}} and {{PreferredPlusDecoding}}.
+Requiring deterministic serialization &mdash; conformance with {{DeterministicEncoding}} and {{DeterministicDecoding}} &mdash; is also RECOMMENDED when the protocol is targeted only at environments where map sorting is inexpensive.
 
 An end-to-end protocol MAY instead define its own specialized serialization (see {{SpecialSerializations}}).
 In such cases, it MUST explicitly specify the permitted serialization behaviors necessary to ensure interoperability.
@@ -373,7 +373,7 @@ Preferred-plus serialization ({{PreferredPlusSerialization}}) is compact and sup
 The main scenario where general serialization is warranted is a protocol that has to accommodate highly constrained encoders,
 at the cost of requiring decoders &mdash; assumed to be unconstrained &mdash; to support every possible serialization option.
 
-A protocol that requires general serialization needs to state so explicitly; see Section {EndToEndProtocols}.
+A protocol that requires general serialization needs to state so explicitly; see Section {{EndToEndProtocols}}.
 
 See also special serializations ({{SpecialSerializations}}), which enable optimization and efficiency for specific use cases without requiring full general serialization support in the decoder.
 
@@ -614,8 +614,8 @@ All of these except determinism are also available with general serialization, b
 A recommended approach is to define a special serialization as preferred-plus or deterministic serialization with additional constraints or extensions.
 For example, a protocol requiring deterministic streaming of maps and arrays could be specified as:
 
->> Deterministic serialization MUST be used, except that maps and arrays MUST be encoded with indefinite lengths.
->> Strings retain definite-length encoding, and map ordering MUST follow the rules of deterministic serialization.
+> Deterministic serialization MUST be used, except that maps and arrays MUST be encoded with indefinite lengths.
+> Strings retain definite-length encoding, and map ordering MUST follow the rules of deterministic serialization.
 
 
 # New Tag Data Model Rule {#TagDataModelRule}
@@ -644,15 +644,15 @@ See also {{ByteStringWrapping}}.
 
 For example, the following specifies that a message or protocol described by "stuff" is deterministically serialized and wrapped in a byte string:
 
-~~~
+~~~ cddl
 stuff = ...
 deterministic-stuff = stuff .serial "dtrm"
 wrapped-deterministic-stuff = #6.24(bytes .cbor deterministic-stuff)
 ~~~
 
-For another example, the first lines of a CDDL document as follows specify that "my-protocol" be serialized with preferred-plus.
+For another example, the first lines of a CDDL document as follows specify that "my-protocol" be serialized with preferred-plus:
 
-~~~
+~~~ cddl
 my-prefp-protocol = my-protocol .serial "prefp"
 my-protocol = ...
 ~~~
@@ -719,7 +719,7 @@ For a protocol to be deterministic, its definition at the data model layer must 
 
 Here’s an example definition:
 
->> At the sender’s convenience, the birth date MAY be encoded either as an integer epoch date or string date. The receiver MUST decode both formats.
+> At the sender’s convenience, the birth date MAY be encoded either as an integer epoch date or string date. The receiver MUST decode both formats.
 
 While this definition is interoperable, it lacks determinism.
 The definition leaves a choice open, just as CBOR leaves encoding choices open when deterministic serialization is not required.
@@ -730,7 +730,7 @@ A more interesting source of variability is CBOR's variety of number types.
 For instance, the number 2 can be represented as an integer, float, bignum, decimal fraction and others defined by tags in the CBOR tag registry.
 Most protocol designs will just specify one number type to use, and that will give determinism, but here’s an example specification that doesn’t:
 
->> At the sender’s convenience, the fluid level measurement MAY be encoded as an integer or a floating-point number. This allows for minimal encoding size while supporting a large range. The receiver MUST be able to accept both integers and floating-point numbers for the measurement.
+> At the sender’s convenience, the fluid level measurement MAY be encoded as an integer or a floating-point number. This allows for minimal encoding size while supporting a large range. The receiver MUST be able to accept both integers and floating-point numbers for the measurement.
 
 Again, this ensures interoperability but not determinism &mdash; identical fluid level measurements can be represented in more than one way.
 Determinism can be achieved by allowing only floating-point, though that doesn’t minimize encoding size.
@@ -969,7 +969,7 @@ CDDL-described protocols SHOULD use integer and unsigned and in prose state that
 
 The following CDDL can be used:
 
-~~~~
+~~~~ cddl
 {::include bn.cddl}
 ~~~~
 
