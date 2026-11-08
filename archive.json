@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-10-25T03:22:44.553611+00:00",
+  "timestamp": "2026-11-08T04:39:48.496946+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -4722,6 +4722,58 @@
       "mergeCommit": {
         "oid": "831ae721ea89502862b07e5632c9b9138d1ffdd8"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 107,
+      "id": "PR_kwDOQYX63c8AAAABNJ-t4Q",
+      "title": "idnits: non-ascii chars, inclusion of C code",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/107",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-11-05T19:59:20Z",
+      "updatedAt": "2026-11-05T19:59:20Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "4a09f1f555c06fd926c0e3008c8a84945a8bb10d",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "idnits",
+      "headRefOid": "c56508ca7271636197544abc6efed96aaa9676e5",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 108,
+      "id": "PR_kwDOQYX63c8AAAABNYUHCw",
+      "title": "First round of changes to address Andy's comments",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/108",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-11-06T18:43:28Z",
+      "updatedAt": "2026-11-06T18:43:28Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "4a09f1f555c06fd926c0e3008c8a84945a8bb10d",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "andy1",
+      "headRefOid": "3849d94635ece724fd409b7ec02ed190e1a87385",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
