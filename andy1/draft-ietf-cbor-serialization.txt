@@ -4,9 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Updates: 8949 (if approved)                              6 November 2026
+Updates: 8949 (if approved)                              9 November 2026
 Intended status: Standards Track                                        
-Expires: 10 May 2027
+Expires: 13 May 2027
 
 
                    CBOR Serialization and Determinism
@@ -19,12 +19,13 @@ Abstract
    is flexible, allowing data types to be encoded in multiple ways to
    accommodate deployment in constrained environments.
 
-   This document names the full set of encodings defined in RFC 8949 as
-   general serialization, and formally defines two others: preferred-
-   plus serialization, which is closely based on preferred serialization
-   and is recommended for broad use; and deterministic serialization,
-   which is closely based on the deterministic encoding defined in RFC
-   8949.
+   This document introduces the term “general serialization” for the
+   full set of encodings permitted by RFC 8949, and formally defines two
+   specific serializations: preferred-plus serialization, which differs
+   from preferred serialization only in cases rarely encountered in
+   practice and is recommended for broad use; and deterministic
+   serialization, which likewise differs only in rarely encountered
+   cases from core deterministic encoding defined in RFC 8949.
 
    This document updates RFC 8949 with a new rule that limits how new
    tag definitions can affect the CBOR data model.
@@ -64,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 May 2027.
+   This Internet-Draft will expire on 13 May 2027.
 
 Copyright Notice
 
@@ -424,10 +425,12 @@ Table of Contents
    required for parts of the protocol using hashing or signing.  See
    Section 5.3.
 
-   An end-to-end protocol that gives no serialization requirements is
-   ambiguous.  For such extant protocols, use of preferred-plus
-   serialization is RECOMMENDED unless existing deployments of that
-   protocol have established a different practice.
+   An end-to-end protocol with no serialization requirements is
+   ambiguous.  Implementations of such a protocol SHOULD use preferred-
+   plus serialization unless existing deployments of it have established
+   a different practice.  Implementations that follow neither an
+   established practice nor this recommendation risk failing to
+   interoperate.
 
 2.2.  Libraries
 
@@ -468,12 +471,13 @@ Table of Contents
 2.2.2.  Libraries for Framework Protocols
 
    When a framework protocol specification does not mandate a specific
-   serialization, it is RECOMMENDED that a library for it implement
-   preferred-plus serialization.  For example, CWT does not mandate a
-   serialization, so it is recommended that libraries implementing them
-   use preferred-plus serialization.  Alternatively, a framework
-   protocol library may implement only deterministic serialization if
-   this aligns with its deployment environment and design goals.
+   serialization, libraries for it SHOULD implement preferred-plus
+   serialization.  For example, CWT does not mandate a serialization, so
+   this recommendation applies to CWT libraries.  Alternatively, a
+   framework protocol library MAY implement only deterministic
+   serialization if this aligns with its deployment environment and
+   design goals.  Libraries that implement neither risk failing to
+   interoperate with other implementations of the protocol.
 
    When a framework protocol mandates serialization requirements,
    conforming libraries follow them.  For instance, small parts of COSE
@@ -485,13 +489,14 @@ Table of Contents
 2.2.3.  Libraries for End-to-End Protocols
 
    End-to-end protocols are expected to state serialization requirements
-   to ensure interoperability.  Libraries for end-to-end protocols are
-   expected to adhere to them.
+   to ensure interoperability, and conforming libraries follow them.
 
    If an end-to-end protocol specification does not state serialization
-   requirements, it is RECOMMENDED that the library implement preferred-
-   plus serialization, unless existing deployments of that protocol have
-   established a different practice (see Section 2.1.2).
+   requirements, the recommendation in Section 2.1.2 applies to
+   libraries for it: implement preferred-plus serialization unless
+   existing deployments have established a different practice.
+   Libraries that follow neither an established practice nor this
+   recommendation risk failing to interoperate.
 
 3.  General Serialization
 
