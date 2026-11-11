@@ -622,7 +622,7 @@ For example, a protocol requiring deterministic streaming of maps and arrays cou
 
 {{Section 2 of -cbor}} states that each new CBOR tag definition introduces a new and distinct data type.
 In contrast, the definitions of Tags 2 and 3 (bignums) in {{Section 3.4.3 of -cbor}} do not introduce a separate data type; instead, they attach directly to the integer type and extend its numeric range.
-As a result, the generic data model’s integer type is modified rather than augmented with a new, independent type (see {{BigNumbersDataModel}}).
+As a result, the generic data model's integer type is modified rather than augmented with a new, independent type (see {{BigNumbersDataModel}}).
 
 This document establishes a new rule that prohibits future tag definitions from having such effects:
 
@@ -670,7 +670,7 @@ The security considerations in {{Section 10 of -cbor}} apply.
 
 ## Covert Channel {#CovertChannels}
 
-CBOR’s serialization variants can be used as a covert channel {{LAM73}} to steganographically exfiltrate data.
+CBOR's serialization variants can be used as a covert channel {{LAM73}} to steganographically exfiltrate data.
 
 For example, a CBOR argument (such as an integer encoding or a string length) can be encoded in up to five different ways (e.g., the value 1 can be encoded as 0x01, 0x1801, 0x190001, 0x1A00000001, or 0x1B0000000000000001).
 This variability can be used to encode about 2 hidden bits per argument.
@@ -717,9 +717,9 @@ See {{WhenDeterministic}}.
 
 For a protocol to be deterministic, its definition at the data model layer must be deterministic.
 
-Here’s an example definition:
+Here's an example definition:
 
->> At the sender’s convenience, the birth date MAY be encoded either as an integer epoch date or string date. The receiver MUST decode both formats.
+>> At the sender's convenience, the birth date MAY be encoded either as an integer epoch date or string date. The receiver MUST decode both formats.
 
 While this definition is interoperable, it lacks determinism.
 The definition leaves a choice open, just as CBOR leaves encoding choices open when deterministic serialization is not required.
@@ -728,12 +728,12 @@ To make this example definition deterministic, specify one date format and prohi
 
 A more interesting source of variability is CBOR's variety of number types.
 For instance, the number 2 can be represented as an integer, float, bignum, decimal fraction and others defined by tags in the CBOR tag registry.
-Most protocol designs will just specify one number type to use, and that will give determinism, but here’s an example specification that doesn’t:
+Most protocol designs will just specify one number type to use, and that will give determinism, but here's an example specification that doesn’t:
 
->> At the sender’s convenience, the fluid level measurement MAY be encoded as an integer or a floating-point number. This allows for minimal encoding size while supporting a large range. The receiver MUST be able to accept both integers and floating-point numbers for the measurement.
+>> At the sender's convenience, the fluid level measurement MAY be encoded as an integer or a floating-point number. This allows for minimal encoding size while supporting a large range. The receiver MUST be able to accept both integers and floating-point numbers for the measurement.
 
 Again, this ensures interoperability but not determinism &mdash; identical fluid level measurements can be represented in more than one way.
-Determinism can be achieved by allowing only floating-point, though that doesn’t minimize encoding size.
+Determinism can be achieved by allowing only floating-point, though that doesn't minimize encoding size.
 
 A better solution requires the fluid level always be encoded using the smallest representation.
 For example, a fluid level of 2 is always encoded as an integer, never as a floating-point number; and a level of 2.000001 is always encoded as a floating-point number so as not to lose precision.
@@ -801,7 +801,7 @@ Some key points:
 - CPU hardware:
 
   - CPUs use the distinction between signaling and quiet NaNs to determine whether to raise exceptions.
-  - A non-trivial NaN matching the CPU’s signaling NaN pattern may either trigger an exception or be converted into a quiet NaN.
+  - A non-trivial NaN matching the CPU's signaling NaN pattern may either trigger an exception or be converted into a quiet NaN.
   - Instructions converting between single and double precision sometimes discard or alter NaN payloads.
 
 As a result, applications that rely on non-trivial NaNs generally cannot depend on CPU instructions, floating-point libraries, or programming environments.
@@ -820,7 +820,7 @@ R uses NaN payloads to distinguish various error or missing-data conditions beyo
 Another example is NaNboxing (see {{NaNBoxing}}), a technique used by some language runtimes &mdash; such as certain JavaScript engines &mdash; to efficiently represent multiple data types within a single 64-bit word by storing type tags or pointers in the NaN payload.
 (CBOR can represent such payloads, but NaNboxed pointers are generally not meaningful or portable across machines, and therefore are usually unsuitable for network transmission or file storage.)
 
-CBOR’s NaN-payload support can be leveraged if data from these systems must be transmitted over a network or written to persistent storage.
+CBOR's NaN-payload support can be leveraged if data from these systems must be transmitted over a network or written to persistent storage.
 
 A designer of a new protocol that makes extensive use of floating-point values might be tempted to use NaN payloads to encode out-of-band information such as error conditions.
 For example, NaN payloads could be used to distinguish situations such as sensor offline, sensor absent, sensor error, or sensor out of calibration.
@@ -927,13 +927,13 @@ Both functions return an integer with the bit pattern for the resulting floating
 ~~~ c
 {::include prefp-float-encode.c}
 ~~~
-{: #half-encode title="Example C Code for Preferred-Plus Floating-Point Encoding"}
+{: #half-encode title="Example C Code for Preferred-Plus Floating-Point Encoding" sourcecode-markers="true" sourcecode-name="prefp-float-encode.c"}
 
 
 # Bignums and the CBOR Data Model {#BigNumbersDataModel}
 
 The primary purpose of this document is to define preferred-plus and deterministic serialization.
-Accordingly, {{PreferredPlusSerialization}} describes CBOR’s unified integer space in terms of serialization behavior.
+Accordingly, {{PreferredPlusSerialization}} describes CBOR's unified integer space in terms of serialization behavior.
 This is an effective and clear way to describe what implementors must do.
 An implementation that follows the requirements in {{PreferredPlusSerialization}} will be complete and correct with respect to serialization.
 
@@ -988,7 +988,7 @@ Similarly, decoding facilities that return bignums must accept values encoded us
 
 Alternatively, some CBOR libraries may choose to return tags 2 and 3 as raw byte strings, as this approach is simpler than implementing full bignum support.
 When a library adopts this approach, it should clearly document that the application layer is responsible for performing the integer unification.
-The application is also responsible for handling CBOR’s offset-by-one encoding of negative values and the extended negative integer range permitted by major type 1.
+The application is also responsible for handling CBOR's offset-by-one encoding of negative values and the extended negative integer range permitted by major type 1.
 
 In most cases, these additional processing steps are straightforward when the application already uses a bignum library.
 
