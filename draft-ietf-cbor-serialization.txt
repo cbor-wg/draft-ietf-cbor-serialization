@@ -4,9 +4,9 @@
 
 CBOR                                                        L. Lundblade
 Internet-Draft                                       Security Theory LLC
-Updates: 8949 (if approved)                              30 October 2026
+Updates: 8949 (if approved)                             11 November 2026
 Intended status: Standards Track                                        
-Expires: 3 May 2027
+Expires: 15 May 2027
 
 
                    CBOR Serialization and Determinism
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 May 2027.
+   This Internet-Draft will expire on 15 May 2027.
 
 Copyright Notice
 
@@ -947,7 +947,7 @@ Table of Contents
    definitions of Tags 2 and 3 (bignums) in Section 3.4.3 of [RFC8949]
    do not introduce a separate data type; instead, they attach directly
    to the integer type and extend its numeric range.  As a result, the
-   generic data model’s integer type is modified rather than augmented
+   generic data model's integer type is modified rather than augmented
    with a new, independent type (see Appendix D).
 
    This document establishes a new rule that prohibits future tag
@@ -1007,7 +1007,7 @@ Table of Contents
 
 9.1.  Covert Channel
 
-   CBOR’s serialization variants can be used as a covert channel [LAM73]
+   CBOR's serialization variants can be used as a covert channel [LAM73]
    to steganographically exfiltrate data.
 
    For example, a CBOR argument (such as an integer encoding or a string
@@ -1164,9 +1164,9 @@ A.1.  Protocol Data Definition
    For a protocol to be deterministic, its definition at the data model
    layer must be deterministic.
 
-   Here’s an example definition:
+   Here's an example definition:
 
-      At the sender’s convenience, the birth date MAY be encoded
+      At the sender's convenience, the birth date MAY be encoded
          either as an integer epoch date or string date.  The receiver
          MUST decode both formats.
 
@@ -1181,10 +1181,10 @@ A.1.  Protocol Data Definition
    types.  For instance, the number 2 can be represented as an integer,
    float, bignum, decimal fraction and others defined by tags in the
    CBOR tag registry.  Most protocol designs will just specify one
-   number type to use, and that will give determinism, but here’s an
+   number type to use, and that will give determinism, but here's an
    example specification that doesn’t:
 
-      At the sender’s convenience, the fluid level measurement MAY be
+      At the sender's convenience, the fluid level measurement MAY be
          encoded as an integer or a floating-point number.  This allows
          for minimal encoding size while supporting a large range.  The
          receiver MUST be able to accept both integers and floating-
@@ -1193,7 +1193,7 @@ A.1.  Protocol Data Definition
    Again, this ensures interoperability but not determinism — identical
    fluid level measurements can be represented in more than one way.
    Determinism can be achieved by allowing only floating-point, though
-   that doesn’t minimize encoding size.
+   that doesn't minimize encoding size.
 
    A better solution requires the fluid level always be encoded using
    the smallest representation.  For example, a fluid level of 2 is
@@ -1289,7 +1289,7 @@ B.2.  Implementation Support for Non-Trivial NaNs
       -  CPUs use the distinction between signaling and quiet NaNs to
          determine whether to raise exceptions.
 
-      -  A non-trivial NaN matching the CPU’s signaling NaN pattern may
+      -  A non-trivial NaN matching the CPU's signaling NaN pattern may
          either trigger an exception or be converted into a quiet NaN.
 
       -  Instructions converting between single and double precision
@@ -1323,7 +1323,7 @@ B.3.  Use and Non-use for Non-Trivial NaNs
    meaningful or portable across machines, and therefore are usually
    unsuitable for network transmission or file storage.)
 
-   CBOR’s NaN-payload support can be leveraged if data from these
+   CBOR's NaN-payload support can be leveraged if data from these
    systems must be transmitted over a network or written to persistent
    storage.
 
@@ -1487,6 +1487,7 @@ Appendix C.  Code for Encoding Preferred-Plus Floating-Point Values
    was given for encoding which should either be rejected or output as a
    half-precision quiet NaN.
 
+   <CODE BEGINS> file "prefp-float-encode.c"
    /* Constants based on IEEE 754; _LEN is in bits */
 
    /* Half-precision */
@@ -1618,13 +1619,14 @@ Appendix C.  Code for Encoding Preferred-Plus Floating-Point Values
         return -1; /* large exponent -- out of range for single */
      }
    }
+   <CODE ENDS>
 
     Figure 1: Example C Code for Preferred-Plus Floating-Point Encoding
 
 Appendix D.  Bignums and the CBOR Data Model
 
    The primary purpose of this document is to define preferred-plus and
-   deterministic serialization.  Accordingly, Section 4 describes CBOR’s
+   deterministic serialization.  Accordingly, Section 4 describes CBOR's
    unified integer space in terms of serialization behavior.  This is an
    effective and clear way to describe what implementors must do.  An
    implementation that follows the requirements in Section 4 will be
@@ -1716,7 +1718,7 @@ Appendix F.  Bignum Implementation Strategies
    full bignum support.  When a library adopts this approach, it should
    clearly document that the application layer is responsible for
    performing the integer unification.  The application is also
-   responsible for handling CBOR’s offset-by-one encoding of negative
+   responsible for handling CBOR's offset-by-one encoding of negative
    values and the extended negative integer range permitted by major
    type 1.
 
