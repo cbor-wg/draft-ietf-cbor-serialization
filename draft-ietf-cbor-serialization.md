@@ -620,18 +620,40 @@ For example, a protocol requiring deterministic streaming of maps and arrays cou
 > Strings retain definite-length encoding, and map ordering MUST follow the rules of deterministic serialization.
 
 
-# New Tag Data Model Rule {#TagDataModelRule}
+# Data Model Rule for New Tags {#TagDataModelRule}
 
-{{Section 2 of -cbor}} states that each new CBOR tag definition introduces a new and distinct data type.
-In contrast, the definitions of Tags 2 and 3 (bignums) in {{Section 3.4.3 of -cbor}} do not introduce a separate data type; instead, they attach directly to the integer type and extend its numeric range.
-As a result, the generic data model's integer type is modified rather than augmented with a new, independent type (see {{BigNumbersDataModel}}).
+## Background
 
-This document establishes a new rule that prohibits future tag definitions from having such effects:
+{{Section 2 of RFC8949}} defines a single, stable "basic generic data model".
+In it, a tag is just a tag number and a tag content, with no further semantics.
+A tag definition gives a tag semantics and thereby extends the basic generic data model.
 
-All future CBOR tag definitions MUST NOT incorporate, modify, or otherwise affect any data types other than the type defined by the tag itself.
-A set of tags MAY affect each other, provided that all defining authorities for those tags explicitly agree.
+For example, in the basic generic data model a tag with tag number 2 is not a bignum; it is simply tag number 2 and some tag content.
+Giving tag number 2 the positive bignum semantics of {{Section 3.4.3 of RFC8949}} produces an extended generic data model: the basic generic data model plus positive bignums.
+Also giving tag number 3 its negative bignum semantics produces a different extended generic data model: the basic generic data model plus positive and negative bignums.
 
-Tags 2 and 3 are exempt from this rule, as they were defined prior to the establishment of this requirement.
+This document takes the view that N tag definitions give 2^^N - 1 extended generic data models.
+(RFC 8949 is inconsistent on this, sometimes implying a single extended generic data model encompassing all tag definitions.)
+The specific data model of a protocol ({{Section 2.2 of RFC8949}}) is drawn from exactly one generic data model, basic or extended, determined by the tag numbers the protocol uses.
+
+This section pertains only to data models, not to serialization, which is the subject of the rest of this document.
+It appears here so that the requirement can be established promptly.
+
+## The Rule
+
+A tag definition published after this document MUST NOT extend or modify the basic generic data model, or any extended generic data model created by another tag definition, outside tags with the tag number it defines.
+In particular, it MUST NOT define such a tag to be equivalent to any data item other than another tag with the same tag number.
+Within tags it defines, it MAY specify any data model, including one that differs from the basic generic data model; for example, it could treat integer and floating-point values with the same numeric value as equivalent within the tag content.
+
+This rule keeps tag definitions independent of one another: every combination of tag definitions yields a well-defined extended generic data model, and no tag definition can change the meaning of data models, or of protocol specifications, written before it.
+
+## Tag Numbers 2 and 3
+
+The definitions of tag numbers 2 and 3 in {{Section 3.4.3 of RFC8949}} create three extended generic data models: one with tag number 2, one with tag number 3, and one with both.
+Rather than adding a separate bignum type, these definitions make bignums equivalent to integers of the same value, extending the integer range of the basic generic data model beyond -2^^64..2^^64-1.
+This reaches outside tags with tag numbers 2 and 3 in exactly the way the rule above forbids.
+
+Tag numbers 2 and 3 were defined before this rule and are exempt from it.
 
 
 # CDDL Serialization Control Operator {#CDDL-Operators}
