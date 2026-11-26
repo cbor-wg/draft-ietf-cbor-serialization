@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-11-12T05:54:19.258770+00:00",
+  "timestamp": "2026-11-26T06:59:12.664573+00:00",
   "repo": "cbor-wg/draft-ietf-cbor-serialization",
   "labels": [
     {
@@ -4778,6 +4778,32 @@
       "mergeCommit": {
         "oid": "77d98e0e92b37ff7ed479cb71d62aeacaafd1b30"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 109,
+      "id": "PR_kwDOQYX63c8AAAABRpkOJw",
+      "title": "Update the new tag definition rule",
+      "url": "https://github.com/cbor-wg/draft-ietf-cbor-serialization/pull/109",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-11-24T20:02:05Z",
+      "updatedAt": "2026-11-24T20:02:05Z",
+      "baseRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "baseRefName": "main",
+      "baseRefOid": "77d98e0e92b37ff7ed479cb71d62aeacaafd1b30",
+      "headRepository": "cbor-wg/draft-ietf-cbor-serialization",
+      "headRefName": "clarify-new-rule",
+      "headRefOid": "d28668781e0c875303b9bf54d936da9f60007a3b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
