@@ -54,10 +54,6 @@ normative:
       IEEE Std: 754-2019
       DOI: 10.1109/IEEESTD.2019.8766229
 
-  IANA.cddl:
-
-  IANA.cbor-tags:
-
 
 informative:
    RFC8392: CWT
@@ -634,38 +630,6 @@ A set of tags MAY affect each other, provided that all defining authorities for 
 Tags 2 and 3 are exempt from this rule, as they were defined prior to the establishment of this requirement.
 
 
-# CDDL Serialization Control Operator {#CDDL-Operators}
-
-The ".serial" control operator specifies the serialization of any type in CDDL, including the serialization of the top-level data item or byte-string-wrapped sub-parts.
-
-The controller (the right-hand side) is a text string and MUST be either "prefp" or "dtrm", specifying preferred-plus ({{PreferredPlusSerialization}}) or deterministic ({{DeterministicSerialization}}) serialization, respectively.
-
-The scope of .serial extends recursively through nested arrays, maps, and tag content, but does not extend into byte strings or other data items that happen to contain encoded CBOR.
-Every instance of embedded CBOR that requires specific serialization must specify it explicitly.
-See also {{ByteStringWrapping}}.
-
-For example, the following specifies that a message or protocol described by "stuff" is deterministically serialized and wrapped in a byte string:
-
-~~~ cddl
-stuff = ...
-deterministic-stuff = stuff .serial "dtrm"
-wrapped-deterministic-stuff = #6.24(bytes .cbor deterministic-stuff)
-~~~
-
-For another example, the first lines of a CDDL document as follows specify that "my-protocol" be serialized with preferred-plus:
-
-~~~ cddl
-my-prefp-protocol = my-protocol .serial "prefp"
-my-protocol = ...
-~~~
-
-As with filtering control operators such as .size, .serial constraints intersect when nested, whether through direct nesting or because a type with its own .serial appears within the scope of another.
-Since deterministic serialization is a subset of preferred-plus, wherever both apply the effective requirement is deterministic, regardless of which one is outermost.
-
-New controller values for new serializations are possible but are highly discouraged.
-Standards action is required to add them.
-
-
 # Security Considerations
 
 The security considerations in {{Section 10 of -cbor}} apply.
@@ -693,17 +657,6 @@ The primary safeguard is to ensure the CBOR encoding library used is trustworthy
 
 Checking for preferred-plus or deterministic serialization as described in {{CheckingDecoder}} can reveal unexpected variation, and so expose an attack, but cannot prevent one.
 
-
-# IANA Considerations
-
-[^to-be-removed]
-
-[^to-be-removed]: RFC Editor: please replace RFCXXXX with the RFC
-    number of this RFC and remove this note.
-
-This document requests IANA to register the ".serial" control operator into the registry "{{cddl-control-operators (CDDL Control Operators)<IANA.cddl}}" of the {{IANA.cddl}} registry group.
-
-IANA is requested to add a reference to {{TagDataModelRule}} to the CBOR tag registry {{IANA.cbor-tags}}.
 
 --- back
 
@@ -1049,7 +1002,7 @@ Note that serialization-checking decoders always reject the empty byte string, b
 # CBOR Byte String Wrapping {#ByteStringWrapping}
 
 This appendix provides non-normative guidance on byte-string wrapping of CBOR.
-It applies primarily to tag 24 and the CDDL .cbor and .cborseq control operators, but also to the serialization-specifying control operators described in {{CDDL-Operators}}.
+It applies primarily to tag 24 and the CDDL .cbor and .cborseq control operators.
 It also applies when prose states the byte-string wrapping requirement, such as for the COSE protected headers.
 See also {{COSEPayload}}.
 
